@@ -45,7 +45,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
         return f"toc-{self.breadcrumb}-{self.title.replace(' ', '_').lower()}"
 
     def clean_breadcrumb(self) -> str:
-        return self.breadcrumb.replace("0", "")
+        parts = self.breadcrumb.split(".")
+        cleaned_parts = [part.lstrip("0") for part in parts]
+        return ".".join(cleaned_parts)
 
     def filename(self) -> str:
         """Name of a file for this entry, to be placed in a chapter path."""

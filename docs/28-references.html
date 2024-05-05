@@ -1,0 +1,1395 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>References - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-28-references">
+        <a class="chapter-link" href="#toc-28-references"> ¶ 28</a>
+
+        
+        <h1 id="references">References</h1>
+<h3 id="sql-commands">SQL commands</h3>
+<h5 id="schema-management">Schema management</h5>
+<ul>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">CREATE TABLE</a> - Creates new table</li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">CREATE TABLE LIKE</a> - Creates table using another one as a template</li>
+<li><a href="07-listing_tables.html#describe">DESCRIBE</a> - Prints out table's field list and their types</li>
+<li><a href="14-updating_table_schema_and_settings.html#toc-14-updating_table_schema_and_settings">ALTER TABLE</a> - Changes table schema / settings</li>
+<li><a href="14-updating_table_schema_and_settings.html#rebuild-secondary-index">ALTER TABLE REBUILD SECONDARY</a> - Updates/recovers secondary indexes</li>
+<li><a href="08-deleting_a_table.html#deleting-a-table">DROP TABLE IF EXISTS</a> - Deletes a table (if it exists)</li>
+<li><a href="07-listing_tables.html#describe">SHOW TABLES</a> - Shows tables list</li>
+<li><a href="07-listing_tables.html#describe">SHOW CREATE TABLE</a> - Shows SQL command how to create the table</li>
+<li><a href="19-node_info_and_management.html#toc-19.10.01-show_table_status">SHOW TABLE STATUS</a> - Shows information about current table status</li>
+<li><a href="19-node_info_and_management.html#toc-19.10.02-show_table_settings">SHOW TABLE SETTINGS</a> - Shows table settings</li>
+</ul>
+<h5 id="data-management">Data management</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> - Adds new documents</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> - Replaces existing documents with new ones</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> - Does in-place update in documents</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">DELETE</a> - Deletes documents</li>
+<li><a href="09-emptying_a_table.html#toc-09-emptying_a_table">TRUNCATE TABLE</a> - Deletes all documents from table</li>
+</ul>
+<h5 id="backup">Backup</h5>
+<ul>
+<li><a href="16-securing_and_compacting_a_table.html#backup-sql-command-reference">BACKUP</a> - Backs up your tables</li>
+</ul>
+<h5 id="select">SELECT</h5>
+<ul>
+<li><a href="13-searching.html#sql">SELECT</a> - Searches</li>
+<li><a href="13-searching.html#filters">WHERE</a> - Filters</li>
+<li><a href="13-searching.html#toc-13.13-grouping">GROUP BY</a> - Groups search results</li>
+<li><a href="13-searching.html#toc-13.13-grouping">GROUP BY ORDER</a> - Orders groups</li>
+<li><a href="13-searching.html#toc-13.13-grouping">GROUP BY HAVING</a> - Filters groups</li>
+<li><a href="13-searching.html#option">OPTION</a> - Query Options</li>
+<li><a href="13-searching.html#toc-13.14-faceted_search">FACET</a> - Faceted search</li>
+<li><a href="13-searching.html#toc-13.12-subselects">SUB-SELECTS</a> - About using SELECT sub-queries</li>
+<li><a href="13-searching.html#profiling-without-running-a-query">EXPLAIN QUERY</a> - Shows query execution plan without running the query itself</li>
+<li><a href="19-node_info_and_management.html#toc-19.02-show_meta">SHOW META</a> - Shows extended information about executed query</li>
+<li><a href="19-node_info_and_management.html#toc-19.09.01-query_profiling">SHOW PROFILE</a> - Shows profiling information about executed query</li>
+<li><a href="13-searching.html#profiling-the-query-tree-in-sql">SHOW PLAN</a> - Shows query execution plan after the query was executed</li>
+<li><a href="19-node_info_and_management.html#toc-19.07-show_warnings">SHOW WARNINGS</a> - Shows warnings from the latest query</li>
+</ul>
+<h5 id="flushing-misc-things">Flushing misc things</h5>
+<ul>
+<li><a href="16-securing_and_compacting_a_table.html#toc-16.08-flushing_attributes">FLUSH ATTRIBUTES</a> - Forces flushing updated attributes to disk</li>
+<li><a href="16-securing_and_compacting_a_table.html#toc-16.09-flushing_hostnames">FLUSH HOSTNAMES</a> - Renews IPs associates to agent host names</li>
+<li><a href="18-logging.html#toc-18.05-rotating_query_and_server_logs">FLUSH LOGS</a> - Initiates reopen of searchd log and query log files (similar to USR1)</li>
+</ul>
+<h5 id="real-time-table-optimization">Real-time table optimization</h5>
+<ul>
+<li><a href="16-securing_and_compacting_a_table.html#flush-ramchunk">FLUSH RAMCHUNK</a> - Force creating a new disk chunk</li>
+<li><a href="16-securing_and_compacting_a_table.html#flush-table">FLUSH TABLE</a> - Flushes real-time table RAM chunk to disk</li>
+<li><a href="16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE TABLE</a> - Enqueues real-time table for optimization</li>
+</ul>
+<h5 id="importing-to-a-real-time-table">Importing to a real-time table</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">ATTACH TABLE</a> - Moves data from a plain table to a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.02.06.04-importing_rt_table">IMPORT TABLE</a> - Imports previously created RT or PQ table into a server running in the RT mode</li>
+</ul>
+<h5 id="replication">Replication</h5>
+<ul>
+<li><a href="10-creating_a_cluster.html#toc-10.03.02-joining_a_replication_cluster">JOIN CLUSTER</a> - Joins a replication cluster</li>
+<li><a href="10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER</a> - Adds/deletes a table to a replication cluster</li>
+<li><a href="10-creating_a_cluster.html#cluster-parameters">SET CLUSTER</a> - Changes replication cluster settings</li>
+<li><a href="10-creating_a_cluster.html#toc-10.03.03-deleting_a_replication_cluster">DELETE CLUSTER</a> - Deletes a replication cluster</li>
+</ul>
+<h5 id="plain-table-rotate">Plain table rotate</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#reload-table">RELOAD TABLE</a> - Rotates a plain table</li>
+<li><a href="12-data_creation_and_modification.html#reload-table">RELOAD TABLES</a> - Rotates all plain tables</li>
+</ul>
+<h5 id="transactions">Transactions</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#begin,-commit,-and-rollback">BEGIN</a> - Begins a transaction</li>
+<li><a href="12-data_creation_and_modification.html#begin,-commit,-and-rollback">COMMIT</a> - Finishes a transaction</li>
+<li><a href="12-data_creation_and_modification.html#begin,-commit,-and-rollback">ROLLBACK</a> - Rolls back a transaction</li>
+</ul>
+<h5 id="call">CALL</h5>
+<ul>
+<li><a href="13-searching.html#call-qsuggest,-call-suggest">CALL SUGGEST, CALL QSUGGEST</a> - Suggests spell-corrected words</li>
+<li><a href="13-searching.html#toc-13.07-highlighting">CALL SNIPPETS</a> - Builds a highlighted results snippet from provided data and query</li>
+<li><a href="13-searching.html#toc-13.16-percolate_query">CALL PQ</a> - Runs a percolate query</li>
+<li><a href="13-searching.html#call-keywords">CALL KEYWORDS</a> - Used to check how keywords are tokenized. Also allows to retrieve tokenized forms of provided keywords</li>
+</ul>
+<h5 id="plugins">Plugins</h5>
+<ul>
+<li><a href="22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> - Installs a user-defined function (UDF)</li>
+<li><a href="22-extensions.html#toc-22.03.02.02-deleting_a_function">DROP FUNCTION</a> - Drops a user-defined function (UDF)</li>
+<li><a href="22-extensions.html#toc-22.03.03.01-creating_a_plugin">CREATE PLUGIN</a> - Installs a plugin</li>
+<li><a href="22-extensions.html#create-buddy-plugin">CREATE BUDDY PLUGIN</a> - Installs a Buddy plugin</li>
+<li><a href="22-extensions.html#delete-plugin">DROP PLUGIN</a> - Drops a plugin</li>
+<li><a href="22-extensions.html#delete-buddy-plugin">DROP BUDDY PLUGIN</a> - Drops a Buddy plugin</li>
+<li><a href="22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a> - Reloads all plugins from a given library</li>
+<li><a href="22-extensions.html#enable-buddy-plugin">ENABLE BUDDY PLUGIN</a> - Reactivates a previously disabled Buddy plugin</li>
+<li><a href="22-extensions.html#disable-buddy-plugin">DISABLE BUDDY PLUGIN</a> - Deactivates an active Buddy plugin</li>
+</ul>
+<h5 id="server-status">Server status</h5>
+<ul>
+<li><a href="19-node_info_and_management.html#show-status">SHOW STATUS</a> - Displays a number of useful performance counters</li>
+<li><a href="19-node_info_and_management.html#toc-19.03-show_threads">SHOW THREADS</a> - Lists all currently active client threads</li>
+<li><a href="19-node_info_and_management.html#toc-19.08-show_variables">SHOW VARIABLES</a> - Lists server-wide variables and their values</li>
+<li><a href="19-node_info_and_management.html#show-version">SHOW VERSION</a> - Provides detailed version information of various components of the instance.</li>
+</ul>
+<h3 id="http-endpoints">HTTP endpoints</h3>
+<ul>
+<li><a href="11-connecting_to_the_server.html#sql-over-http">/sql</a> - Execute an SQL statement over HTTP JSON</li>
+<li><a href="11-connecting_to_the_server.html#/cli">/cli</a> - Provides an HTTP command line interface</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert</a> - Inserts a document into a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc</a> - Adds a PQ rule to a percolate table</li>
+<li><a href="12-data_creation_and_modification.html#updates-via-http-json">/update</a> - Updates a document in a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">/replace</a> - Replaces an existing document in a real-time table or inserts it if it doesn't exist</li>
+<li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc/N?refresh=1</a> - Replaces a PQ rule in a percolate table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">/delete</a> - Removes a document from a table</li>
+<li><a href="12-data_creation_and_modification.html#bulk-updates">/bulk</a> - Executes multiple insert, update, or delete operations in a single call. Learn more about bulk inserts <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">here</a>.</li>
+<li><a href="13-searching.html#http-json">/search</a> - Performs a search</li>
+<li><a href="13-searching.html#toc-13.22-knearest_neighbor_vector_search">/search -&gt; knn</a> - Performs a KNN vector search</li>
+<li><a href="13-searching.html#toc-13.16-percolate_query">/pq/tbl_name/search</a> - Performs a reverse search in a percolate table</li>
+<li><a href="06-creating_a_table.html#_mapping-api:">/tbl_name/_mapping</a> - Creates a table schema in the Elasticsearch style</li>
+</ul>
+<h3 id="common-things">Common things</h3>
+<ul>
+<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">data types</a></li>
+<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">engine</a></li>
+<li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">plain mode</a></li>
+<li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">real-time mode</a></li>
+</ul>
+<h5 id="common-table-settings">Common table settings</h5>
+<ul>
+<li><a href="20-server_settings.html#access_plain_attrs">access_plain_attrs</a></li>
+<li><a href="20-server_settings.html#access_blob_attrs">access_blob_attrs</a></li>
+<li><a href="20-server_settings.html#access_doclists">access_doclists</a></li>
+<li><a href="20-server_settings.html#access_hitlists">access_hitlists</a></li>
+<li><a href="20-server_settings.html#access_dict">access_dict</a></li>
+<li><a href="12-data_creation_and_modification.html#attr_update_reserve">attr_update_reserve</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">bigram_freq_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">bigram_index</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">blend_chars</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">blend_mode</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">charset_table</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">dict</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">docstore_block_size</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">docstore_compression</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">docstore_compression_level</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">embedded_limit</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">exceptions</a></li>
+<li><a href="13-searching.html#expand_keywords">expand_keywords</a></li>
+<li><a href="13-searching.html#global_idf">global_idf</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">hitless_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">html_index_attrs</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">html_remove_elements</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">html_strip</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">ignore_chars</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_exact_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_field_lengths</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_sp</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_token_filter</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_zones</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">infix_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_enable</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_hit_gap</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_reloc_factor</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_write_factor</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">killlist_target</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">max_substring_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_infix_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_prefix_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_stemming_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_word_len</a></li>
+<li><a href="13-searching.html#morphology">morphology</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">morphology_skip_fields</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">ngram_chars</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">ngram_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">overshort_step</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">path</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">phrase_boundary</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">phrase_boundary_step</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">prefix_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">preopen</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">read_buffer_docs</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">read_buffer_hits</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">regexp_filter</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">stopwords</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">stopword_step</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">stopwords_unstemmed</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">type</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">wordforms</a></li>
+</ul>
+<h5 id="plain-table-settings">Plain table settings</h5>
+<ul>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">source</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">stored_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">stored_only_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">columnar_attrs</a></li>
+</ul>
+<h5 id="distributed-table-settings">Distributed table settings</h5>
+<ul>
+<li><a href="06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">local</a></li>
+<li><a href="06-creating_a_table.html#agent">agent</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_connect_timeout</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_blackhole</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_persistent</a></li>
+<li><a href="13-searching.html#agent_query_timeout">agent_query_timeout</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_retry_count</a></li>
+<li><a href="10-creating_a_cluster.html#ha_strategy">ha_strategy</a></li>
+<li><a href="06-creating_a_table.html#agent">mirror_retry_count</a></li>
+</ul>
+<h5 id="rt-table-settings">RT table settings</h5>
+<ul>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_bigint</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_bool</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_float</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_float_vector</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_json</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_multi_64</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_multi</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_string</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_timestamp</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_uint</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_field</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_mem_limit</a></li>
+</ul>
+<h2 id="full-text-search-operators">Full-text search operators</h2>
+<ul>
+<li><a href="13-searching.html#or-operator">OR</a></li>
+<li><a href="13-searching.html#maybe-operator">MAYBE</a></li>
+<li><a href="13-searching.html#negation-operator">NOT</a> - NOT operator</li>
+<li><a href="13-searching.html#field-search-operator">@field</a> - field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@field%5BN%5D</a> - field position limit modifier</li>
+<li><a href="13-searching.html#field-search-operator">@(field1,field2,...)</a> - multi-field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@!field</a> - ignore field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@!(field1,field2,...)</a> - ignore multi-field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@*</a> - all-field search operator</li>
+<li><a href="13-searching.html#phrase-search-operator">"word1 word2 ... "</a> - phrase search operator</li>
+<li><a href="13-searching.html#proximity-search-operator">"word1 word2 ... "~N</a> - proximity search operator</li>
+<li><a href="13-searching.html#quorum-matching-operator">"word1 word2 ... "/N</a> - quorum matching operator</li>
+<li><a href="13-searching.html#strict-order-operator">word1 &lt;&lt;&lt; word2 &lt;&lt;&lt; word3</a> - strict order operator</li>
+<li><a href="13-searching.html#exact-form-modifier">=word1</a> - exact form modifier</li>
+<li><a href="13-searching.html#field-start-and-field-end-modifier">^word1</a> - field-start modifier</li>
+<li><a href="13-searching.html#field-start-and-field-end-modifier">word2$</a> - field-end modifier</li>
+<li><a href="13-searching.html#idf-boost-modifier">word^N</a> - keyword IDF boost modifier</li>
+<li><a href="13-searching.html#near-operator">word1 NEAR/N word2</a> - NEAR, generalized proximity operator</li>
+<li><a href="13-searching.html#notnear-operator">word1 NOTNEAR/N word2</a> - NOTNEAR, negative assertion operator</li>
+<li><a href="13-searching.html#sentence-and-paragraph-operators">word1 PARAGRAPH word2 PARAGRAPH "word3 word4"</a> - PARAGRAPH operator</li>
+<li><a href="13-searching.html#sentence-and-paragraph-operators">word1 SENTENCE word2 SENTENCE "word3 word4"</a> - SENTENCE operator</li>
+<li><a href="13-searching.html#zone-limit-operator">ZONE:(h3,h4)</a> - ZONE limit operator</li>
+<li><a href="13-searching.html#zonespan-limit-operator">ZONESPAN:(h2)</a> - ZONESPAN limit operator</li>
+<li><a href="13-searching.html#field-search-operator">@@relaxed</a> - suppresses errors about missing fields</li>
+<li><a href="13-searching.html#wildcard-operators">t?st</a> - wildcard operators</li>
+<li><a href="13-searching.html#regex-operator">REGEX(/pattern/)</a> - REGEX operator</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<h5 id="mathematical">Mathematical</h5>
+<ul>
+<li><a href="15-functions.html#abs%28%29">ABS()</a> - Returns absolute value</li>
+<li><a href="15-functions.html#atan2%28%29">ATAN2()</a> - Returns arctangent function of two arguments</li>
+<li><a href="15-functions.html#bitdot%28%29">BITDOT()</a> - Returns sum of products of each bit of a mask multiplied with its weight</li>
+<li><a href="15-functions.html#ceil%28%29">CEIL()</a> - Returns smallest integer value greater or equal to the argument</li>
+<li><a href="15-functions.html#cos%28%29">COS()</a> - Returns cosine of the argument</li>
+<li><a href="15-functions.html#crc32%28%29">CRC32()</a> - Returns CRC32 value of the argument</li>
+<li><a href="15-functions.html#exp%28%29">EXP()</a> - Returns exponent of the argument</li>
+<li><a href="15-functions.html#fibonacci%28%29">FIBONACCI()</a> - Returns the N-th Fibonacci number, where N is the integer argument</li>
+<li><a href="15-functions.html#floor%28%29">FLOOR()</a> - Returns the largest integer value lesser or equal to the argument</li>
+<li><a href="15-functions.html#greatest%28%29">GREATEST()</a> - Takes JSON/MVA array as the argument and returns the greatest value in that array</li>
+<li><a href="15-functions.html#idiv%28%29">IDIV()</a> - Returns result of an integer division of the first argument by the second argument</li>
+<li><a href="15-functions.html#least%28%29">LEAST()</a> - Takes JSON/MVA array as the argument, and returns the least value in that array</li>
+<li><a href="15-functions.html#ln%28%29">LN()</a> - Returns natural logarithm of the argument</li>
+<li><a href="15-functions.html#log10%28%29">LOG10()</a> - Returns common logarithm of the argument</li>
+<li><a href="15-functions.html#log2%28%29">LOG2()</a> - Returns binary logarithm of the argument</li>
+<li><a href="15-functions.html#max%28%29">MAX()</a> - Returns the larger of two arguments</li>
+<li><a href="15-functions.html#min%28%29">MIN()</a> - Returns the smaller of two arguments</li>
+<li><a href="15-functions.html#pow%28%29">POW()</a> - Returns the first argument raised to the power of the second argument</li>
+<li><a href="15-functions.html#rand%28%29">RAND()</a> - Returns random float between 0 and 1</li>
+<li><a href="15-functions.html#sin%28%29">SIN()</a> - Returns sine of the argument</li>
+<li><a href="15-functions.html#sqrt%28%29">SQRT()</a> - Returns square root of the argument</li>
+</ul>
+<h5 id="searching-and-ranking">Searching and ranking</h5>
+<ul>
+<li><a href="15-functions.html#bm25f%28%29">BM25F()</a> - Returns precise BM25F formula value</li>
+<li><a href="15-functions.html#exist%28%29">EXIST()</a> - Replaces non-existing columns with default values</li>
+<li><a href="13-searching.html#group_concat%28field%29">GROUP_CONCAT()</a> - Produces a comma-separated list of the attribute values of all documents in the group</li>
+<li><a href="13-searching.html#toc-13.07-highlighting">HIGHLIGHT()</a> - Highlights search results</li>
+<li><a href="15-functions.html#min_top_sortval%28%29">MIN_TOP_SORTVAL()</a> - Returns sort key value of the worst found element in the current top-N matches</li>
+<li><a href="15-functions.html#min_top_weight%28%29">MIN_TOP_WEIGHT()</a> - Returns weight of the worst found element in the current top-N matches</li>
+<li><a href="15-functions.html#packedfactors%28%29">PACKEDFACTORS()</a> - Outputs weighting factors</li>
+<li><a href="15-functions.html#remove_repeats%28%29">REMOVE_REPEATS()</a> - Removes repeated adjusted rows with the same 'column' value</li>
+<li><a href="15-functions.html#weight%28%29">WEIGHT()</a> - Returns fulltext match score</li>
+<li><a href="15-functions.html#zonespanlist%28%29">ZONESPANLIST()</a> - Returns pairs of matched zone spans</li>
+<li><a href="15-functions.html#query%28%29">QUERY()</a> - Returns current full-text query</li>
+</ul>
+<h5 id="type-casting">Type casting</h5>
+<ul>
+<li><a href="15-functions.html#bigint%28%29">BIGINT()</a> - Forcibly promotes the integer argument to 64-bit type</li>
+<li><a href="15-functions.html#double%28%29">DOUBLE()</a> - Forcibly promotes given argument to floating point type</li>
+<li><a href="15-functions.html#integer%28%29">INTEGER()</a> - Forcibly promotes given argument to 64-bit signed type</li>
+<li><a href="15-functions.html#to_string%28%29">TO_STRING()</a> - Forcibly promotes the argument to string type</li>
+<li><a href="15-functions.html#uint%28%29">UINT()</a> - Converts the given argument to 32-bit unsigned integer type</li>
+<li><a href="15-functions.html#uint64%28%29">UINT64()</a> - Converts the given argument to 64-bit unsigned integer type</li>
+<li><a href="15-functions.html#sint%28%29">SINT()</a> - Interprets 32-bit unsigned integer as signed 64-bit integer</li>
+</ul>
+<h5 id="arrays-and-conditions">Arrays and conditions</h5>
+<ul>
+<li><a href="15-functions.html#all%28%29">ALL()</a> - Returns 1 if condition is true for all elements in the array</li>
+<li><a href="15-functions.html#any%28%29">ANY()</a> - Returns 1 if condition is true for any element in the array</li>
+<li><a href="15-functions.html#contains%28%29">CONTAINS()</a> - Checks whether the (x,y) point is within the given polygon</li>
+<li><a href="15-functions.html#if%28%29">IF()</a> - Checks whether the 1st argument is equal to 0.0, returns the 2nd argument if it is not zero or the 3rd one when it is</li>
+<li><a href="15-functions.html#in%28%29">IN()</a> - Returns 1 if the first argument is equal to any of the other arguments, or 0 otherwise</li>
+<li><a href="15-functions.html#indexof%28%29">INDEXOF()</a> - Iterates through all elements in the array and returns index of the first matching element</li>
+<li><a href="15-functions.html#interval%28%29">INTERVAL()</a> - Returns index of the argument that is less than the first argument</li>
+<li><a href="15-functions.html#length%28%29">LENGTH()</a> - Returns number of elements in MVA</li>
+<li><a href="15-functions.html#remap%28%29">REMAP()</a> - Allows to make some exceptions of expression values depending on the condition values</li>
+</ul>
+<h5 id="date-and-time">Date and time</h5>
+<ul>
+<li><a href="15-functions.html#now%28%29">NOW()</a> - Returns current timestamp as an INTEGER</li>
+<li><a href="15-functions.html#curtime%28%29">CURTIME()</a> - Returns current time in local timezone</li>
+<li><a href="15-functions.html#curdate%28%29">CURDATE()</a> - Returns current date in local timezone</li>
+<li><a href="15-functions.html#utc_time%28%29">UTC_TIME()</a> - Returns current time in UTC timezone</li>
+<li><a href="15-functions.html#utc_timestamp%28%29">UTC_TIMESTAMP()</a> - Returns current date/time in UTC timezone</li>
+<li><a href="15-functions.html#second%28%29">SECOND()</a> - Returns integer second from the timestamp argument</li>
+<li><a href="15-functions.html#minute%28%29">MINUTE()</a> - Returns integer minute from the timestamp argument</li>
+<li><a href="15-functions.html#hour%28%29">HOUR()</a> - Returns integer hour from the timestamp argument</li>
+<li><a href="15-functions.html#day%28%29">DAY()</a> - Returns integer day from the timestamp argument</li>
+<li><a href="15-functions.html#month%28%29">MONTH()</a> - Returns integer month from the timestamp argument</li>
+<li><a href="15-functions.html#quarter%28%29">QUARTER()</a> - Returns the integer quarter of the year from a timestamp argument</li>
+<li><a href="15-functions.html#year%28%29">YEAR()</a> - Returns integer year from the timestamp argument</li>
+<li><a href="15-functions.html#dayname%28%29">DAYNAME()</a> - Returns the weekday name for a given timestamp argument</li>
+<li><a href="15-functions.html#monthname%28%29">MONTHNAME()</a> - Returns the name of the month for a given timestamp argument</li>
+<li><a href="15-functions.html#dayofweek%28%29">DAYOFWEEK()</a> - Returns the integer weekday index for a given timestamp argument</li>
+<li><a href="15-functions.html#dayofyear%28%29">DAYOFYEAR()</a> - Returns the integer day of the year for a given timestamp argument</li>
+<li><a href="15-functions.html#yearweek%28%29">YEARWEEK()</a> - Returns the integer year and the day code of the first day of current week for a given timestamp argument</li>
+<li><a href="15-functions.html#yearmonth%28%29">YEARMONTH()</a> - Returns integer year and month code from the timestamp argument</li>
+<li><a href="15-functions.html#yearmonthday%28%29">YEARMONTHDAY()</a> - Returns integer year, month and day code from the timestamp argument</li>
+<li><a href="15-functions.html#timediff%28%29">TIMEDIFF()</a> - Returns difference between the timstamps</li>
+<li><a href="15-functions.html#datediff%28%29">DATEDIFF()</a> - Returns the number of days between two given timestamps</li>
+<li><a href="15-functions.html#date%28%29">DATE()</a> - Formats the date part from a timestamp argument</li>
+<li><a href="15-functions.html#time%28%29">TIME()</a> - Formats the time part from a timestamp argument</li>
+<li><a href="15-functions.html#date_format%28%29">DATE_FORMAT()</a> - Returns a formatted string based on the provided date and format arguments</li>
+</ul>
+<h5 id="geo-spatial">Geo-spatial</h5>
+<ul>
+<li><a href="15-functions.html#geodist%28%29">GEODIST()</a> - Computes geosphere distance between two given points</li>
+<li><a href="15-functions.html#geopoly2d%28%29">GEOPOLY2D()</a> - Creates a polygon that takes in account the Earth's curvature</li>
+<li><a href="15-functions.html#poly2d%28%29">POLY2D()</a> - Creates a simple polygon in plain space</li>
+</ul>
+<h5 id="string">String</h5>
+<ul>
+<li><a href="15-functions.html#concat%28%29">CONCAT()</a> - Concatenates two or more strings</li>
+<li><a href="15-functions.html#regex%28%29">REGEX()</a> - Returns 1 if regular expression matched to string of attribute and 0 otherwise</li>
+<li><a href="15-functions.html#snippet%28%29">SNIPPET()</a> - Highlights search results</li>
+<li><a href="15-functions.html#substring_index%28%29">SUBSTRING_INDEX()</a> - Returns a substring of the string before the specified number of delimiter occurs<br />
+*</li>
+</ul>
+<h5 id="other">Other</h5>
+<ul>
+<li><a href="15-functions.html#connection_id%28%29">CONNECTION_ID()</a> - Returns the current connection ID</li>
+<li><a href="15-functions.html#knn_dist%28%29">KNN_DIST()</a> - Returns KNN vector search distance</li>
+<li><a href="15-functions.html#last_insert_id%28%29">LAST_INSERT_ID()</a> - Returns ids of documents inserted or replaced by last statement in the current session</li>
+</ul>
+<h2 id="common-settings-in-configuration-file">Common settings in configuration file</h2>
+<p>To be put to section <code>common {}</code> in configuration file:</p>
+<ul>
+<li><a href="20-server_settings.html#lemmatizer_base">lemmatizer_base</a> - Lemmatizer dictionaries base path</li>
+<li><a href="20-server_settings.html#progressive_merge">progressive_merge</a> - Defines order of merging disk chunks in a real-time table</li>
+<li><a href="20-server_settings.html#json_autoconv_keynames">json_autoconv_keynames</a> - Whether and how to auto-convert key names within JSON attributes</li>
+<li><a href="20-server_settings.html#json_autoconv_numbers">json_autoconv_numbers</a> - Automatically detects and converts possible JSON strings that represent numbers into numeric attributes</li>
+<li><a href="20-server_settings.html#on_json_attr_error">on_json_attr_error</a> - What to do if JSON format errors are found</li>
+<li><a href="20-server_settings.html#plugin_dir">plugin_dir</a> - Location for the dynamic libraries and UDFs</li>
+</ul>
+<h2 id="indexer"><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">Indexer</a></h2>
+<p><code>indexer</code> is a tool to create <a href="12-data_creation_and_modification.html#indexer-command-line-arguments">plain tables</a></p>
+<h5 id="indexer-settings-in-configuration-file">Indexer settings in configuration file</h5>
+<p>To be put to section <code>indexer {}</code> in configuration file:</p>
+<ul>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">lemmatizer_cache</a> - Lemmatizer cache size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_file_field_buffer</a> - Maximum file field adaptive buffer size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_iops</a> - Maximum indexation I/O operations per second</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_iosize</a> - Maximum allowed I/O operation size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_xmlpipe2_field</a> - Maximum allowed field size for XMLpipe2 source type</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">mem_limit</a> - Indexing RAM usage limit</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">on_file_field_error</a> - How to handle IO errors in file fields</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">write_buffer</a> - Write buffer size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">ignore_non_plain</a> - To ignore warnings about non-plain tables</li>
+</ul>
+<h5 id="indexer-start-parameters">Indexer start parameters</h5>
+<div class="codehilite"><pre><span></span><code>indexer<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>indexname1<span class="w"> </span><span class="o">[</span>indexname2<span class="w"> </span><span class="o">[</span>...<span class="o">]]]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--all</a> - Rebuilds all tables from the config</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--buildstops</a> - Analyzes the table source as if indexing the data, generating a list of indexed terms</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--buildfreqs</a> - Adds the frequency count to the table for --buildstops</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--config, -c</a> - Specifies the path to the configuration file</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--dump-rows</a> - Dumps rows retrieved by SQL source(s) into the specified file</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--help</a> - Displays all available parameters</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--keep-attrs</a> - Allows reuse of existing attributes when reindexing</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--keep-attrs-names</a> - Specifies which attributes to reuse from the existing table</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--merge-dst-range</a> - Applies the given filter range during merging</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--merge-killlists</a> - Alters kill list processing when merging tables</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--merge</a> - Combines two plain tables into one</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--nohup</a> - Prevents indexer from sending SIGHUP when this option is enabled</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--noprogress</a> - Hides progress details</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--print-queries</a> - Outputs SQL queries sent by the indexer to the database</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--print-rt</a> - Displays data fetched from SQL source(s) as INSERTs into a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--quiet</a> - Suppresses all output</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--rotate</a> - Initiates table rotation after all tables are built</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--sighup-each</a> - Triggers rotation of each table after it's built</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">-v</a> - Displays indexer version</li>
+</ul>
+<h2 id="table-converter-for-manticore-v2-sphinx-v2">Table Converter for Manticore v2 / Sphinx v2</h2>
+<p><code>index_converter</code> is a tool designed to convert tables created with Sphinx/Manticore Search 2.x into the Manticore Search 3.x table format.</p>
+<div class="codehilite"><pre><span></span><code>index_converter<span class="w"> </span><span class="o">{</span>--config<span class="w"> </span>/path/to/config<span class="p">|</span>--path<span class="o">}</span>
+</code></pre></div>
+
+<h5 id="table-converter-start-parameters">Table converter start parameters</h5>
+<ul>
+<li><a href="03-installation.html#index_converter">--config, -c</a> - Path to table configuration file</li>
+<li><a href="03-installation.html#index_converter">--index</a> - Specifies which table to convert</li>
+<li><a href="03-installation.html#index_converter">--path</a> - Sets path containing table(s) instead of the configuration file</li>
+<li><a href="03-installation.html#index_converter">--strip-path</a> - Removes path from filenames referenced by table</li>
+<li><a href="03-installation.html#index_converter">--large-docid</a> - Allows conversion of documents with ids larger than 2^63</li>
+<li><a href="03-installation.html#index_converter">--output-dir</a> - Writes new files in a specified folder</li>
+<li><a href="03-installation.html#index_converter">--all</a> - Converts all tables from the configuration file / path</li>
+<li><a href="03-installation.html#index_converter">--killlist-target</a> - Sets target tables for applying kill-lists</li>
+</ul>
+<h2 id="searchd"><a href="05-starting_the_server.html#toc-05.02-manually">Searchd</a></h2>
+<p><code>searchd</code> is the Manticore server.</p>
+<h5 id="searchd-settings-in-a-configuration-file">Searchd settings in a configuration file</h5>
+<p>To be put in the <code>searchd {}</code> section of the configuration file:</p>
+<ul>
+<li><a href="20-server_settings.html#access_blob_attrs">access_blob_attrs</a> - Defines how table's blob attributes file is accessed</li>
+<li><a href="20-server_settings.html#access_doclists">access_doclists</a> - Defines how table's doclists file is accessed</li>
+<li><a href="20-server_settings.html#access_hitlists">access_hitlists</a> - Defines how table's hitlists file is accessed</li>
+<li><a href="20-server_settings.html#access_plain_attrs">access_plain_attrs</a> - Defines how search server accesses table's plain attributes</li>
+<li><a href="20-server_settings.html#access_dict">access_dict</a> - Defines how table's dictionary file is accessed</li>
+<li><a href="06-creating_a_table.html#agent_connect_timeout">agent_connect_timeout</a> - Remote agent connection timeout</li>
+<li><a href="13-searching.html#agent_query_timeout">agent_query_timeout</a> - Remote agent query timeout</li>
+<li><a href="06-creating_a_table.html#agent_connect_timeout">agent_retry_count</a> - Specifies the number of times Manticore tries to connect and query remote agents</li>
+<li><a href="06-creating_a_table.html#agent">agent_retry_delay</a> - Specifies the delay before retrying to query a remote agent in case of failure</li>
+<li><a href="12-data_creation_and_modification.html#attr_flush_period">attr_flush_period</a> - Sets the time period between flushing updated attributes to disk</li>
+<li><a href="20-server_settings.html#binlog_flush">binlog_flush</a> - Binary log transaction flush/sync mode</li>
+<li><a href="20-server_settings.html#binlog_max_log_size">binlog_max_log_size</a> - Maximum binary log file size</li>
+<li><a href="20-server_settings.html#binlog_path">binlog_path</a> - Binary log files path</li>
+<li><a href="06-creating_a_table.html#agent">client_timeout</a> - Maximum time to wait between requests when using persistent connections</li>
+<li><a href="20-server_settings.html#collation_libc_locale">collation_libc_locale</a> - Server libc locale</li>
+<li><a href="20-server_settings.html#collation_server">collation_server</a> - Default server collation</li>
+<li><a href="20-server_settings.html#data_dir">data_dir</a> - Path to data directory where Manticore stores everything (<a href="06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>)</li>
+<li><a href="20-server_settings.html#docstore_cache_size">docstore_cache_size</a> - Maximum size of document blocks from document storage held in memory</li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">expansion_limit</a> - Maximum number of expanded keywords for a single wildcard</li>
+<li><a href="20-server_settings.html#grouping_in_utc">grouping_in_utc</a> - Enables using UTC timezone for grouping time fields</li>
+<li><a href="20-server_settings.html#ha_period_karma">ha_period_karma</a> - Agent mirror statistics window size</li>
+<li><a href="10-creating_a_cluster.html#ha_ping_interval">ha_ping_interval</a> - Interval between agent mirror pings</li>
+<li><a href="06-creating_a_table.html#agent">hostname_lookup</a> - Hostnames renew strategy</li>
+<li><a href="20-server_settings.html#jobs_queue_size">jobs_queue_size</a> - Defines the maximum number of "jobs" allowed in the queue simultaneously</li>
+<li><a href="20-server_settings.html#listen">listen</a> - Specifies IP address and port or Unix-domain socket path for searchd to listen on</li>
+<li><a href="20-server_settings.html#listen_backlog">listen_backlog</a> - TCP listen backlog</li>
+<li><a href="06-creating_a_table.html#agent">listen_tfo</a> - Enables TCP_FASTOPEN flag for all listeners</li>
+<li><a href="20-server_settings.html#log">log</a> - Path to Manticore server log file</li>
+<li><a href="20-server_settings.html#max_batch_queries">max_batch_queries</a> - Limits the number of queries per batch</li>
+<li><a href="20-server_settings.html#max_connections">max_connections</a> - Maximum number of active connections</li>
+<li><a href="20-server_settings.html#max_filters">max_filters</a> - Maximum allowed per-query filter count</li>
+<li><a href="20-server_settings.html#max_filter_values">max_filter_values</a> - Maximum allowed per-filter values count</li>
+<li><a href="20-server_settings.html#max_open_files">max_open_files</a> - Maximum number of files allowed to be opened by server</li>
+<li><a href="20-server_settings.html#max_packet_size">max_packet_size</a> - Maximum allowed network packet size</li>
+<li><a href="20-server_settings.html#mysql_version_string">mysql_version_string</a> - Server version string returned via MySQL protocol</li>
+<li><a href="20-server_settings.html#net_throttle_accept">net_throttle_accept</a> - Defines how many clients are accepted on each iteration of the network loop</li>
+<li><a href="20-server_settings.html#net_throttle_action">net_throttle_action</a>  - Defines how many requests are processed on each iteration of the network loop</li>
+<li><a href="20-server_settings.html#net_wait_tm">net_wait_tm</a> - Controls busy loop interval of a network thread</li>
+<li><a href="20-server_settings.html#net_workers">net_workers</a> - Number of network threads</li>
+<li><a href="20-server_settings.html#network_timeout">network_timeout</a> - Network timeout for client requests</li>
+<li><a href="20-server_settings.html#node_address">node_address</a> - Specifies network address of the node</li>
+<li><a href="06-creating_a_table.html#agent">persistent_connections_limit</a> - Maximum number of simultaneous persistent connections to remote persistent agents</li>
+<li><a href="20-server_settings.html#pid_file">pid_file</a> - Path to Manticore server pid file</li>
+<li><a href="20-server_settings.html#predicted_time_costs">predicted_time_costs</a> - Costs for the query time prediction model</li>
+<li><a href="20-server_settings.html#preopen_tables">preopen_tables</a> - Determines whether to forcibly preopen all tables on startup</li>
+<li><a href="20-server_settings.html#pseudo_sharding">pseudo_sharding</a> - Enables pseudo-sharding for search queries to plain and real-time tables</li>
+<li><a href="20-server_settings.html#qcache_max_bytes">qcache_max_bytes</a> - Maximum RAM allocated for cached result sets</li>
+<li><a href="20-server_settings.html#qcache_thresh_msec">qcache_thresh_msec</a> - Minimum wall time threshold for a query result to be cached</li>
+<li><a href="20-server_settings.html#qcache_ttl_sec">qcache_ttl_sec</a> - Expiration period for a cached result set</li>
+<li><a href="20-server_settings.html#query_log">query_log</a> - Path to query log file</li>
+<li><a href="20-server_settings.html#query_log_format">query_log_format</a> - Query log format</li>
+<li><a href="20-server_settings.html#query_log_min_msec">query_log_min_msec</a> - Prevents logging too fast queries</li>
+<li><a href="20-server_settings.html#query_log_mode">query_log_mode</a> - Query log file permissions mode</li>
+<li><a href="06-creating_a_table.html#read_buffer_docs">read_buffer_docs</a> - Per-keyword read buffer size for document lists</li>
+<li><a href="06-creating_a_table.html#read_buffer_docs">read_buffer_hits</a> - Per-keyword read buffer size for hit lists</li>
+<li><a href="20-server_settings.html#read_unhinted">read_unhinted</a> - Unhinted read size</li>
+<li><a href="20-server_settings.html#rt_flush_period">rt_flush_period</a> - How often Manticore flushes real-time tables' RAM chunks to disk</li>
+<li><a href="20-server_settings.html#rt_merge_iops">rt_merge_iops</a> - Maximum number of I/O operations (per second) that real-time chunks merging thread is allowed to do</li>
+<li><a href="20-server_settings.html#rt_merge_maxiosize">rt_merge_maxiosize</a> - Maximum size of an I/O operation that real-time chunks merging thread is allowed to do</li>
+<li><a href="20-server_settings.html#seamless_rotate">seamless_rotate</a> - Prevents searchd stalls while rotating tables with huge amounts of data to precache</li>
+<li><a href="20-server_settings.html#secondary_indexes">secondary_indexes</a> - Enables using secondary indexes for search queries</li>
+<li><a href="20-server_settings.html#server_id">server_id</a> - Server identifier used as a seed to generate a unique document ID</li>
+<li><a href="20-server_settings.html#shutdown_timeout">shutdown_timeout</a> - Searchd <code>--stopwait</code> timeout</li>
+<li><a href="20-server_settings.html#shutdown_token">shutdown_token</a> - SHA1 hash of the password required to invoke <code>shutdown</code> command from VIP SQL connection</li>
+<li><a href="06-creating_a_table.html#agent">snippets_file_prefix</a> - Prefix to prepend to the local file names when generating snippets in <code>load_files</code> mode</li>
+<li><a href="20-server_settings.html#sphinxql_state">sphinxql_state</a> - Path to file where the current SQL state will be serialized</li>
+<li><a href="20-server_settings.html#sphinxql_timeout">sphinxql_timeout</a> - Maximum time to wait between requests from a MySQL client</li>
+<li><a href="20-server_settings.html#ssl_ca">ssl_ca</a> - Path to SSL Certificate Authority certificate file</li>
+<li><a href="20-server_settings.html#ssl_cert">ssl_cert</a> - Path to server's SSL certificate</li>
+<li><a href="20-server_settings.html#ssl_key">ssl_key</a> - Path to SSL certificate key of the server</li>
+<li><a href="20-server_settings.html#subtree_docs_cache">subtree_docs_cache</a> - Maximum common subtree document cache size</li>
+<li><a href="20-server_settings.html#subtree_hits_cache">subtree_hits_cache</a> - Maximum common subtree hit cache size, per-query</li>
+<li><a href="20-server_settings.html#timezone">timezone</a> - Timezone used by date/time-related functions</li>
+<li><a href="20-server_settings.html#thread_stack">thread_stack</a> - Maximum stack size for a job</li>
+<li><a href="20-server_settings.html#unlink_old">unlink_old</a> - Whether to unlink .old table copies on successful rotation</li>
+<li><a href="20-server_settings.html#watchdog">watchdog</a> - Whether to enable or disable Manticore server watchdog</li>
+</ul>
+<h5 id="searchd-start-parameters">Searchd start parameters</h5>
+<div class="codehilite"><pre><span></span><code>searchd<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--config, -c</a> - Specifies the path to the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--console</a> - Forces the server to run in console mode</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--coredump</a> - Enables core dump saving upon crash</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--cpustats</a> - Enables CPU time reporting</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--delete</a> - Removes the Manticore service from Microsoft Management Console and other locations where services are registered</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--force-preread</a> - Prevents the server from serving incoming connections until table files are pre-read</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--help, -h</a> - Displays all available parameters</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--table (--index)</a> - Restricts the server to serve only the specified table</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--install</a> - Installs searchd as a service in Microsoft Management Console</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--iostats</a> - Enables input/output reporting</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--listen, -l</a> - Overrides <a href="20-server_settings.html#listen">listen</a> from the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--logdebug, --logdebugv, --logdebugvv</a> - Enables additional debug output in the server log</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--logreplication</a> - Enables extra replication debug output in the server log</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--new-cluster</a> - Initializes a replication cluster and sets the server as a reference node with <a href="10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">cluster restart</a> protection</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--new-cluster-force</a> - Initializes a replication cluster and sets the server as a reference node, bypassing <a href="10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">cluster restart</a> protection</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--nodetach</a> - Keeps searchd running in the foreground</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--ntservice</a> - Used by Microsoft Management Console to launch searchd as a service on Windows platforms</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--pidfile</a> - Overrides <a href="20-server_settings.html#pid_file">pid_file</a> in the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--port, p</a> - Specifies the port searchd should listen on, ignoring the port specified in the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--replay-flags</a> - Sets additional binary log replay options</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--servicename</a> - Assigns the given name to searchd when installing or deleting the service, as displayed in Microsoft Management Console</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--status</a> - Queries the running search service to return its status</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--stop</a> - Stops the Manticore server</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--stopwait</a> - Stops the Manticore server gracefully</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--strip-path</a> - Removes path names from all file names referenced in the table</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">-v</a> - Displays version information</li>
+</ul>
+<h5 id="searchd-environment-variables">Searchd environment variables</h5>
+<ul>
+<li><a href="05-starting_the_server.html#environment-variables">MANTICORE_TRACK_DAEMON_SHUTDOWN</a> - Enables detailed logging during searchd shutdown</li>
+</ul>
+<h2 id="indextool"><a href="23-miscellaneous_tools.html#indextool">Indextool</a></h2>
+<p>Assorted table maintenance features helpful for troubleshooting.</p>
+<div class="codehilite"><pre><span></span><code>indextool<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</code></pre></div>
+
+<h5 id="indextool-start-parameters">Indextool Start Parameters</h5>
+<p>Utilized for dumping various debug information related to the physical table.</p>
+<div class="codehilite"><pre><span></span><code>indextool<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="23-miscellaneous_tools.html#indextool">--config, -c</a> - Specifies the path to the configuration file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--quiet, -q</a> - Keeps indextool quiet; no banner output, etc.</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--help, -h</a> - Lists all available parameters</li>
+<li><a href="23-miscellaneous_tools.html#indextool">-v</a> - Displays version information</li>
+<li><a href="23-miscellaneous_tools.html#indextool">Indextool</a> - Verifies the configuration file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--buildidf</a> - Builds an IDF file from one or more dictionary dumps</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--build-infixes</a> - Builds infixes for an existing dict=keywords table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpheader</a> - Quickly dumps the provided table header file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpconfig</a> - Dumps table definition from the given table header file in a nearly compliant manticore.conf format</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpheader</a> - Dumps table header by table name while looking up the header path in the configuration file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpdict</a> - Dumps the table dictionary</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpdocids</a> - Dumps document IDs by table name</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumphitlist</a> - Dumps all occurrences of the given keyword/id in the specified table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--docextract</a> - Runs table check pass on entire dictionary/docs/hits and collects all words and hits belonging to the requested document</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--fold</a> - Tests tokenization based on table settings</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--htmlstrip</a> - Filters STDIN using HTML stripper settings for the specified table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--mergeidf</a> - Merges multiple .idf files into a single file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--morph</a> - Applies morphology to the provided STDIN and outputs the result to stdout</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--check</a> - Checks table data files for consistency</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--check-id-dups</a> - Checks for duplicate IDs</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--check-disk-chunk</a> - Checks a single disk chunk of an RT table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--strip-path</a> - Removes path names from all file names referenced in the table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--rotate</a> - Determines whether to check a table waiting for rotation when using <code>--check</code></li>
+<li><a href="23-miscellaneous_tools.html#indextool">--apply-killlists</a> - Applies kill-lists for all tables listed in the configuration file</li>
+</ul>
+<h2 id="wordbreaker"><a href="23-miscellaneous_tools.html#wordbreaker">Wordbreaker</a></h2>
+<p>Splits compound words into their components.</p>
+<div class="codehilite"><pre><span></span><code>wordbreaker<span class="w"> </span><span class="o">[</span>-dict<span class="w"> </span>path/to/dictionary_file<span class="o">]</span><span class="w"> </span><span class="o">{</span>split<span class="p">|</span>test<span class="p">|</span>bench<span class="o">}</span>
+</code></pre></div>
+
+<h5 id="wordbreaker-start-parameters">Wordbreaker start parameters</h5>
+<ul>
+<li><a href="23-miscellaneous_tools.html#wordbreaker">STDIN</a> - Accepts a string to break into parts</li>
+<li><a href="23-miscellaneous_tools.html#wordbreaker">-dict</a> - Specifies the dictionary file to use</li>
+<li><a href="23-miscellaneous_tools.html#wordbreaker">split|test|bench</a> - Specifies the command</li>
+</ul>
+<h2 id="spelldump"><a href="23-miscellaneous_tools.html#spelldump">Spelldump</a></h2>
+<p>Extracts the contents of a dictionary file using ispell or MySpell format</p>
+<div class="codehilite"><pre><span></span><code>spelldump<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>&lt;dictionary&gt;<span class="w"> </span>&lt;affix&gt;<span class="w"> </span><span class="o">[</span>result<span class="o">]</span><span class="w"> </span><span class="o">[</span>locale-name<span class="o">]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="23-miscellaneous_tools.html#spelldump">dictionary</a> - Main dictionary file</li>
+<li><a href="23-miscellaneous_tools.html#spelldump">affix</a> - Affix file for the dictionary</li>
+<li><a href="23-miscellaneous_tools.html#spelldump">result</a> - Specifies the output destination for the dictionary data</li>
+<li><a href="23-miscellaneous_tools.html#spelldump">locale-name</a> - Specifies the locale details to use</li>
+</ul>
+<h2 id="list-of-reserved-keywords">List of reserved keywords</h2>
+<p>A comprehensive alphabetical list of keywords currently reserved in Manticore SQL syntax (thus, they cannot be used as identifiers).</p>
+<div class="codehilite"><pre><span></span><code>AND, AS, BY, COLUMNARSCAN, DATE_ADD, DATE_SUB, DAY, DISTINCT, DIV, DOCIDINDEX, EXPLAIN, FACET, FALSE, FORCE, FROM, HOUR, IGNORE, IN, INTERVAL, INDEXES, INNER, IS, JOIN, KNN, LEFT, LIMIT, MINUTE, MOD, MONTH, NOT, NO_COLUMNARSCAN, NO_DOCIDINDEX, NO_SECONDARYINDEX, NULL, OFFSET, ON, OR, ORDER, QUARTER, REGEX, RELOAD, SECOND, SECONDARYINDEX, SELECT, SYSFILTERS, TRUE, WEEK, YEAR
+</code></pre></div>
+
+<h2 id="documentation-for-old-manticore-versions">Documentation for old Manticore versions</h2>
+<ul>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.4.1.pdf">2.4.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.5.1.pdf">2.5.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.0.pdf">2.6.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.1.pdf">2.6.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.2.pdf">2.6.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.3.pdf">2.6.3</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.4.pdf">2.6.4</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.0.pdf">2.7.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.1.pdf">2.7.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.2.pdf">2.7.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.3.pdf">2.7.3</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.4.pdf">2.7.4</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.5.pdf">2.7.5</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.8.0.pdf">2.8.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.8.1.pdf">2.8.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.8.2.pdf">2.8.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.0.0.pdf">3.0.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.0.2.pdf">3.0.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.1.0.pdf">3.1.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.1.2.pdf">3.1.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.2.0.pdf">3.2.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.2.2.pdf">3.2.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.3.0.pdf">3.3.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.4.0.pdf">3.4.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.4.2.pdf">3.4.2</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-5-0/">3.5.0</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-5-2/">3.5.2</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-5-4/">3.5.4</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-6-0/">3.6.0</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-4-0-2/">4.0.2</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-4-2-0/">4.2.0</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-5-0-0/">5.0.0</a>. <a href="https://manticoresearch.com/install-5.0.0/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-5-0-2/">5.0.2</a>. <a href="https://manticoresearch.com/install-5.0.2/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-0-0/">6.0.0</a>. <a href="https://manticoresearch.com/install-6.0.0/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-0-2/">6.0.2</a>. <a href="https://manticoresearch.com/install-6.0.2/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-0-4/">6.0.4</a>. <a href="https://manticoresearch.com/install-6.0.4/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-2-0/">6.2.0</a>. <a href="https://manticoresearch.com/install-6.2.0/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-2-12/">6.2.12</a>. <a href="https://manticoresearch.com/install-6.2.12/">Installation page</a></li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-28.01-previous_versions">
+        <a class="chapter-link" href="#toc-28.01-previous_versions"> ¶ 28.1</a>
+
+        
+        <h1 id="references">References</h1>
+<h3 id="sql-commands">SQL commands</h3>
+<h5 id="schema-management">Schema management</h5>
+<ul>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">CREATE TABLE</a> - Creates new table</li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">CREATE TABLE LIKE</a> - Creates table using another one as a template</li>
+<li><a href="07-listing_tables.html#describe">DESCRIBE</a> - Prints out table's field list and their types</li>
+<li><a href="14-updating_table_schema_and_settings.html#toc-14-updating_table_schema_and_settings">ALTER TABLE</a> - Changes table schema / settings</li>
+<li><a href="14-updating_table_schema_and_settings.html#rebuild-secondary-index">ALTER TABLE REBUILD SECONDARY</a> - Updates/recovers secondary indexes</li>
+<li><a href="08-deleting_a_table.html#deleting-a-table">DROP TABLE IF EXISTS</a> - Deletes a table (if it exists)</li>
+<li><a href="07-listing_tables.html#describe">SHOW TABLES</a> - Shows tables list</li>
+<li><a href="07-listing_tables.html#describe">SHOW CREATE TABLE</a> - Shows SQL command how to create the table</li>
+<li><a href="19-node_info_and_management.html#toc-19.10.01-show_table_status">SHOW TABLE STATUS</a> - Shows information about current table status</li>
+<li><a href="19-node_info_and_management.html#toc-19.10.02-show_table_settings">SHOW TABLE SETTINGS</a> - Shows table settings</li>
+</ul>
+<h5 id="data-management">Data management</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> - Adds new documents</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> - Replaces existing documents with new ones</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> - Does in-place update in documents</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">DELETE</a> - Deletes documents</li>
+<li><a href="09-emptying_a_table.html#toc-09-emptying_a_table">TRUNCATE TABLE</a> - Deletes all documents from table</li>
+</ul>
+<h5 id="backup">Backup</h5>
+<ul>
+<li><a href="16-securing_and_compacting_a_table.html#backup-sql-command-reference">BACKUP</a> - Backs up your tables</li>
+</ul>
+<h5 id="select">SELECT</h5>
+<ul>
+<li><a href="13-searching.html#sql">SELECT</a> - Searches</li>
+<li><a href="13-searching.html#filters">WHERE</a> - Filters</li>
+<li><a href="13-searching.html#toc-13.13-grouping">GROUP BY</a> - Groups search results</li>
+<li><a href="13-searching.html#toc-13.13-grouping">GROUP BY ORDER</a> - Orders groups</li>
+<li><a href="13-searching.html#toc-13.13-grouping">GROUP BY HAVING</a> - Filters groups</li>
+<li><a href="13-searching.html#option">OPTION</a> - Query Options</li>
+<li><a href="13-searching.html#toc-13.14-faceted_search">FACET</a> - Faceted search</li>
+<li><a href="13-searching.html#toc-13.12-subselects">SUB-SELECTS</a> - About using SELECT sub-queries</li>
+<li><a href="13-searching.html#profiling-without-running-a-query">EXPLAIN QUERY</a> - Shows query execution plan without running the query itself</li>
+<li><a href="19-node_info_and_management.html#toc-19.02-show_meta">SHOW META</a> - Shows extended information about executed query</li>
+<li><a href="19-node_info_and_management.html#toc-19.09.01-query_profiling">SHOW PROFILE</a> - Shows profiling information about executed query</li>
+<li><a href="13-searching.html#profiling-the-query-tree-in-sql">SHOW PLAN</a> - Shows query execution plan after the query was executed</li>
+<li><a href="19-node_info_and_management.html#toc-19.07-show_warnings">SHOW WARNINGS</a> - Shows warnings from the latest query</li>
+</ul>
+<h5 id="flushing-misc-things">Flushing misc things</h5>
+<ul>
+<li><a href="16-securing_and_compacting_a_table.html#toc-16.08-flushing_attributes">FLUSH ATTRIBUTES</a> - Forces flushing updated attributes to disk</li>
+<li><a href="16-securing_and_compacting_a_table.html#toc-16.09-flushing_hostnames">FLUSH HOSTNAMES</a> - Renews IPs associates to agent host names</li>
+<li><a href="18-logging.html#toc-18.05-rotating_query_and_server_logs">FLUSH LOGS</a> - Initiates reopen of searchd log and query log files (similar to USR1)</li>
+</ul>
+<h5 id="real-time-table-optimization">Real-time table optimization</h5>
+<ul>
+<li><a href="16-securing_and_compacting_a_table.html#flush-ramchunk">FLUSH RAMCHUNK</a> - Force creating a new disk chunk</li>
+<li><a href="16-securing_and_compacting_a_table.html#flush-table">FLUSH TABLE</a> - Flushes real-time table RAM chunk to disk</li>
+<li><a href="16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE TABLE</a> - Enqueues real-time table for optimization</li>
+</ul>
+<h5 id="importing-to-a-real-time-table">Importing to a real-time table</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">ATTACH TABLE</a> - Moves data from a plain table to a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.02.06.04-importing_rt_table">IMPORT TABLE</a> - Imports previously created RT or PQ table into a server running in the RT mode</li>
+</ul>
+<h5 id="replication">Replication</h5>
+<ul>
+<li><a href="10-creating_a_cluster.html#toc-10.03.02-joining_a_replication_cluster">JOIN CLUSTER</a> - Joins a replication cluster</li>
+<li><a href="10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER</a> - Adds/deletes a table to a replication cluster</li>
+<li><a href="10-creating_a_cluster.html#cluster-parameters">SET CLUSTER</a> - Changes replication cluster settings</li>
+<li><a href="10-creating_a_cluster.html#toc-10.03.03-deleting_a_replication_cluster">DELETE CLUSTER</a> - Deletes a replication cluster</li>
+</ul>
+<h5 id="plain-table-rotate">Plain table rotate</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#reload-table">RELOAD TABLE</a> - Rotates a plain table</li>
+<li><a href="12-data_creation_and_modification.html#reload-table">RELOAD TABLES</a> - Rotates all plain tables</li>
+</ul>
+<h5 id="transactions">Transactions</h5>
+<ul>
+<li><a href="12-data_creation_and_modification.html#begin,-commit,-and-rollback">BEGIN</a> - Begins a transaction</li>
+<li><a href="12-data_creation_and_modification.html#begin,-commit,-and-rollback">COMMIT</a> - Finishes a transaction</li>
+<li><a href="12-data_creation_and_modification.html#begin,-commit,-and-rollback">ROLLBACK</a> - Rolls back a transaction</li>
+</ul>
+<h5 id="call">CALL</h5>
+<ul>
+<li><a href="13-searching.html#call-qsuggest,-call-suggest">CALL SUGGEST, CALL QSUGGEST</a> - Suggests spell-corrected words</li>
+<li><a href="13-searching.html#toc-13.07-highlighting">CALL SNIPPETS</a> - Builds a highlighted results snippet from provided data and query</li>
+<li><a href="13-searching.html#toc-13.16-percolate_query">CALL PQ</a> - Runs a percolate query</li>
+<li><a href="13-searching.html#call-keywords">CALL KEYWORDS</a> - Used to check how keywords are tokenized. Also allows to retrieve tokenized forms of provided keywords</li>
+</ul>
+<h5 id="plugins">Plugins</h5>
+<ul>
+<li><a href="22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> - Installs a user-defined function (UDF)</li>
+<li><a href="22-extensions.html#toc-22.03.02.02-deleting_a_function">DROP FUNCTION</a> - Drops a user-defined function (UDF)</li>
+<li><a href="22-extensions.html#toc-22.03.03.01-creating_a_plugin">CREATE PLUGIN</a> - Installs a plugin</li>
+<li><a href="22-extensions.html#create-buddy-plugin">CREATE BUDDY PLUGIN</a> - Installs a Buddy plugin</li>
+<li><a href="22-extensions.html#delete-plugin">DROP PLUGIN</a> - Drops a plugin</li>
+<li><a href="22-extensions.html#delete-buddy-plugin">DROP BUDDY PLUGIN</a> - Drops a Buddy plugin</li>
+<li><a href="22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a> - Reloads all plugins from a given library</li>
+<li><a href="22-extensions.html#enable-buddy-plugin">ENABLE BUDDY PLUGIN</a> - Reactivates a previously disabled Buddy plugin</li>
+<li><a href="22-extensions.html#disable-buddy-plugin">DISABLE BUDDY PLUGIN</a> - Deactivates an active Buddy plugin</li>
+</ul>
+<h5 id="server-status">Server status</h5>
+<ul>
+<li><a href="19-node_info_and_management.html#show-status">SHOW STATUS</a> - Displays a number of useful performance counters</li>
+<li><a href="19-node_info_and_management.html#toc-19.03-show_threads">SHOW THREADS</a> - Lists all currently active client threads</li>
+<li><a href="19-node_info_and_management.html#toc-19.08-show_variables">SHOW VARIABLES</a> - Lists server-wide variables and their values</li>
+<li><a href="19-node_info_and_management.html#show-version">SHOW VERSION</a> - Provides detailed version information of various components of the instance.</li>
+</ul>
+<h3 id="http-endpoints">HTTP endpoints</h3>
+<ul>
+<li><a href="11-connecting_to_the_server.html#sql-over-http">/sql</a> - Execute an SQL statement over HTTP JSON</li>
+<li><a href="11-connecting_to_the_server.html#/cli">/cli</a> - Provides an HTTP command line interface</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert</a> - Inserts a document into a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc</a> - Adds a PQ rule to a percolate table</li>
+<li><a href="12-data_creation_and_modification.html#updates-via-http-json">/update</a> - Updates a document in a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">/replace</a> - Replaces an existing document in a real-time table or inserts it if it doesn't exist</li>
+<li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc/N?refresh=1</a> - Replaces a PQ rule in a percolate table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">/delete</a> - Removes a document from a table</li>
+<li><a href="12-data_creation_and_modification.html#bulk-updates">/bulk</a> - Executes multiple insert, update, or delete operations in a single call. Learn more about bulk inserts <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">here</a>.</li>
+<li><a href="13-searching.html#http-json">/search</a> - Performs a search</li>
+<li><a href="13-searching.html#toc-13.22-knearest_neighbor_vector_search">/search -&gt; knn</a> - Performs a KNN vector search</li>
+<li><a href="13-searching.html#toc-13.16-percolate_query">/pq/tbl_name/search</a> - Performs a reverse search in a percolate table</li>
+<li><a href="06-creating_a_table.html#_mapping-api:">/tbl_name/_mapping</a> - Creates a table schema in the Elasticsearch style</li>
+</ul>
+<h3 id="common-things">Common things</h3>
+<ul>
+<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">data types</a></li>
+<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">engine</a></li>
+<li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">plain mode</a></li>
+<li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">real-time mode</a></li>
+</ul>
+<h5 id="common-table-settings">Common table settings</h5>
+<ul>
+<li><a href="20-server_settings.html#access_plain_attrs">access_plain_attrs</a></li>
+<li><a href="20-server_settings.html#access_blob_attrs">access_blob_attrs</a></li>
+<li><a href="20-server_settings.html#access_doclists">access_doclists</a></li>
+<li><a href="20-server_settings.html#access_hitlists">access_hitlists</a></li>
+<li><a href="20-server_settings.html#access_dict">access_dict</a></li>
+<li><a href="12-data_creation_and_modification.html#attr_update_reserve">attr_update_reserve</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">bigram_freq_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">bigram_index</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">blend_chars</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">blend_mode</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">charset_table</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">dict</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">docstore_block_size</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">docstore_compression</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">docstore_compression_level</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">embedded_limit</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">exceptions</a></li>
+<li><a href="13-searching.html#expand_keywords">expand_keywords</a></li>
+<li><a href="13-searching.html#global_idf">global_idf</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">hitless_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">html_index_attrs</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">html_remove_elements</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">html_strip</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">ignore_chars</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_exact_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_field_lengths</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_sp</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_token_filter</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">index_zones</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">infix_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_enable</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_hit_gap</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_reloc_factor</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">inplace_write_factor</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">killlist_target</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">max_substring_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_infix_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_prefix_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_stemming_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">min_word_len</a></li>
+<li><a href="13-searching.html#morphology">morphology</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">morphology_skip_fields</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">ngram_chars</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">ngram_len</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">overshort_step</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">path</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">phrase_boundary</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">phrase_boundary_step</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">prefix_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">preopen</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">read_buffer_docs</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">read_buffer_hits</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">regexp_filter</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">stopwords</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">stopword_step</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">stopwords_unstemmed</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">type</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">wordforms</a></li>
+</ul>
+<h5 id="plain-table-settings">Plain table settings</h5>
+<ul>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">source</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">stored_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">stored_only_fields</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">columnar_attrs</a></li>
+</ul>
+<h5 id="distributed-table-settings">Distributed table settings</h5>
+<ul>
+<li><a href="06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">local</a></li>
+<li><a href="06-creating_a_table.html#agent">agent</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_connect_timeout</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_blackhole</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_persistent</a></li>
+<li><a href="13-searching.html#agent_query_timeout">agent_query_timeout</a></li>
+<li><a href="06-creating_a_table.html#agent">agent_retry_count</a></li>
+<li><a href="10-creating_a_cluster.html#ha_strategy">ha_strategy</a></li>
+<li><a href="06-creating_a_table.html#agent">mirror_retry_count</a></li>
+</ul>
+<h5 id="rt-table-settings">RT table settings</h5>
+<ul>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_bigint</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_bool</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_float</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_float_vector</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_json</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_multi_64</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_multi</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_string</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_timestamp</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_attr_uint</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_field</a></li>
+<li><a href="06-creating_a_table.html#general-syntax-of-create-table">rt_mem_limit</a></li>
+</ul>
+<h2 id="full-text-search-operators">Full-text search operators</h2>
+<ul>
+<li><a href="13-searching.html#or-operator">OR</a></li>
+<li><a href="13-searching.html#maybe-operator">MAYBE</a></li>
+<li><a href="13-searching.html#negation-operator">NOT</a> - NOT operator</li>
+<li><a href="13-searching.html#field-search-operator">@field</a> - field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@field%5BN%5D</a> - field position limit modifier</li>
+<li><a href="13-searching.html#field-search-operator">@(field1,field2,...)</a> - multi-field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@!field</a> - ignore field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@!(field1,field2,...)</a> - ignore multi-field search operator</li>
+<li><a href="13-searching.html#field-search-operator">@*</a> - all-field search operator</li>
+<li><a href="13-searching.html#phrase-search-operator">"word1 word2 ... "</a> - phrase search operator</li>
+<li><a href="13-searching.html#proximity-search-operator">"word1 word2 ... "~N</a> - proximity search operator</li>
+<li><a href="13-searching.html#quorum-matching-operator">"word1 word2 ... "/N</a> - quorum matching operator</li>
+<li><a href="13-searching.html#strict-order-operator">word1 &lt;&lt;&lt; word2 &lt;&lt;&lt; word3</a> - strict order operator</li>
+<li><a href="13-searching.html#exact-form-modifier">=word1</a> - exact form modifier</li>
+<li><a href="13-searching.html#field-start-and-field-end-modifier">^word1</a> - field-start modifier</li>
+<li><a href="13-searching.html#field-start-and-field-end-modifier">word2$</a> - field-end modifier</li>
+<li><a href="13-searching.html#idf-boost-modifier">word^N</a> - keyword IDF boost modifier</li>
+<li><a href="13-searching.html#near-operator">word1 NEAR/N word2</a> - NEAR, generalized proximity operator</li>
+<li><a href="13-searching.html#notnear-operator">word1 NOTNEAR/N word2</a> - NOTNEAR, negative assertion operator</li>
+<li><a href="13-searching.html#sentence-and-paragraph-operators">word1 PARAGRAPH word2 PARAGRAPH "word3 word4"</a> - PARAGRAPH operator</li>
+<li><a href="13-searching.html#sentence-and-paragraph-operators">word1 SENTENCE word2 SENTENCE "word3 word4"</a> - SENTENCE operator</li>
+<li><a href="13-searching.html#zone-limit-operator">ZONE:(h3,h4)</a> - ZONE limit operator</li>
+<li><a href="13-searching.html#zonespan-limit-operator">ZONESPAN:(h2)</a> - ZONESPAN limit operator</li>
+<li><a href="13-searching.html#field-search-operator">@@relaxed</a> - suppresses errors about missing fields</li>
+<li><a href="13-searching.html#wildcard-operators">t?st</a> - wildcard operators</li>
+<li><a href="13-searching.html#regex-operator">REGEX(/pattern/)</a> - REGEX operator</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<h5 id="mathematical">Mathematical</h5>
+<ul>
+<li><a href="15-functions.html#abs%28%29">ABS()</a> - Returns absolute value</li>
+<li><a href="15-functions.html#atan2%28%29">ATAN2()</a> - Returns arctangent function of two arguments</li>
+<li><a href="15-functions.html#bitdot%28%29">BITDOT()</a> - Returns sum of products of each bit of a mask multiplied with its weight</li>
+<li><a href="15-functions.html#ceil%28%29">CEIL()</a> - Returns smallest integer value greater or equal to the argument</li>
+<li><a href="15-functions.html#cos%28%29">COS()</a> - Returns cosine of the argument</li>
+<li><a href="15-functions.html#crc32%28%29">CRC32()</a> - Returns CRC32 value of the argument</li>
+<li><a href="15-functions.html#exp%28%29">EXP()</a> - Returns exponent of the argument</li>
+<li><a href="15-functions.html#fibonacci%28%29">FIBONACCI()</a> - Returns the N-th Fibonacci number, where N is the integer argument</li>
+<li><a href="15-functions.html#floor%28%29">FLOOR()</a> - Returns the largest integer value lesser or equal to the argument</li>
+<li><a href="15-functions.html#greatest%28%29">GREATEST()</a> - Takes JSON/MVA array as the argument and returns the greatest value in that array</li>
+<li><a href="15-functions.html#idiv%28%29">IDIV()</a> - Returns result of an integer division of the first argument by the second argument</li>
+<li><a href="15-functions.html#least%28%29">LEAST()</a> - Takes JSON/MVA array as the argument, and returns the least value in that array</li>
+<li><a href="15-functions.html#ln%28%29">LN()</a> - Returns natural logarithm of the argument</li>
+<li><a href="15-functions.html#log10%28%29">LOG10()</a> - Returns common logarithm of the argument</li>
+<li><a href="15-functions.html#log2%28%29">LOG2()</a> - Returns binary logarithm of the argument</li>
+<li><a href="15-functions.html#max%28%29">MAX()</a> - Returns the larger of two arguments</li>
+<li><a href="15-functions.html#min%28%29">MIN()</a> - Returns the smaller of two arguments</li>
+<li><a href="15-functions.html#pow%28%29">POW()</a> - Returns the first argument raised to the power of the second argument</li>
+<li><a href="15-functions.html#rand%28%29">RAND()</a> - Returns random float between 0 and 1</li>
+<li><a href="15-functions.html#sin%28%29">SIN()</a> - Returns sine of the argument</li>
+<li><a href="15-functions.html#sqrt%28%29">SQRT()</a> - Returns square root of the argument</li>
+</ul>
+<h5 id="searching-and-ranking">Searching and ranking</h5>
+<ul>
+<li><a href="15-functions.html#bm25f%28%29">BM25F()</a> - Returns precise BM25F formula value</li>
+<li><a href="15-functions.html#exist%28%29">EXIST()</a> - Replaces non-existing columns with default values</li>
+<li><a href="13-searching.html#group_concat%28field%29">GROUP_CONCAT()</a> - Produces a comma-separated list of the attribute values of all documents in the group</li>
+<li><a href="13-searching.html#toc-13.07-highlighting">HIGHLIGHT()</a> - Highlights search results</li>
+<li><a href="15-functions.html#min_top_sortval%28%29">MIN_TOP_SORTVAL()</a> - Returns sort key value of the worst found element in the current top-N matches</li>
+<li><a href="15-functions.html#min_top_weight%28%29">MIN_TOP_WEIGHT()</a> - Returns weight of the worst found element in the current top-N matches</li>
+<li><a href="15-functions.html#packedfactors%28%29">PACKEDFACTORS()</a> - Outputs weighting factors</li>
+<li><a href="15-functions.html#remove_repeats%28%29">REMOVE_REPEATS()</a> - Removes repeated adjusted rows with the same 'column' value</li>
+<li><a href="15-functions.html#weight%28%29">WEIGHT()</a> - Returns fulltext match score</li>
+<li><a href="15-functions.html#zonespanlist%28%29">ZONESPANLIST()</a> - Returns pairs of matched zone spans</li>
+<li><a href="15-functions.html#query%28%29">QUERY()</a> - Returns current full-text query</li>
+</ul>
+<h5 id="type-casting">Type casting</h5>
+<ul>
+<li><a href="15-functions.html#bigint%28%29">BIGINT()</a> - Forcibly promotes the integer argument to 64-bit type</li>
+<li><a href="15-functions.html#double%28%29">DOUBLE()</a> - Forcibly promotes given argument to floating point type</li>
+<li><a href="15-functions.html#integer%28%29">INTEGER()</a> - Forcibly promotes given argument to 64-bit signed type</li>
+<li><a href="15-functions.html#to_string%28%29">TO_STRING()</a> - Forcibly promotes the argument to string type</li>
+<li><a href="15-functions.html#uint%28%29">UINT()</a> - Converts the given argument to 32-bit unsigned integer type</li>
+<li><a href="15-functions.html#uint64%28%29">UINT64()</a> - Converts the given argument to 64-bit unsigned integer type</li>
+<li><a href="15-functions.html#sint%28%29">SINT()</a> - Interprets 32-bit unsigned integer as signed 64-bit integer</li>
+</ul>
+<h5 id="arrays-and-conditions">Arrays and conditions</h5>
+<ul>
+<li><a href="15-functions.html#all%28%29">ALL()</a> - Returns 1 if condition is true for all elements in the array</li>
+<li><a href="15-functions.html#any%28%29">ANY()</a> - Returns 1 if condition is true for any element in the array</li>
+<li><a href="15-functions.html#contains%28%29">CONTAINS()</a> - Checks whether the (x,y) point is within the given polygon</li>
+<li><a href="15-functions.html#if%28%29">IF()</a> - Checks whether the 1st argument is equal to 0.0, returns the 2nd argument if it is not zero or the 3rd one when it is</li>
+<li><a href="15-functions.html#in%28%29">IN()</a> - Returns 1 if the first argument is equal to any of the other arguments, or 0 otherwise</li>
+<li><a href="15-functions.html#indexof%28%29">INDEXOF()</a> - Iterates through all elements in the array and returns index of the first matching element</li>
+<li><a href="15-functions.html#interval%28%29">INTERVAL()</a> - Returns index of the argument that is less than the first argument</li>
+<li><a href="15-functions.html#length%28%29">LENGTH()</a> - Returns number of elements in MVA</li>
+<li><a href="15-functions.html#remap%28%29">REMAP()</a> - Allows to make some exceptions of expression values depending on the condition values</li>
+</ul>
+<h5 id="date-and-time">Date and time</h5>
+<ul>
+<li><a href="15-functions.html#now%28%29">NOW()</a> - Returns current timestamp as an INTEGER</li>
+<li><a href="15-functions.html#curtime%28%29">CURTIME()</a> - Returns current time in local timezone</li>
+<li><a href="15-functions.html#curdate%28%29">CURDATE()</a> - Returns current date in local timezone</li>
+<li><a href="15-functions.html#utc_time%28%29">UTC_TIME()</a> - Returns current time in UTC timezone</li>
+<li><a href="15-functions.html#utc_timestamp%28%29">UTC_TIMESTAMP()</a> - Returns current date/time in UTC timezone</li>
+<li><a href="15-functions.html#second%28%29">SECOND()</a> - Returns integer second from the timestamp argument</li>
+<li><a href="15-functions.html#minute%28%29">MINUTE()</a> - Returns integer minute from the timestamp argument</li>
+<li><a href="15-functions.html#hour%28%29">HOUR()</a> - Returns integer hour from the timestamp argument</li>
+<li><a href="15-functions.html#day%28%29">DAY()</a> - Returns integer day from the timestamp argument</li>
+<li><a href="15-functions.html#month%28%29">MONTH()</a> - Returns integer month from the timestamp argument</li>
+<li><a href="15-functions.html#quarter%28%29">QUARTER()</a> - Returns the integer quarter of the year from a timestamp argument</li>
+<li><a href="15-functions.html#year%28%29">YEAR()</a> - Returns integer year from the timestamp argument</li>
+<li><a href="15-functions.html#dayname%28%29">DAYNAME()</a> - Returns the weekday name for a given timestamp argument</li>
+<li><a href="15-functions.html#monthname%28%29">MONTHNAME()</a> - Returns the name of the month for a given timestamp argument</li>
+<li><a href="15-functions.html#dayofweek%28%29">DAYOFWEEK()</a> - Returns the integer weekday index for a given timestamp argument</li>
+<li><a href="15-functions.html#dayofyear%28%29">DAYOFYEAR()</a> - Returns the integer day of the year for a given timestamp argument</li>
+<li><a href="15-functions.html#yearweek%28%29">YEARWEEK()</a> - Returns the integer year and the day code of the first day of current week for a given timestamp argument</li>
+<li><a href="15-functions.html#yearmonth%28%29">YEARMONTH()</a> - Returns integer year and month code from the timestamp argument</li>
+<li><a href="15-functions.html#yearmonthday%28%29">YEARMONTHDAY()</a> - Returns integer year, month and day code from the timestamp argument</li>
+<li><a href="15-functions.html#timediff%28%29">TIMEDIFF()</a> - Returns difference between the timstamps</li>
+<li><a href="15-functions.html#datediff%28%29">DATEDIFF()</a> - Returns the number of days between two given timestamps</li>
+<li><a href="15-functions.html#date%28%29">DATE()</a> - Formats the date part from a timestamp argument</li>
+<li><a href="15-functions.html#time%28%29">TIME()</a> - Formats the time part from a timestamp argument</li>
+<li><a href="15-functions.html#date_format%28%29">DATE_FORMAT()</a> - Returns a formatted string based on the provided date and format arguments</li>
+</ul>
+<h5 id="geo-spatial">Geo-spatial</h5>
+<ul>
+<li><a href="15-functions.html#geodist%28%29">GEODIST()</a> - Computes geosphere distance between two given points</li>
+<li><a href="15-functions.html#geopoly2d%28%29">GEOPOLY2D()</a> - Creates a polygon that takes in account the Earth's curvature</li>
+<li><a href="15-functions.html#poly2d%28%29">POLY2D()</a> - Creates a simple polygon in plain space</li>
+</ul>
+<h5 id="string">String</h5>
+<ul>
+<li><a href="15-functions.html#concat%28%29">CONCAT()</a> - Concatenates two or more strings</li>
+<li><a href="15-functions.html#regex%28%29">REGEX()</a> - Returns 1 if regular expression matched to string of attribute and 0 otherwise</li>
+<li><a href="15-functions.html#snippet%28%29">SNIPPET()</a> - Highlights search results</li>
+<li><a href="15-functions.html#substring_index%28%29">SUBSTRING_INDEX()</a> - Returns a substring of the string before the specified number of delimiter occurs<br />
+*</li>
+</ul>
+<h5 id="other">Other</h5>
+<ul>
+<li><a href="15-functions.html#connection_id%28%29">CONNECTION_ID()</a> - Returns the current connection ID</li>
+<li><a href="15-functions.html#knn_dist%28%29">KNN_DIST()</a> - Returns KNN vector search distance</li>
+<li><a href="15-functions.html#last_insert_id%28%29">LAST_INSERT_ID()</a> - Returns ids of documents inserted or replaced by last statement in the current session</li>
+</ul>
+<h2 id="common-settings-in-configuration-file">Common settings in configuration file</h2>
+<p>To be put to section <code>common {}</code> in configuration file:</p>
+<ul>
+<li><a href="20-server_settings.html#lemmatizer_base">lemmatizer_base</a> - Lemmatizer dictionaries base path</li>
+<li><a href="20-server_settings.html#progressive_merge">progressive_merge</a> - Defines order of merging disk chunks in a real-time table</li>
+<li><a href="20-server_settings.html#json_autoconv_keynames">json_autoconv_keynames</a> - Whether and how to auto-convert key names within JSON attributes</li>
+<li><a href="20-server_settings.html#json_autoconv_numbers">json_autoconv_numbers</a> - Automatically detects and converts possible JSON strings that represent numbers into numeric attributes</li>
+<li><a href="20-server_settings.html#on_json_attr_error">on_json_attr_error</a> - What to do if JSON format errors are found</li>
+<li><a href="20-server_settings.html#plugin_dir">plugin_dir</a> - Location for the dynamic libraries and UDFs</li>
+</ul>
+<h2 id="indexer"><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">Indexer</a></h2>
+<p><code>indexer</code> is a tool to create <a href="12-data_creation_and_modification.html#indexer-command-line-arguments">plain tables</a></p>
+<h5 id="indexer-settings-in-configuration-file">Indexer settings in configuration file</h5>
+<p>To be put to section <code>indexer {}</code> in configuration file:</p>
+<ul>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">lemmatizer_cache</a> - Lemmatizer cache size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_file_field_buffer</a> - Maximum file field adaptive buffer size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_iops</a> - Maximum indexation I/O operations per second</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_iosize</a> - Maximum allowed I/O operation size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">max_xmlpipe2_field</a> - Maximum allowed field size for XMLpipe2 source type</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">mem_limit</a> - Indexing RAM usage limit</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">on_file_field_error</a> - How to handle IO errors in file fields</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">write_buffer</a> - Write buffer size</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">ignore_non_plain</a> - To ignore warnings about non-plain tables</li>
+</ul>
+<h5 id="indexer-start-parameters">Indexer start parameters</h5>
+<div class="codehilite"><pre><span></span><code>indexer<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>indexname1<span class="w"> </span><span class="o">[</span>indexname2<span class="w"> </span><span class="o">[</span>...<span class="o">]]]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--all</a> - Rebuilds all tables from the config</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--buildstops</a> - Analyzes the table source as if indexing the data, generating a list of indexed terms</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--buildfreqs</a> - Adds the frequency count to the table for --buildstops</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--config, -c</a> - Specifies the path to the configuration file</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--dump-rows</a> - Dumps rows retrieved by SQL source(s) into the specified file</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--help</a> - Displays all available parameters</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--keep-attrs</a> - Allows reuse of existing attributes when reindexing</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--keep-attrs-names</a> - Specifies which attributes to reuse from the existing table</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--merge-dst-range</a> - Applies the given filter range during merging</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--merge-killlists</a> - Alters kill list processing when merging tables</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--merge</a> - Combines two plain tables into one</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--nohup</a> - Prevents indexer from sending SIGHUP when this option is enabled</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--noprogress</a> - Hides progress details</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--print-queries</a> - Outputs SQL queries sent by the indexer to the database</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--print-rt</a> - Displays data fetched from SQL source(s) as INSERTs into a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--quiet</a> - Suppresses all output</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--rotate</a> - Initiates table rotation after all tables are built</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--sighup-each</a> - Triggers rotation of each table after it's built</li>
+<li><a href="12-data_creation_and_modification.html#indexer-command-line-arguments">-v</a> - Displays indexer version</li>
+</ul>
+<h2 id="table-converter-for-manticore-v2-sphinx-v2">Table Converter for Manticore v2 / Sphinx v2</h2>
+<p><code>index_converter</code> is a tool designed to convert tables created with Sphinx/Manticore Search 2.x into the Manticore Search 3.x table format.</p>
+<div class="codehilite"><pre><span></span><code>index_converter<span class="w"> </span><span class="o">{</span>--config<span class="w"> </span>/path/to/config<span class="p">|</span>--path<span class="o">}</span>
+</code></pre></div>
+
+<h5 id="table-converter-start-parameters">Table converter start parameters</h5>
+<ul>
+<li><a href="03-installation.html#index_converter">--config, -c</a> - Path to table configuration file</li>
+<li><a href="03-installation.html#index_converter">--index</a> - Specifies which table to convert</li>
+<li><a href="03-installation.html#index_converter">--path</a> - Sets path containing table(s) instead of the configuration file</li>
+<li><a href="03-installation.html#index_converter">--strip-path</a> - Removes path from filenames referenced by table</li>
+<li><a href="03-installation.html#index_converter">--large-docid</a> - Allows conversion of documents with ids larger than 2^63</li>
+<li><a href="03-installation.html#index_converter">--output-dir</a> - Writes new files in a specified folder</li>
+<li><a href="03-installation.html#index_converter">--all</a> - Converts all tables from the configuration file / path</li>
+<li><a href="03-installation.html#index_converter">--killlist-target</a> - Sets target tables for applying kill-lists</li>
+</ul>
+<h2 id="searchd"><a href="05-starting_the_server.html#toc-05.02-manually">Searchd</a></h2>
+<p><code>searchd</code> is the Manticore server.</p>
+<h5 id="searchd-settings-in-a-configuration-file">Searchd settings in a configuration file</h5>
+<p>To be put in the <code>searchd {}</code> section of the configuration file:</p>
+<ul>
+<li><a href="20-server_settings.html#access_blob_attrs">access_blob_attrs</a> - Defines how table's blob attributes file is accessed</li>
+<li><a href="20-server_settings.html#access_doclists">access_doclists</a> - Defines how table's doclists file is accessed</li>
+<li><a href="20-server_settings.html#access_hitlists">access_hitlists</a> - Defines how table's hitlists file is accessed</li>
+<li><a href="20-server_settings.html#access_plain_attrs">access_plain_attrs</a> - Defines how search server accesses table's plain attributes</li>
+<li><a href="20-server_settings.html#access_dict">access_dict</a> - Defines how table's dictionary file is accessed</li>
+<li><a href="06-creating_a_table.html#agent_connect_timeout">agent_connect_timeout</a> - Remote agent connection timeout</li>
+<li><a href="13-searching.html#agent_query_timeout">agent_query_timeout</a> - Remote agent query timeout</li>
+<li><a href="06-creating_a_table.html#agent_connect_timeout">agent_retry_count</a> - Specifies the number of times Manticore tries to connect and query remote agents</li>
+<li><a href="06-creating_a_table.html#agent">agent_retry_delay</a> - Specifies the delay before retrying to query a remote agent in case of failure</li>
+<li><a href="12-data_creation_and_modification.html#attr_flush_period">attr_flush_period</a> - Sets the time period between flushing updated attributes to disk</li>
+<li><a href="20-server_settings.html#binlog_flush">binlog_flush</a> - Binary log transaction flush/sync mode</li>
+<li><a href="20-server_settings.html#binlog_max_log_size">binlog_max_log_size</a> - Maximum binary log file size</li>
+<li><a href="20-server_settings.html#binlog_path">binlog_path</a> - Binary log files path</li>
+<li><a href="06-creating_a_table.html#agent">client_timeout</a> - Maximum time to wait between requests when using persistent connections</li>
+<li><a href="20-server_settings.html#collation_libc_locale">collation_libc_locale</a> - Server libc locale</li>
+<li><a href="20-server_settings.html#collation_server">collation_server</a> - Default server collation</li>
+<li><a href="20-server_settings.html#data_dir">data_dir</a> - Path to data directory where Manticore stores everything (<a href="06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>)</li>
+<li><a href="20-server_settings.html#docstore_cache_size">docstore_cache_size</a> - Maximum size of document blocks from document storage held in memory</li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">expansion_limit</a> - Maximum number of expanded keywords for a single wildcard</li>
+<li><a href="20-server_settings.html#grouping_in_utc">grouping_in_utc</a> - Enables using UTC timezone for grouping time fields</li>
+<li><a href="20-server_settings.html#ha_period_karma">ha_period_karma</a> - Agent mirror statistics window size</li>
+<li><a href="10-creating_a_cluster.html#ha_ping_interval">ha_ping_interval</a> - Interval between agent mirror pings</li>
+<li><a href="06-creating_a_table.html#agent">hostname_lookup</a> - Hostnames renew strategy</li>
+<li><a href="20-server_settings.html#jobs_queue_size">jobs_queue_size</a> - Defines the maximum number of "jobs" allowed in the queue simultaneously</li>
+<li><a href="20-server_settings.html#listen">listen</a> - Specifies IP address and port or Unix-domain socket path for searchd to listen on</li>
+<li><a href="20-server_settings.html#listen_backlog">listen_backlog</a> - TCP listen backlog</li>
+<li><a href="06-creating_a_table.html#agent">listen_tfo</a> - Enables TCP_FASTOPEN flag for all listeners</li>
+<li><a href="20-server_settings.html#log">log</a> - Path to Manticore server log file</li>
+<li><a href="20-server_settings.html#max_batch_queries">max_batch_queries</a> - Limits the number of queries per batch</li>
+<li><a href="20-server_settings.html#max_connections">max_connections</a> - Maximum number of active connections</li>
+<li><a href="20-server_settings.html#max_filters">max_filters</a> - Maximum allowed per-query filter count</li>
+<li><a href="20-server_settings.html#max_filter_values">max_filter_values</a> - Maximum allowed per-filter values count</li>
+<li><a href="20-server_settings.html#max_open_files">max_open_files</a> - Maximum number of files allowed to be opened by server</li>
+<li><a href="20-server_settings.html#max_packet_size">max_packet_size</a> - Maximum allowed network packet size</li>
+<li><a href="20-server_settings.html#mysql_version_string">mysql_version_string</a> - Server version string returned via MySQL protocol</li>
+<li><a href="20-server_settings.html#net_throttle_accept">net_throttle_accept</a> - Defines how many clients are accepted on each iteration of the network loop</li>
+<li><a href="20-server_settings.html#net_throttle_action">net_throttle_action</a>  - Defines how many requests are processed on each iteration of the network loop</li>
+<li><a href="20-server_settings.html#net_wait_tm">net_wait_tm</a> - Controls busy loop interval of a network thread</li>
+<li><a href="20-server_settings.html#net_workers">net_workers</a> - Number of network threads</li>
+<li><a href="20-server_settings.html#network_timeout">network_timeout</a> - Network timeout for client requests</li>
+<li><a href="20-server_settings.html#node_address">node_address</a> - Specifies network address of the node</li>
+<li><a href="06-creating_a_table.html#agent">persistent_connections_limit</a> - Maximum number of simultaneous persistent connections to remote persistent agents</li>
+<li><a href="20-server_settings.html#pid_file">pid_file</a> - Path to Manticore server pid file</li>
+<li><a href="20-server_settings.html#predicted_time_costs">predicted_time_costs</a> - Costs for the query time prediction model</li>
+<li><a href="20-server_settings.html#preopen_tables">preopen_tables</a> - Determines whether to forcibly preopen all tables on startup</li>
+<li><a href="20-server_settings.html#pseudo_sharding">pseudo_sharding</a> - Enables pseudo-sharding for search queries to plain and real-time tables</li>
+<li><a href="20-server_settings.html#qcache_max_bytes">qcache_max_bytes</a> - Maximum RAM allocated for cached result sets</li>
+<li><a href="20-server_settings.html#qcache_thresh_msec">qcache_thresh_msec</a> - Minimum wall time threshold for a query result to be cached</li>
+<li><a href="20-server_settings.html#qcache_ttl_sec">qcache_ttl_sec</a> - Expiration period for a cached result set</li>
+<li><a href="20-server_settings.html#query_log">query_log</a> - Path to query log file</li>
+<li><a href="20-server_settings.html#query_log_format">query_log_format</a> - Query log format</li>
+<li><a href="20-server_settings.html#query_log_min_msec">query_log_min_msec</a> - Prevents logging too fast queries</li>
+<li><a href="20-server_settings.html#query_log_mode">query_log_mode</a> - Query log file permissions mode</li>
+<li><a href="06-creating_a_table.html#read_buffer_docs">read_buffer_docs</a> - Per-keyword read buffer size for document lists</li>
+<li><a href="06-creating_a_table.html#read_buffer_docs">read_buffer_hits</a> - Per-keyword read buffer size for hit lists</li>
+<li><a href="20-server_settings.html#read_unhinted">read_unhinted</a> - Unhinted read size</li>
+<li><a href="20-server_settings.html#rt_flush_period">rt_flush_period</a> - How often Manticore flushes real-time tables' RAM chunks to disk</li>
+<li><a href="20-server_settings.html#rt_merge_iops">rt_merge_iops</a> - Maximum number of I/O operations (per second) that real-time chunks merging thread is allowed to do</li>
+<li><a href="20-server_settings.html#rt_merge_maxiosize">rt_merge_maxiosize</a> - Maximum size of an I/O operation that real-time chunks merging thread is allowed to do</li>
+<li><a href="20-server_settings.html#seamless_rotate">seamless_rotate</a> - Prevents searchd stalls while rotating tables with huge amounts of data to precache</li>
+<li><a href="20-server_settings.html#secondary_indexes">secondary_indexes</a> - Enables using secondary indexes for search queries</li>
+<li><a href="20-server_settings.html#server_id">server_id</a> - Server identifier used as a seed to generate a unique document ID</li>
+<li><a href="20-server_settings.html#shutdown_timeout">shutdown_timeout</a> - Searchd <code>--stopwait</code> timeout</li>
+<li><a href="20-server_settings.html#shutdown_token">shutdown_token</a> - SHA1 hash of the password required to invoke <code>shutdown</code> command from VIP SQL connection</li>
+<li><a href="06-creating_a_table.html#agent">snippets_file_prefix</a> - Prefix to prepend to the local file names when generating snippets in <code>load_files</code> mode</li>
+<li><a href="20-server_settings.html#sphinxql_state">sphinxql_state</a> - Path to file where the current SQL state will be serialized</li>
+<li><a href="20-server_settings.html#sphinxql_timeout">sphinxql_timeout</a> - Maximum time to wait between requests from a MySQL client</li>
+<li><a href="20-server_settings.html#ssl_ca">ssl_ca</a> - Path to SSL Certificate Authority certificate file</li>
+<li><a href="20-server_settings.html#ssl_cert">ssl_cert</a> - Path to server's SSL certificate</li>
+<li><a href="20-server_settings.html#ssl_key">ssl_key</a> - Path to SSL certificate key of the server</li>
+<li><a href="20-server_settings.html#subtree_docs_cache">subtree_docs_cache</a> - Maximum common subtree document cache size</li>
+<li><a href="20-server_settings.html#subtree_hits_cache">subtree_hits_cache</a> - Maximum common subtree hit cache size, per-query</li>
+<li><a href="20-server_settings.html#timezone">timezone</a> - Timezone used by date/time-related functions</li>
+<li><a href="20-server_settings.html#thread_stack">thread_stack</a> - Maximum stack size for a job</li>
+<li><a href="20-server_settings.html#unlink_old">unlink_old</a> - Whether to unlink .old table copies on successful rotation</li>
+<li><a href="20-server_settings.html#watchdog">watchdog</a> - Whether to enable or disable Manticore server watchdog</li>
+</ul>
+<h5 id="searchd-start-parameters">Searchd start parameters</h5>
+<div class="codehilite"><pre><span></span><code>searchd<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--config, -c</a> - Specifies the path to the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--console</a> - Forces the server to run in console mode</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--coredump</a> - Enables core dump saving upon crash</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--cpustats</a> - Enables CPU time reporting</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--delete</a> - Removes the Manticore service from Microsoft Management Console and other locations where services are registered</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--force-preread</a> - Prevents the server from serving incoming connections until table files are pre-read</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--help, -h</a> - Displays all available parameters</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--table (--index)</a> - Restricts the server to serve only the specified table</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--install</a> - Installs searchd as a service in Microsoft Management Console</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--iostats</a> - Enables input/output reporting</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--listen, -l</a> - Overrides <a href="20-server_settings.html#listen">listen</a> from the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--logdebug, --logdebugv, --logdebugvv</a> - Enables additional debug output in the server log</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--logreplication</a> - Enables extra replication debug output in the server log</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--new-cluster</a> - Initializes a replication cluster and sets the server as a reference node with <a href="10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">cluster restart</a> protection</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--new-cluster-force</a> - Initializes a replication cluster and sets the server as a reference node, bypassing <a href="10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">cluster restart</a> protection</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--nodetach</a> - Keeps searchd running in the foreground</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--ntservice</a> - Used by Microsoft Management Console to launch searchd as a service on Windows platforms</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--pidfile</a> - Overrides <a href="20-server_settings.html#pid_file">pid_file</a> in the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--port, p</a> - Specifies the port searchd should listen on, ignoring the port specified in the configuration file</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--replay-flags</a> - Sets additional binary log replay options</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--servicename</a> - Assigns the given name to searchd when installing or deleting the service, as displayed in Microsoft Management Console</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--status</a> - Queries the running search service to return its status</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--stop</a> - Stops the Manticore server</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--stopwait</a> - Stops the Manticore server gracefully</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">--strip-path</a> - Removes path names from all file names referenced in the table</li>
+<li><a href="05-starting_the_server.html#searchd-command-line-options">-v</a> - Displays version information</li>
+</ul>
+<h5 id="searchd-environment-variables">Searchd environment variables</h5>
+<ul>
+<li><a href="05-starting_the_server.html#environment-variables">MANTICORE_TRACK_DAEMON_SHUTDOWN</a> - Enables detailed logging during searchd shutdown</li>
+</ul>
+<h2 id="indextool"><a href="23-miscellaneous_tools.html#indextool">Indextool</a></h2>
+<p>Assorted table maintenance features helpful for troubleshooting.</p>
+<div class="codehilite"><pre><span></span><code>indextool<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</code></pre></div>
+
+<h5 id="indextool-start-parameters">Indextool Start Parameters</h5>
+<p>Utilized for dumping various debug information related to the physical table.</p>
+<div class="codehilite"><pre><span></span><code>indextool<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="23-miscellaneous_tools.html#indextool">--config, -c</a> - Specifies the path to the configuration file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--quiet, -q</a> - Keeps indextool quiet; no banner output, etc.</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--help, -h</a> - Lists all available parameters</li>
+<li><a href="23-miscellaneous_tools.html#indextool">-v</a> - Displays version information</li>
+<li><a href="23-miscellaneous_tools.html#indextool">Indextool</a> - Verifies the configuration file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--buildidf</a> - Builds an IDF file from one or more dictionary dumps</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--build-infixes</a> - Builds infixes for an existing dict=keywords table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpheader</a> - Quickly dumps the provided table header file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpconfig</a> - Dumps table definition from the given table header file in a nearly compliant manticore.conf format</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpheader</a> - Dumps table header by table name while looking up the header path in the configuration file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpdict</a> - Dumps the table dictionary</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumpdocids</a> - Dumps document IDs by table name</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--dumphitlist</a> - Dumps all occurrences of the given keyword/id in the specified table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--docextract</a> - Runs table check pass on entire dictionary/docs/hits and collects all words and hits belonging to the requested document</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--fold</a> - Tests tokenization based on table settings</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--htmlstrip</a> - Filters STDIN using HTML stripper settings for the specified table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--mergeidf</a> - Merges multiple .idf files into a single file</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--morph</a> - Applies morphology to the provided STDIN and outputs the result to stdout</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--check</a> - Checks table data files for consistency</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--check-id-dups</a> - Checks for duplicate IDs</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--check-disk-chunk</a> - Checks a single disk chunk of an RT table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--strip-path</a> - Removes path names from all file names referenced in the table</li>
+<li><a href="23-miscellaneous_tools.html#indextool">--rotate</a> - Determines whether to check a table waiting for rotation when using <code>--check</code></li>
+<li><a href="23-miscellaneous_tools.html#indextool">--apply-killlists</a> - Applies kill-lists for all tables listed in the configuration file</li>
+</ul>
+<h2 id="wordbreaker"><a href="23-miscellaneous_tools.html#wordbreaker">Wordbreaker</a></h2>
+<p>Splits compound words into their components.</p>
+<div class="codehilite"><pre><span></span><code>wordbreaker<span class="w"> </span><span class="o">[</span>-dict<span class="w"> </span>path/to/dictionary_file<span class="o">]</span><span class="w"> </span><span class="o">{</span>split<span class="p">|</span>test<span class="p">|</span>bench<span class="o">}</span>
+</code></pre></div>
+
+<h5 id="wordbreaker-start-parameters">Wordbreaker start parameters</h5>
+<ul>
+<li><a href="23-miscellaneous_tools.html#wordbreaker">STDIN</a> - Accepts a string to break into parts</li>
+<li><a href="23-miscellaneous_tools.html#wordbreaker">-dict</a> - Specifies the dictionary file to use</li>
+<li><a href="23-miscellaneous_tools.html#wordbreaker">split|test|bench</a> - Specifies the command</li>
+</ul>
+<h2 id="spelldump"><a href="23-miscellaneous_tools.html#spelldump">Spelldump</a></h2>
+<p>Extracts the contents of a dictionary file using ispell or MySpell format</p>
+<div class="codehilite"><pre><span></span><code>spelldump<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>&lt;dictionary&gt;<span class="w"> </span>&lt;affix&gt;<span class="w"> </span><span class="o">[</span>result<span class="o">]</span><span class="w"> </span><span class="o">[</span>locale-name<span class="o">]</span>
+</code></pre></div>
+
+<ul>
+<li><a href="23-miscellaneous_tools.html#spelldump">dictionary</a> - Main dictionary file</li>
+<li><a href="23-miscellaneous_tools.html#spelldump">affix</a> - Affix file for the dictionary</li>
+<li><a href="23-miscellaneous_tools.html#spelldump">result</a> - Specifies the output destination for the dictionary data</li>
+<li><a href="23-miscellaneous_tools.html#spelldump">locale-name</a> - Specifies the locale details to use</li>
+</ul>
+<h2 id="list-of-reserved-keywords">List of reserved keywords</h2>
+<p>A comprehensive alphabetical list of keywords currently reserved in Manticore SQL syntax (thus, they cannot be used as identifiers).</p>
+<div class="codehilite"><pre><span></span><code>AND, AS, BY, COLUMNARSCAN, DATE_ADD, DATE_SUB, DAY, DISTINCT, DIV, DOCIDINDEX, EXPLAIN, FACET, FALSE, FORCE, FROM, HOUR, IGNORE, IN, INTERVAL, INDEXES, INNER, IS, JOIN, KNN, LEFT, LIMIT, MINUTE, MOD, MONTH, NOT, NO_COLUMNARSCAN, NO_DOCIDINDEX, NO_SECONDARYINDEX, NULL, OFFSET, ON, OR, ORDER, QUARTER, REGEX, RELOAD, SECOND, SECONDARYINDEX, SELECT, SYSFILTERS, TRUE, WEEK, YEAR
+</code></pre></div>
+
+<h2 id="documentation-for-old-manticore-versions">Documentation for old Manticore versions</h2>
+<ul>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.4.1.pdf">2.4.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.5.1.pdf">2.5.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.0.pdf">2.6.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.1.pdf">2.6.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.2.pdf">2.6.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.3.pdf">2.6.3</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.6.4.pdf">2.6.4</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.0.pdf">2.7.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.1.pdf">2.7.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.2.pdf">2.7.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.3.pdf">2.7.3</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.4.pdf">2.7.4</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.7.5.pdf">2.7.5</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.8.0.pdf">2.8.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.8.1.pdf">2.8.1</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-2.8.2.pdf">2.8.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.0.0.pdf">3.0.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.0.2.pdf">3.0.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.1.0.pdf">3.1.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.1.2.pdf">3.1.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.2.0.pdf">3.2.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.2.2.pdf">3.2.2</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.3.0.pdf">3.3.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.4.0.pdf">3.4.0</a></li>
+<li><a href="https://repo.manticoresearch.com/repository/old_docs/manticoresearch-3.4.2.pdf">3.4.2</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-5-0/">3.5.0</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-5-2/">3.5.2</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-5-4/">3.5.4</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-3-6-0/">3.6.0</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-4-0-2/">4.0.2</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-4-2-0/">4.2.0</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-5-0-0/">5.0.0</a>. <a href="https://manticoresearch.com/install-5.0.0/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-5-0-2/">5.0.2</a>. <a href="https://manticoresearch.com/install-5.0.2/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-0-0/">6.0.0</a>. <a href="https://manticoresearch.com/install-6.0.0/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-0-2/">6.0.2</a>. <a href="https://manticoresearch.com/install-6.0.2/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-0-4/">6.0.4</a>. <a href="https://manticoresearch.com/install-6.0.4/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-2-0/">6.2.0</a>. <a href="https://manticoresearch.com/install-6.2.0/">Installation page</a></li>
+<li><a href="https://manual.manticoresearch.com/manticore-6-2-12/">6.2.12</a>. <a href="https://manticoresearch.com/install-6.2.12/">Installation page</a></li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

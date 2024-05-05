@@ -1,0 +1,1193 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="toc.css" />
+    <title>Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <h1>Manticore Search</h1>
+            <span class="version">
+                <a href="https://github.com/manticoresoftware/manticoresearch/">6.2.12 (Aug 23, 2023)</a>
+            </span>
+        </header>
+
+        <aside class="sidebar">
+            <ul class="manual-toc"><li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="01-introduction.html#toc-01-introduction">Introduction</a>
+                    </span>
+                    <span class="chapter">1</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="02-read_this_first.html#toc-02-read_this_first">Read this first</a>
+                    </span>
+                    <span class="chapter">2</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03-installation">Installation</a>
+                    </span>
+                    <span class="chapter">3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.01-docker">Docker</a>
+                    </span>
+                    <span class="chapter">3.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.02-redhat_and_centos">RedHat and Centos</a>
+                    </span>
+                    <span class="chapter">3.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.03-debian_and_ubuntu">Debian and Ubuntu</a>
+                    </span>
+                    <span class="chapter">3.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.04-macos">MacOS</a>
+                    </span>
+                    <span class="chapter">3.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.05-windows">Windows</a>
+                    </span>
+                    <span class="chapter">3.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.06-compiling_from_sources">Compiling from sources</a>
+                    </span>
+                    <span class="chapter">3.6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="03-installation.html#toc-03.07-migration_from_sphinx">Migration from Sphinx</a>
+                    </span>
+                    <span class="chapter">3.7</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="04-quick_start_guide.html#toc-04-quick_start_guide">Quick start guide</a>
+                    </span>
+                    <span class="chapter">4</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="05-starting_the_server.html#toc-05-starting_the_server">Starting the server</a>
+                    </span>
+                    <span class="chapter">5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="05-starting_the_server.html#toc-05.01-in_linux">In Linux</a>
+                    </span>
+                    <span class="chapter">5.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="05-starting_the_server.html#toc-05.02-manually">Manually</a>
+                    </span>
+                    <span class="chapter">5.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="05-starting_the_server.html#toc-05.03-in_docker">In Docker</a>
+                    </span>
+                    <span class="chapter">5.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="05-starting_the_server.html#toc-05.04-in_windows">In Windows</a>
+                    </span>
+                    <span class="chapter">5.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="05-starting_the_server.html#toc-05.05-in_macos">In MacOS</a>
+                    </span>
+                    <span class="chapter">5.5</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06-creating_a_table">Creating a table</a>
+                    </span>
+                    <span class="chapter">6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.01-data_types">Data types</a>
+                    </span>
+                    <span class="chapter">6.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">Rowwise and columnar attribute storages</a>
+                    </span>
+                    <span class="chapter">6.1.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.02-creating_a_local_table">Creating a local table</a>
+                    </span>
+                    <span class="chapter">6.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.02.01-realtime_table">Realtime table</a>
+                    </span>
+                    <span class="chapter">6.2.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.02.02-plain_table">Plain table</a>
+                    </span>
+                    <span class="chapter">6.2.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.02.03-plain_and_realtime_table_settings">Plain and realtime table settings</a>
+                    </span>
+                    <span class="chapter">6.2.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate table</a>
+                    </span>
+                    <span class="chapter">6.2.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.02.05-template_table">Template table</a>
+                    </span>
+                    <span class="chapter">6.2.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03-nlp_and_tokenization">NLP and tokenization</a>
+                    </span>
+                    <span class="chapter">6.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.01-data_tokenization">Data tokenization</a>
+                    </span>
+                    <span class="chapter">6.3.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.02-supported_languages">Supported languages</a>
+                    </span>
+                    <span class="chapter">6.3.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.03-cjk">CJK</a>
+                    </span>
+                    <span class="chapter">6.3.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.04-lowlevel_tokenization">Lowlevel tokenization</a>
+                    </span>
+                    <span class="chapter">6.3.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.05-wildcard_searching_settings">Wildcard searching settings</a>
+                    </span>
+                    <span class="chapter">6.3.5</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.06-ignoring_stop_words">Ignoring stop words</a>
+                    </span>
+                    <span class="chapter">6.3.6</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.07-word_forms">Word forms</a>
+                    </span>
+                    <span class="chapter">6.3.7</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.08-exceptions">Exceptions</a>
+                    </span>
+                    <span class="chapter">6.3.8</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.09-morphology">Morphology</a>
+                    </span>
+                    <span class="chapter">6.3.9</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.03.10-advanced_html_tokenization">Advanced HTML tokenization</a>
+                    </span>
+                    <span class="chapter">6.3.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.04-creating_a_distributed_table">Creating a distributed table</a>
+                    </span>
+                    <span class="chapter">6.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">Creating a local distributed table</a>
+                    </span>
+                    <span class="chapter">6.4.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="06-creating_a_table.html#toc-06.04.02-remote_tables">Remote tables</a>
+                    </span>
+                    <span class="chapter">6.4.2</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="07-listing_tables.html#toc-07-listing_tables">Listing tables</a>
+                    </span>
+                    <span class="chapter">7</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="08-deleting_a_table.html#toc-08-deleting_a_table">Deleting a table</a>
+                    </span>
+                    <span class="chapter">8</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="09-emptying_a_table.html#toc-09-emptying_a_table">Emptying a table</a>
+                    </span>
+                    <span class="chapter">9</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10-creating_a_cluster">Creating a cluster</a>
+                    </span>
+                    <span class="chapter">1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.01-adding_a_new_node">Adding a new node</a>
+                    </span>
+                    <span class="chapter">1.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.02-remote_nodes">Remote nodes</a>
+                    </span>
+                    <span class="chapter">1.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.02.01-mirroring">Mirroring</a>
+                    </span>
+                    <span class="chapter">1.2.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.02.02-load_balancing">Load balancing</a>
+                    </span>
+                    <span class="chapter">1.2.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03-setting_up_replication">Setting up replication</a>
+                    </span>
+                    <span class="chapter">1.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.01-creating_a_replication_cluster">Creating a replication cluster</a>
+                    </span>
+                    <span class="chapter">1.3.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.02-joining_a_replication_cluster">Joining a replication cluster</a>
+                    </span>
+                    <span class="chapter">1.3.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.03-deleting_a_replication_cluster">Deleting a replication cluster</a>
+                    </span>
+                    <span class="chapter">1.3.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.04-adding_and_removing_a_table_from_a_replication_cluster">Adding and removing a table from a replication cluster</a>
+                    </span>
+                    <span class="chapter">1.3.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">Managing replication nodes</a>
+                    </span>
+                    <span class="chapter">1.3.5</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.06-replication_cluster_status">Replication cluster status</a>
+                    </span>
+                    <span class="chapter">1.3.6</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">Restarting a cluster</a>
+                    </span>
+                    <span class="chapter">1.3.7</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="10-creating_a_cluster.html#toc-10.03.08-cluster_recovery">Cluster recovery</a>
+                    </span>
+                    <span class="chapter">1.3.8</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="11-connecting_to_the_server.html#toc-11-connecting_to_the_server">Connecting to the server</a>
+                    </span>
+                    <span class="chapter">11</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="11-connecting_to_the_server.html#toc-11.01-mysql_protocol">MySQL protocol</a>
+                    </span>
+                    <span class="chapter">11.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="11-connecting_to_the_server.html#toc-11.02-http">HTTP</a>
+                    </span>
+                    <span class="chapter">11.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="11-connecting_to_the_server.html#toc-11.03-sql_over_http">SQL over HTTP</a>
+                    </span>
+                    <span class="chapter">11.3</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12-data_creation_and_modification">Data creation and modification</a>
+                    </span>
+                    <span class="chapter">12</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.01-adding_documents_to_a_table">Adding documents to a table</a>
+                    </span>
+                    <span class="chapter">12.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">Adding documents to a realtime table</a>
+                    </span>
+                    <span class="chapter">12.1.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.01.02-adding_rules_to_a_percolate_table">Adding rules to a percolate table</a>
+                    </span>
+                    <span class="chapter">12.1.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02-adding_data_from_external_storages">Adding data from external storages</a>
+                    </span>
+                    <span class="chapter">12.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">Plain tables creation</a>
+                    </span>
+                    <span class="chapter">12.2.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.02-fetching_from_databases">Fetching from databases</a>
+                    </span>
+                    <span class="chapter">12.2.2</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.02.01-introduction">Introduction</a>
+                    </span>
+                    <span class="chapter">12.2.2.1</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.02.02-database_connection">Database connection</a>
+                    </span>
+                    <span class="chapter">12.2.2.2</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.02.03-execution_of_fetch_queries">Execution of fetch queries</a>
+                    </span>
+                    <span class="chapter">12.2.2.3</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.02.04-processing_fetched_data">Processing fetched data</a>
+                    </span>
+                    <span class="chapter">12.2.2.4</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.02.05-ranged_queries">Ranged queries</a>
+                    </span>
+                    <span class="chapter">12.2.2.5</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.03-fetching_from_xml_stream">Fetching from XML stream</a>
+                    </span>
+                    <span class="chapter">12.2.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.04-fetching_from_csvtsv">Fetching from CSVTSV</a>
+                    </span>
+                    <span class="chapter">12.2.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.05-maindelta_schema">Maindelta schema</a>
+                    </span>
+                    <span class="chapter">12.2.5</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.06-adding_data_from_tables">Adding data from tables</a>
+                    </span>
+                    <span class="chapter">12.2.6</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.06.01-merging_tables">Merging tables</a>
+                    </span>
+                    <span class="chapter">12.2.6.1</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.06.02-killlists_in_plain_tables">Killlists in plain tables</a>
+                    </span>
+                    <span class="chapter">12.2.6.2</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">Attaching a plain table to RT table</a>
+                    </span>
+                    <span class="chapter">12.2.6.3</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.06.04-importing_rt_table">Importing RT table</a>
+                    </span>
+                    <span class="chapter">12.2.6.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.02.07-rotating_a_table">Rotating a table</a>
+                    </span>
+                    <span class="chapter">12.2.7</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.03-updating_documents">Updating documents</a>
+                    </span>
+                    <span class="chapter">12.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.03.01-replace_vs_update">REPLACE vs UPDATE</a>
+                    </span>
+                    <span class="chapter">12.3.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>
+                    </span>
+                    <span class="chapter">12.3.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a>
+                    </span>
+                    <span class="chapter">12.3.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">Deleting documents</a>
+                    </span>
+                    <span class="chapter">12.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="12-data_creation_and_modification.html#toc-12.05-transactions">Transactions</a>
+                    </span>
+                    <span class="chapter">12.5</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13-searching">Searching</a>
+                    </span>
+                    <span class="chapter">13</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.01-intro">Intro</a>
+                    </span>
+                    <span class="chapter">13.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.02-fulltext_matching">Fulltext matching</a>
+                    </span>
+                    <span class="chapter">13.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.02.01-basic_usage">Basic usage</a>
+                    </span>
+                    <span class="chapter">13.2.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.02.02-operators">Operators</a>
+                    </span>
+                    <span class="chapter">13.2.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.02.03-escaping">Escaping</a>
+                    </span>
+                    <span class="chapter">13.2.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.02.04-search_profiling">Search profiling</a>
+                    </span>
+                    <span class="chapter">13.2.4</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.02.05-boolean_optimization">Boolean optimization</a>
+                    </span>
+                    <span class="chapter">13.2.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.03-search_results">Search results</a>
+                    </span>
+                    <span class="chapter">13.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.04-filters">Filters</a>
+                    </span>
+                    <span class="chapter">13.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.05-expressions">Expressions</a>
+                    </span>
+                    <span class="chapter">13.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.06-search_options">Search options</a>
+                    </span>
+                    <span class="chapter">13.6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.07-highlighting">Highlighting</a>
+                    </span>
+                    <span class="chapter">13.7</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.08-sorting_and_ranking">Sorting and ranking</a>
+                    </span>
+                    <span class="chapter">13.8</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.09-pagination">Pagination</a>
+                    </span>
+                    <span class="chapter">13.9</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.10-distributed_searching">Distributed searching</a>
+                    </span>
+                    <span class="chapter">13.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.11-multiqueries">Multiqueries</a>
+                    </span>
+                    <span class="chapter">13.11</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.12-subselects">Subselects</a>
+                    </span>
+                    <span class="chapter">13.12</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.13-grouping">Grouping</a>
+                    </span>
+                    <span class="chapter">13.13</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.14-faceted_search">Faceted search</a>
+                    </span>
+                    <span class="chapter">13.14</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.15-geo_search">Geo search</a>
+                    </span>
+                    <span class="chapter">13.15</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.16-percolate_query">Percolate query</a>
+                    </span>
+                    <span class="chapter">13.16</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.17-autocomplete">Autocomplete</a>
+                    </span>
+                    <span class="chapter">13.17</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.18-spell_correction">Spell correction</a>
+                    </span>
+                    <span class="chapter">13.18</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.19-query_cache">Query cache</a>
+                    </span>
+                    <span class="chapter">13.19</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.20-collations">Collations</a>
+                    </span>
+                    <span class="chapter">13.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.21-costbased_optimizer">Costbased optimizer</a>
+                    </span>
+                    <span class="chapter">13.21</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="13-searching.html#toc-13.22-knearest_neighbor_vector_search">Knearest neighbor vector search</a>
+                    </span>
+                    <span class="chapter">13.22</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="14-updating_table_schema_and_settings.html#toc-14-updating_table_schema_and_settings">Updating table schema and settings</a>
+                    </span>
+                    <span class="chapter">14</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15-functions">Functions</a>
+                    </span>
+                    <span class="chapter">15</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.01-mathematical_functions">Mathematical functions</a>
+                    </span>
+                    <span class="chapter">15.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.02-searching_and_ranking_functions">Searching and ranking functions</a>
+                    </span>
+                    <span class="chapter">15.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.03-type_casting_functions">Type casting functions</a>
+                    </span>
+                    <span class="chapter">15.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.04-functions_to_handle_arrays_and_conditions">Functions to handle arrays and conditions</a>
+                    </span>
+                    <span class="chapter">15.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.05-date_and_time_functions">Date and time functions</a>
+                    </span>
+                    <span class="chapter">15.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.06-geospatial_functions">Geospatial functions</a>
+                    </span>
+                    <span class="chapter">15.6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.07-string_functions">String functions</a>
+                    </span>
+                    <span class="chapter">15.7</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="15-functions.html#toc-15.08-other_functions">Other functions</a>
+                    </span>
+                    <span class="chapter">15.8</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16-securing_and_compacting_a_table">Securing and compacting a table</a>
+                    </span>
+                    <span class="chapter">16</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.01-backup_and_restore">Backup and restore</a>
+                    </span>
+                    <span class="chapter">16.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.02-few_words_about_rt_table_structure">Few words about RT table structure</a>
+                    </span>
+                    <span class="chapter">16.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.03-flushing_ram_chunk_to_a_new_disk_chunk">Flushing RAM chunk to a new disk chunk</a>
+                    </span>
+                    <span class="chapter">16.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.04-flushing_rt_table_to_disk">Flushing RT table to disk</a>
+                    </span>
+                    <span class="chapter">16.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">Compacting a table</a>
+                    </span>
+                    <span class="chapter">16.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.06-isolation_during_flushing_and_merging">Isolation during flushing and merging</a>
+                    </span>
+                    <span class="chapter">16.6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.07-freezing_a_table">Freezing a table</a>
+                    </span>
+                    <span class="chapter">16.7</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.08-flushing_attributes">Flushing attributes</a>
+                    </span>
+                    <span class="chapter">16.8</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="16-securing_and_compacting_a_table.html#toc-16.09-flushing_hostnames">Flushing hostnames</a>
+                    </span>
+                    <span class="chapter">16.9</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="17-security.html#toc-17-security">Security</a>
+                    </span>
+                    <span class="chapter">17</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="17-security.html#toc-17.01-ssl">SSL</a>
+                    </span>
+                    <span class="chapter">17.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="17-security.html#toc-17.02-readonly">Readonly</a>
+                    </span>
+                    <span class="chapter">17.2</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="18-logging.html#toc-18-logging">Logging</a>
+                    </span>
+                    <span class="chapter">18</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="18-logging.html#toc-18.01-query_logging">Query logging</a>
+                    </span>
+                    <span class="chapter">18.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="18-logging.html#toc-18.02-server_logging">Server logging</a>
+                    </span>
+                    <span class="chapter">18.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="18-logging.html#toc-18.03-binary_logging">Binary logging</a>
+                    </span>
+                    <span class="chapter">18.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="18-logging.html#toc-18.04-docker_logging">Docker logging</a>
+                    </span>
+                    <span class="chapter">18.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="18-logging.html#toc-18.05-rotating_query_and_server_logs">Rotating query and server logs</a>
+                    </span>
+                    <span class="chapter">18.5</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19-node_info_and_management">Node info and management</a>
+                    </span>
+                    <span class="chapter">19</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.01-node_status">Node status</a>
+                    </span>
+                    <span class="chapter">19.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.02-show_meta">SHOW META</a>
+                    </span>
+                    <span class="chapter">19.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.03-show_threads">SHOW THREADS</a>
+                    </span>
+                    <span class="chapter">19.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.04-show_queries">SHOW QUERIES</a>
+                    </span>
+                    <span class="chapter">19.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.05-show_version">SHOW VERSION</a>
+                    </span>
+                    <span class="chapter">19.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.06-kill">KILL</a>
+                    </span>
+                    <span class="chapter">19.6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.07-show_warnings">SHOW WARNINGS</a>
+                    </span>
+                    <span class="chapter">19.7</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.08-show_variables">SHOW VARIABLES</a>
+                    </span>
+                    <span class="chapter">19.8</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.09-profiling">Profiling</a>
+                    </span>
+                    <span class="chapter">19.9</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.09.01-query_profiling">Query profiling</a>
+                    </span>
+                    <span class="chapter">19.9.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.09.02-query_plan">Query plan</a>
+                    </span>
+                    <span class="chapter">19.9.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.10-table_settings_and_status">Table settings and status</a>
+                    </span>
+                    <span class="chapter">19.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.10.01-show_table_status">SHOW TABLE STATUS</a>
+                    </span>
+                    <span class="chapter">19.1.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="19-node_info_and_management.html#toc-19.10.02-show_table_settings">SHOW TABLE SETTINGS</a>
+                    </span>
+                    <span class="chapter">19.1.2</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20-server_settings">Server settings</a>
+                    </span>
+                    <span class="chapter">2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.01-searchd">Searchd</a>
+                    </span>
+                    <span class="chapter">2.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.02-common">Common</a>
+                    </span>
+                    <span class="chapter">2.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.03-special_suffixes">Special suffixes</a>
+                    </span>
+                    <span class="chapter">2.3</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.04-scripted_configuration">Scripted configuration</a>
+                    </span>
+                    <span class="chapter">2.4</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.05-comments">Comments</a>
+                    </span>
+                    <span class="chapter">2.5</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.06-inheritance_of_table_and_source_declarations">Inheritance of table and source declarations</a>
+                    </span>
+                    <span class="chapter">2.6</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="20-server_settings.html#toc-20.07-setting_variables_online">Setting variables online</a>
+                    </span>
+                    <span class="chapter">2.7</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="21-integration.html#toc-21-integration">Integration</a>
+                    </span>
+                    <span class="chapter">21</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="21-integration.html#toc-21.01-logstash">Logstash</a>
+                    </span>
+                    <span class="chapter">21.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="21-integration.html#toc-21.02-filebeat">Filebeat</a>
+                    </span>
+                    <span class="chapter">21.2</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22-extensions">Extensions</a>
+                    </span>
+                    <span class="chapter">22</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.01-sphinxse">SphinxSE</a>
+                    </span>
+                    <span class="chapter">22.1</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.02-federated">FEDERATED</a>
+                    </span>
+                    <span class="chapter">22.2</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03-udfs_and_plugins">UDFs and Plugins</a>
+                    </span>
+                    <span class="chapter">22.3</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.01-listing_plugins">Listing plugins</a>
+                    </span>
+                    <span class="chapter">22.3.1</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.02-udf">UDF</a>
+                    </span>
+                    <span class="chapter">22.3.2</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.02.01-creating_a_function">Creating a function</a>
+                    </span>
+                    <span class="chapter">22.3.2.1</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.02.02-deleting_a_function">Deleting a function</a>
+                    </span>
+                    <span class="chapter">22.3.2.2</span>
+                </li>
+                <li class="toc-indent-3">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03-plugins">Plugins</a>
+                    </span>
+                    <span class="chapter">22.3.3</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03.01-creating_a_plugin">Creating a plugin</a>
+                    </span>
+                    <span class="chapter">22.3.3.1</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03.02-deleting_a_plugin">Deleting a plugin</a>
+                    </span>
+                    <span class="chapter">22.3.3.2</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03.03-enabling_and_disabling_buddy_plugins">Enabling and disabling Buddy plugins</a>
+                    </span>
+                    <span class="chapter">22.3.3.3</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03.04-reloading_plugins">Reloading plugins</a>
+                    </span>
+                    <span class="chapter">22.3.3.4</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03.05-ranker_plugins">Ranker plugins</a>
+                    </span>
+                    <span class="chapter">22.3.3.5</span>
+                </li>
+                <li class="toc-indent-4">
+                    <span class="title">
+                        <a target="content" href="22-extensions.html#toc-22.03.03.06-token_filter_plugins">Token filter plugins</a>
+                    </span>
+                    <span class="chapter">22.3.3.6</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="23-miscellaneous_tools.html#toc-23-miscellaneous_tools">Miscellaneous tools</a>
+                    </span>
+                    <span class="chapter">23</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="24-openapi_specification.html#toc-24-openapi_specification">OpenAPI specification</a>
+                    </span>
+                    <span class="chapter">24</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="25-telemetry.html#toc-25-telemetry">Telemetry</a>
+                    </span>
+                    <span class="chapter">25</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="26-changelog.html#toc-26-changelog">Changelog</a>
+                    </span>
+                    <span class="chapter">26</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="27-reporting_bugs.html#toc-27-reporting_bugs">Reporting bugs</a>
+                    </span>
+                    <span class="chapter">27</span>
+                </li>
+                <li class="toc-indent-1">
+                    <span class="title">
+                        <a target="content" href="28-references.html#toc-28-references">References</a>
+                    </span>
+                    <span class="chapter">28</span>
+                </li>
+                <li class="toc-indent-2">
+                    <span class="title">
+                        <a target="content" href="28-references.html#toc-28.01-previous_versions">Previous versions</a>
+                    </span>
+                    <span class="chapter">28.1</span>
+                </li>
+                
+            </ul>
+        </aside>
+
+        <article class="content">
+            <iframe name="content" src="01-introduction.html"></iframe>
+        </article>
+
+        <footer class="footer">
+            <a href="https://github.com/emmanueloga/manticore-manual">Doc Sources</a>
+        </footer>
+    </div>
+</body>

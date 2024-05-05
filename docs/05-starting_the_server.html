@@ -1,0 +1,626 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Starting the server - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-05-starting_the_server">
+        <a class="chapter-link" href="#toc-05-starting_the_server"> ¶ 5</a>
+
+        
+        <h1 id="starting-the-server">Starting the server</h1>
+<p>Manticore Search server can be started using different methods, depending on the installation type.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-05.01-in_linux">
+        <a class="chapter-link" href="#toc-05.01-in_linux"> ¶ 5.1</a>
+
+        
+        <h1 id="starting-manticore-in-linux">Starting Manticore in Linux</h1>
+<h3 id="starting-and-stopping-using-systemd">Starting and stopping using systemd</h3>
+<p>After the installation the Manticore Search service is not started automatically. To start Manticore run the following command:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>To stop Manticore run the following command:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>The Manticore service is set to run at boot. You can check it by running:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>is-enabled<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>If you want to disable Manticore from starting at boot time, run:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>disable<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>To make Manticore start at boot, run:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>manticore
+</code></pre></div>
+
+<p><code>searchd</code> process logs startup information in <code>systemd</code> journal. If <code>systemd</code> logging is enabled you can view the logged information with the following command:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>journalctl<span class="w"> </span>-u<span class="w"> </span>manticore
+</code></pre></div>
+
+<h3 id="custom-startup-flags-using-systemd">Custom startup flags using systemd</h3>
+<p><code>systemctl set-environment _ADDITIONAL_SEARCHD_PARAMS</code>  allows you to specify custom startup flags that the Manticore Search daemon should be started with. See full list <a href="../05-starting_the_server.html#searchd-command-line-options">here</a>.</p>
+<p>For example, to start Manticore with the debug logging level, you can run:</p>
+<div class="codehilite"><pre><span></span><code>systemctl<span class="w"> </span>set-environment<span class="w"> </span><span class="nv">_ADDITIONAL_SEARCHD_PARAMS</span><span class="o">=</span><span class="s1">&#39;--logdebug&#39;</span>
+systemctl<span class="w"> </span>restart<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>To undo it, run:</p>
+<div class="codehilite"><pre><span></span><code>systemctl<span class="w"> </span>set-environment<span class="w"> </span><span class="nv">_ADDITIONAL_SEARCHD_PARAMS</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+systemctl<span class="w"> </span>restart<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>Note, systemd environment variables get reset on server reboot.</p>
+<h3 id="starting-and-stopping-using-service">Starting and stopping using service</h3>
+<p>Manticore can be started and stopped using service commands:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>service<span class="w"> </span>manticore<span class="w"> </span>start
+sudo<span class="w"> </span>service<span class="w"> </span>manticore<span class="w"> </span>stop
+</code></pre></div>
+
+<p>To enable the sysV service at boot on RedHat systems run:</p>
+<div class="codehilite"><pre><span></span><code>chkconfig<span class="w"> </span>manticore<span class="w"> </span>on
+</code></pre></div>
+
+<p>To enable the sysV service at boot on Debian systems (including Ubuntu) run:</p>
+<div class="codehilite"><pre><span></span><code>update-rc.d<span class="w"> </span>manticore<span class="w"> </span>defaults
+</code></pre></div>
+
+<p>Please note that <code>searchd</code> is started by the init system under the <code>manticore</code> user and all files created by the server will be owned by this user. If <code>searchd</code> is started under, for example, the root user, the file permissions will be changed, which may result in issues when running <code>searchd</code> as a service again.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-05.02-manually">
+        <a class="chapter-link" href="#toc-05.02-manually"> ¶ 5.2</a>
+
+        
+        <h1 id="starting-manticore-manually">Starting Manticore manually</h1>
+<p>You can also start Manticore Search by calling <code>searchd</code> (Manticore Search server binary) directly:</p>
+<div class="codehilite"><pre><span></span><code>searchd<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+
+<p>Note that without specifying a path to the configuration file, <code>searchd</code> will try to find it in several locations depending on the operating system.</p>
+<h2 id="searchd-command-line-options">searchd command line options</h2>
+<p>The options available to <code>searchd</code> in all operating systems are:</p>
+<ul>
+<li><code>--help</code> (<code>-h</code> for short) lists all of the parameters that can be used in your particular build of <code>searchd</code>.</li>
+<li><code>--version</code> (<code>-v</code> for short) shows Manticore Search version information.</li>
+<li><code>--config &lt;file&gt;</code> (<code>-c &lt;file&gt;</code> for short) tells <code>searchd</code> to use the specified file as its configuration.</li>
+<li><code>--stop</code> is used to asynchronously stop <code>searchd</code>, using the details of the PID file as specified in the Manticore configuration file. Therefore, you may also need to confirm to <code>searchd</code> which configuration file to use with the <code>--config</code> option. Example:</li>
+</ul>
+<p><code>bash
+  $ searchd --config /etc/manticoresearch/manticore.conf --stop</code></p>
+<ul>
+<li><code>--stopwait</code> is used to synchronously stop <code>searchd</code>. <code>--stop</code> essentially tells the running instance to exit (by sending it a SIGTERM) and then immediately returns. <code>--stopwait</code> will also attempt to wait until the running <code>searchd</code> instance actually finishes the shutdown (eg. saves all the pending attribute changes) and exits. Example:</li>
+</ul>
+<p><code>bash
+  $ searchd --config /etc/manticoresearch/manticore.conf --stopwait</code></p>
+<p>Possible exit codes are as follows:</p>
+<ul>
+<li>0 on success</li>
+<li>1 if connection to running searchd server failed</li>
+<li>2 if server reported an error during shutdown</li>
+<li>
+<p>3 if server crashed during shutdown</p>
+</li>
+<li>
+<p><code>--status</code> command is used to query running <code>searchd</code> instance status using the connection details from the (optionally) provided configuration file. It will try to connect to running instance using the first found UNIX socket or TCP port from the configuration file. On success it will query for a number of status and performance counter values and print them. You can also use <a href="../19-node_info_and_management.html#show-status">SHOW STATUS</a> command to access the very same counters via SQL protocol. Examples:</p>
+</li>
+</ul>
+<p><code>bash
+  $ searchd --status
+  $ searchd --config /etc/manticoresearch/manticore.conf --status</code></p>
+<ul>
+<li><code>--pidfile</code> is used to explicitly force using a PID file (where the <code>searchd</code> process identification number is stored) despite any other debugging options that say otherwise (for instance, <code>--console</code>). This is a debugging option.</li>
+</ul>
+<p><code>bash
+  $ searchd --console --pidfile</code></p>
+<ul>
+<li><code>--console</code> is used to force <code>searchd</code> into console mode. Typically, Manticore runs as a conventional server application and logs information into log files (as specified in the configuration file). However, when debugging issues in the configuration or the server itself, or trying to diagnose hard-to-track-down problems, it may be easier to force it to dump information directly to the console/command line from which it is being called. Running in console mode also means that the process will not be forked (so searches are done in sequence) and logs will not be written to. (It should be noted that console mode is not the intended method for running <code>searchd</code>.)  You can invoke it as:</li>
+</ul>
+<p><code>bash
+  $ searchd --config /etc/manticoresearch/manticore.conf --console</code></p>
+<ul>
+<li>
+<p><code>--logdebug</code>, <code>--logreplication</code>, <code>--logdebugv</code>, and <code>--logdebugvv</code> options enable additional debug output in the server log. They differ by the logging verboseness level. These are debugging options and should not be normally enabled, as they can pollute the log a lot. They can be used temporarily on request to assist with complicated debugging sessions.</p>
+</li>
+<li>
+<p><code>--iostats</code> is used in conjunction with the logging options (the <code>query_log</code> must have been activated in  <code>manticore.conf</code>) to provide more detailed information on a per-query basis about the input/output operations carried out in the course of that query, with a slight performance hit and slightly bigger logs. The IO statistics don't include information about IO operations for attributes, as these are loaded with mmap. To enable it, you can start <code>searchd</code> as follows:</p>
+</li>
+</ul>
+<p><code>bash
+  $ searchd --config /etc/manticoresearch/manticore.conf --iostats</code></p>
+<ul>
+<li><code>--cpustats</code> is used to provide actual CPU time report (in addition to wall time) in both query log file (for every given query) and status report (aggregated). It depends on <code>clock_gettime()</code> Linux system call or falls back to less precise call on certain systems. You might start <code>searchd</code> thus:</li>
+</ul>
+<p><code>bash
+  $ searchd --config /etc/manticoresearch/manticore.conf --cpustats</code></p>
+<ul>
+<li><code>--port portnumber</code> (<code>-p</code> for short) is used to specify the port that Manticore should listen on to accept binary protocol requests, usually for debugging purposes. This will usually default to 9312, but sometimes you need to run it on a different port. Specifying it on the command line will override anything specified in the configuration file. The valid range is 0 to 65535, but ports numbered 1024 and below usually require a privileged account in order to run.</li>
+</ul>
+<p>An example of usage:</p>
+<p><code>bash
+  $ searchd --port 9313</code></p>
+<ul>
+<li>
+<p><code>--listen ( address ":" port | port | path ) [ ":" protocol ]</code> (or <code>-l</code> for short) Works as <code>--port</code>, but allows you to specify not only the port, but the full path, IP address and port, or Unix-domain socket path that <code>searchd</code> will listen on. In other words, you can specify either an IP address (or hostname) and port number, just a port number, or a Unix socket path. If you specify a port number but not the address, searchd will listen on all network interfaces. A Unix path is identified by a leading slash. As the last parameter, you can also specify a protocol handler (listener) to be used for connections on this socket. Supported protocol values are 'sphinx' and 'mysql' (MySQL protocol used since 4.1).</p>
+</li>
+<li>
+<p><code>--force-preread</code> forbids the server from serving any incoming connection until prereading of table files completes. By default, at startup, the server accepts connections while table files are lazy-loaded into memory. This extends the behavior and makes it wait until the files are loaded.</p>
+</li>
+<li>
+<p><code>--index (--table) &lt;table&gt;</code> (or <code>-i (-t) &lt;table&gt;</code> for short) forces this instance of <code>searchd</code>  to only serve the specified table. Like <code>--port</code>, above, this is usually for debugging purposes; more long-term changes would generally be applied to the configuration file itself.</p>
+</li>
+<li>
+<p><code>--strip-path</code> strips the path names from all the file names referenced from the table (stopwords, wordforms, exceptions, etc). This is useful for picking up tables built on another machine with possibly different path layouts.</p>
+</li>
+<li>
+<p><code>--replay-flags=&lt;OPTIONS&gt;</code> switch can be used to specify a list of extra binary log replay options. The supported options are:</p>
+<ul>
+<li><code>accept-desc-timestamp</code>, ignore descending transaction timestamps and replay such transactions anyway (the default behavior is to exit with an error).</li>
+<li><code>ignore-open-errors</code>, ignore missing binlog files (the default behavior is to exit with an error).</li>
+<li><code>ignore-trx-errors</code>, ignore any transaction errors and skip current binlog file (the default behavior is to exit with an error).</li>
+<li><code>ignore-all-errors</code>, ignore any errors described above (the default behavior is to exit with an error).</li>
+</ul>
+<p>Example:</p>
+<p><code>bash
+$ searchd --replay-flags=accept-desc-timestamp</code></p>
+</li>
+<li>
+<p><code>--coredump</code> is used to enable saving a core file or a minidump of the server on crash. Disabled by default to speed up of server restart on crash. This is useful for debugging purposes.</p>
+</li>
+</ul>
+<p><code>bash
+  $ searchd --config /etc/manticoresearch/manticore.conf --coredump</code></p>
+<ul>
+<li>
+<p><code>--new-cluster</code> bootstraps a replication cluster and makes the server a reference node with <a href="../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">cluster restart</a> protection. On Linux you can also run <code>manticore_new_cluster</code>. It will start Manticore in <code>--new-cluster</code> mode via systemd.</p>
+</li>
+<li>
+<p><code>--new-cluster-force</code> bootstraps a replication cluster and makes the server a reference node bypassing <a href="../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">cluster restart</a> protection. On Linux you can also run <code>manticore_new_cluster --force</code>. It will start Manticore in <code>--new-cluster-force</code> mode via systemd.</p>
+</li>
+</ul>
+<h3 id="windows-options">Windows options</h3>
+<p>There are some options for <code>searchd</code> that are specific to Windows platforms, concerning handling as a service, and are only available in Windows binaries.</p>
+<p>Note that in Windows searchd will default to <code>--console</code> mode, unless you install it as a service.</p>
+<ul>
+<li><code>--install</code> installs <code>searchd</code> as a service into the Microsoft Management Console (Control Panel / Administrative Tools / Services). Any other parameters specified on the command line, where <code>--install</code> is specified will also become part of the command line on future starts of the service. For example, as a part of calling <code>searchd</code>, you will likely also need to specify the configuration file with <code>--config</code>, and you would do that as well as specifying <code>--install</code>. Once called, the usual start/stop facilities will become available via the management console, so any methods you could use for starting, stopping and restarting services would also apply to <code>searchd</code>. Example:</li>
+</ul>
+<p><code>bat
+  C:\WINDOWS\system32&gt; C:\Manticore\bin\searchd.exe --install
+     --config C:\Manticore\manticore.conf</code></p>
+<p>If you want to have the I/O stats every time you start <code>searchd</code>, you need to specify the option on the same line as the <code>--install</code> command thus:</p>
+<p><code>bat
+  C:\WINDOWS\system32&gt; C:\Manticore\bin\searchd.exe --install
+     --config C:\Manticore\manticore.conf --iostats</code></p>
+<ul>
+<li><code>--delete</code> removes the service from the Microsoft Management Console and other places where services are registered, after previously being installed with <code>--install</code>. Note that this does not uninstall the software or delete the tables. It means the service will not be called from the services system, and will not be started on the machine's next start. If currently running as a service, the current instance will not be terminated (until the next reboot or until <code>--stop</code>). If the service was installed with a custom name (with <code>--servicename</code>), the same name will need to be specified with <code>--servicename</code> when calling to uninstall. Example:</li>
+</ul>
+<p><code>bat
+  C:\WINDOWS\system32&gt; C:\Manticore\bin\searchd.exe --delete</code></p>
+<ul>
+<li>
+<p><code>--servicename &lt;name&gt;</code> applies the given name to <code>searchd</code> when installing or deleting the service, as it would appear in the Management Console; this will default to searchd, but if being deployed on servers where multiple administrators may log in to the system, or a system with multiple <code>searchd</code> instances, a more descriptive name may be applicable. Note that unless combined with <code>--install</code> or <code>--delete</code>, this option does not do anything.  Example:<br />
+<code>bat
+  C:\WINDOWS\system32&gt; C:\Manticore\bin\searchd.exe --install
+     --config C:\Manticore\manticore.conf --servicename ManticoreSearch</code></p>
+</li>
+<li>
+<p><code>--ntservice</code> is an option that is passed by the Microsoft Management Console to <code>searchd</code> to invoke it as a service on Windows platforms. It would not normally be necessary to call this directly; this would normally be called by Windows when the service is started, although if you wanted to call this as a regular service from the command-line (as the complement to <code>--console</code>) you could do so in theory.</p>
+</li>
+<li>
+<p><code>--safetrace</code> forces <code>searchd</code> to only use the system's backtrace() call in crash reports. In certain (rare) scenarios, this might be a "safer" way to get that report. This is a debugging option.</p>
+</li>
+<li>
+<p><code>--nodetach</code> switch (Linux only) tells <code>searchd</code> not to detach into the background. This will also cause log entries to be printed out to the console. Query processing operates as usual. This is a debugging option and might also be useful when you run Manticore in a Docker container to capture its output.</p>
+</li>
+</ul>
+<h2 id="plugin-dir">Plugin dir</h2>
+<p>Manticore utilizes the <a href="../20-server_settings.html#plugin_dir">plugin_dir</a> for storing and using Manticore Buddy plugins. By default, this value is accessible to the "manticore" user in a standard installation. However, if you start the searchd daemon manually with a different user, the daemon might not have access to the <code>plugin_dir</code>. To address this problem, ensure you specify a <code>plugin_dir</code> in the common section that the user running the searchd daemon can write to.</p>
+<h2 id="signals">Signals</h2>
+<p><code>searchd</code> supports a number of signals:</p>
+<ul>
+<li><code>SIGTERM</code> - Initiates a clean shutdown. New queries will not be handled, but queries that are already started will not be forcibly interrupted.</li>
+<li><code>SIGHUP</code> - Initiates tables rotation. Depending on the value of <a href="../20-server_settings.html#seamless_rotate">seamless_rotate</a> setting, new queries might be shortly stalled; clients will receive temporary errors.</li>
+<li><code>SIGUSR1</code> - Forces reopen of searchd log and query log files, allowing for log file rotation.</li>
+</ul>
+<h2 id="environment-variables">Environment variables</h2>
+<ul>
+<li><code>MANTICORE_TRACK_DAEMON_SHUTDOWN=1</code> enables detailed logging while searchd is shutting down. It's useful in case of some shutdown problems, such as when Manticore takes too long to shut down or freezes during the shutdown process.</li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-05.03-in_docker">
+        <a class="chapter-link" href="#toc-05.03-in_docker"> ¶ 5.3</a>
+
+        
+        <h1 id="starting-and-using-manticore-in-docker">Starting and using Manticore in Docker</h1>
+<p>The image is based on <a href="https://manticoresearch.com/install/">current release of Manticore package</a>.</p>
+<p>The default configuration includes a sample Real-Time table and listens on the default ports:</p>
+<ul>
+<li><code>9306</code> for connections from a MySQL client</li>
+<li><code>9308</code> for connections via HTTP</li>
+<li><code>9312</code> for connections via a binary protocol (e.g. in case you run a cluster)</li>
+</ul>
+<p>The image comes with libraries for easy indexing data from MySQL, PostgreSQL, XML and CSV files.</p>
+<h1 id="how-to-run-manticore-search-docker-image">How to run Manticore Search Docker image</h1>
+<h2 id="quick-usage">Quick usage</h2>
+<p>The below is the simplest way to start Manticore in a container and log in to it via the mysql client:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>--rm<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Waiting for Manticore docker to start. Consider mapping the data_dir to make it start faster next time&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">until</span><span class="w"> </span>docker<span class="w"> </span>logs<span class="w"> </span>manticore<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;accepting connections&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>.<span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>manticore<span class="w"> </span>mysql<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>stop<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>Note that upon exiting the MySQL client, the Manticore container will be stopped and removed, resulting in no saved data. For information on using Manticore in a production environment, please see below.</p>
+<p>The image comes with a sample table that can be loaded like this:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">source</span><span class="w"> </span><span class="o">/</span><span class="n">sandbox</span><span class="p">.</span><span class="k">sql</span>
+</code></pre></div>
+
+<p>Also, the mysql client has several sample queries in its history that you can run on the above table, just use Up/Down keys in the client to see and run them.</p>
+<h2 id="production-use">Production use</h2>
+<h3 id="ports-and-mounting-points">Ports and mounting points</h3>
+<p>For data persistence the folder <code>/var/lib/manticore/</code> should be mounted to local storage or other desired storage engine.</p>
+<p>The configuration file inside the instance is located at   <code>/etc/manticoresearch/manticore.conf</code>. For custom settings, this file should be mounted to your own configuration file.</p>
+<p>The ports are 9306/9308/9312 for SQL/HTTP/Binary, expose them depending on how you are going to use Manticore. For example:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data:/var/lib/manticore<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9306:9306<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9308:9308<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<p>or</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/manticore.conf:/etc/manticoresearch/manticore.conf<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data:/var/lib/manticore/<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9306:9306<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9308:9308<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<p>Make sure to remove <code>127.0.0.1:</code> if you want the ports to be available for external hosts.</p>
+<h3 id="manticore-columnar-library-and-manticore-buddy">Manticore Columnar Library and Manticore Buddy</h3>
+<p>The Manticore Search Docker image doesn't come with the <a href="https://github.com/manticoresoftware/columnar">Manticore Columnar Library</a> pre-installed, which is necessary if you require columnar storage and secondary indexes. However, it can easily be enabled during runtime by setting the environment variable <code>EXTRA=1</code>. For example, <code>docker run -e EXTRA=1 ... manticoresearch/manticore</code>. This will download and install the library in the data directory (which is typically mapped as a volume in production environments) and it won't be re-downloaded unless the Manticore Search version is changed.</p>
+<p>Using <code>EXTRA=1</code> also activates <a href="https://github.com/manticoresoftware/manticoresearch-buddy">Manticore Buddy</a>, which is used for processing certain commands. For more information, refer to the <a href="https://manual.manticoresearch.com/Changelog#Version-6.0.0">changelog</a>.</p>
+<p>If you only need the MCL, you can use the environment variable <code>MCL=1</code>.</p>
+<h3 id="docker-compose">Docker-compose</h3>
+<p>In many cases, you may want to use Manticore in conjunction with other images specified in a Docker Compose YAML file. Below is the minimal recommended configuration for Manticore Search in a docker-compose.yml file:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2.2&#39;</span>
+
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">manticore</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manticore</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manticoresearch/manticore</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EXTRA=1</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">127.0.0.1:9306:9306</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">127.0.0.1:9308:9308</span>
+<span class="w">    </span><span class="nt">ulimits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nproc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">      </span><span class="nt">nofile</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">soft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">         </span><span class="nt">hard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">      </span><span class="nt">memlock</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">soft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">        </span><span class="nt">hard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data:/var/lib/manticore</span>
+<span class="c1">#      - ./manticore.conf:/etc/manticoresearch/manticore.conf # uncomment if you use a custom config</span>
+</code></pre></div>
+
+<p>Besides using the exposed ports 9306 and 9308, you can log into the instance by running <code>docker-compose exec manticore mysql</code>.</p>
+<h3 id="http-protocol">HTTP protocol</h3>
+<p>HTTP protocol is exposed on port 9308. You can map the port locally and connect using curl.:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-p<span class="w"> </span><span class="m">9308</span>:9308<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<!-- example create -->
+<p>Create a table:</p>
+<!-- request JSON -->
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;CREATE</span><span class="w"> </span><span class="err">TABLE</span><span class="w"> </span><span class="kc">testrt</span><span class="w"> </span><span class="err">(</span><span class="w"> </span><span class="kc">t</span><span class="err">i</span><span class="kc">tle</span><span class="w"> </span><span class="kc">te</span><span class="err">x</span><span class="kc">t</span><span class="p">,</span><span class="w"> </span><span class="err">co</span><span class="kc">ntent</span><span class="w"> </span><span class="kc">te</span><span class="err">x</span><span class="kc">t</span><span class="p">,</span><span class="w"> </span><span class="err">gid</span><span class="w"> </span><span class="err">i</span><span class="kc">nte</span><span class="err">ger)&#39;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example insert -->
+<p>Insert a document:</p>
+<!-- request JSON -->
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span>
+<span class="mi">-</span><span class="err">d&#39;</span><span class="p">{</span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;testrt&quot;</span><span class="p">,</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;doc&quot;</span><span class="p">:{</span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;world&quot;</span><span class="p">,</span><span class="nt">&quot;gid&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example search -->
+<p>Perform a simple search:</p>
+<!-- request JSON -->
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span><span class="p">{</span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;testrt&quot;</span><span class="p">,</span><span class="nt">&quot;query&quot;</span><span class="p">:{</span><span class="nt">&quot;match&quot;</span><span class="p">:{</span><span class="nt">&quot;*&quot;</span><span class="p">:</span><span class="s2">&quot;hello world&quot;</span><span class="p">}}}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="logging">Logging</h3>
+<p>By default, the server is set to send its logging to <code>/dev/stdout</code>, which can be viewed from the host with:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>The query log can be diverted to Docker log by passing the variable <code>QUERY_LOG_TO_STDOUT=true</code>.</p>
+<h3 id="multi-node-cluster-with-replication">Multi-node cluster with replication</h3>
+<p>Here is a simple <code>docker-compose.yml</code> for defining a two node cluster:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2.2&#39;</span>
+
+<span class="nt">services</span><span class="p">:</span>
+
+<span class="w">  </span><span class="nt">manticore-1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manticoresearch/manticore</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EXTRA=1</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">ulimits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nproc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">      </span><span class="nt">nofile</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">soft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">         </span><span class="nt">hard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">      </span><span class="nt">memlock</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">soft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">        </span><span class="nt">hard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manticore</span>
+<span class="w">  </span><span class="nt">manticore-2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manticoresearch/manticore</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EXTRA=1</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">ulimits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nproc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">      </span><span class="nt">nofile</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">soft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">        </span><span class="nt">hard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65535</span>
+<span class="w">      </span><span class="nt">memlock</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">soft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">        </span><span class="nt">hard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manticore</span>
+<span class="nt">networks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">manticore</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+</code></pre></div>
+
+<ul>
+<li>Start it: <code>docker-compose up</code></li>
+<li>Create a cluster:<br />
+  ```sql<br />
+  $ docker-compose exec manticore-1 mysql</li>
+</ul>
+<p>mysql&gt; CREATE TABLE testrt ( title text, content text, gid integer);</p>
+<p>mysql&gt; CREATE CLUSTER posts;<br />
+  Query OK, 0 rows affected (0.24 sec)</p>
+<p>mysql&gt; ALTER CLUSTER posts ADD testrt;<br />
+  Query OK, 0 rows affected (0.07 sec)</p>
+<p>MySQL [(none)]&gt; exit<br />
+  Bye<br />
+  ```</p>
+<ul>
+<li>Join to the the cluster on the 2nd instance<br />
+  ```sql<br />
+  $ docker-compose exec manticore-2 mysql</li>
+</ul>
+<p>mysql&gt; JOIN CLUSTER posts AT 'manticore-1:9312';<br />
+  mysql&gt; INSERT INTO posts:testrt(title,content,gid)  VALUES('hello','world',1);<br />
+  Query OK, 1 row affected (0.00 sec)</p>
+<p>MySQL [(none)]&gt; exit<br />
+  Bye<br />
+  ```</p>
+<ul>
+<li>If you now go back to the first instance you'll see the new record:<br />
+  ```sql<br />
+  $ docker-compose exec manticore-1 mysql</li>
+</ul>
+<p>MySQL [(none)]&gt; select * from testrt;<br />
+  +---------------------+------+-------+---------+<br />
+  | id                  | gid  | title | content |<br />
+  +---------------------+------+-------+---------+<br />
+  | 3891565839006040065 |    1 | hello | world   |<br />
+  +---------------------+------+-------+---------+<br />
+  1 row in set (0.00 sec)</p>
+<p>MySQL [(none)]&gt; exit<br />
+  Bye<br />
+  ```</p>
+<h2 id="memory-locking-and-limits">Memory locking and limits</h2>
+<p>It's recommended to overwrite the default ulimits of docker for the Manticore instance:</p>
+<div class="codehilite"><pre><span></span><code><span class="w"> </span>--ulimit<span class="w"> </span><span class="nv">nofile</span><span class="o">=</span><span class="m">65536</span>:65536
+</code></pre></div>
+
+<p>For best performance, table components can be "mlocked" into memory. When Manticore is run under Docker, the instance requires additional privileges to allow memory locking. The following options must be added when running the instance:</p>
+<div class="codehilite"><pre><span></span><code><span class="w">  </span>--cap-add<span class="o">=</span>IPC_LOCK<span class="w"> </span>--ulimit<span class="w"> </span><span class="nv">memlock</span><span class="o">=</span>-1:-1
+</code></pre></div>
+
+<h2 id="configuring-manticore-search-with-docker">Configuring Manticore Search with Docker</h2>
+<p>If you want to run Manticore with a custom configuration that includes table definitions, you will need to mount the configuration to the instance:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/manticore.conf:/etc/manticoresearch/manticore.conf<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data/:/var/lib/manticore<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9306:9306<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<p>Take into account that Manticore search inside the container is run under user <code>manticore</code>. Performing operations with table files (like creating or rotating plain tables) should be also done under <code>manticore</code>. Otherwise the files will be created under <code>root</code> and the search daemon won't have rights to open them. For example here is how you can rotate all tables:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>manticore<span class="w"> </span>gosu<span class="w"> </span>manticore<span class="w"> </span>indexer<span class="w"> </span>--all<span class="w"> </span>--rotate
+</code></pre></div>
+
+<p>You can also set individual <code>searchd</code> and <code>common</code> configuration settings using Docker environment variables.  </p>
+<p>The settings must be prefixed with their section name, example for in case of <code>mysql_version_string</code> the variable must be named <code>searchd_mysql_version_string</code>:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w">  </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9306:9306<span class="w">  </span>-e<span class="w"> </span><span class="nv">searchd_mysql_version_string</span><span class="o">=</span><span class="s1">&#39;5.5.0&#39;</span><span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<p>In case of the <code>listen</code> directive, new listening interfaces using the Docker variable <code>searchd_listen</code>  in addition to the default ones. Multiple interfaces can be declared, separated by a semi-colon ("|"). To listen only on a network address, the <code>$ip</code> (retrieved internally from <code>hostname -i</code>) can be used as address alias.</p>
+<p>For example <code>-e searchd_listen='9316:http|9307:mysql|$ip:5443:mysql_vip'</code> will add an additional SQL interface on port 9307, an SQL VIP listener on port 5443 running only on the instance's IP, and an HTTP listener on port 9316, in addition to the defaults on 9306 and 9308, respectively.</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">1188</span>:9307<span class="w">  </span>-e<span class="w"> </span><span class="nv">searchd_mysql_version_string</span><span class="o">=</span><span class="s1">&#39;5.5.0&#39;</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">searchd_listen</span><span class="o">=</span><span class="s1">&#39;9316:http|9307:mysql|$ip:5443:mysql_vip&#39;</span><span class="w">  </span>manticore
+<span class="o">[</span>Mon<span class="w"> </span>Aug<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">07</span>:31:58.719<span class="w"> </span><span class="m">2020</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span>using<span class="w"> </span>config<span class="w"> </span>file<span class="w"> </span><span class="s1">&#39;/etc/manticoresearch/manticore.conf&#39;</span><span class="w"> </span><span class="o">(</span><span class="m">9130</span><span class="w"> </span>chars<span class="o">)</span>...
+listening<span class="w"> </span>on<span class="w"> </span>all<span class="w"> </span>interfaces<span class="w"> </span><span class="k">for</span><span class="w"> </span>http,<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9316</span>
+listening<span class="w"> </span>on<span class="w"> </span>all<span class="w"> </span>interfaces<span class="w"> </span><span class="k">for</span><span class="w"> </span>mysql,<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9307</span>
+listening<span class="w"> </span>on<span class="w"> </span><span class="m">172</span>.17.0.17:5443<span class="w"> </span><span class="k">for</span><span class="w"> </span>VIP<span class="w"> </span>mysql
+listening<span class="w"> </span>on<span class="w"> </span>all<span class="w"> </span>interfaces<span class="w"> </span><span class="k">for</span><span class="w"> </span>mysql,<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9306</span>
+listening<span class="w"> </span>on<span class="w"> </span>UNIX<span class="w"> </span>socket<span class="w"> </span>/var/run/mysqld/mysqld.sock
+listening<span class="w"> </span>on<span class="w"> </span><span class="m">172</span>.17.0.17:9312<span class="w"> </span><span class="k">for</span><span class="w"> </span>sphinx
+listening<span class="w"> </span>on<span class="w"> </span>all<span class="w"> </span>interfaces<span class="w"> </span><span class="k">for</span><span class="w"> </span>http,<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9308</span>
+prereading<span class="w"> </span><span class="m">0</span><span class="w"> </span>indexes
+prereaded<span class="w"> </span><span class="m">0</span><span class="w"> </span>indexes<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.000<span class="w"> </span>sec
+accepting<span class="w"> </span>connections
+</code></pre></div>
+
+<h3 id="startup-flags">Startup flags</h3>
+<p>To start Manticore with custom startup flags, specify them as arguments when using docker run. Ensure you do not include the <code>searchd</code> command and include the <code>--nodetach</code> flag. Here's an example:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>--rm<span class="w"> </span>manticoresearch/manticore:latest<span class="w"> </span>--replay-flags<span class="o">=</span>ignore-trx-errors<span class="w"> </span>--nodetach
+</code></pre></div>
+
+<h3 id="running-under-non-root">Running under non-root</h3>
+<p>By default, the main Manticore process <code>searchd</code> is running under user <code>manticore</code> inside the container, but the script which runs on starting the container is run under your default docker user which in most cases is <code>root</code>. If that's not what you want you can use <code>docker ... --user manticore</code> or <code>user: manticore</code> in docker compose yaml to make everything run under <code>manticore</code>. Read below about possible volume permissions issue you can get and how to solve it.</p>
+<h3 id="creating-plain-tables-on-startup">Creating plain tables on startup</h3>
+<p>To build plain tables specified in your custom configuration file, you can use the <code>CREATE_PLAIN_TABLES=1</code> environment variable. It will execute <code>indexer --all</code> before Manticore starts. This is useful if you don't use volumes, and your tables are easy to recreate.</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">CREATE_PLAIN_TABLES</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/manticore.conf:/etc/manticoresearch/manticore.conf<span class="w"> </span>-p<span class="w"> </span><span class="m">9306</span>:9306<span class="w"> </span>-p<span class="w"> </span><span class="m">9308</span>:9308<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="permissions-issue-with-a-mounted-volume">Permissions issue with a mounted volume</h3>
+<p>In case you are running Manticore Search docker under non-root (using <code>docker ... --user manticore</code> or <code>user: manticore</code> in docker compose yaml), you can face a permissions issue, for example:</p>
+<div class="codehilite"><pre><span></span><code>FATAL:<span class="w"> </span>directory<span class="w"> </span>/var/lib/manticore<span class="w"> </span>write<span class="w"> </span>error:<span class="w"> </span>failed<span class="w"> </span>to<span class="w"> </span>open<span class="w"> </span>/var/lib/manticore/tmp:<span class="w"> </span>Permission<span class="w"> </span>denied
+</code></pre></div>
+
+<p>or in case you are using <code>-e EXTRA=1</code>:</p>
+<div class="codehilite"><pre><span></span><code>mkdir:<span class="w"> </span>cannot<span class="w"> </span>create<span class="w"> </span>directory<span class="w"> </span>‘/var/lib/manticore/.mcl/’:<span class="w"> </span>Permission<span class="w"> </span>denied
+</code></pre></div>
+
+<p>This can happen because the user which is used to run processes inside the container may have no permissions to modify the directory you have mounted to the container. To fix it you can <code>chown</code> or <code>chmod</code> the mounted directory. If you run the container under user <code>manticore</code> you need to do:</p>
+<div class="codehilite"><pre><span></span><code>chown<span class="w"> </span>-R<span class="w"> </span><span class="m">999</span>:999<span class="w"> </span>data
+</code></pre></div>
+
+<p>since user <code>manticore</code> has ID 999 inside the container.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-05.04-in_windows">
+        <a class="chapter-link" href="#toc-05.04-in_windows"> ¶ 5.4</a>
+
+        
+        <h1 id="starting-manticore-in-windows">Starting Manticore in Windows</h1>
+<p>On Windows, if you want Manticore to start at boot, you can install it as a Windows Service. You can follow the instructions in the <a href="../03-installation.html#toc-03.05-windows">Manticore as Windows Service</a> guide to install Manticore as a service.</p>
+<p>Once Manticore is installed as a service, you can start and stop it from the Control Panel or from the command line using the sc.exe command.</p>
+<div class="codehilite"><pre><span></span><code>sc.exe<span class="w"> </span>start<span class="w"> </span>Manticore
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sc.exe<span class="w"> </span>stop<span class="w"> </span>Manticore
+</code></pre></div>
+
+<p>Alternatively, if you don't install Manticore as a Windows service, you can start it from the command line by running the following command:</p>
+<div class="codehilite"><pre><span></span><code>.<span class="se">\b</span>in<span class="se">\s</span>earchd<span class="w"> </span>-c<span class="w"> </span>manticore.conf
+</code></pre></div>
+
+<p>This command assumes that you have the Manticore's binary and the configuration file in the current directory.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-05.05-in_macos">
+        <a class="chapter-link" href="#toc-05.05-in_macos"> ¶ 5.5</a>
+
+        
+        <h1 id="starting-manticore-in-macos">Starting Manticore in MacOS</h1>
+<h2 id="starting-manticore-via-homebrew-package-manager">Starting Manticore via HomeBrew package manager</h2>
+<p>If Manticore is installed using HomeBrew, you can run it as a Brew service.</p>
+<p>To start Manticore, run the following command:</p>
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>services<span class="w"> </span>start<span class="w"> </span>manticoresearch
+</code></pre></div>
+
+<p>To stop Manticore, run the following command:</p>
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>services<span class="w"> </span>stop<span class="w"> </span>manticoresearch
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

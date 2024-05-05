@@ -1,0 +1,10 @@
+# pixi environments
+.pixi
+*.egg-info
+
+# Byte-compiled / optimized / DLL files.
+# See also: https://github.com/github/gitignore/blob/main/Python.gitignore
+__pycache__/
+*.py[cod]
+*$py.class
+

@@ -1,0 +1,827 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Securing and compacting a table - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-16-securing_and_compacting_a_table">
+        <a class="chapter-link" href="#toc-16-securing_and_compacting_a_table"> ¶ 16</a>
+
+        
+        <h1>Securing and compacting a table</h1>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.01-backup_and_restore">
+        <a class="chapter-link" href="#toc-16.01-backup_and_restore"> ¶ 16.1</a>
+
+        
+        <h1 id="backup-and-restore">Backup and Restore</h1>
+<p>Backing up your tables on a regular basis is essential for recovery in the event of system crashes, hardware failure, or data corruption/loss. It's also highly recommended to make backups before upgrading to a new Manticore Search version or running <a href="../14-updating_table_schema_and_settings.html#updating-table-schema-in-rt-mode">ALTER TABLE</a>.</p>
+<p>Backing up database systems can be done in two unique ways: logical and physical backups. Each of these methods has its pros and cons, which may vary based on the specific database environment and needs. Here, we'll delve into the distinction between these two types of backups.</p>
+<h3 id="logical-backups">Logical Backups</h3>
+<p>Logical backups entail exporting the database schema and data as SQL statements or as data formats specific to the database. This backup form is typically readable by humans and can be employed to restore the database on various systems or database engines.</p>
+<p>Pros and cons of logical backups:<br />
+- ➕ <strong>Portability:</strong> Logical backups are generally more portable than physical backups, as they can be used to restore the database on different hardware or operating systems.<br />
+- ➕ <strong>Flexibility:</strong> Logical backups allow you to selectively restore specific tables, indexes, or other database objects.<br />
+- ➕ <strong>Compatibility:</strong> Logical backups can be used to migrate data between different database management systems or versions, provided the target system supports the exported format or SQL statements.<br />
+- ➖ <strong>Slower Backup and Restore:</strong> Logical backups can be slower than physical backups, as they require the database engine to convert the data into SQL statements or another export format.<br />
+- ➖ <strong>Increased System Load:</strong> Creating logical backups can cause higher system load, as the process requires more CPU and memory resources to process and export the data.</p>
+<p>Manticore Search supports <a href="../16-securing_and_compacting_a_table.html#backup-and-restore-with-mysqldump">mysqldump</a> for logical backups.</p>
+<h3 id="physical-backups">Physical Backups</h3>
+<p>Physical backups involve copying the raw data files and system files that comprise the database. This type of backup essentially creates a snapshot of the database's physical state at a given point in time.</p>
+<p>Pros and cons of physical backups:<br />
+- ➕ <strong>Speed:</strong> Physical backups are usually faster than logical backups, as they involve copying raw data files directly from disk.<br />
+- ➕ <strong>Consistency:</strong> Physical backups ensure a consistent backup of the entire database, as all related files are copied together.<br />
+- ➕ <strong>Lower System Load:</strong> Creating physical backups generally places less load on the system compared to logical backups, as the process does not involve additional data processing.<br />
+- ➖ <strong>Portability:</strong> Physical backups are typically less portable than logical backups, as they may be dependent on the specific hardware, operating system, or database engine configuration.<br />
+- ➖ <strong>Flexibility:</strong> Physical backups do not allow for the selective restoration of specific database objects, as the backup contains the entire database's raw files.<br />
+- ➖ <strong>Compatibility:</strong> Physical backups cannot be used to migrate data between different database management systems or versions, as the raw data files may not be compatible across different platforms or software.</p>
+<p>Manticore Search has <a href="../16-securing_and_compacting_a_table.html#using-manticore-backup-command-line-tool">manticore-backup</a> command line tool for physical backups.</p>
+<p>In summary, logical backups provide more flexibility, portability, and compatibility but can be slower and more resource-intensive, while physical backups are faster, more consistent, and less resource-intensive but may be limited in terms of portability and flexibility. The choice between these two backup methods will depend on your specific database environment, hardware, and requirements.</p>
+<h2 id="using-manticore-backup-command-line-tool">Using manticore-backup command line tool</h2>
+<p>The <code>manticore-backup</code> tool, included in the official Manticore Search <a href="https://manticoresearch.com/install">packages</a>, automates the process of backing up tables for an instance running in <a href="../02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a>.</p>
+<h3 id="installation">Installation</h3>
+<p><strong>If you followed <a href="https://manticoresearch.com/install/">the official installation instructions</a>, you should already have everything installed and don't need to worry.</strong> Otherwise, <a href="https://github.com/manticoresoftware/manticoresearch-backup"><code>manticore-backup</code></a> requires PHP 8.1.10 and <a href="https://github.com/manticoresoftware/executor/blob/main/build-linux">specific modules</a> or <a href="https://github.com/manticoresoftware/executor"><code>manticore-executor</code></a>, which is a part of the <code>manticore-extra</code> package, and you need to ensure that one of these is available.</p>
+<p>Note that <code>manticore-backup</code> is not available for Windows yet.</p>
+<h3 id="how-to-use">How to use</h3>
+<p>First, make sure you're running <code>manticore-backup</code> on the same server where the Manticore instance you are about to back up is running.</p>
+<p>Second, we recommend running the tool under the <code>root</code> user so the tool can transfer ownership of the files you are backing up. Otherwise, a backup will be also made but with no ownership transfer. In either case, you should make sure that <code>manticore-backup</code> has access to the data dir of the Manticore instance.</p>
+<!-- example backup1 -->
+
+<p>The only required argument for <code>manticore-backup</code> is <code>--backup-dir</code>, which specifies the destination for the backup. If you don't provide any additional arguments, <code>manticore-backup</code> will:<br />
+- locate a Manticore instance running with the default configuration<br />
+- create a subdirectory in the <code>--backup-dir</code> directory with a timestamped name<br />
+- backup all tables found in the instance</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--config<span class="o">=</span>path/to/manticore.conf<span class="w"> </span>--backup-dir<span class="o">=</span>backupdir
+</code></pre></div>
+
+<!-- response Example -->
+
+<div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
+
+Manticore<span class="w"> </span>config<span class="w"> </span>file:<span class="w"> </span>/etc/manticoresearch/manticore.conf
+Tables<span class="w"> </span>to<span class="w"> </span>backup:<span class="w"> </span>all<span class="w"> </span>tables
+Target<span class="w"> </span>dir:<span class="w"> </span>/mnt/backup/
+
+Manticore<span class="w"> </span>config
+<span class="w">  </span><span class="nv">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="m">127</span>.0.0.1:9308
+
+Manticore<span class="w"> </span>versions:
+<span class="w">  </span>manticore:<span class="w"> </span><span class="m">5</span>.0.2
+<span class="w">  </span>columnar:<span class="w"> </span><span class="m">1</span>.15.4
+<span class="w">  </span>secondary:<span class="w"> </span><span class="m">1</span>.15.4
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Starting<span class="w"> </span>the<span class="w"> </span>backup...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Backing<span class="w"> </span>up<span class="w"> </span>config<span class="w"> </span>files...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>config<span class="w"> </span>files<span class="w"> </span>-<span class="w"> </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Backing<span class="w"> </span>up<span class="w"> </span>tables...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>pq<span class="w"> </span><span class="o">(</span>percolate<span class="o">)</span><span class="w"> </span><span class="o">[</span>425B<span class="o">]</span>...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">    </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>products<span class="w"> </span><span class="o">(</span>rt<span class="o">)</span><span class="w"> </span><span class="o">[</span>512B<span class="o">]</span>...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">    </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:39<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>sync
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:42<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">  </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:42<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>You<span class="w"> </span>can<span class="w"> </span>find<span class="w"> </span>backup<span class="w"> </span>here:<span class="w"> </span>/mnt/backup/backup-20221004171839
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:42<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Elapsed<span class="w"> </span>time:<span class="w"> </span><span class="m">2</span>.76s
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:42<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Done
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example backup2 -->
+<p>To back up specific tables only, use the <code>--tables</code> flag followed by a comma-separated list of tables, for example <code>--tables=tbl1,tbl2</code>. This will only backup the specified tables and ignore the rest.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--backup-dir<span class="o">=</span>/mnt/backup/<span class="w"> </span>--tables<span class="o">=</span>products
+</code></pre></div>
+
+<!-- response Example -->
+
+<div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
+
+Manticore<span class="w"> </span>config<span class="w"> </span>file:<span class="w"> </span>/etc/manticoresearch/manticore.conf
+Tables<span class="w"> </span>to<span class="w"> </span>backup:<span class="w"> </span>products
+Target<span class="w"> </span>dir:<span class="w"> </span>/mnt/backup/
+
+Manticore<span class="w"> </span>config
+<span class="w">  </span><span class="nv">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="m">127</span>.0.0.1:9308
+
+Manticore<span class="w"> </span>versions:
+<span class="w">  </span>manticore:<span class="w"> </span><span class="m">5</span>.0.3
+<span class="w">  </span>columnar:<span class="w"> </span><span class="m">1</span>.16.1
+<span class="w">  </span>secondary:<span class="w"> </span><span class="m">0</span>.0.0
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Starting<span class="w"> </span>the<span class="w"> </span>backup...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Backing<span class="w"> </span>up<span class="w"> </span>config<span class="w"> </span>files...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>config<span class="w"> </span>files<span class="w"> </span>-<span class="w"> </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Backing<span class="w"> </span>up<span class="w"> </span>tables...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>products<span class="w"> </span><span class="o">(</span>rt<span class="o">)</span><span class="w"> </span><span class="o">[</span>512B<span class="o">]</span>...
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">    </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:02<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>sync
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:06<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">  </span>OK
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:06<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>You<span class="w"> </span>can<span class="w"> </span>find<span class="w"> </span>backup<span class="w"> </span>here:<span class="w"> </span>/mnt/backup/backup-20221004172502
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:06<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Elapsed<span class="w"> </span>time:<span class="w"> </span><span class="m">4</span>.82s
+<span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:06<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Done
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="arguments">Arguments</h3>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--backup-dir=path</code></td>
+<td>This is the path to the backup directory where the backup will be stored. The directory must already exist. This argument is required and has no default value. On each backup run, manticore-backup will create a subdirectory in the provided directory with a timestamp in the name (<code>backup-[datetime]</code>), and will copy all required tables to it. So the <code>--backup-dir</code> is a container for all your backups, and it's safe to run the script multiple times.</td>
+</tr>
+<tr>
+<td><code>--restore[=backup]</code></td>
+<td>Restore from <code>--backup-dir</code>. Just --restore lists available backups. <code>--restore=backup</code> will restore from <code>&lt;--backup-dir&gt;/backup</code>.</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td>Skip versions check on restore and gracefully restore the backup.</td>
+</tr>
+<tr>
+<td><code>--disable-telemetry</code></td>
+<td>Pass this flag in case you want to disable sending anonymized metrics  to Manticore. You can also use environment variable TELEMETRY=0</td>
+</tr>
+<tr>
+<td><code>--config=/path/to/manticore.conf</code></td>
+<td>Path to the Manticore configuration. Optional. If not provided, a default configuration for your operating system will be used. Used to determine the host and port for communication with the Manticore daemon. The <code>manticore-backup</code> tool supports <a href="../20-server_settings.html#toc-20.04-scripted_configuration">dynamic configuration</a> files. You can specify the <code>--config</code> option multiple times if your configuration is spread across multiple files.</td>
+</tr>
+<tr>
+<td><code>--tables=tbl1,tbl2, ...</code></td>
+<td>Semicolon-separated list of tables that you want to back up. To back up all tables, omit this argument. All the provided tables must exist in the Manticore instance you are backing up from, or the backup will fail.</td>
+</tr>
+<tr>
+<td><code>--compress</code></td>
+<td>Whether the backed up files should be compressed. Not enabled by default.</td>
+</tr>
+<tr>
+<td><code>--unlock</code></td>
+<td>In rare cases when something goes wrong, tables can be left in a locked state. Use this argument to unlock them.</td>
+</tr>
+<tr>
+<td><code>--version</code></td>
+<td>Show the current version.</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>Show this help.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="backup-sql-command-reference">BACKUP SQL command reference</h2>
+<p>You can also back up your data through SQL by running the simple command <code>BACKUP TO /path/to/backup</code>.</p>
+<p>Note, this command is not supported in Windows yet.</p>
+<h3 id="general-syntax-of-backup">General syntax of BACKUP</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">BACKUP</span>
+<span class="w">  </span><span class="p">[</span><span class="err">{</span><span class="k">TABLE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">TABLES</span><span class="err">}</span><span class="w"> </span><span class="n">a</span><span class="p">[,</span><span class="w"> </span><span class="n">b</span><span class="p">]]</span>
+<span class="w">  </span><span class="p">[</span><span class="err">{</span><span class="k">OPTION</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">OPTIONS</span><span class="err">}</span>
+<span class="w">    </span><span class="n">async</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="k">on</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">off</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">true</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">false</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">yes</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">no</span><span class="err">}</span>
+<span class="w">    </span><span class="p">[,</span><span class="w"> </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="k">on</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">off</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">true</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">false</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">yes</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">no</span><span class="err">}</span><span class="p">]</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="k">TO</span><span class="w"> </span><span class="n">path_to_backup</span>
+</code></pre></div>
+
+<p>For instance, to back up tables <code>a</code> and <code>b</code> to the <code>/backup</code> directory, run the following command:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">BACKUP</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">/</span><span class="n">backup</span>
+</code></pre></div>
+
+<p>There are options available to control and adjust the backup process, such as:</p>
+<ul>
+<li><code>async</code>: makes the backup non-blocking, allowing you to receive a response with the query ID immediately and run other queries while the backup is ongoing. The default value is <code>0</code>.</li>
+<li><code>compress</code>: enables file compression using zstd. The default value is <code>0</code>.<br />
+For example, to run a backup of all tables in async mode with compression enabled to the <code>/tmp</code> directory:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">BACKUP</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">async</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yes</span><span class="p">,</span><span class="w"> </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yes</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span>
+</code></pre></div>
+
+<h3 id="important-considerations">Important considerations</h3>
+<ol>
+<li>The path should not contain special symbols or spaces, as they are not supported.</li>
+<li>Ensure that Manticore Buddy is launched (it is by default).</li>
+</ol>
+<h3 id="how-backup-maintains-consistency-of-tables">How backup maintains consistency of tables</h3>
+<p>To ensure consistency of tables during backup, Manticore Search's backup tools use the innovative <a href="../16-securing_and_compacting_a_table.html#toc-16.07-freezing_a_table">FREEZE and UNFREEZE</a> commands. Unlike the traditional lock and unlock tables feature of e.g. MySQL, <code>FREEZE</code> stops flushing data to disk while still permitting writing (to some extent) and selecting updated data from the table.</p>
+<p>However, if your RAM chunk size grows beyond the <code>rt_mem_limit</code> threshold during lengthy backup operations involving many inserts, data may be flushed to disk, and write operations will be blocked until flushing is complete. Despite this, the tool maintains a balance between table locking, data consistency, and database write availability while the table is frozen.</p>
+<p>When you use <code>manticore-backup</code> or the SQL <code>BACKUP</code> command, the <code>FREEZE</code> command is executed once and freezes all tables you are backing up simultaneously. The backup process subsequently backs up each table one by one, releasing the freeze after successfully backing up each table.</p>
+<p>If backup fails or gets interrupted, the tool tries to unfreeze all the tables.</p>
+<h2 id="restore-by-using-manticore-backup-tool">Restore by using manticore-backup tool</h2>
+<!-- example restore_list -->
+<p>To restore a Manticore instance from a backup, use the <code>manticore-backup</code> command with the <code>--backup-dir</code> and <code>--restore</code> arguments. For example: <code>manticore-backup --backup-dir=/path/to/backups --restore</code>. If you don't provide any argument for <code>--restore</code>, it will simply list all the backups in the <code>--backup-dir</code>.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--backup-dir<span class="o">=</span>/mnt/backup/<span class="w"> </span>--restore
+</code></pre></div>
+
+<!-- response Example -->
+
+<div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
+
+Manticore<span class="w"> </span>config<span class="w"> </span>file:
+Backup<span class="w"> </span>dir:<span class="w"> </span>/tmp/
+
+Available<span class="w"> </span>backups:<span class="w"> </span><span class="m">3</span>
+<span class="w">  </span>backup-20221006144635<span class="w"> </span><span class="o">(</span>Oct<span class="w"> </span><span class="m">06</span><span class="w"> </span><span class="m">2022</span><span class="w"> </span><span class="m">14</span>:46:35<span class="o">)</span>
+<span class="w">  </span>backup-20221006145233<span class="w"> </span><span class="o">(</span>Oct<span class="w"> </span><span class="m">06</span><span class="w"> </span><span class="m">2022</span><span class="w"> </span><span class="m">14</span>:52:33<span class="o">)</span>
+<span class="w">  </span>backup-20221007104044<span class="w"> </span><span class="o">(</span>Oct<span class="w"> </span><span class="m">07</span><span class="w"> </span><span class="m">2022</span><span class="w"> </span><span class="m">10</span>:40:44<span class="o">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example restore -->
+
+<p>To start a restore job, run <code>manticore-backup</code> with the flag <code>--restore=backup name</code>, where <code>backup name</code> is the name of the backup directory within the <code>--backup-dir</code>. Note that:<br />
+1. There can't be any Manticore instance running on the same host and port as the one being restored.<br />
+2. The old <code>manticore.json</code> file must not exist.<br />
+3. The old configuration file must not exist.<br />
+4. The old data directory must exist and be empty.</p>
+<p>If all conditions are met, the restore will proceed. The tool will provide hints, so you don't have to memorize them. It's crucial to avoid overwriting existing files, so make sure to remove them prior to the restore if they still exist. Hence all the conditions.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--backup-dir<span class="o">=</span>/mnt/backup/<span class="w"> </span>--restore<span class="o">=</span>backup-20221007104044
+</code></pre></div>
+
+<!-- response Example -->
+
+<div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
+
+Manticore<span class="w"> </span>config<span class="w"> </span>file:
+Backup<span class="w"> </span>dir:<span class="w"> </span>/tmp/
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Starting<span class="w"> </span>to<span class="w"> </span>restore...
+
+Manticore<span class="w"> </span>config
+<span class="w">  </span><span class="nv">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="m">127</span>.0.0.1:9308
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Restoring<span class="w"> </span>config<span class="w"> </span>files...
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>config<span class="w"> </span>files<span class="w"> </span>-<span class="w"> </span>OK
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Restoring<span class="w"> </span>state<span class="w"> </span>files...
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>config<span class="w"> </span>files<span class="w"> </span>-<span class="w"> </span>OK
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Restoring<span class="w"> </span>data<span class="w"> </span>files...
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w">   </span>config<span class="w"> </span>files<span class="w"> </span>-<span class="w"> </span>OK
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>The<span class="w"> </span>backup<span class="w"> </span><span class="s1">&#39;/tmp/backup-20221007104044&#39;</span><span class="w"> </span>was<span class="w"> </span>successfully<span class="w"> </span>restored.
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Elapsed<span class="w"> </span>time:<span class="w"> </span><span class="m">0</span>.02s
+<span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Done
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="backup-and-restore-with-mysqldump">Backup and restore with mysqldump</h2>
+<!-- example mysqldump_backup -->
+<p>To create a backup of your Manticore Search database, you can use the <code>mysqldump</code> command. We will use the default port and host in the examples.</p>
+<p>Note, <code>mysqldump</code> is supported only for real-time tables.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code>mysqldump<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>manticore<span class="w"> </span>&gt;<span class="w"> </span>manticore_backup.sql
+mariadb-dump<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>manticore<span class="w"> </span>&gt;<span class="w"> </span>manticore_backup.sql
+</code></pre></div>
+
+<p>Executing this command will produce a backup file named <code>manticore_backup.sql</code>. This file will hold all data and table schemas.</p>
+<!-- end -->
+
+</div>
+</div>
+<!-- example mysqldump_restore -->
+<h3 id="restore">Restore</h3>
+<p>If you're looking to restore a Manticore Search database from a backup file, the mysql client is your tool of choice.</p>
+<p>Note, if you are restoring in <a href="../02-read_this_first.html#real-time-mode-vs-plain-mode">Plain mode</a>, you cannot drop and recreate tables directly. Therefore, you should:<br />
+- Use <code>mysqldump</code> with the <code>-t</code> option to exclude <code>CREATE TABLE</code> statements from your backup.<br />
+- Manually <a href="../09-emptying_a_table.html#toc-09-emptying_a_table">TRUNCATE</a> the tables before proceeding with the restoration.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>&lt;<span class="w"> </span>manticore_backup.sql
+mariadb<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>&lt;<span class="w"> </span>manticore_backup.sql
+</code></pre></div>
+
+<p>This command enables you to restore everything from the <code>manticore_backup.sql</code> file.</p>
+<!-- end -->
+
+</div>
+</div>
+<h3 id="additional-options">Additional options</h3>
+<p>Here are some more settings that can be used with mysqldump to tailor your backup:</p>
+<ul>
+<li><code>--add-drop-table</code>: This injects a DROP TABLE command before each CREATE TABLE command in the backup file.</li>
+<li><code>--no-data</code>: This setting omits table data from the backup, leading to a backup file that consists of only table schemas.</li>
+<li><code>--ignore-table=[database_name].[table_name]</code>: This option allows you to bypass a particular table during the backup operation. Note, the database name must be <code>Manticore</code>.</li>
+</ul>
+<p>For a comprehensive list of settings and their thorough descriptions, kindly refer to the <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">official MySQL documentation</a>.</p>
+<h3 id="notes">Notes</h3>
+<p>We recommend specifying the <code>manticore</code> database explicitly when you plan to back up all databases, rather than using the <code>--all-databases</code> option.</p>
+<p>Keep in mind that <code>mysqldump</code> does not support backing up distributed tables. Additionally, it cannot back up tables that contain non-stored fields (consider using <code>manticore-backup</code> or the <code>BACKUP</code> SQL command).</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.02-few_words_about_rt_table_structure">
+        <a class="chapter-link" href="#toc-16.02-few_words_about_rt_table_structure"> ¶ 16.2</a>
+
+        
+        <h1 id="real-time-table-structure">Real-time table structure</h1>
+<p>A plain table can be created from an external source using a special tool called <code>indexer</code>, which reads a "recipe" from the configuration, connects to the data sources, pulls documents, and builds table files. This is a lengthy process. If your data changes, the table becomes outdated, and you need to rebuild it from the refreshed sources. If your data changes incrementally, such as a blog or newsfeed where old documents never change and only new ones are added, the rebuild will take more and more time, as you will need to process the archive sources again and again with each pass.</p>
+<p>One way to deal with this problem is by using several tables instead of one solid table. For example, you can process sources produced in previous years and save the table. Then, take only sources from the current year and put them into a separate table, rebuilding it as often as necessary. You can then place both tables as parts of a distributed table and use it for querying. The point here is that each time you rebuild, you only process data from the last 12 months at most, and the table with older data remains untouched without needing to be rebuilt. You can go further and divide the last 12 months table into monthly, weekly, or daily tables, and so on.</p>
+<p>This approach works, but you need to maintain your distributed table manually. That is, add new chunks, delete old ones, and keep the overall number of partial tables not too large (with too many tables, searching can become slower, and the OS usually limits the number of simultaneously opened files). To deal with this, you can manually merge several tables together by running <a href="../12-data_creation_and_modification.html#toc-12.02.06.01-merging_tables">indexer --merge</a>. However, that only solves the problem of having many tables, making maintenance more challenging. And even with 'per-hour' reindexing, you will most likely have a noticeable time gap between new data arriving in sources and rebuilding the table, which populates this data for searching.</p>
+<p>A real-time table is designed to solve this problem. It consists of two parts:</p>
+<ol>
+<li>A special RAM-based table (called RAM chunk) that contains portions of data arriving right now.</li>
+<li>A collection of plain tables called disk chunks that were built in the past.</li>
+</ol>
+<p>This is very similar to a standard <a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a>, made from several local tables.</p>
+<p>You don't need to build such a table by running <code>indexer</code>,  which reads a "recipe" from the config and tables data sources. Instead, the real-time table provides the ability to 'insert' new documents and 'replace' existing ones. When executing the 'insert' command, you push new documents to the server. It then builds a small table from the added documents and immediately brings it online. So, right after the 'insert' command completes, you can perform searches in all table parts, including the just-added documents.</p>
+<p>The search server automatically maintains the table, so you don't have to worry about it. However, you might be interested in learning a few details about 'how it is maintained'.</p>
+<p><strong>First, since indexed data is stored in RAM - what about emergency power-off?</strong> Will I lose my table then? Well, before completion, the server saves new data into a special 'binlog'. This consists of one or several files, living on your persistent storage, which incrementally grows as you add more and more changes. You can adjust the behavior regarding how often new queries (or transactions) are stored in the binlog, and how often the 'sync' command is executed over the binlog file to force the OS to actually save the data on a safe storage. The most paranoid approach is to flush and sync after every transaction. This is the slowest but also the safest method. The least expensive way is to switch off the binlog entirely. This is the fastest method, but you risk losing your indexed data. Intermediate variants, like flush/sync every second, are also provided.</p>
+<p>The binlog is designed specifically for sequential saving of newly arriving transactions; it is not a table and cannot be searched over. It is merely an insurance policy to ensure that the server will not lose your data. If a sudden disruption occurs and everything crashes due to a software or hardware problem, the server will load the freshest available dump of the RAM chunk and then replay the binlog, repeating stored transactions. Ultimately, it will achieve the same state as it was in at the moment of the last change.</p>
+<p><strong>Second, what about limits?</strong> What if I want to process, say, 10TB of data, but it just doesn't fit into RAM! RAM for a real-time table is limited and can be configured. When a certain amount of data is indexed, the server manages the RAM part of the table by merging together small transactions, keeping their number and overall size small. This process can sometimes cause delays during insertion, however. When merging no longer helps, and new insertions hit the <a href="../06-creating_a_table.html#rt_mem_limit">RAM limit</a>, the server converts the RAM-based table into a plain table stored on disk (called a disk chunk). This table is added to the collection of tables in the second part of the RT table and becomes accessible online. The RAM is then flushed, and the space is deallocated.</p>
+<p>When the data from RAM is securely saved to disk, which occurs:</p>
+<ul>
+<li>when the server saves the collected data as a disk table</li>
+<li>or when it dumps the RAM part during a clean shutdown or by <a href="../16-securing_and_compacting_a_table.html#flush-table">manual flushing</a></li>
+</ul>
+<p>the binlog for that table is no longer necessary. So, it gets discarded. If all the tables are saved, the binlog will be deleted.</p>
+<p><strong>Third, what about disk collection?</strong>  If having many disk parts makes searching slower, what's the difference if I make them manually in the distributed table manner, or they're produced as disk parts (or, 'chunks') by an RT table? Well, in both cases, you can merge several tables into one. For example, you can merge hourly tables from yesterday and keep one 'daily' table for yesterday instead. With manual maintenance, you have to think about the schema and commands yourself. With an RT table, the server provides the <a href="../16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE</a> command, which does the same, but keeps you away from unnecessary internal details.</p>
+<p><strong>Fourth, if my "document" constitutes a 'mini-table' and I don't need it anymore, I can just throw it away. But if it is 'optimized', i.e. mixed together with tons of other documents, how can I undo or delete it?</strong> Yes, indexed documents are 'mixed' together, and there is no easy way to delete one without rebuilding the whole table. And if for plain tables rebuilding or merging is just a normal way of maintenance, for a real-time table it keeps only the simplicity of manipulation, but not 'real-timeness'. To address the problem, Manticore uses a trick: when you delete a document, identified by document ID, the server just tracks the number. Together with other deleted documents, their IDs are saved in a so-called <a href="../12-data_creation_and_modification.html#table-kill-list">kill-list</a>. When you search over the table, the server first retrieves all matching documents, and then throws out the documents that are found in the kill-list (that is the most basic description; in fact, internally it's more complex). The point is - for the sake of 'immediate' deletion, documents are not actually deleted, but are just marked as 'deleted'. They still occupy space in different table structures, being essentially garbage. Word statistics, which affect ranking, also aren't affected, meaning it works exactly as it is declared: we search among all documents, and then just hide ones marked as deleted from the final result. When a document is <a href="../12-data_creation_and_modification.html#toc-12.03.02-replace">replaced</a>, it means that it is killed in the old parts of the table and is inserted again in the freshest part. All consequences of 'hiding by killlist' are also in play in this case.</p>
+<p>When a rebuild of some part of a table happens, e.g., when some transactions (segments) of a RAM chunk are merged, or when a RAM chunk is converted into a disk chunk, or when two disk chunks are merged together, the server performs a comprehensive iteration over the affected parts and physically excludes deleted documents from all of them. That is, if they were in document lists of some words - they are wiped away. If it was a unique word - it gets removed completely.</p>
+<p>As a summary: the deletion works in two phases:<br />
+1. First, we mark documents as 'deleted' in real-time and suppress them in search results.<br />
+2. During some operation with an RT table chunk, we finally physically wipe the deleted documents for good.</p>
+<p><strong>Fifth, if an RT table contains plain disk tables in its collection, can I just add my ready old disk table to it?</strong> No. It's not possible to avoid unneeded complexity and prevent accidental corruption. However, if your RT table has just been created and contains no data, then you can <a href="../12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">ATTACH TABLE</a> your disk table to it. Your old table will be moved inside the RT table and will become its part.</p>
+<p>As a summary about the RT table structure: it is a cleverly organized collection of plain disk tables with a fast in-memory table, intended for real-time insertions and semi-real-time deletions of documents. The RT table has a common schema, common settings, and can be easily maintained without deep digging into details. </p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.03-flushing_ram_chunk_to_a_new_disk_chunk">
+        <a class="chapter-link" href="#toc-16.03-flushing_ram_chunk_to_a_new_disk_chunk"> ¶ 16.3</a>
+
+        
+        <h1 id="flushing-ram-chunk-to-a-new-disk-chunk">Flushing RAM chunk to a new disk chunk</h1>
+<h2 id="flush-ramchunk">FLUSH RAMCHUNK</h2>
+<!-- example flush_ramchunk -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="n">RAMCHUNK</span><span class="w"> </span><span class="n">rt_table</span>
+</code></pre></div>
+
+<p>The <code>FLUSH RAMCHUNK</code> command creates a new disk chunk in an RT table.</p>
+<p>Normally, an RT table would automatically flush and convert the contents of the RAM chunk into a new disk chunk once the RAM chunk reaches the maximum allowed <a href="../06-creating_a_table.html#rt_mem_limit">rt_mem_limit</a> size. However, for debugging and testing purposes, it might be useful to forcibly create a new disk chunk, and the <code>FLUSH RAMCHUNK</code> statement does exactly that.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="n">RAMCHUNK</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response mysql -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.04-flushing_rt_table_to_disk">
+        <a class="chapter-link" href="#toc-16.04-flushing_rt_table_to_disk"> ¶ 16.4</a>
+
+        
+        <h1 id="flushing-ram-chunk-to-disk">Flushing RAM chunk to disk</h1>
+<h2 id="flush-table">FLUSH TABLE</h2>
+<!-- example flush_rtindex -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt_table</span>
+</code></pre></div>
+
+<p><code>FLUSH TABLE</code> forcefully flushes RT table RAM chunk contents to disk.</p>
+<p>The real-time table <a href="../../06-creating_a_table.html#real-time-table-files-structure">RAM chunk</a> is automatically flushed to disk during a clean shutdown, or periodically every <a href="../20-server_settings.html#rt_flush_period">rt_flush_period</a> seconds.</p>
+<p>Issuing a <code>FLUSH TABLE</code> command not only forces the RAM chunk contents to be written to disk but also triggers the cleanup of binary log files.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response mysql -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.05-compacting_a_table">
+        <a class="chapter-link" href="#toc-16.05-compacting_a_table"> ¶ 16.5</a>
+
+        
+        <h1 id="compacting-a-table">Compacting a Table</h1>
+<p>Over time, RT tables may become fragmented into numerous disk chunks and/or contaminated with deleted, yet unpurged data, affecting search performance. In these cases, optimization is necessary. Essentially, the optimization process combines pairs of disk chunks, removing documents that were previously deleted using DELETE statements.</p>
+<p>Beginning with Manticore 4, this process occurs <a href="../20-server_settings.html#auto_optimize">automatically by default</a>. However, you can also use the following commands to manually initiate table compaction.</p>
+<h2 id="optimize-table">OPTIMIZE TABLE</h2>
+<!-- example optimize -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="p">[</span><span class="k">OPTION</span><span class="w"> </span><span class="n">opt_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opt_value</span><span class="w"> </span><span class="p">[,...]]</span>
+</code></pre></div>
+
+<p><code>OPTIMIZE</code> statement adds an RT table to the optimization queue, which will be processed in a background thread.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="number-of-optimized-disk-chunks">Number of optimized disk chunks</h3>
+<!-- example optimize_cutoff -->
+
+<p>By default, OPTIMIZE merges the RT table's disk chunks down to a number equal to <code># of CPU cores * 2</code>. You can control the number of optimized disk chunks using the <code>cutoff</code> option.</p>
+<p>Additional options include:</p>
+<ul>
+<li>Server setting <a href="../20-server_settings.html#optimize_cutoff">optimize_cutoff</a> for overriding the default threshold</li>
+<li>Per-table setting <a href="../06-creating_a_table.html#optimize_cutoff">optimize_cutoff</a></li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">cutoff</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="running-in-foreground">Running in foreground</h3>
+<!-- example optimize_sync -->
+
+<p>When using <code>OPTION sync=1</code> (0 by default), the command will wait for the optimization process to complete before returning. If the connection is interrupted, the optimization will continue running on the server.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">sync</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="throttling-the-io-impact">Throttling the IO impact</h3>
+<p>Optimization can be a lengthy and I/O-intensive process. To minimize the impact, all actual merge work is executed serially in a special background thread, and the <code>OPTIMIZE</code> statement simply adds a job to its queue. The optimization thread can be I/O-throttled, and you can control the maximum number of I/Os per second and the maximum I/O size with the <a href="../20-server_settings.html#rt_merge_iops">rt_merge_iops</a> and <a href="../20-server_settings.html#rt_merge_maxiosize">rt_merge_maxiosize</a> directives, respectively.</p>
+<p>During optimization, the RT table being optimized remains online and available for both searching and updates nearly all the time. It is locked for a very brief period when a pair of disk chunks is successfully merged, allowing for the renaming of old and new files and updating the table header.</p>
+<h3 id="optimizing-clustered-tables">Optimizing clustered tables</h3>
+<p>As long as <a href="../20-server_settings.html#auto_optimize">auto_optimize</a> is not disabled, tables are optimized automatically.</p>
+<p>If you are experiencing unexpected SSTs or want tables across all nodes of the cluster to be binary identical, you need to:<br />
+1. Disable <a href="../20-server_settings.html#auto_optimize">auto_optimize</a>.<br />
+2. Manually optimize tables:</p>
+<!-- example cluster_manual_drop -->
+<p>On one of the nodes, drop the table from the cluster:</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">mycluster</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="n">myindex</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example cluster_manual_optimize -->
+<p>Optimize the table:</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">myindex</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example cluster_manual_add -->
+<p>Add back the table to the cluster:</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">mycluster</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">myindex</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+<p></div><br />
+When the table is added back, the new files created by the optimization process will be replicated to the other nodes in the cluster.<br />
+Any local changes made to the table on other nodes will be lost.</p>
+<p>Table data modifications (inserts, replaces, deletes, updates) should either:</p>
+<ol>
+<li>Be postponed, or</li>
+<li>Be directed to the node where the optimization process is running.</li>
+</ol>
+<p>Note that while the table is out of the cluster, insert/replace/delete/update commands should refer to it without the cluster name prefix (for SQL statements or the cluster property in case of an HTTP JSON request), otherwise they will fail.<br />
+Once the table is added back to the cluster, you must resume write operations on the table and include the cluster name prefix again, or they will fail.</p>
+<p>Search operations are available as usual during the process on any of the nodes.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.06-isolation_during_flushing_and_merging">
+        <a class="chapter-link" href="#toc-16.06-isolation_during_flushing_and_merging"> ¶ 16.6</a>
+
+        
+        <h1 id="isolation-during-flushing-and-merging">Isolation during flushing and merging</h1>
+<p>Manticore provides isolation during the flushing and merging process of a real-time table to prevent any changes from affecting running queries.</p>
+<p>For example, during table compaction, a pair of disk chunks are merged and a new chunk is produced. At one point, a new version of the table is created with the new chunk replacing the original pair. This is done seamlessly so that a long-running query using the original chunks will continue to see the old version of the table, while a new query will see the new version with the resulting merged chunk.</p>
+<p>The same applies to flushing a RAM chunk, where suitable RAM segments are merged into a new disk chunk and the participated RAM chunk segments are abandoned. During this operation, Manticore provides isolation for queries that started before the operation began.</p>
+<p>Furthermore, these operations are transparent for replaces and updates. If you update an attribute in a document that belongs to a disk chunk being merged with another one, the update will be applied to both that chunk and the resulting merged chunk. If you delete a document during a merge, it will be deleted in the original chunk and also in the resulting merged chunk, which will either have the document marked as deleted or have no such document at all if the deletion happened early in the merging process.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.07-freezing_a_table">
+        <a class="chapter-link" href="#toc-16.07-freezing_a_table"> ¶ 16.7</a>
+
+        
+        <h1 id="freezing-a-table">Freezing a table</h1>
+<!-- example freeze -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">FREEZE</span><span class="w"> </span><span class="n">tbl1</span><span class="p">[,</span><span class="w"> </span><span class="n">tbl2</span><span class="p">,</span><span class="w"> </span><span class="p">...]</span>
+</code></pre></div>
+
+<p><code>FREEZE</code> readies a real-time/plain table for a secure <a href="../16-securing_and_compacting_a_table.html#toc-16.01-backup_and_restore">backup</a>. Specifically, it:<br />
+1. Deactivates table compaction. If the table is currently being compacted, <code>FREEZE</code> will interrupt it.<br />
+2. Transfers the current RAM chunk to a disk chunk.<br />
+3. Flushes attributes.<br />
+4. Disables implicit operations that could modify the disk files.<br />
+5. Shows the actual file list associated with the table.</p>
+<p>The built-in tool <a href="../16-securing_and_compacting_a_table.html#toc-16.01-backup_and_restore">manticore-backup</a> uses <code>FREEZE</code> to ensure data consistency. You can do the same if you want to create your own backup solution or need to freeze tables for other reasons. Just follow these steps:<br />
+1. <code>FREEZE</code> a table (or a few).<br />
+2. Capture the output of the <code>FREEZE</code> command and back up the specified files.<br />
+3. <code>UNFREEZE</code> the table(s) once finished.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">FREEZE</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------------+---------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">file</span><span class="w">              </span><span class="o">|</span><span class="w"> </span><span class="n">normalized</span><span class="w">                      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------+---------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spa</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spa</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spd</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spd</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spds</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spds</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spe</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spe</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">sph</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">sph</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">sphi</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">sphi</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spi</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spi</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spm</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spm</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spp</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spp</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spt</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">spt</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="n">meta</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="n">meta</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="n">ram</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="n">ram</span><span class="w">      </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="n">settings</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="k">work</span><span class="o">/</span><span class="n">anytest</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">t</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="n">settings</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------+---------------------------------+</span>
+<span class="mi">13</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<p>The <code>file</code> column indicates the table's file paths within the <a href="../20-server_settings.html#data_dir">data_dir</a> of the running instance. The <code>normalized</code> column displays the absolute paths for the same files. To back up a table, simply copy the provided files without additional preparation.</p>
+<p>When a table is frozen, you cannot execute <code>UPDATE</code> queries; they will fail with the error message "index is locked now, try again later."</p>
+<p>Also, <code>DELETE</code> and <code>REPLACE</code> queries have some restrictions while the table is frozen:</p>
+<ul>
+<li>If <code>DELETE</code> affects a document in the current RAM chunk - it is permitted.</li>
+<li>If <code>DELETE</code> impacts a document in a disk chunk but was previously deleted - it is allowed.</li>
+<li>If <code>DELETE</code> would alter an actual disk chunk - it will wait until the table is unfrozen.</li>
+</ul>
+<p>Manually <code>FLUSH</code>ing a RAM chunk of a frozen table will report 'success', but no real saving will occur.</p>
+<p><code>DROP</code>/<code>TRUNCATE</code> of a frozen table <strong>is</strong> allowed since these operations are not implicit. We assume that if you truncate or drop a table, you don't need it backed up; therefore, it should not have been frozen initially.</p>
+<p><code>INSERT</code>ing into a frozen table is supported but limited: new data will be stored in RAM (as usual) until <code>rt_mem_limit</code> is reached; then, new insertions will wait until the table is unfrozen.</p>
+<p>If you shut down the daemon with a frozen table, it will act as if it experienced a dirty shutdown (e.g., <code>kill -9</code>): newly inserted data will <strong>not</strong> be saved in the RAM-chunk on disk, and upon restart, it will be restored from a binary log (if any) or lost (if binary logging is disabled).</p>
+<h1 id="unfreezing-a-table">Unfreezing a table</h1>
+<!-- example unfreeze -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">UNFREEZE</span><span class="w"> </span><span class="n">tbl1</span><span class="p">[,</span><span class="w"> </span><span class="n">tbl2</span><span class="p">,</span><span class="w"> </span><span class="p">...]</span>
+</code></pre></div>
+
+<p><code>UNFREEZE</code> reactivates previously blocked operations and resumes the internal compaction service. All operations waiting for a table to unfreeze will also be unfrozen and complete normally.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">UNFREEZE</span><span class="w"> </span><span class="n">tbl</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.08-flushing_attributes">
+        <a class="chapter-link" href="#toc-16.08-flushing_attributes"> ¶ 16.8</a>
+
+        
+        <h1 id="flush-attributes">FLUSH ATTRIBUTES</h1>
+<div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="n">ATTRIBUTES</span>
+</code></pre></div>
+
+<p>The FLUSH ATTRIBUTES command flushes all in-memory attribute updates in all the active disk tables to disk. It returns a tag that identifies the result on-disk state (which is basically a number of actual disk attribute saves performed since the server startup).</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">testindex</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">channel_id</span><span class="o">=</span><span class="mi">1107025</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">04</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FLUSH</span><span class="w"> </span><span class="n">ATTRIBUTES</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">tag</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">19</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-16.09-flushing_hostnames">
+        <a class="chapter-link" href="#toc-16.09-flushing_hostnames"> ¶ 16.9</a>
+
+        
+        <h1 id="flush-hostnames">FLUSH HOSTNAMES</h1>
+<div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="n">HOSTNAMES</span>
+</code></pre></div>
+
+<p>The FLUSH HOSTNAMES command is used to renew IP addresses associated with agent host names. If you want to always query the DNS for getting the host name IP, you can use the <a href="../20-server_settings.html#hostname_lookup">hostname_lookup</a> directive.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FLUSH</span><span class="w"> </span><span class="n">HOSTNAMES</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

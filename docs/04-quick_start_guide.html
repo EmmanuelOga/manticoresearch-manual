@@ -1,0 +1,1753 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Quick start guide - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-04-quick_start_guide">
+        <a class="chapter-link" href="#toc-04-quick_start_guide"> ¶ 4</a>
+
+        
+        <h1 id="quick-start-guide">Quick start guide</h1>
+<!-- example install -->
+<h2 id="install-and-start-manticore">Install and start Manticore</h2>
+<p>You can install and start Manticore easily on various operating systems, including Ubuntu, Centos, Debian, Windows, and MacOS. Additionally, you can also use Manticore as a Docker container.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+### Ubuntu
+
+<!-- request Ubuntu -->
+
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.deb
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-repo.noarch.deb
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-columnar-lib
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>manticore
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+### Debian
+
+<!-- request Debian -->
+
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.deb
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-repo.noarch.deb
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-columnar-lib
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>manticore
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+### Centos
+
+<!-- request Centos -->
+
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.rpm
+sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-columnar-lib
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>manticore
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+### Windows
+
+<!-- request Windows -->
+
+* Download the Windows archive from https://manticoresearch.com/install/
+* Extract all files from the archive to `C:\Manticore`
+* Run the following command to install Manticore as a service:
+* ```bash
+  C:\Manticore\bin\searchd --install --config C:\Manticore\sphinx.conf.in --servicename Manticore
+  ```
+
+* Start Manticore from the Services snap-in of the Microsoft Management Console.
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+### MacOS
+
+<!-- request MacOS -->
+
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>manticoresearch
+brew<span class="w"> </span>services<span class="w"> </span>start<span class="w"> </span>manticoresearch
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+### Docker
+<!-- request Docker -->
+
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>manticoresearch/manticore
+docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-p9306:9306<span class="w"> </span>-p9308:9308<span class="w"> </span>-p9312:9312<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+
+For persisting your data directory, read [how to use Manticore docker in production](05-starting_the_server.html#production-use)
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example connect -->
+<h2 id="connect-to-manticore">Connect to Manticore</h2>
+<p>By default Manticore is waiting for your connections on:</p>
+<ul>
+<li>port 9306 for MySQL clients</li>
+<li>port 9308 for HTTP/HTTPS connections</li>
+<li>port 9312 for connections from other Manticore nodes and clients based on Manticore binary API</li>
+</ul>
+<p>More details about HTTPS support can be found in our learning course <a href="https://play.manticoresearch.com/https/">here</a>.   </p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via MySQL
+</div>
+
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-h0<span class="w"> </span>-P9306
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via JSON over HTTP
+</div>
+
+<!-- request HTTP -->
+HTTP is a stateless protocol, so it doesn't require any special connection phase. You can simply send an HTTP request to the server and receive the response. To communicate with Manticore using the JSON interface, you can use any HTTP client library in your programming language of choice to send GET or POST requests to the server and parse the JSON responses:
+
+
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:9308/search&quot;</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [PHP client](https//github.com/manticoresoftware/manticoresearch-php)
+</div>
+
+<!-- request PHP -->
+
+<div class="codehilite"><pre><span></span><code><span class="x">// https://github.com/manticoresoftware/manticoresearch-php</span>
+<span class="x">require_once __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
+<span class="x">$config = [&#39;host&#39;=&gt;&#39;127.0.0.1&#39;,&#39;port&#39;=&gt;9308];</span>
+<span class="x">$client = new \Manticoresearch\Client($config);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [Python client](https//github.com/manticoresoftware/manticoresearch-php)
+</div>
+
+<!-- request Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">//</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">manticoresearch</span><span class="o">-</span><span class="n">python</span>
+<span class="kn">import</span> <span class="nn">manticoresearch</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">Configuration</span><span class="p">(</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:9308&quot;</span>
+<span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">indexApi</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">IndexApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">searchApi</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">SearchApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">utilsApi</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [Javascript client](https//github.com/manticoresoftware/manticoresearch-javascript)
+</div>
+
+<!-- request Javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="c1">// https://github.com/manticoresoftware/manticoresearch-javascript</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;manticoresearch&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">client</span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">ApiClient</span><span class="p">()</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">basePath</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:9308&quot;</span><span class="p">;</span>
+<span class="nx">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">IndexApi</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+<span class="nx">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">SearchApi</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+<span class="nx">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">UtilsApi</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [Java client](https//github.com/manticoresoftware/manticoresearch-java)
+</div>
+
+<!-- request Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="c1">// https://github.com/manticoresoftware/manticoresearch-java</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.model.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.api.*</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">ApiClient</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Configuration</span><span class="p">.</span><span class="na">getDefaultApiClient</span><span class="p">();</span>
+<span class="n">client</span><span class="p">.</span><span class="na">setBasePath</span><span class="p">(</span><span class="s">&quot;http://127.0.0.1:9308&quot;</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">IndexApi</span><span class="w"> </span><span class="n">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IndexApi</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="n">SearchApi</span><span class="w"> </span><span class="n">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="n">UtilsApi</span><span class="w"> </span><span class="n">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [.Net client](https//github.com/manticoresoftware/manticoresearch-net)
+</div>
+
+<!-- request C# -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">//</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">manticoresearch</span><span class="o">-</span><span class="n">net</span>
+<span class="n">using</span><span class="w"> </span><span class="n">System</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">Http</span><span class="p">;</span>
+<span class="o">...</span>
+<span class="n">using</span><span class="w"> </span><span class="n">ManticoreSearch</span><span class="o">.</span><span class="n">Client</span><span class="p">;</span>
+<span class="n">using</span><span class="w"> </span><span class="n">ManticoreSearch</span><span class="o">.</span><span class="n">Api</span><span class="p">;</span>
+<span class="n">using</span><span class="w"> </span><span class="n">ManticoreSearch</span><span class="o">.</span><span class="n">Model</span><span class="p">;</span>
+<span class="o">...</span>
+<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Configuration</span><span class="p">();</span>
+<span class="n">config</span><span class="o">.</span><span class="n">BasePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://localhost:9308&quot;</span><span class="p">;</span>
+<span class="n">httpClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">HttpClient</span><span class="p">();</span>
+<span class="n">httpClientHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">HttpClientHandler</span><span class="p">();</span>
+<span class="o">...</span>
+<span class="k">var</span><span class="w"> </span><span class="n">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">IndexApi</span><span class="p">(</span><span class="n">httpClient</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">httpClientHandler</span><span class="p">);</span>
+<span class="k">var</span><span class="w"> </span><span class="n">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">SearchApi</span><span class="p">(</span><span class="n">httpClient</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">httpClientHandler</span><span class="p">);</span>
+<span class="k">var</span><span class="w"> </span><span class="n">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">httpClient</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">httpClientHandler</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [TypeScript client](https//github.com/manticoresoftware/manticoresearch-typescript)
+</div>
+
+<!-- request Typescript -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Configuration</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">IndexApi</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">SearchApi</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">UtilsApi</span>
+<span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;manticoresearch-ts&quot;</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Configuration</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">basePath</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:9308&#39;</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">IndexApi</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">SearchApi</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">UtilsApi</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [Go client](https//github.com/manticoresoftware/manticoresearch-go)
+</div>
+
+<!-- request Go -->
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;context&quot;</span>
+<span class="w">    </span><span class="nx">manticoreclient</span><span class="w"> </span><span class="s">&quot;github.com/manticoresoftware/manticoresearch-go&quot;</span>
+<span class="p">)</span>
+<span class="o">...</span>
+<span class="nx">configuration</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewConfiguration</span><span class="p">()</span>
+<span class="nx">configuration</span><span class="p">.</span><span class="nx">Servers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">URL</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;http://localhost:9308&quot;</span>
+<span class="nx">apiClient</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewAPIClient</span><span class="p">(</span><span class="nx">configuration</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example create -->
+<h2 id="create-a-table">Create a table</h2>
+<p>Let's now create a table called "products" with 2 fields:</p>
+<ul>
+<li>title - full-text field which will contain our product's title</li>
+<li>price - of type "float"</li>
+</ul>
+<p>Note that it is possible to omit creating a table with an explicit create statement. For more information, see <a href="12-data_creation_and_modification.html#auto-schema">Auto schema</a>.</p>
+<p>More information about different ways to create a table can be found in our learning courses:</p>
+<ul>
+<li><a href="https://play.manticoresearch.com/rtmode/">Creating a RealTime table</a></li>
+<li><a href="https://play.manticoresearch.com/mysql/">Creating a table from the MySQL source</a></li>
+<li><a href="https://play.manticoresearch.com/csv/">Creating a table from the CSV source</a> </li>
+<li><a href="https://play.manticoresearch.com/autoschema/">Creating a table using the auto schema mechanism</a></li>
+<li><a href="https://play.manticoresearch.com/logstash/">Creating a table with Logstash/Beats</a></li>
+<li><a href="https://play.manticoresearch.com/vectordev/">Creating a table with Fluentbit</a></li>
+<li><a href="https://play.manticoresearch.com/vectordev/">Creating a table using the Vector.dev agent</a></li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">morphology</span><span class="o">=</span><span class="s1">&#39;stem_en&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
+<!-- request HTTP -->
+
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;create table products(title text, price float) morphology=&#39;stem_en&#39;&quot;</span>
+</code></pre></div>
+
+
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="nt">&quot;warning&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
+<span class="x">$index-&gt;setName(&#39;products&#39;);</span>
+<span class="x">$index-&gt;create([</span>
+<span class="x">    &#39;title&#39;=&gt;[&#39;type&#39;=&gt;&#39;text&#39;],</span>
+<span class="x">    &#39;price&#39;=&gt;[&#39;type&#39;=&gt;&#39;float&#39;],</span>
+<span class="x">],[&#39;morphology&#39; =&gt; &#39;stem_en&#39;]);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;create table products(title text, price float) morphology=</span><span class="se">\&#39;</span><span class="s1">stem_en</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;create table products(title text, price float) morphology=\&#39;stem_en\&#39;&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;create table products(title text, price float) morphology=&#39;stem_en&#39;&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;create table products(title text, price float) morphology=&#39;stem_en&#39;&quot;);
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+TypeScript
+</div>
+
+<!-- request TypeScript -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;create table products(title text, price float) morphology=\&#39;stem_en\&#39;&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Go
+</div>
+
+<!-- request Go -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;create table products(title text, price float) morphology=&#39;stem_en&#39;&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">();</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example insert -->
+<h2 id="add-documents">Add documents</h2>
+<p>Let's now add few documents to the table:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Crossbody Bag with Tassel&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">.</span><span class="mi">85</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;microfiber sheet set&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">.</span><span class="mi">99</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Pet Hair Remover Glove&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">.</span><span class="mi">99</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
+<!-- request JSON -->
+`"id":0` or no id forces automatic ID generation.
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;doc&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Crossbody Bag with Tassel&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">19.85</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;doc&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;microfiber sheet set&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">19.99</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;doc&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pet Hair Remover Glove&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">7.99</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<!-- response JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;created&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;created&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;created&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$index-&gt;addDocuments([</span>
+<span class="x">        [&#39;title&#39; =&gt; &#39;Crossbody Bag with Tassel&#39;, &#39;price&#39; =&gt; 19.85],</span>
+<span class="x">        [&#39;title&#39; =&gt; &#39;microfiber sheet set&#39;, &#39;price&#39; =&gt; 19.99],</span>
+<span class="x">        [&#39;title&#39; =&gt; &#39;Pet Hair Remover Glove&#39;, &#39;price&#39; =&gt; 7.99]</span>
+<span class="x">]);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;index&quot;</span> <span class="p">:</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span> <span class="p">:</span> <span class="s2">&quot;Crossbody Bag with Tassel&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span> <span class="p">:</span> <span class="mf">19.85</span><span class="p">}})</span>
+<span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;index&quot;</span> <span class="p">:</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span> <span class="p">:</span> <span class="s2">&quot;microfiber sheet set&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span> <span class="p">:</span> <span class="mf">19.99</span><span class="p">}})</span>
+<span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;index&quot;</span> <span class="p">:</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span> <span class="p">:</span> <span class="s2">&quot;Pet Hair Remover Glove&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span> <span class="p">:</span> <span class="mf">7.99</span><span class="p">}})</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doc&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Crossbody Bag with Tassel&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;price&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">19.85</span><span class="p">}});</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doc&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;microfiber sheet set&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;price&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">19.99</span><span class="p">}});</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doc&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Pet Hair Remover Glove&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;price&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">7.99</span><span class="p">}});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
+<span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="s">&quot;Crossbody Bag with Tassel&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;price&quot;</span><span class="p">,</span><span class="mf">19.85</span><span class="p">);</span>
+<span class="p">}};</span>
+<span class="n">newdoc</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">).</span><span class="na">setDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indexApi</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+
+<span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
+<span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="s">&quot;microfiber sheet set&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;price&quot;</span><span class="p">,</span><span class="mf">19.99</span><span class="p">);</span>
+<span class="p">}};</span>
+<span class="n">newdoc</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">).</span><span class="na">setDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indexApi</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+
+<span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
+<span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="s">&quot;Pet Hair Remover Glove&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;price&quot;</span><span class="p">,</span><span class="mf">7.99</span><span class="p">);</span>
+<span class="w"> </span><span class="p">}};</span>
+<span class="n">newdoc</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">).</span><span class="na">setDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">indexApi</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;();</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;title&quot;</span><span class="o">,</span><span class="s2">&quot;Crossbody Bag with Tassel&quot;</span><span class="o">);</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;price&quot;</span><span class="o">,</span><span class="nt">19</span><span class="p">.</span><span class="nc">85</span><span class="o">);</span>
+<span class="nt">InsertDocumentRequest</span><span class="w"> </span><span class="nt">insertDocumentRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">InsertDocumentRequest</span><span class="o">(</span><span class="nt">index</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">doc</span><span class="o">:</span><span class="w"> </span><span class="nt">doc</span><span class="o">);</span>
+<span class="nt">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">indexApi</span><span class="p">.</span><span class="nc">Insert</span><span class="o">(</span><span class="nt">insertDocumentRequest</span><span class="o">);</span>
+
+<span class="nt">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;();</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;title&quot;</span><span class="o">,</span><span class="s2">&quot;microfiber sheet set&quot;</span><span class="o">);</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;price&quot;</span><span class="o">,</span><span class="nt">19</span><span class="p">.</span><span class="nc">99</span><span class="o">);</span>
+<span class="nt">insertDocumentRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">InsertDocumentRequest</span><span class="o">(</span><span class="nt">index</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">doc</span><span class="o">:</span><span class="w"> </span><span class="nt">doc</span><span class="o">);</span>
+<span class="nt">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">indexApi</span><span class="p">.</span><span class="nc">Insert</span><span class="o">(</span><span class="nt">insertDocumentRequest</span><span class="o">);</span>
+
+<span class="nt">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;();</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;title&quot;</span><span class="o">,</span><span class="s2">&quot;Pet Hair Remover Glove&quot;</span><span class="o">);</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;price&quot;</span><span class="o">,</span><span class="nt">7</span><span class="p">.</span><span class="nc">99</span><span class="o">);</span>
+<span class="nt">insertDocumentRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">InsertDocumentRequest</span><span class="o">(</span><span class="nt">index</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">doc</span><span class="o">:</span><span class="w"> </span><span class="nt">doc</span><span class="o">);</span>
+<span class="nt">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">indexApi</span><span class="p">.</span><span class="nc">Insert</span><span class="o">(</span><span class="nt">insertDocumentRequest</span><span class="o">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+TypeScript
+</div>
+
+<!-- request TypeScript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">doc</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Text 1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Doc 1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">cat</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="w"> </span><span class="p">},</span>
+<span class="p">});</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">doc</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Text 2&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Doc 2&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">cat</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="w"> </span><span class="p">},</span>
+<span class="p">});</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">3</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">doc</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Text 3&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Doc 3&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">cat</span><span class="o">:</span><span class="w"> </span><span class="kt">7</span><span class="w"> </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Go
+</div>
+
+<!-- request Go -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">indexDoc</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Text 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Doc 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span>
+<span class="nx">indexReq</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewInsertDocumentRequest</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">indexDoc</span><span class="p">)</span>
+<span class="nx">indexReq</span><span class="p">.</span><span class="nx">SetId</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nx">apiClient</span><span class="p">.</span><span class="nx">IndexAPI</span><span class="p">.</span><span class="nx">Insert</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">InsertDocumentRequest</span><span class="p">(</span><span class="o">*</span><span class="nx">indexReq</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
+
+<span class="nx">indexDoc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Text 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Doc 3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+<span class="nx">indexReq</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewInsertDocumentRequest</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">indexDoc</span><span class="p">)</span>
+<span class="nx">indexReq</span><span class="p">.</span><span class="nx">SetId</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nx">apiClient</span><span class="p">.</span><span class="nx">IndexAPI</span><span class="p">.</span><span class="nx">Insert</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">InsertDocumentRequest</span><span class="p">(</span><span class="o">*</span><span class="nx">indexReq</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
+
+<span class="nx">indexDoc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Text 3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Doc 3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">}</span><span class="w">     </span>
+<span class="nx">indexReq</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewInsertDocumentRequest</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">indexDoc</span><span class="p">)</span>
+<span class="nx">indexReq</span><span class="p">.</span><span class="nx">SetId</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nx">apiClient</span><span class="p">.</span><span class="nx">IndexAPI</span><span class="p">.</span><span class="nx">Insert</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">InsertDocumentRequest</span><span class="p">(</span><span class="o">*</span><span class="nx">indexReq</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>More details on the subject can be found here:</p>
+<ul>
+<li><a href="https://play.manticoresearch.com/mysql/">Adding data to a plain table</a> </li>
+<li><a href="https://play.manticoresearch.com/rtintro/">Adding data to a RealTime table</a></li>
+</ul>
+<!-- example search -->
+<h2 id="search">Search</h2>
+<p>Let's find one of the documents. The query we will use is 'remove hair'. As you can see, it finds a document with the title 'Pet Hair Remover Glove' and highlights 'Hair remover' in it, even though the query has "remove", not "remover". This is because when we created the table, we turned on using English stemming (<code>morphology "stem_en"</code>).</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">highlight</span><span class="p">(),</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;remove hair&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------------+-------------------------------+----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">                  </span><span class="o">|</span><span class="w"> </span><span class="n">highlight</span><span class="p">()</span><span class="w">                   </span><span class="o">|</span><span class="w"> </span><span class="n">price</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------------------------------+----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">1513686608316989452</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Pet</span><span class="w"> </span><span class="o">&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">Hair</span><span class="w"> </span><span class="n">Remover</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Glove</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="p">.</span><span class="mi">990000</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------------------------------+----------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;remove hair&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;highlight&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<!-- response JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1513686608316989452&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1680</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">7.99</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pet Hair Remover Glove&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;highlight&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;Pet &lt;b&gt;Hair Remover&lt;/b&gt; Glove&quot;</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$result = $index-&gt;search(&#39;@title remove hair&#39;)-&gt;highlight([&#39;title&#39;])-&gt;get();</span>
+<span class="x">foreach($result as $doc)</span>
+<span class="x">{</span>
+<span class="x">    echo &quot;Doc ID: &quot;.$doc-&gt;getId().&quot;\n&quot;;</span>
+<span class="x">    echo &quot;Doc Score: &quot;.$doc-&gt;getScore().&quot;\n&quot;;</span>
+<span class="x">    echo &quot;Document fields:\n&quot;;</span>
+<span class="x">    print_r($doc-&gt;getData());</span>
+<span class="x">    echo &quot;Highlights: \n&quot;;</span>
+<span class="x">    print_r($doc-&gt;getHighlight());</span>
+<span class="x">}</span>
+</code></pre></div>
+
+
+<!-- response PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">Doc ID: 1513686608316989452</span>
+<span class="x">Doc Score: 1680</span>
+<span class="x">Document fields:</span>
+<span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [price] =&gt; 7.99</span>
+<span class="x">    [title] =&gt; Pet Hair Remover Glove</span>
+<span class="x">)</span>
+<span class="x">Highlights:</span>
+<span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [title] =&gt; Array</span>
+<span class="x">        (</span>
+<span class="x">            [0] =&gt; Pet &lt;b&gt;Hair Remover&lt;/b&gt; Glove</span>
+<span class="x">        )</span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+`
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+Python
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">searchApi</span><span class="o">.</span><span class="n">search</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="s2">&quot;query&quot;</span><span class="p">:{</span><span class="s2">&quot;query_string&quot;</span><span class="p">:</span><span class="s2">&quot;@title remove hair&quot;</span><span class="p">},</span><span class="s2">&quot;highlight&quot;</span><span class="p">:{</span><span class="s2">&quot;fields&quot;</span><span class="p">:[</span><span class="s2">&quot;title&quot;</span><span class="p">]}})</span>
+</code></pre></div>
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s1">&#39;hits&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;hits&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;1513686608316989452&#39;</span><span class="p">,</span>
+                    <span class="sa">u</span><span class="s1">&#39;_score&#39;</span><span class="p">:</span> <span class="mi">1680</span><span class="p">,</span>
+                    <span class="sa">u</span><span class="s1">&#39;_source&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;Pet Hair Remover Glove&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;price&#39;</span><span class="p">:</span><span class="mf">7.99</span><span class="p">},</span>
+                    <span class="sa">u</span><span class="s1">&#39;highlight&#39;</span><span class="p">:{</span><span class="sa">u</span><span class="s1">&#39;title&#39;</span><span class="p">:[</span><span class="sa">u</span><span class="s1">&#39;Pet &lt;b&gt;Hair Remover&lt;/b&gt; Glove&#39;</span><span class="p">]}}}],</span>
+          <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+ <span class="s1">&#39;profile&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;timed_out&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+ <span class="s1">&#39;took&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+javascript
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">searchApi</span><span class="p">.</span><span class="nx">search</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="o">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="s2">&quot;query&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;query_string&quot;</span><span class="o">:</span><span class="s2">&quot;@title remove hair&quot;</span><span class="p">}</span><span class="s2">&quot;highlight&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]}});</span>
+</code></pre></div>
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;hits&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;hits&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;_id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1513686608316989452&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;_score&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1680</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;_source&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Pet Hair Remover Glove&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;price&quot;</span><span class="o">:</span><span class="mf">7.99</span><span class="p">},</span>
+<span class="w">                    </span><span class="s2">&quot;highlight&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;Pet &lt;b&gt;Hair Remover&lt;/b&gt; Glove&quot;</span><span class="p">]}}],</span>
+<span class="w">          </span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">},</span>
+<span class="w"> </span><span class="s2">&quot;profile&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">None</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;timed_out&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">False</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;took&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+java
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">query</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;query_string&quot;</span><span class="p">,</span><span class="s">&quot;@title remove hair&quot;</span><span class="p">);</span>
+<span class="n">searchRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SearchRequest</span><span class="p">();</span>
+<span class="n">searchRequest</span><span class="p">.</span><span class="na">setIndex</span><span class="p">(</span><span class="s">&quot;forum&quot;</span><span class="p">);</span>
+<span class="n">searchRequest</span><span class="p">.</span><span class="na">setQuery</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+<span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">highlight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;fields&quot;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;title&quot;</span><span class="p">});</span>
+
+<span class="p">}};</span>
+<span class="n">searchRequest</span><span class="p">.</span><span class="na">setHighlight</span><span class="p">(</span><span class="n">highlight</span><span class="p">);</span>
+<span class="n">searchResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">searchApi</span><span class="p">.</span><span class="na">search</span><span class="p">(</span><span class="n">searchRequest</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- response Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span> <span class="nc">SearchResponse</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">took</span><span class="p">:</span><span class="w"> </span><span class="mi">84</span>
+<span class="w">    </span><span class="n">timedOut</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="n">hits</span><span class="p">:</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SearchResponseHits</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">total</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="n">maxScore</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">        </span><span class="n">hits</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">{</span><span class="n">_id</span><span class="o">=</span><span class="mi">1513686608316989452</span><span class="p">,</span><span class="w"> </span><span class="n">_score</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">_source</span><span class="o">=</span><span class="p">{</span><span class="n">price</span><span class="o">=</span><span class="mf">7.99</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="n">Pet</span><span class="w"> </span><span class="n">Hair</span><span class="w"> </span><span class="n">Remover</span><span class="w"> </span><span class="n">Glove</span><span class="p">},</span><span class="w"> </span><span class="n">highlight</span><span class="o">=</span><span class="p">{</span><span class="n">title</span><span class="o">=[</span><span class="n">Pet</span><span class="w"> </span><span class="o">&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">Hair</span><span class="w"> </span><span class="n">Remover</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Glove</span><span class="o">]</span><span class="p">}}</span><span class="o">]</span>
+<span class="w">        </span><span class="n">aggregations</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">profile</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+C#
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">object</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">query_string</span><span class="o">=</span><span class="s2">&quot;@title remove hair&quot;</span><span class="w"> </span><span class="p">};</span>
+<span class="k">var</span><span class="w"> </span><span class="n">searchRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">SearchRequest</span><span class="p">(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">query</span><span class="p">);</span>
+<span class="k">var</span><span class="w"> </span><span class="n">highlight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Highlight</span><span class="p">();</span>
+<span class="n">highlight</span><span class="o">.</span><span class="n">Fieldnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">};</span>
+<span class="n">searchRequest</span><span class="o">.</span><span class="n">Highlight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">highlight</span><span class="p">;</span>
+<span class="n">searchResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">searchApi</span><span class="o">.</span><span class="n">Search</span><span class="p">(</span><span class="n">searchRequest</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- response C# -->
+
+<div class="codehilite"><pre><span></span><code>class<span class="w"> </span>SearchResponse<span class="w"> </span>{
+<span class="w">    </span>took:<span class="w"> </span>103
+<span class="w">    </span>timedOut:<span class="w"> </span>false
+<span class="w">    </span>hits:<span class="w"> </span>class<span class="w"> </span>SearchResponseHits<span class="w"> </span>{
+<span class="w">        </span>total:<span class="w"> </span>1
+<span class="w">        </span>maxScore:<span class="w"> </span>null
+<span class="w">        </span>hits:<span class="w"> </span>[{_id=1513686608316989452,<span class="w"> </span>_score=1,<span class="w"> </span>_source={price=7.99,<span class="w"> </span>title=Pet<span class="w"> </span>Hair<span class="w"> </span>Remover<span class="w"> </span>Glove},<span class="w"> </span>highlight={title=[Pet<span class="w"> </span><span class="nt">&lt;b&gt;</span>Hair<span class="w"> </span>Remover<span class="nt">&lt;/b&gt;</span><span class="w"> </span>Glove]}}]
+<span class="w">        </span>aggregations:<span class="w"> </span>null
+<span class="w">    </span>}
+<span class="w">    </span>profile:<span class="w"> </span>null
+}
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+TypeScript
+<!-- request TypeScript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">searchApi</span><span class="p">.</span><span class="nx">search</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">query_string</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s1">&#39;text 1&#39;</span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">highlight</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+
+
+<!-- response typescript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;hits&quot;</span><span class="o">:</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;hits&quot;</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="p">[{</span>
+<span class="w">            </span><span class="s2">&quot;_id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;_score&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1400</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;_source&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="o">:</span><span class="s2">&quot;Text 1&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="s2">&quot;Doc 1&quot;</span><span class="p">,</span><span class="s2">&quot;cat&quot;</span><span class="o">:</span><span class="mf">1</span><span class="p">},</span>
+<span class="w">            </span><span class="s2">&quot;highlight&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;&lt;b&gt;Text 1&lt;/b&gt;&quot;</span><span class="p">]}</span>
+<span class="w">        </span><span class="p">}],</span>
+<span class="w">        </span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;profile&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">None</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;timed_out&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">False</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;took&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+Go
+<!-- request Go -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">searchRequest</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewSearchRequest</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">)</span>
+<span class="nx">query</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;query_string&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;text 1&quot;</span><span class="p">};</span>
+<span class="nx">searchRequest</span><span class="p">.</span><span class="nx">SetQuery</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+
+<span class="nx">highlightField</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewHighlightField</span><span class="p">(</span><span class="s">&quot;content&quot;</span><span class="p">)</span>
+<span class="nx">fields</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[]</span><span class="kd">interface</span><span class="p">{}{</span><span class="w"> </span><span class="nx">highlightField</span><span class="w"> </span><span class="p">}</span>
+<span class="nx">highlight</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewHighlight</span><span class="p">()</span>
+<span class="nx">highlight</span><span class="p">.</span><span class="nx">SetFields</span><span class="p">(</span><span class="nx">fields</span><span class="p">)</span>
+<span class="nx">searchRequest</span><span class="p">.</span><span class="nx">SetHighlight</span><span class="p">(</span><span class="nx">highlight</span><span class="p">);</span>
+
+<span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">apiClient</span><span class="p">.</span><span class="nx">SearchAPI</span><span class="p">.</span><span class="nx">Search</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">SearchRequest</span><span class="p">(</span><span class="o">*</span><span class="nx">searchRequest</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
+</code></pre></div>
+
+
+<!-- response Go -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span>
+<span class="w">        </span><span class="p">[{</span>
+<span class="w">            </span><span class="s">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1400</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;content&quot;</span><span class="p">:</span><span class="s">&quot;Text 1&quot;</span><span class="p">,</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;Doc 1&quot;</span><span class="p">,</span><span class="s">&quot;cat&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>
+<span class="w">            </span><span class="s">&quot;highlight&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;content&quot;</span><span class="p">:[</span><span class="s">&quot;&lt;b&gt;Text 1&lt;/b&gt;&quot;</span><span class="p">]}</span>
+<span class="w">        </span><span class="p">}],</span>
+<span class="w">        </span><span class="s">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="nx">None</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="nx">False</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>More information on different search options available in Manticore can be found in our learning courses:</p>
+<ul>
+<li><a href="https://play.manticoresearch.com/faceting/">Faceted search</a></li>
+<li><a href="https://play.manticoresearch.com/geosearch/">Geo search</a></li>
+<li><a href="https://play.manticoresearch.com/mlt/">Searching for similar documents</a></li>
+</ul>
+<!-- example update -->
+<h2 id="update">Update</h2>
+<p>Let's assume we now want to update the document - change the price to 18.5. This can be done by filtering by any field, but normally you know the document id and update something based on that.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">update</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">price</span><span class="o">=</span><span class="mi">18</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1513686608316989452</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/upda</span><span class="kc">te</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1513686608316989452</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;doc&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">18.5</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- response JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1513686608316989452</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;updated&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$doc = [</span>
+<span class="x">    &#39;body&#39; =&gt; [</span>
+<span class="x">        &#39;index&#39; =&gt; &#39;products&#39;,</span>
+<span class="x">        &#39;id&#39; =&gt; 2,</span>
+<span class="x">        &#39;doc&#39; =&gt; [</span>
+<span class="x">            &#39;price&#39; =&gt; 18.5</span>
+<span class="x">        ]</span>
+<span class="x">    ]</span>
+<span class="x">];</span>
+
+<span class="x">$response = $client-&gt;update($doc);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">indexApi</span> <span class="o">=</span> <span class="n">api</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">IndexApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">indexApi</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;index&quot;</span> <span class="p">:</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="mi">1513686608316989452</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span><span class="mf">18.5</span><span class="p">}})</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">1513686608316989452</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doc&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="o">:</span><span class="mf">18.5</span><span class="p">}});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">UpdateDocumentRequest</span><span class="w"> </span><span class="n">updateRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UpdateDocumentRequest</span><span class="p">();</span>
+<span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;price&quot;</span><span class="p">,</span><span class="mf">18.5</span><span class="p">);</span>
+<span class="p">}};</span>
+<span class="n">updateRequest</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="mi">1513686608316989452L</span><span class="p">).</span><span class="na">setDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">indexApi</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">updateRequest</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+<div class="codehilite"><pre><span></span><code><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;();</span>
+<span class="nt">doc</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;price&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">18</span><span class="p">.</span><span class="nc">5</span><span class="o">);</span>
+<span class="nt">UpdateDocumentRequest</span><span class="w"> </span><span class="nt">updateDocumentRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">UpdateDocumentRequest</span><span class="o">(</span><span class="nt">index</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">id</span><span class="o">:</span><span class="w"> </span><span class="nt">1513686608316989452L</span><span class="o">,</span><span class="w"> </span><span class="nt">doc</span><span class="o">:</span><span class="w"> </span><span class="nt">doc</span><span class="o">);</span>
+<span class="nt">indexApi</span><span class="p">.</span><span class="nc">Update</span><span class="o">(</span><span class="nt">updateDocumentRequest</span><span class="o">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+TypeScript
+</div>
+
+<!-- request TypeScript -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span><span class="w"> </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span><span class="w"> </span><span class="nx">doc</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cat</span><span class="o">:</span><span class="w"> </span><span class="kt">10</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Go
+</div>
+
+<!-- request Go -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">updDoc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;cat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">}</span>
+<span class="nx">updRequest</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewUpdateDocumentRequest</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">updDoc</span><span class="p">)</span>
+<span class="nx">updRequest</span><span class="p">.</span><span class="nx">SetId</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">apiClient</span><span class="p">.</span><span class="nx">IndexAPI</span><span class="p">.</span><span class="nx">Update</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">UpdateDocumentRequest</span><span class="p">(</span><span class="o">*</span><span class="nx">updRequest</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example delete -->
+<h2 id="delete">Delete</h2>
+<p>Let's now delete all documents with price lower than 10.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">delete</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/dele</span><span class="kc">te</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;range&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;price&quot;</span><span class="p">:</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;lte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- response JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;deleted&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$result = $index-&gt;deleteDocuments(new \Manticoresearch\Query\Range(&#39;price&#39;,[&#39;lte&#39;=&gt;10]));</span>
+</code></pre></div>
+
+
+<!-- response PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [_index] =&gt; products</span>
+<span class="x">    [deleted] =&gt; 1</span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">indexApi</span><span class="o">.</span><span class="n">delete</span><span class="p">({</span><span class="s2">&quot;index&quot;</span> <span class="p">:</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;range&quot;</span><span class="p">:{</span><span class="s2">&quot;price&quot;</span><span class="p">:{</span><span class="s2">&quot;lte&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">}}}})</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="ow">delete</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;range&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;lte&quot;</span><span class="o">:</span><span class="mf">10</span><span class="p">}}}});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">DeleteDocumentRequest</span><span class="w"> </span><span class="n">deleteRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DeleteDocumentRequest</span><span class="p">();</span>
+<span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">query</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;range&quot;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;price&quot;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">        </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;lte&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}});</span>
+<span class="p">}});</span>
+<span class="n">deleteRequest</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">).</span><span class="na">setQuery</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+<span class="n">indexApi</span><span class="p">.</span><span class="na">delete</span><span class="p">(</span><span class="n">deleteRequest</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+<div class="codehilite"><pre><span></span><code><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;();</span>
+<span class="nt">price</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;lte&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">10</span><span class="o">);</span>
+<span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">Dictionary</span><span class="o">&lt;</span><span class="nt">string</span><span class="o">,</span><span class="w"> </span><span class="nt">Object</span><span class="o">&gt;();</span>
+<span class="nt">range</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="s2">&quot;price&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">price</span><span class="o">);</span>
+<span class="nt">DeleteDocumentRequest</span><span class="w"> </span><span class="nt">deleteDocumentRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">DeleteDocumentRequest</span><span class="o">(</span><span class="nt">index</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;products&quot;</span><span class="o">,</span><span class="w"> </span><span class="nt">range</span><span class="o">:</span><span class="w"> </span><span class="nt">range</span><span class="o">);</span>
+<span class="nt">indexApi</span><span class="p">.</span><span class="nc">Delete</span><span class="o">(</span><span class="nt">deleteDocumentRequest</span><span class="o">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+TypeScript
+</div>
+
+<!-- request TypeScript -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="ow">delete</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">match</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Text 1&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+Go
+</div>
+
+<!-- request Go -->
+
+<div class="codehilite"><pre><span></span><code><span class="nx">delRequest</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">manticoreclient</span><span class="p">.</span><span class="nx">NewDeleteDocumentRequest</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">)</span>
+<span class="nx">matchExpr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;*&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Text 1t&quot;</span><span class="p">}</span>
+<span class="nx">delQuery</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;match&quot;</span><span class="p">:</span><span class="w"> </span><span class="nx">matchExpr</span><span class="w"> </span><span class="p">}</span>
+<span class="nx">delRequest</span><span class="p">.</span><span class="nx">SetQuery</span><span class="p">(</span><span class="nx">delQuery</span><span class="p">)</span>
+<span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">apiClient</span><span class="p">.</span><span class="nx">IndexAPI</span><span class="p">.</span><span class="nx">Delete</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">DeleteDocumentRequest</span><span class="p">(</span><span class="o">*</span><span class="nx">delRequest</span><span class="p">).</span><span class="nx">Execute</span><span class="p">();</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

@@ -1,0 +1,2418 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Server settings - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-20-server_settings">
+        <a class="chapter-link" href="#toc-20-server_settings"> ¶ 2</a>
+
+        
+        <h1>Server settings</h1>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.01-searchd">
+        <a class="chapter-link" href="#toc-20.01-searchd"> ¶ 2.1</a>
+
+        
+        <h1 id="section-searchd-in-configuration">Section "Searchd" in configuration</h1>
+<p>The below settings are to be used in the <code>searchd</code> section of the Manticore Search configuration file to control the server's behavior. Below is a summary of each setting:</p>
+<h3 id="access_plain_attrs">access_plain_attrs</h3>
+<p>This setting sets instance-wide defaults for <a href="../06-creating_a_table.html#accessing-table-files">access_plain_attrs</a>. It is optional, with a default value of <code>mmap_preread</code>.</p>
+<p>The <code>access_plain_attrs</code> directive allows you to define the default value of <a href="../06-creating_a_table.html#accessing-table-files">access_plain_attrs</a> for all tables managed by this searchd instance. Per-table directives have higher priority and will override this instance-wide default, providing more fine-grained control.</p>
+<h3 id="access_blob_attrs">access_blob_attrs</h3>
+<p>This setting sets instance-wide defaults for <a href="../06-creating_a_table.html#accessing-table-files">access_blob_attrs</a>. It is optional, with a default value of <code>mmap_preread</code>.</p>
+<p>The <code>access_blob_attrs</code> directive allows you to define the default value of <a href="../06-creating_a_table.html#accessing-table-files">access_blob_attrs</a> for all tables managed by this searchd instance. Per-table directives have higher priority and will override this instance-wide default, providing more fine-grained control.</p>
+<h3 id="access_doclists">access_doclists</h3>
+<p>This setting sets instance-wide defaults for <a href="../06-creating_a_table.html#accessing-table-files">access_doclists</a>. It is optional, with a default value of <code>file</code>.</p>
+<p>The <code>access_doclists</code> directive allows you to define the default value of <a href="../06-creating_a_table.html#accessing-table-files">access_doclists</a> for all tables managed by this searchd instance. Per-table directives have higher priority and will override this instance-wide default, providing more fine-grained control.</p>
+<h3 id="access_hitlists">access_hitlists</h3>
+<p>This setting sets instance-wide defaults for <a href="../06-creating_a_table.html#accessing-table-files">access_hitlists</a>. It is optional, with a default value of <code>file</code>.</p>
+<p>The <code>access_hitlists</code> directive allows you to define the default value of <a href="../06-creating_a_table.html#accessing-table-files">access_hitlists</a> for all tables managed by this searchd instance. Per-table directives have higher priority and will override this instance-wide default, providing more fine-grained control.</p>
+<h3 id="access_dict">access_dict</h3>
+<p>This setting sets instance-wide defaults for <a href="../06-creating_a_table.html#accessing-table-files">access_dict</a>. It is optional, with a default value of <code>mmap_preread</code>.</p>
+<p>The <code>access_dict</code> directive allows you to define the default value of <a href="../06-creating_a_table.html#accessing-table-files">access_dict</a> for all tables managed by this searchd instance. Per-table directives have higher priority and will override this instance-wide default, providing more fine-grained control.</p>
+<h3 id="agent_connect_timeout">agent_connect_timeout</h3>
+<p>This setting sets instance-wide defaults for the <a href="../06-creating_a_table.html#agent_connect_timeout">agent_connect_timeout</a> parameter.</p>
+<h3 id="agent_query_timeout">agent_query_timeout</h3>
+<p>This setting sets instance-wide defaults for the <a href="../06-creating_a_table.html#agent_query_timeout">agent_query_timeout</a> parameter. It can be overridden on a per-query basis using the <code>OPTION agent_query_timeout=XXX</code> clause.</p>
+<h3 id="agent_retry_count">agent_retry_count</h3>
+<p>This setting is an integer that specifies how many times Manticore will attempt to connect and query remote agents through a distributed table before reporting a fatal query error. The default value is 0 (i.e., no retries). You can also set this value on a per-query basis using the <code>OPTION retry_count=XXX</code> clause. If a per-query option is provided, it will override the value specified in the configuration.</p>
+<p>Note that if you use <a href="../10-creating_a_cluster.html#agent-mirrors">agent mirrors</a> in the definition of your distributed table, the server will select a different mirror for each connection attempt according to the chosen <a href="../10-creating_a_cluster.html#ha_strategy">ha_strategy</a>. In this case, the <code>agent_retry_count</code> will be aggregated for all mirrors in a set.</p>
+<p>For example, if you have 10 mirrors and set <code>agent_retry_count=5</code>, the server will retry up to 50 times, assuming an average of 5 tries for each of the 10 mirrors (with the <code>ha_strategy = roundrobin</code> option, this will be the case).</p>
+<p>However, the value provided as the <code>retry_count</code> option for the <a href="../06-creating_a_table.html#agent">agent</a> serves as an absolute limit. In other words, the <code>[retry_count=2]</code> option in the agent definition always means a maximum of 2 attempts, regardless of whether you have specified 1 or 10 mirrors for the agent.</p>
+<h3 id="agent_retry_delay">agent_retry_delay</h3>
+<p>This setting is an integer in milliseconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>) that specifies the delay before Manticore retries querying a remote agent in case of failure. This value is only relevant when a non-zero <a href="../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">agent_retry_count</a> or non-zero per-query <code>retry_count</code> is specified. The default value is 500. You can also set this value on a per-query basis using the <code>OPTION retry_delay=XXX</code> clause. If a per-query option is provided, it will override the value specified in the configuration.</p>
+<h3 id="attr_flush_period">attr_flush_period</h3>
+<!-- example conf attr_flush_period -->
+<p>When using <a href="../12-data_creation_and_modification.html#toc-12.03.03-update">Update</a> to modify document attributes in real-time, the changes are first written to an in-memory copy of the attributes. These updates occur in a memory-mapped file, meaning the OS decides when to write the changes to disk. Upon normal shutdown of <code>searchd</code> (triggered by a <code>SIGTERM</code> signal), all changes are forced to be written to disk.</p>
+<p>You can also instruct <code>searchd</code> to periodically write these changes back to disk to prevent data loss. The interval between these flushes is determined by <code>attr_flush_period</code>, specified in seconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>).</p>
+<p>By default, the value is 0, which disables periodic flushing. However, flushing will still occur during a normal shutdown.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">attr_flush_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">900</span><span class="w"> </span><span class="c1"># persist updates to disk every 15 minutes</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="auto_optimize">auto_optimize</h3>
+<!-- example conf auto_optimize -->
+<p>This setting controls the automatic <a href="../16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE</a> process for table compaction.</p>
+<p>By default table compaction occurs automatically. You can modify this behavior with the <code>auto_optimize</code> setting:</p>
+<ul>
+<li>0 to disable automatic table compaction (you can still call <code>OPTIMIZE</code> manually)</li>
+<li>1 to explicitly enable it</li>
+<li>N to enable it, but allow OPTIMIZE to start when the number of disk chunks is greater than <code># of CPU cores * 2 * N</code></li>
+</ul>
+<p>Note that toggling <code>auto_optimize</code> on or off doesn't prevent you from running <a href="../16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE TABLE</a> manually.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Disable -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">auto_optimize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"> </span><span class="c1"># disable automatic OPTIMIZE</span>
+</code></pre></div>
+
+
+
+<!-- request Throttle -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">auto_optimize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span><span class="w"> </span><span class="c1"># OPTIMIZE starts at 16 chunks (on 4 cpu cores server)</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="auto_schema">auto_schema</h3>
+<!-- example conf auto_schema -->
+<p>Manticore supports the automatic creation of tables that don't yet exist but are specified in INSERT statements. This feature is enabled by default. To disable it, set <code>auto_schema = 0</code> explicitly in your configuration. To re-enable it, set <code>auto_schema = 1</code> or remove the <code>auto_schema</code> setting from the configuration.</p>
+<p>Keep in mind that the <code>/bulk</code> HTTP endpoint does not support automatic table creation.</p>
+<!-- request Disable -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">auto_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"> </span><span class="c1"># disable automatic table creation</span>
+</code></pre></div>
+
+<!-- request Enable -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">auto_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="c1"># enable automatic table creation</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="binlog_flush">binlog_flush</h3>
+<!-- example conf binlog_flush -->
+<p>This setting controls the binary log transaction flush/sync mode. It is optional, with a default value of 2 (flush every transaction, sync every second).</p>
+<p>The directive determines how frequently the binary log will be flushed to the OS and synced to disk. There are three supported modes:</p>
+<ul>
+<li>0, flush and sync every second. This offers the best performance, but up to 1 second worth of committed transactions can be lost in the event of a server crash or an OS/hardware crash.</li>
+<li>1, flush and sync every transaction. This mode provides the worst performance but guarantees that every committed transaction's data is saved.</li>
+<li>2, flush every transaction, sync every second. This mode delivers good performance and ensures that every committed transaction is saved in case of a server crash. However, in the event of an OS/hardware crash, up to 1 second worth of committed transactions can be lost.</li>
+</ul>
+<p>For those familiar with MySQL and InnoDB, this directive is similar to <code>innodb_flush_log_at_trx_commit</code>. In most cases, the default hybrid mode 2 provides a nice balance of speed and safety, with full RT table data protection against server crashes and some protection against hardware ones.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">binlog_flush</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="c1"># ultimate safety, low speed</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="binlog_max_log_size">binlog_max_log_size</h3>
+<!-- example conf binlog_max_log_size -->
+<p>This setting controls the maximum binary log file size. It is optional, with a default value of 268435456, or 256 MB.</p>
+<p>A new binlog file will be forcibly opened once the current binlog file reaches this size limit. This results in a finer granularity of logs and can lead to more efficient binlog disk usage under certain borderline workloads. A value of 0 indicates that the binlog file should not be reopened based on size.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">binlog_max_log_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16M</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="binlog_path">binlog_path</h3>
+<!-- example conf binlog_path -->
+<p>This setting determines the path for binary log (also known as transaction log) files. It is optional, with a default value of the build-time configured data directory (e.g., <code>/var/lib/manticore/data/binlog.*</code> in Linux).</p>
+<p>Binary logs are used for crash recovery of RT table data and for attribute updates of plain disk indices that would otherwise only be stored in RAM until flush. When logging is enabled, every transaction COMMIT-ted into an RT table is written into a log file. Logs are then automatically replayed on startup after an unclean shutdown, recovering the logged changes.</p>
+<p>The <code>binlog_path</code> directive specifies the location of binary log files. It should only contain the path; <code>searchd</code> will create and unlink multiple <code>binlog.*</code> files in the directory as necessary (including binlog data, metadata, and lock files, etc).</p>
+<p>An empty value disables binary logging, which improves performance but puts the RT table data at risk.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">binlog_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="c1"># disable logging</span>
+<span class="na">binlog_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/lib/manticore/data</span><span class="w"> </span><span class="c1"># /var/lib/manticore/data/binlog.001 etc will be created</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="buddy_path">buddy_path</h3>
+<!-- example conf buddy_path -->
+<p>This setting determines the path to the Manticore Buddy binary. It is optional, with a default value being the build-time configured path, which varies across different operating systems. Typically, you don't need to modify this setting. However, it may be useful if you wish to run Manticore Buddy in debug mode, make changes to Manticore Buddy, or implement a new plugin. In the latter case, you can <code>git clone</code> Buddy from https://github.com/manticoresoftware/manticoresearch-buddy, add a new plugin to the directory <code>./plugins/</code>, and run <code>composer install --prefer-source</code> for easier development after you change the directory to the Buddy source.</p>
+<p>To ensure you can run <code>composer</code>, your machine must have PHP 8.2 or higher installed with the following extensions:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">dom</span>
+<span class="o">--</span><span class="nx">with</span><span class="o">-</span><span class="nx">libxml</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">tokenizer</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">xml</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">xmlwriter</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">xmlreader</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">simplexml</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">phar</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">bcmath</span>
+<span class="o">--</span><span class="nx">with</span><span class="o">-</span><span class="nx">gmp</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">debug</span>
+<span class="o">--</span><span class="nx">with</span><span class="o">-</span><span class="nx">mysqli</span>
+<span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">mysqlnd</span>
+</code></pre></div>
+
+<p>You can also opt for the special <code>manticore-executor-dev</code> version for Linux amd64 available in the releases, for example: https://github.com/manticoresoftware/executor/releases/tag/v1.0.13</p>
+<p>If you go this route, remember to link the dev version of the manticore executor to <code>/usr/bin/php</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">buddy_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">manticore-executor -n /usr/share/manticore/modules/manticore-buddy/src/main.php --debug</span><span class="w"> </span><span class="c1"># use the default Manticore Buddy in Linux, but run it in debug mode</span>
+<span class="na">buddy_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">manticore-executor -n /opt/homebrew/share/manticore/modules/manticore-buddy/bin/manticore-buddy/src/main.php --debug</span><span class="w"> </span><span class="c1"># use the default Manticore Buddy in MacOS arm64, but run it in debug mode</span>
+<span class="na">buddy_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">manticore-executor -n /Users/username/manticoresearch-buddy/src/main.php --debug</span><span class="w"> </span><span class="c1"># use Manticore Buddy from a non-default location</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="client_timeout">client_timeout</h3>
+<!-- example conf client_timeout -->
+<p>This setting determines the maximum time to wait between requests (in seconds or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>) when using persistent connections. It is optional, with a default value of five minutes.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">client_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1h</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="collation_libc_locale">collation_libc_locale</h3>
+<!-- example conf collation_libc_locale -->
+<p>Server libc locale. Optional, default is C.</p>
+<p>Specifies the libc locale, affecting the libc-based collations. Refer to <a href="../13-searching.html#toc-13.20-collations">collations</a> section for the details.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">collation_libc_locale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr_FR</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="collation_server">collation_server</h3>
+<!-- example conf collation_server -->
+<p>Default server collation. Optional, default is libc_ci.</p>
+<p>Specifies the default collation used for incoming requests. The collation can be overridden on a per-query basis. Refer to <a href="../13-searching.html#toc-13.20-collations">collations</a> section for the list of available collations and other details.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">collation_server</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">utf8_ci</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="data_dir">data_dir</h3>
+<!-- example conf data_dir -->
+<p>When specified, this setting enables the <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">real-time mode</a>, which is an imperative way of managing data schema. The value should be a path to the directory where you want to store all your tables, binary logs, and everything else needed for the proper functioning of Manticore Search in this mode.<br />
+Indexing of <a href="../06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> is not allowed when the <code>data_dir</code> is specified. Read more about the difference between the RT mode and the plain mode in <a href="../02-read_this_first.html#real-time-table-vs-plain-table">this section</a>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">data_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/lib/manticore</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="docstore_cache_size">docstore_cache_size</h3>
+<!-- example conf docstore_cache_size -->
+<p>This setting specifies the maximum size of document blocks from document storage that are held in memory. It is optional, with a default value of 16m (16 megabytes).</p>
+<p>When <code>stored_fields</code> is used, document blocks are read from disk and uncompressed. Since every block typically holds several documents, it may be reused when processing the next document. For this purpose, the block is held in a server-wide cache. The cache holds uncompressed blocks.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">docstore_cache_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8m</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="engine">engine</h3>
+<!-- example conf engine -->
+<p>Default attribute storage engine used when creating tables in RT mode. Can be <code>rowwise</code> (default) or <code>columnar</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">columnar</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="expansion_limit">expansion_limit</h3>
+<!-- example conf expansion_limit -->
+<p>This setting determines the maximum number of expanded keywords for a single wildcard. It is optional, with a default value of 0 (no limit).</p>
+<p>When performing substring searches against tables built with <code>dict = keywords</code> enabled, a single wildcard may potentially result in thousands or even millions of matched keywords (think of matching <code>a*</code> against the entire Oxford dictionary). This directive allows you to limit the impact of such expansions. Setting <code>expansion_limit = N</code> restricts expansions to no more than N of the most frequent matching keywords (per each wildcard in the query).</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">expansion_limit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="expansion_merge_threshold_docs">expansion_merge_threshold_docs</h3>
+<!-- example conf expansion_merge_threshold_docs -->
+<p>This setting determines the maximum number of documents in the expanded keyword that allows merging all such keywords together. It is optional, with a default value of 32.</p>
+<p>When performing substring searches against tables built with <code>dict = keywords</code> enabled, a single wildcard may potentially result in thousands or even millions of matched keywords. This directive allows you to increase the limit of how many keywords will merge together to speed up matching but uses more memory in the search.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">expansion_merge_threshold_docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1024</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="expansion_merge_threshold_hits">expansion_merge_threshold_hits</h3>
+<!-- example conf expansion_merge_threshold_hits -->
+<p>This setting determines the maximum number of hits in the expanded keyword that allows merging all such keywords together. It is optional, with a default value of 256.</p>
+<p>When performing substring searches against tables built with <code>dict = keywords</code> enabled, a single wildcard may potentially result in thousands or even millions of matched keywords. This directive allows you to increase the limit of how many keywords will merge together to speed up matching but uses more memory in the search.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">expansion_merge_threshold_hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">512</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="grouping_in_utc">grouping_in_utc</h3>
+<p>This setting specifies whether timed grouping in API and SQL will be calculated in the local timezone or in UTC. It is optional, with a default value of 0 (meaning 'local timezone').</p>
+<p>By default, all 'group by time' expressions (like group by day, week, month, and year in API, also group by day, month, year, yearmonth, yearmonthday in SQL) are done using local time. For example, if you have documents with attributes timed <code>13:00 utc</code> and <code>15:00 utc</code>, in the case of grouping, they both will fall into facility groups according to your local timezone setting. If you live in <code>utc</code>, it will be one day, but if you live in <code>utc+10</code>, then these documents will be matched into different <code>group by day</code> facility groups (since 13:00 utc in UTC+10 timezone is 23:00 local time, but 15:00 is 01:00 of the next day). Sometimes such behavior is unacceptable, and it is desirable to make time grouping not dependent on timezone. You can run the server with a defined global TZ environment variable, but it will affect not only grouping but also timestamping in the logs, which may be undesirable as well. Switching 'on' this option (either in config or using <a href="../20-server_settings.html#set">SET global</a> statement in SQL) will cause all time grouping expressions to be calculated in UTC, leaving the rest of time-depentend functions (i.e. logging of the server) in local TZ.</p>
+<h3 id="timezone">timezone</h3>
+<p>This setting specifies the timezone to be used by date/time-related functions. By default, the local timezone is used, but you can specify a different timezone in IANA format (e.g., <code>Europe/Amsterdam</code>).</p>
+<p>Note that this setting has no impact on logging, which always operates in the local timezone.</p>
+<p>Also, note that if <code>grouping_in_utc</code> is used, the 'group by time' function will still use UTC, while other date/time-related functions will use the specified timezone. Overall, it is not recommended to mix <code>grouping_in_utc</code> and <code>timezone</code>.</p>
+<p>You can configure this option either in the config or by using the <a href="../20-server_settings.html#set">SET global</a> statement in SQL.</p>
+<h3 id="ha_period_karma">ha_period_karma</h3>
+<!-- example conf ha_period_karma -->
+<p>This setting specifies the agent mirror statistics window size, in seconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>). It is optional, with a default value of 60 seconds.</p>
+<p>For a distributed table with agent mirrors in it (see more in <a href="../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">agent</a>,  the master tracks several different per-mirror counters. These counters are then used for failover and balancing (the master picks the best mirror to use based on the counters). Counters are accumulated in blocks of <code>ha_period_karma</code> seconds.</p>
+<p>After beginning a new block, the master may still use the accumulated values from the previous one until the new one is half full. As a result, any previous history stops affecting the mirror choice after 1.5 times ha_period_karma seconds at most.</p>
+<p>Even though at most two blocks are used for mirror selection, up to 15 last blocks are stored for instrumentation purposes. These blocks can be inspected using the <a href="../19-node_info_and_management.html#show-agent-status">SHOW AGENT STATUS</a> statement.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ha_period_karma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2m</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="ha_ping_interval">ha_ping_interval</h3>
+<!-- example conf ha_ping_interval -->
+<p>This setting configures the interval between agent mirror pings, in milliseconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>).  It is optional, with a default value of 1000 milliseconds.</p>
+<p>For a distributed table with agent mirrors in it (see more in <a href="../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">agent</a>),  the master sends all mirrors a ping command during idle periods. This is to track the current agent status (alive or dead, network roundtrip, etc). The interval between such pings is defined by this directive. To disable pings, set ha_ping_interval to 0.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ha_ping_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3s</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="hostname_lookup">hostname_lookup</h3>
+<p>The <code>hostname_lookup</code> option defines the strategy for renewing hostnames. By default, the IP addresses of agent host names are cached at server start to avoid excessive access to DNS. However, in some cases, the IP can change dynamically (e.g. cloud hosting) and it may be desirable to not cache the IPs. Setting this option to <code>request</code> disables the caching and queries the DNS for each query. The IP addresses can also be manually renewed using the <code>FLUSH HOSTNAMES</code> command.</p>
+<h3 id="jobs_queue_size">jobs_queue_size</h3>
+<p>The jobs_queue_size setting defines how many "jobs" can be in the queue at the same time. It is unlimited by default.</p>
+<p>In most cases, a "job" means one query to a single local table (plain table or a disk chunk of a real-time table). For example, if you have a distributed table consisting of 2 local tables or a real-time table with 2 disk chunks, a search query to either of them will mostly put 2 jobs in the queue. Then, the thread pool (whose size is defined by <a href="../20-server_settings.html#threads">threads</a> will process them. However, in some cases, if the query is too complex, more jobs can be created. Changing this setting is recommended when <a href="../20-server_settings.html#max_connections">max_connections</a> and <a href="../20-server_settings.html#threads">threads</a> are not enough to find a balance between the desired performance.</p>
+<h3 id="listen_backlog">listen_backlog</h3>
+<!-- example conf listen_backlog -->
+<p>The listen_backlog setting determines the length of the TCP listen backlog for incoming connections. This is particularly relevant for Windows builds that process requests one by one. When the connection queue reaches its limit, new incoming connections will be refused.<br />
+For non-Windows builds, the default value should work fine, and there is usually no need to adjust this setting.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">listen_backlog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">20</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="listen">listen</h3>
+<!-- example conf listen -->
+<p>This setting lets you specify an IP address and port, or Unix-domain socket path, that Manticore will accept connections on.</p>
+<p>The general syntax for <code>listen</code> is:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">( address &quot;:&quot; port | port | path | address &quot;:&quot; port start - port end ) [ &quot;:&quot; protocol [ &quot;_vip&quot; ] [ &quot;_readonly&quot; ] ]</span>
+</code></pre></div>
+
+<p>You can specify:</p>
+<ul>
+<li>either an IP address (or hostname) and a port number</li>
+<li>or just a port number</li>
+<li>or a Unix socket path (not supported on Windows)</li>
+<li>or an IP address and port range</li>
+</ul>
+<p>If you specify a port number but not an address, <code>searchd</code> will listen on all network interfaces. Unix path is identified by a leading slash. Port range can be set only for the replication protocol.</p>
+<p>You can also specify a protocol handler (listener) to be used for connections on this socket. The listeners are:</p>
+<ul>
+<li><strong>Not specified</strong> - Manticore will accept connections at this port from:</li>
+<li>other Manticore agents (i.e., a remote distributed table)</li>
+<li>clients via HTTP and HTTPS</li>
+<li>
+<p><a href="https://manticoresearch.com/blog/manticoresearch-buddy-intro/">Manticore Buddy</a>. <strong>Ensure you have a listener of this kind (or an <code>http</code> listener, as mentioned below) to avoid limitations in Manticore functionality.</strong></p>
+</li>
+<li>
+<p><code>mysql</code> MySQL protocol for connections from MySQL clients. Note:</p>
+</li>
+<li>Compressed protocol is also supported.</li>
+<li>
+<p>If <a href="../17-security.html#ssl">SSL</a> is enabled, you can make an encrypted connection.</p>
+</li>
+<li>
+<p><code>replication</code> - replication protocol used for nodes communication. More details can be found in the <a href="../10-creating_a_cluster.html#toc-10.03-setting_up_replication">replication</a> section. You can specify multiple replication listeners, but they must all listen on the same IP; only the ports can be different.</p>
+</li>
+<li><code>http</code> - same as <strong>Not specified</strong>. Manticore will accept connections at this port from remote agents and clients via HTTP and HTTPS.</li>
+<li><code>https</code> - HTTPS protocol. Manticore will accept <strong>only</strong> HTTPS connections at this port. More details can be found in section <a href="../17-security.html#toc-17.01-ssl">SSL</a>.</li>
+<li><code>sphinx</code> - legacy binary protocol. Used to serve connections from remote <a href="../22-extensions.html#toc-22.01-sphinxse">SphinxSE</a> clients. Some Sphinx API clients implementations (an example is the Java one) require the explicit declaration of the listener.</li>
+</ul>
+<p>Adding suffix <code>_vip</code> to client protocols (that is, all except <code>replication</code>, for instance <code>mysql_vip</code> or <code>http_vip</code> or just <code>_vip</code>) forces creating a dedicated thread for the connection to bypass different limitations. That's useful for node maintenance in case of severe overload when the server would either stall or not let you connect via a regular port otherwise.</p>
+<p>Suffix <code>_readonly</code> sets <a href="../17-security.html#toc-17.02-readonly">read-only mode</a> for the listener and limits it to accept only read queries.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost:5000</span><span class="w"> </span><span class="c1"># listen for remote agents (binary API) and http/https requests on port 5000 at localhost</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.0.1:5000</span><span class="w"> </span><span class="c1"># listen for remote agents (binary API) and http/https requests on port 5000 at 192.168.0.1</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/run/manticore/manticore.s</span><span class="w"> </span><span class="c1"># listen for binary API requests on unix socket</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/run/manticore/manticore.s:mysql</span><span class="w"> </span><span class="c1"># listen for mysql requests on unix socket</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">9312</span><span class="w"> </span><span class="c1"># listen for remote agents (binary API) and http/https requests on port 9312 on any interface</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost:9306:mysql</span><span class="w"> </span><span class="c1"># listen for mysql requests on port 9306 at localhost</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost:9307:mysql_readonly</span><span class="w"> </span><span class="c1"># listen for mysql requests on port 9307 at localhost and accept only read queries</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308:http</span><span class="w"> </span><span class="c1"># listen for http requests as well as connections from remote agents (and binary API) on port 9308 at localhost</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.0.1:9320-9328:replication</span><span class="w"> </span><span class="c1"># listen for replication connections on ports 9320-9328 at 192.168.0.1</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9443:https</span><span class="w"> </span><span class="c1"># listen for https requests (not http) on port 9443 at 127.0.0.1</span>
+<span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9312:sphinx</span><span class="w"> </span><span class="c1"># listen for legacy Sphinx requests (e.g. from SphinxSE) on port 9312 at 127.0.0.1</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>There can be multiple <code>listen</code> directives. <code>searchd</code> will listen for client connections on all specified ports and sockets. The default config provided in Manticore packages defines listening on ports:</p>
+<ul>
+<li><code>9308</code> and <code>9312</code> for connections from remote agents and non-MySQL based clients</li>
+<li>and on port <code>9306</code> for MySQL connections.</li>
+</ul>
+<p>If you don't specify any <code>listen</code> in the configuration at all, Manticore will wait for connections on:</p>
+<ul>
+<li><code>127.0.0.1:9306</code> for MySQL clients</li>
+<li><code>127.0.0.1:9312</code>  for HTTP/HTTPS and connections from other Manticore nodes and clients based on the Manticore binary API.</li>
+</ul>
+<h4 id="listening-on-privileged-ports">Listening on privileged ports</h4>
+<p>By default, Linux won't allow you to let Manticore listen on a port below 1024 (e.g. <code>listen = 127.0.0.1:80:http</code> or <code>listen = 127.0.0.1:443:https</code>) unless you run searchd under root. If you still want to be able to start Manticore, so it listens on ports &lt; 1024 under a non-root user, consider doing one of the following (either of these should work):</p>
+<ul>
+<li>Run the command <code>setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/searchd</code></li>
+<li>Add <code>AmbientCapabilities=CAP_NET_BIND_SERVICE</code> to Manticore's systemd unit and reload the daemon (<code>systemctl daemon-reload</code>).</li>
+</ul>
+<h4 id="technical-details-about-sphinx-api-protocol-and-tfo">Technical details about Sphinx API protocol and TFO</h4>
+<details>
+Legacy Sphinx protocol has 2 phases: handshake exchanging and data flow. The handshake consists of a packet of 4 bytes from the client, and a packet of 4 bytes from the daemon with only one purpose - the client determines that the remote is a real Sphinx daemon, the daemon determines that the remote is a real Sphinx client. The main dataflow is quite simple: let's both sides declare their handshakes, and the opposite check them. That exchange with short packets implies using special `TCP_NODELAY` flag, which switches off Nagle's TCP algorithm and declares that the TCP connection will be performed as a dialogue of small packages.
+However, it is not strictly defined who speaks first in this negotiation. Historically, all clients that use the binary API speak first: send handshake, then read 4 bytes from a daemon, then send a request and read an answer from the daemon.
+When we improved Sphinx protocol compatibility, we considered these things:
+
+1. Usually, master-agent communication is established from a known client to a known host on a known port. So, it is quite not possible that the endpoint will provide a wrong handshake. So, we may implicitly assume that both sides are valid and really speak in Sphinx proto.
+2. Given this assumption, we can 'glue' a handshake to the real request and send it in one packet. If the backend is a legacy Sphinx daemon, it will just read this glued packet as 4 bytes of a handshake, then request body. Since they both came in one packet, the backend socket has -1 RTT, and the frontend buffer still works despite that fact usual way.
+3. Continuing the assumption: since the 'query' packet is quite small, and the handshake is even smaller, let's send both in the initial 'SYN' TCP package using modern TFO (tcp-fast-open) technique. That is: we connect to a remote node with the glued handshake + body package. The daemon accepts the connection and immediately has both the handshake and the body in a socket buffer, as they came in the very first TCP 'SYN' packet. That eliminates another one RTT.
+4. Finally, teach the daemon to accept this improvement. Actually, from the application, it implies NOT to use `TCP_NODELAY`. And, from the system side, it implies to ensure that on the daemon side, accepting TFO is activated, and on the client side, sending TFO is also activated. By default, in modern systems, client TFO is already activated by default, so you only have to tune the server TFO for all things to work.
+
+All these improvements without actually changing the protocol itself allowed us to eliminate 1.5 RTT of the TCP protocol from the connection. Which is, if the query and answer are capable of being placed in a single TCP package, decreases the whole binary API session from 3.5 RTT to 2 RTT - which makes network negotiation about 2 times faster.
+
+So, all our improvements are stated around an initially undefined statement: 'who speaks first.' If a client speaks first, we may apply all these optimizations and effectively process connect + handshake + query in a single TFO package. Moreover, we can look at the beginning of the received package and determine a real protocol. That is why you can connect to one and the same port via API/http/https. If the daemon has to speak first, all these optimizations are impossible, and the multiprotocol is also impossible. That is why we have a dedicated port for MySQL and did not unify it with all the other protocols into a same port. Suddenly, among all clients, one was written implying that daemon should send a handshake first. That is - no possibility to all the described improvements. That is SphinxSE plugin for mysql/mariadb. So, specially for this single client we dedicated `sphinx` proto definition to work most legacy way. Namely: both sides activate `TCP_NODELAY` and exchange with small packages. The daemon sends its handshake on connect, then the client sends its, and then everything works usual way. That is not very optimal, but just works. If you use SphinxSE to connect to Manticore - you have to dedicate a listener with explicitly stated `sphinx` proto. For another clients - avoid to use this listener as it is slower. If you use another legacy Sphinx API clients - check first, if they are able to work with non-dedicated multiprotocol port. For master-agent linkage using the non-dedicated (multiprotocol) port and enabling client and server TFO works well and will definitely make working of network backend faster, especially if you have very light and fast queries.
+</details>
+
+<h3 id="listen_tfo">listen_tfo</h3>
+<p>This setting allows the TCP_FASTOPEN flag for all listeners. By default, it is managed by the system but may be explicitly switched off by setting it to '0'.</p>
+<p>For general knowledge about the TCP Fast Open extension, please consult with <a href="https://en.wikipedia.org/wiki/TCP_Fast_Open">Wikipedia</a>. In short, it allows the elimination of one TCP round-trip when establishing a connection.</p>
+<p>In practice, using TFO in many situations may optimize client-agent network efficiency, as if <a href="../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">persistent agents</a> are in play, but without holding active connections, and also without limitation for the maximum num of connections.</p>
+<p>On modern OS, TFO support is usually switched 'on' at the system level, but this is just a 'capability', not the rule. Linux (as the most progressive) has supported it since 2011, on kernels starting from 3.7 (for the server-side). Windows has supported it from some builds of Windows 10. Other operating systems (FreeBSD, MacOS) are also in the game.</p>
+<p>For Linux system server checks variable <code>/proc/sys/net/ipv4/tcp_fastopen</code> and behaves according to it. Bit 0 manages client side, bit 1 rules listeners. By default, the system has this parameter set to 1, i.e., clients enabled, listeners disabled.</p>
+<h3 id="log">log</h3>
+<!-- example conf log -->
+<p>The log setting specifies the name of the log file where all <code>searchd</code> run time events will be logged. If not specified, the default name is 'searchd.log'.</p>
+<p>Alternatively, you can use the 'syslog' as the file name. In this case, the events will be sent to the syslog daemon. To use the syslog option, you need to configure Manticore with the <code>-–with-syslog</code> option during building.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/searchd.log</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="max_batch_queries">max_batch_queries</h3>
+<!-- example conf max_batch_queries -->
+<p>Limits the amount of queries per batch. Optional, default is 32.</p>
+<p>Makes searchd perform a sanity check of the amount of queries submitted in a single batch when using <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a>. Set it to 0 to skip the check.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_batch_queries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">256</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="max_connections">max_connections</h3>
+<!-- example max_connections -->
+<p>Maximum number of simultaneous client connections. Unlimited by default. That is usually noticeable only when using any kind of persistent connections, like cli mysql sessions or persistent remote connections from remote distributed tables. When the limit is exceeded you can still connect to the server using the <a href="../11-connecting_to_the_server.html#vip-connection">VIP connection</a>. VIP connections are not counted towards the limit.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_connections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="max_threads_per_query">max_threads_per_query</h3>
+<!-- example max_threads_per_query -->
+<p>Instance-wide limit of threads one operation can use. By default, appropriate operations can occupy all CPU cores, leaving no room for other operations. For example, <code>call pq</code> against a considerably large percolate table can utilize all threads for tens of seconds. Setting <code>max_threads_per_query</code> to, say, half of <a href="../20-server_settings.html#threads">threads</a> will ensure that you can run a couple of such <code>call pq</code> operations in parallel.</p>
+<p>You can also set this setting as a session or a global variable during runtime.</p>
+<p>Additionally, you can control the behavior on a per-query basis with the help of the <a href="../13-searching.html#threads">threads OPTION</a>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_threads_per_query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="max_filters">max_filters</h3>
+<!-- example conf max_filters -->
+<p>Maximum allowed per-query filter count. This setting is only used for internal sanity checks and does not directly affect RAM usage or performance. Optional, the default is 256.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_filters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1024</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="max_filter_values">max_filter_values</h3>
+<!-- example conf max_filter_values -->
+<p>Maximum allowed per-filter values count. This setting is only used for internal sanity checks and does not directly affect RAM usage or performance. Optional, the default is 4096.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_filter_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16384</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="max_open_files">max_open_files</h3>
+<!-- example conf max_open_files -->
+<p>The maximum number of files that the server is allowed to open is called the "soft limit". Note that serving large fragmented real-time tables may require this limit to be set high, as each disk chunk may occupy a dozen or more files. For example, a real-time table with 1000 chunks may require thousands of files to be opened simultaneously. If you encounter the error 'Too many open files' in the logs, try adjusting this option, as it may help resolve the issue.</p>
+<p>There is also a "hard limit" that cannot be exceeded by the option. This limit is defined by the system and can be changed in the file <code>/etc/security/limits.conf</code> on Linux. Other operating systems may have different approaches, so consult your manuals for more information.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_open_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example conf max_open_files max -->
+<p>Apart from direct numeric values, you can use the magic word 'max' to set the limit equal to the available current hard limit.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_open_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">max</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="max_packet_size">max_packet_size</h3>
+<!-- example conf max_packet_size -->
+<p>Maximum allowed network packet size. This setting limits both query packets from clients and response packets from remote agents in a distributed environment. Only used for internal sanity checks, it does not directly affect RAM usage or performance. Optional, the default is 8M.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">max_packet_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">32M</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="mysql_version_string">mysql_version_string</h3>
+<!-- example conf mysql_version_string -->
+<p>A server version string to return via the MySQL protocol. Optional, the default is empty (returns the Manticore version).</p>
+<p>Several picky MySQL client libraries depend on a particular version number format used by MySQL, and moreover, sometimes choose a different execution path based on the reported version number (rather than the indicated capabilities flags). For instance, Python MySQLdb 1.2.2 throws an exception when the version number is not in X.Y.ZZ format; MySQL .NET connector 6.3.x fails internally on version numbers 1.x along with a certain combination of flags, etc. To work around that, you can use the <code>mysql_version_string</code> directive and have <code>searchd</code> report a different version to clients connecting over the MySQL protocol. (By default, it reports its own version.)</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">mysql_version_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5.0.37</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="net_workers">net_workers</h3>
+<p>Number of network threads, the default is 1.</p>
+<p>This setting is useful for extremely high query rates when just one thread is not enough to manage all the incoming queries.</p>
+<h3 id="net_wait_tm">net_wait_tm</h3>
+<p>Controls the busy loop interval of the network thread. The default is -1, and it can be set to -1, 0, or a positive integer.</p>
+<p>In cases where the server is configured as a pure master and just routes requests to agents, it is important to handle requests without delays and not allow the network thread to sleep. There is a busy loop for that. After an incoming request, the network thread uses CPU poll for <code>10 * net_wait_tm</code> milliseconds if <code>net_wait_tm</code> is a positive number or polls only with the CPU if <code>net_wait_tm</code> is <code>0</code>.  Also, the busy loop can be disabled with <code>net_wait_tm = -1</code> - in this case, the poller sets the timeout to the actual agent's timeouts on the system polling call.</p>
+<blockquote>
+<p><strong>WARNING:</strong> A CPU busy loop actually loads the CPU core, so setting this value to any non-default value will cause noticeable CPU usage even with an idle server.</p>
+</blockquote>
+<h3 id="net_throttle_accept">net_throttle_accept</h3>
+<p>Defines how many clients are accepted on each iteration of the network loop. Default is 0 (unlimited), which should be fine for most users. This is a fine-tuning option to control the throughput of the network loop in high load scenarios.</p>
+<h3 id="net_throttle_action">net_throttle_action</h3>
+<p>Defines how many requests are processed on each iteration of the network loop. The default is 0 (unlimited), which should be fine for most users. This is a fine-tuning option to control the throughput of the network loop in high load scenarios.</p>
+<h3 id="network_timeout">network_timeout</h3>
+<!-- example conf network_timeout -->
+<p>Network client request read/write timeout, in seconds (or  <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>). Optional, the default is 5 seconds. <code>searchd</code> will forcibly close a client connection which fails to send a query or read a result within this timeout.</p>
+<p>Note also the <a href="../20-server_settings.html#reset_network_timeout_on_packet">reset_network_timeout_on_packet</a> parameter. This parameter alters the behavior of <code>network_timeout</code> from applying to the entire <code>query</code> or <code>result</code> to individual packets instead. Typically, a query/result fits within one or two packets. However, in cases where a large amount of data is required, this parameter can be invaluable in maintaining active operations.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">network_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10s</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="node_address">node_address</h3>
+<!-- example conf node_address -->
+<p>This setting allows you to specify the network address of the node. By default, it is set to the replication <a href="../20-server_settings.html#listen">listen</a> ddress. This is correct in most cases; however, there are situations where you have to specify it manually:</p>
+<ul>
+<li>Node behind a firewall</li>
+<li>Network address translation enabled (NAT)</li>
+<li>Container deployments, such as Docker or cloud deployments</li>
+<li>Clusters with nodes in more than one region</li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">node_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10.101.0.10</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="not_terms_only_allowed">not_terms_only_allowed</h3>
+<!-- example conf not_terms_only_allowed -->
+<p>This setting determines whether to allow queries with only the <a href="../13-searching.html#negation-operator">negation</a> full-text operator. Optional, the default is 0 (fail queries with only the NOT operator).</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">not_terms_only_allowed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="optimize_cutoff">optimize_cutoff</h3>
+<!-- example conf optimize_cutoff -->
+<p>Sets the default table compaction threshold. Read more here - <a href="../16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">Number of optimized disk chunks</a>. This setting can be overridden with the per-query option <a href="../16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">cutoff</a>. It can also be changed dynamically via <a href="../20-server_settings.html#set">SET GLOBAL</a>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">optimize_cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="persistent_connections_limit">persistent_connections_limit</h3>
+<!-- example conf persistent_connections_limit -->
+<p>This setting determines the maximum number of simultaneous persistent connections to remote <a href="../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">persistent agents</a>. Each time an agent defined under <code>agent_persistent</code> is connected, we try to reuse an existing connection (if any), or connect and save the connection for future use. However, in some cases, it makes sense to limit the number of such persistent connections. This directive defines the limit. It affects the number of connections to each agent's host across all distributed tables.</p>
+<p>It is reasonable to set the value equal to or less than the <a href="../20-server_settings.html#max_connections">max_connections</a> option in the agent's config.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">persistent_connections_limit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">29</span><span class="w"> </span><span class="c1"># assume that each host of agents has max_connections = 30 (or 29).</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="pid_file">pid_file</h3>
+<!-- example conf pid_file -->
+<p>pid_file is a mandatory configuration option in Manticore search that specifies the path of the file where the process ID of the <code>searchd</code> server is stored.</p>
+<p>The searchd process ID file is re-created and locked on startup, and contains the head server process ID while the server is running. It is unlinked on server shutdown.<br />
+The purpose of this file is to enable Manticore to perform various internal tasks, such as checking whether there is already a running instance of <code>searchd</code>, stopping <code>searchd</code>, and notifying it that it should rotate the tables. The file can also be used for external automation scripts.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">pid_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/run/manticore/searchd.pid</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="predicted_time_costs">predicted_time_costs</h3>
+<!-- example conf predicted_time_costs -->
+<p>Costs for the query time prediction model, in nanoseconds. Optional, the default is <code>doc=64, hit=48, skip=2048, match=64</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">predicted_time_costs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">doc=128, hit=96, skip=4096, match=128</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example conf predicted_time_costs 1 -->
+<p>Terminating queries before completion based on their execution time (with the max query time setting) is a nice safety net, but it comes with an inherent drawback: indeterministic (unstable) results. That is, if you repeat the very same (complex) search query with a time limit several times, the time limit will be hit at different stages, and you will get <em>different</em> result sets.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="err">…</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">max_query_time</span>
+</code></pre></div>
+
+
+<!-- request API -->
+
+
+<div class="codehilite"><pre><span></span><code>SetMaxQueryTime()
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>There is a new option, <a href="../13-searching.html#max_predicted_time">SELECT … OPTION max_predicted_time</a>, that lets you limit the query time <em>and</em> get stable, repeatable results. Instead of regularly checking the actual current time while evaluating the query, which is indeterministic, it predicts the current running time using a simple linear model instead:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">predicted_time</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">doc_cost * processed_documents +</span>
+<span class="w">    </span><span class="na">hit_cost * processed_hits +</span>
+<span class="w">    </span><span class="na">skip_cost * skiplist_jumps +</span>
+<span class="w">    </span><span class="na">match_cost * found_matches</span>
+</code></pre></div>
+
+<p>The query is then terminated early when the <code>predicted_time</code> reaches a given limit.</p>
+<p>Of course, this is not a hard limit on the actual time spent (it is, however, a hard limit on the amount of <em>processing</em> work done), and a simple linear model is in no way an ideally precise one. So the wall clock time <em>may</em> be either below or over the target limit. However, the error margins are quite acceptable: for instance, in our experiments with a 100 msec target limit, the majority of the test queries fell into a 95 to 105 msec range, and <em>all</em> the queries were in an 80 to 120 msec range. Also, as a nice side effect, using the modeled query time instead of measuring the actual run time results in somewhat fewer gettimeofday() calls, too.</p>
+<p>No two server makes and models are identical, so the <code>predicted_time_costs</code> directive lets you configure the costs for the model above. For convenience, they are integers, counted in nanoseconds. (The limit in max_predicted_time is counted in milliseconds, and having to specify cost values as 0.000128 ms instead of 128 ns is somewhat more error-prone.) It is not necessary to specify all four costs at once, as the missed ones will take the default values. However, we strongly suggest specifying all of them for readability.</p>
+<h3 id="preopen_tables">preopen_tables</h3>
+<!-- example conf preopen_tables -->
+<p>The preopen_tables configuration directive specifies whether to forcibly preopen all tables on startup. The default value is 1, which means that all tables will be preopened regardless of the per-table <a href="../06-creating_a_table.html#other-performance-related-settings">preopen</a> setting. If set to 0, the per-table settings can take effect, and they will default to 0.</p>
+<p>Pre-opening tables can prevent races between search queries and rotations that can cause queries to fail occasionally. However, it also uses more file handles. In most scenarios, it is recommended to preopen tables.</p>
+<p>Here's an example configuration:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">preopen_tables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="pseudo_sharding">pseudo_sharding</h3>
+<!-- example conf pseudo_sharding -->
+<p>The pseudo_sharding configuration option enables parallelization of search queries to local plain and real-time tables, regardless of whether they are queried directly or through a distributed table. This feature will automatically parallelize queries to up to the number of threads specified in <code>searchd.threads</code> # of threads.</p>
+<p>Note that if your worker threads are already busy, because you have:</p>
+<ul>
+<li>high query concurrency</li>
+<li>physical sharding of any kind:</li>
+<li>distributed table of multiple plain/real-time tables</li>
+<li>real-time table consisting of too many disk chunks</li>
+</ul>
+<p>then enabling pseudo_sharding may not provide any benefits and may even result in a slight decrease in throughput. If you prioritize higher throughput over lower latency, it's recommended to disable this option.</p>
+<p>Enabled by default.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">pseudo_sharding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="replication_connect_timeout">replication_connect_timeout</h3>
+<p>The <code>replication_connect_timeout</code> directive defines the timeout for connecting to a remote node. By default, the value is assumed to be in milliseconds, but it can have <a href="../../20-server_settings.html#toc-20.03-special_suffixes">another suffix</a>. The default value is 1000 (1 second).</p>
+<p>When connecting to a remote node, Manticore will wait for this amount of time at most to complete the connection successfully. If the timeout is reached but the connection has not been established, and <code>retries</code> are enabled, a retry will be initiated.</p>
+<h3 id="replication_query_timeout">replication_query_timeout</h3>
+<p>The <code>replication_query_timeout</code> sets the amount of time that searchd will wait for a remote node to complete a query. The default value is 3000 milliseconds (3 seconds), but can be <code>suffixed</code> to indicate a different unit of time.</p>
+<p>After establishing a connection, Manticore will wait for a maximum of <code>replication_query_timeout</code> for the remote node to complete. Note that this timeout is separate from the <code>replication_connect_timeout</code>, and the total possible delay caused by a remote node will be the sum of both values.</p>
+<h3 id="replication_retry_count">replication_retry_count</h3>
+<p>This setting is an integer that specifies how many times Manticore will attempt to connect and query a remote node during replication before reporting a fatal query error. The default value is 3.</p>
+<h3 id="replication_retry_delay">replication_retry_delay</h3>
+<p>This setting is an integer in milliseconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>) that specifies the delay before Manticore retries querying a remote node in case of failure during replication. This value is only relevant when a non-zero value is specified. The default value is 500.</p>
+<h3 id="qcache_max_bytes">qcache_max_bytes</h3>
+<!-- example conf qcache_max_bytes -->
+<p>This configuration sets the maximum amount of RAM allocated for cached result sets in bytes. The default value is 16777216, which is equivalent to 16 megabytes. If the value is set to 0, the query cache is disabled. For more information about the query cache, please refer to the <a href="../13-searching.html#toc-13.19-query_cache">query cache</a> for details.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">qcache_max_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16777216</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="qcache_thresh_msec">qcache_thresh_msec</h3>
+<p>Integer, in milliseconds. The minimum wall time threshold for a query result to be cached. Defaults to 3000, or 3 seconds. 0 means cache everything. Refer to <a href="../13-searching.html#toc-13.19-query_cache">query cache</a> for details. This value also may be expressed with time <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>, but use it with care and don't confuse yourself with the name of the value itself, containing '_msec'.</p>
+<h3 id="qcache_ttl_sec">qcache_ttl_sec</h3>
+<p>Integer, in seconds. The expiration period for a cached result set. Defaults to 60, or 1 minute. The minimum possible value is 1 second. Refer to <a href="../13-searching.html#toc-13.19-query_cache">query cache</a> for details. This value also may be expressed with time <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>, but use it with care and don't confuse yourself with the name of the value itself, containing '_sec'.</p>
+<h3 id="query_log_format">query_log_format</h3>
+<!-- example conf query_log_format -->
+<p>Query log format. Optional, allowed values are <code>plain</code> and <code>sphinxql</code>, default is <code>sphinxql</code>.</p>
+<p>The <code>sphinxql</code> mode logs valid SQL statements. The <code>plain</code> mode logs queries in a plain text format (mostly suitable for purely full-text use cases). This directive allows you to switch between the two formats on search server startup. The log format can also be altered on the fly, using <code>SET GLOBAL query_log_format=sphinxql</code> syntax. Refer to <a href="../18-logging.html#toc-18.01-query_logging">Query logging</a> for more details.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinxql</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="query_log_min_msec">query_log_min_msec</h3>
+<p>Limit (in milliseconds) that prevents the query from being written to the query log. Optional, default is 0 (all queries are written to the query log). This directive specifies that only queries with execution times that exceed the specified limit will be logged (this value also may be expressed with time <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>, but use it with care and don't confuse yourself with the name of the value itself, containing <code>_msec</code>).</p>
+<h3 id="query_log">query_log</h3>
+<!-- example conf query_log -->
+<p>Query log file name. Optional, default is empty (do not log queries). All search queries (such as SELECT ... but not INSERT/REPLACE/UPDATE queries) will be logged in this file. The format is described in <a href="../18-logging.html#toc-18.01-query_logging">Query logging</a>. In case of 'plain' format, you can use 'syslog' as the path to the log file. In this case, all search queries will be sent to the syslog daemon with <code>LOG_INFO</code> priority, prefixed with '[query]' instead of timestamp. To use the syslog option, Manticore must be configured with  <code>-–with-syslog</code> on building.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/query.log</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="query_log_mode">query_log_mode</h3>
+<!-- example conf query_log_mode -->
+<p>The query_log_mode directive allows you to set a different permission for the searchd and query log files. By default, these log files are created with 600 permission, meaning that only the user under which the server runs and root users can read the log files.<br />
+This directive can be handy if you want to allow other users to read the log files, for example, monitoring solutions running on non-root users.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">query_log_mode</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">666</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="read_buffer_docs">read_buffer_docs</h3>
+<!-- example conf read_buffer_docs -->
+<p>The read_buffer_docs directive controls the per-keyword read buffer size for document lists. For every keyword occurrence in every search query, there are two associated read buffers: one for the document list and one for the hit list. This setting lets you control the document list buffer size.</p>
+<p>A larger buffer size might increase per-query RAM use, but it could possibly decrease I/O time. It makes sense to set larger values for slow storage, but for storage capable of high IOPS, experimenting should be done in the low values area.</p>
+<p>The default value is 256K, and the minimal value is 8K. You may also set <a href="../06-creating_a_table.html#read_buffer_docs">read_buffer_docs</a> on a per-table basis, which will override anything set on the server's config level.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">read_buffer_docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">128K</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="read_buffer_hits">read_buffer_hits</h3>
+<!-- example conf read_buffer_hits -->
+<p>The read_buffer_hits directive specifies the per-keyword read buffer size for hit lists in search queries. By default, the size is 256K and the minimum value is 8K. For every keyword occurrence in a search query, there are two associated read buffers, one for the document list and one for the hit list. Increasing the buffer size can increase per-query RAM use but decrease I/O time. For slow storage, larger buffer sizes make sense, while for storage capable of high IOPS, experimenting should be done in the low values area.</p>
+<p>This setting can also be specified on a per-table basis using the read_buffer_hits option in <a href="../06-creating_a_table.html#read_buffer_hits">read_buffer_hits</a> which will override the server-level setting.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">read_buffer_hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">128K</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="read_unhinted">read_unhinted</h3>
+<!-- example conf read_unhinted -->
+<p>Unhinted read size. Optional, default is 32K, minimal 1K</p>
+<p>When querying, some reads know in advance exactly how much data is there to be read, but some currently do not. Most prominently, hit list size is not currently known in advance. This setting lets you control how much data to read in such cases. It impacts hit list I/O time, reducing it for lists larger than unhinted read size, but raising it for smaller lists. It does <strong>not</strong> affect RAM usage because the read buffer will already be allocated. So it should not be greater than read_buffer.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">read_unhinted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">32K</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="reset_network_timeout_on_packet">reset_network_timeout_on_packet</h3>
+<!-- example conf reset_network_timeout_on_packet -->
+<p>Refines the behavior of networking timeouts (such as <code>network_timeout</code>, <code>read_timeout</code>, and <code>agent_query_timeout</code>).</p>
+<p>When set to 0, timeouts limit the maximum time for sending the entire request/query.<br />
+When set to 1 (default), timeouts limit the maximum time between network activities.</p>
+<p>With replication, a node may need to send a large file (for example, 100GB) to another node. Assume the network can transfer data at 1GB/s, with a series of packets of 4-5MB each. To transfer the entire file, you would need 100 seconds. A default timeout of 5 seconds would only allow the transfer of 5GB before the connection is dropped. Increasing the timeout could be a workaround, but it is not scalable (for instance, the next file might be 150GB, leading to failure again). However, with the default <code>reset_network_timeout_on_packet</code> set to 1, the timeout is applied not to the entire transfer but to individual packets. As long as the transfer is in progress (and data is actually being received over the network during the timeout period), it is kept alive. If the transfer gets stuck, such that a timeout occurs between packets, it will be dropped.</p>
+<p>Note that if you set up a distributed table, each node — both master and agents — should be tuned. On the master side, <code>agent_query_timeout</code> is affected; on agents, <code>network_timeout</code> is relevant.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">reset_network_timeout_on_packet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="rt_flush_period">rt_flush_period</h3>
+<!-- example conf rt_flush_period -->
+<p>RT tables RAM chunk flush check period, in seconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>). Optional, default is 10 hours.</p>
+<p>Actively updated RT tables that fully fit in RAM chunks can still result in ever-growing binlogs, impacting disk use and crash recovery time. With this directive, the search server performs periodic flush checks, and eligible RAM chunks can be saved, enabling consequential binlog cleanup. See <a href="../18-logging.html#toc-18.03-binary_logging">Binary logging</a> for more details.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">rt_flush_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3600</span><span class="w"> </span><span class="c1"># 1 hour</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="rt_merge_iops">rt_merge_iops</h3>
+<!-- example conf rt_merge_iops -->
+<p>A maximum number of I/O operations (per second) that the RT chunks merge thread is allowed to start. Optional, default is 0 (no limit).</p>
+<p>This directive lets you throttle down the I/O impact arising from the <code>OPTIMIZE</code> statements. It is guaranteed that all RT optimization activities will not generate more disk IOPS (I/Os per second) than the configured limit. Limiting rt_merge_iops can reduce search performance degradation caused by merging.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">rt_merge_iops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">40</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="rt_merge_maxiosize">rt_merge_maxiosize</h3>
+<!-- example conf rt_merge_maxiosize -->
+<p>A maximum size of an I/O operation that the RT chunks merge thread is allowed to start. Optional, default is 0 (no limit).</p>
+<p>This directive lets you throttle down the I/O impact arising from the <code>OPTIMIZE</code> statements. I/Os larger than this limit will be broken down into two or more I/Os, which will then be accounted for as separate I/Os with regards to the <a href="../20-server_settings.html#rt_merge_iops">rt_merge_iops</a> limit. Thus, it is guaranteed that all optimization activities will not generate more than (rt_merge_iops * rt_merge_maxiosize) bytes of disk I/O per second.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">rt_merge_maxiosize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1M</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="seamless_rotate">seamless_rotate</h3>
+<!-- example conf seamless_rotate -->
+<p>Prevents <code>searchd</code> stalls while rotating tables with huge amounts of data to precache. Optional, default is 1 (enable seamless rotation). On Windows systems, seamless rotation is disabled by default.</p>
+<p>Tables may contain some data that needs to be precached in RAM. At the moment, <code>.spa</code>, <code>.spb</code>, <code>.spi</code>, and <code>.spm</code> files are fully precached (they contain attribute data, blob attribute data, keyword table, and killed row map, respectively.) Without seamless rotate, rotating a table tries to use as little RAM as possible and works as follows:</p>
+<ol>
+<li>New queries are temporarily rejected (with "retry" error code);</li>
+<li><code>searchd</code> waits for all currently running queries to finish;</li>
+<li>The old table is deallocated, and its files are renamed;</li>
+<li>New table files are renamed, and required RAM is allocated;</li>
+<li>New table attribute and dictionary data are preloaded to RAM;</li>
+<li><code>searchd</code> resumes serving queries from the new table.</li>
+</ol>
+<p>However, if there's a lot of attribute or dictionary data, then the preloading step could take a noticeable amount of time - up to several minutes in the case of preloading 1-5+ GB files.</p>
+<p>With seamless rotate enabled, rotation works as follows:</p>
+<ol>
+<li>New table RAM storage is allocated;</li>
+<li>New table attribute and dictionary data are asynchronously preloaded to RAM;</li>
+<li>On success, the old table is deallocated, and both tables' files are renamed;</li>
+<li>On failure, the new table is deallocated;</li>
+<li>At any given moment, queries are served either from the old or new table copy.</li>
+</ol>
+<p>Seamless rotate comes at the cost of higher peak memory usage during the rotation (because both old and new copies of <code>.spa/.spb/.spi/.spm</code> data need to be in RAM while preloading the new copy). Average usage remains the same.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">seamless_rotate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="secondary_indexes">secondary_indexes</h3>
+<!-- example conf secondary_indexes -->
+
+<p>This option enables/disables the use of secondary indexes for search queries. It is optional, and the default is 1 (enabled). Note that you don't need to enable it for indexing as it is always enabled as long as the <a href="https://github.com/manticoresoftware/columnar">Manticore Columnar Library</a> is installed. The latter is also required for using the indexes when searching. There are three modes available:</p>
+<ul>
+<li><code>0</code>: Disable the use of secondary indexes on search. They can be enabled for individual queries using <a href="../13-searching.html#query-optimizer-hints">analyzer hints</a></li>
+<li><code>1</code>: Enable the use of secondary indexes on search. They can be disabled for individual queries using <a href="../13-searching.html#query-optimizer-hints">analyzer hints</a></li>
+<li><code>force</code>: Same as enable, but any errors during the loading of secondary indexes will be reported, and the whole index will not be loaded into the daemon.</li>
+</ul>
+<p>Note that secondary indexes are not effective for full-text queries.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">secondary_indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="server_id">server_id</h3>
+<!-- example conf server_id -->
+<p>Integer number that serves as a server identifier used as a seed to generate a unique short UUID for nodes that are part of a replication cluster. The server_id must be unique across the nodes of a cluster and in the range from 0 to 127. If server_id is not set, the MAC address or a random number will be used as a seed for the short UUID.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">server_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="shutdown_timeout">shutdown_timeout</h3>
+<!-- example conf shutdown_timeout -->
+<p><code>searchd --stopwait</code> waiting time, in seconds (or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>). Optional, default is 60 seconds.</p>
+<p>When you run <code>searchd --stopwait</code> your server needs to perform some activities before stopping, such as finishing queries, flushing RT RAM chunks, flushing attributes, and updating the binlog. These tasks require some time. <code>searchd --stopwait</code> will wait up to <code>shutdown_time</code> seconds for the server to finish its jobs. The suitable time depends on your table size and load.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">shutdown_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3m</span><span class="w"> </span><span class="c1"># wait for up to 3 minutes</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="shutdown_token">shutdown_token</h3>
+<p>SHA1 hash of the password required to invoke the 'shutdown' command from a VIP Manticore SQL connection. Without it,<a href="../27-reporting_bugs.html#debug">debug</a> 'shutdown' subcommand will never cause the server to stop. Note that such simple hashing should not be considered strong protection, as we don't use a salted hash or any kind of modern hash function. It is intended as a fool-proof measure for housekeeping daemons in a local network.</p>
+<h3 id="snippets_file_prefix">snippets_file_prefix</h3>
+<!-- example conf snippets_file_prefix -->
+<p>A prefix to prepend to the local file names when generating snippets. Optional, default is the current working folder.</p>
+<p>This prefix can be used in distributed snippets generation along with <code>load_files</code> or <code>load_files_scattered</code> options.</p>
+<p>Note that this is a prefix and <strong>not</strong> a path! This means that if a prefix is set to "server1" and the request refers to "file23", <code>searchd</code> will attempt to open "server1file23" (all of that without quotes). So, if you need it to be a path, you have to include the trailing slash.</p>
+<p>After constructing the final file path, the server unwinds all relative dirs and compares the final result with the value of <code>snippet_file_prefix</code>. If the result does not begin with the prefix, such a file will be rejected with an error message.</p>
+<p>For example, if you set it to <code>/mnt/data</code> and someone calls snippet generation with the file <code>../../../etc/passwd</code> as the source, they will get the error message:</p>
+<p><code>File '/mnt/data/../../../etc/passwd' escapes '/mnt/data/' scope</code></p>
+<p>instead of the content of the file.</p>
+<p>Also, with a non-set parameter and reading <code>/etc/passwd</code>, it will actually read /daemon/working/folder/etc/passwd since the default for the parameter is the server's working folder.</p>
+<p>Note also that this is a local option; it does not affect the agents in any way. So you can safely set a prefix on a master server. The requests routed to the agents will not be affected by the master's setting. They will, however, be affected by the agent's own settings.</p>
+<p>This might be useful, for instance, when the document storage locations (whether local storage or NAS mountpoints) are inconsistent across the servers.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">snippets_file_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/mnt/common/server1/</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<blockquote>
+<p><strong>WARNING:</strong> If you still want to access files from the FS root, you have to explicitly set <code>snippets_file_prefix</code> to empty value (by <code>snippets_file_prefix=</code> line), or to root (by <code>snippets_file_prefix=/</code>).</p>
+</blockquote>
+<h3 id="sphinxql_state">sphinxql_state</h3>
+<!-- example conf sphinxql_state -->
+<p>Path to a file where the current SQL state will be serialized.</p>
+<p>On server startup, this file gets replayed. On eligible state changes (e.g., SET GLOBAL), this file gets rewritten automatically. This can prevent a hard-to-diagnose problem: If you load UDF functions but Manticore crashes, when it gets (automatically) restarted, your UDF and global variables will no longer be available. Using persistent state helps ensure a graceful recovery with no such surprises.</p>
+<p><code>sphinxql_state</code> cannot be used to execute arbitrary commands, such as <code>CREATE TABLE</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">sphinxql_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">uservars.sql</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="sphinxql_timeout">sphinxql_timeout</h3>
+<!-- example conf sphinxql_timeout -->
+<p>Maximum time to wait between requests (in seconds, or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>) when using the SQL interface. Optional, default is 15 minutes.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">sphinxql_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">15m</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="ssl_ca">ssl_ca</h3>
+<!-- example conf ssl_ca -->
+<p>Path to the SSL Certificate Authority (CA) certificate file (also known as root certificate). Optional, default is empty. When not empty, the certificate in <code>ssl_cert</code> should be signed by this root certificate.</p>
+<p>The server uses the CA file to verify the signature on the certificate. The file must be in PEM format.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ssl_ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">keys/ca-cert.pem</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="ssl_cert">ssl_cert</h3>
+<!-- example conf ssl_cert -->
+<p>Path to the server's SSL certificate. Optional, default is empty.</p>
+<p>The server uses this certificate as a self-signed public key to encrypt HTTP traffic over SSL. The file must be in PEM format.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ssl_cert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">keys/server-cert.pem</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="ssl_key">ssl_key</h3>
+<!-- example conf ssl_key -->
+<p>Path to the SSL certificate key. Optional, default is empty.</p>
+<p>The server uses this private key to encrypt HTTP traffic over SSL. The file must be in PEM format.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ssl_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">keys/server-key.pem</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="subtree_docs_cache">subtree_docs_cache</h3>
+<!-- example conf subtree_docs_cache -->
+<p>Max common subtree document cache size, per-query. Optional, default is 0 (disabled).</p>
+<p>This setting limits the RAM usage of a common subtree optimizer (see  <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a>). At most, this much RAM will be spent to cache document entries for each query. Setting the limit to 0 disables the optimizer.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">subtree_docs_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8M</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="subtree_hits_cache">subtree_hits_cache</h3>
+<!-- example conf subtree_hits_cache -->
+<p>Max common subtree hit cache size, per-query. Optional, default is 0 (disabled).</p>
+<p>This setting limits the RAM usage of a common subtree optimizer (see <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a>). At most, this much RAM will be spent to cache keyword occurrences (hits) for each query. Setting the limit to 0 disables the optimizer.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">subtree_hits_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16M</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="threads">threads</h3>
+<!-- example threads -->
+<p>Number of working threads (or, size of thread pool) for the Manticore daemon. Manticore creates this number of OS threads on start, and they perform all jobs inside the daemon, such as executing queries, creating snippets, etc. Some operations may be split into sub-tasks and executed in parallel, for example:</p>
+<ul>
+<li>Search in a real-time table</li>
+<li>Search in a distributed table consisting of local tables</li>
+<li>Percolate query call</li>
+<li>and others</li>
+</ul>
+<p>By default, it's set to the number of CPU cores on the server. Manticore creates the threads on start and keeps them until it's stopped. Each sub-task can use one of the threads when it needs it. When the sub-task finishes, it releases the thread so another sub-task can use it.</p>
+<p>In the case of intensive I/O type of load, it might make sense to set the value higher than the number of CPU cores.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="thread_stack">thread_stack</h3>
+<!-- example conf thread_stack -->
+<p>Maximum stack size for a job (coroutine, one search query may cause multiple jobs/coroutines). Optional, default is 128K.</p>
+<p>Each job has its own stack of 128K. When you run a query, it's checked for how much stack it requires. If the default 128K is enough, it's just processed. If it needs more, another job with an increased stack is scheduled, which continues processing. The maximum size of such an advanced stack is limited by this setting.</p>
+<p>Setting the value to a reasonably high rate will help with processing very deep queries without implying that overall RAM consumption will grow too high. For example, setting it to 1G does not imply that every new job will take 1G of RAM, but if we see that it requires, let's say, 100M stack, we just allocate 100M for the job. Other jobs at the same time will be running with their default 128K stack. The same way, we can run even more complex queries that need 500M. And only if we <strong>see</strong> internally that the job requires more than 1G of stack, we will fail and report about too low thread_stack.</p>
+<p>However, in practice, even a query which needs 16M of stack is often too complex for parsing and consumes too much time and resources to be processed. So, the daemon will process it, but limiting such queries by the <code>thread_stack</code> setting looks quite reasonable.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">thread_stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8M</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="unlink_old">unlink_old</h3>
+<!-- example conf unlink_old -->
+<p>Determines whether to unlink <code>.old</code> table copies on successful rotation. Optional, default is 1 (do unlink).</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">unlink_old</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="watchdog">watchdog</h3>
+<!-- example conf watchdog -->
+<p>Threaded server watchdog. Optional, default is 1 (watchdog enabled).</p>
+<p>When a Manticore query crashes, it can take down the entire server. With the watchdog feature enabled, <code>searchd</code> also maintains a separate lightweight process that monitors the main server process and automatically restarts it in case of abnormal termination. The watchdog is enabled by default.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">watchdog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"> </span><span class="c1"># disable watchdog</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.02-common">
+        <a class="chapter-link" href="#toc-20.02-common"> ¶ 2.2</a>
+
+        
+        <h1 id="section-common-in-configuration">Section "Common" in configuration</h1>
+<h2 id="lemmatizer_base">lemmatizer_base</h2>
+<p>The <code>lemmatizer_base</code> is an optional configuration directive that specifies the base path for lemmatizer dictionaries. The default path is <code>/usr/share/manticore</code></p>
+<p>The lemmatizer implementation in Manticore Search (see <a href="../06-creating_a_table.html#toc-06.03.09-morphology">Morphology</a> to learn what lemmatizers are) is dictionary-driven and requires specific dictionary files for different languages. These files can be downloaded from the Manticore website (<a href="https://manticoresearch.com/install/#other-downloads">https://manticoresearch.com/install/#other-downloads</a>).</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">lemmatizer_base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/usr/share/manticore/</span>
+</code></pre></div>
+
+<h2 id="progressive_merge">progressive_merge</h2>
+<p>The progressive_merge is a configuration directive that, when enabled, merges real-time table disk chunks from smaller to larger ones. This approach speeds up the merging process and reduces read/write amplification. By default, this setting is enabled. If disabled, the chunks are merged in the order they were created.</p>
+<h2 id="json_autoconv_keynames">json_autoconv_keynames</h2>
+<p>The json_autoconv_keynames is an optional configuration directive that determines if and how to auto-convert key names within JSON attributes. The known value is 'lowercase'. By default, this setting is unspecified (meaning no conversion occurs).</p>
+<p>When set to lowercase, key names within JSON attributes will be automatically converted to lowercase during indexing. This conversion applies to JSON attributes from all data sources, including SQL and XMLpipe2.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">json_autoconv_keynames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lowercase</span>
+</code></pre></div>
+
+<h2 id="json_autoconv_numbers">json_autoconv_numbers</h2>
+<p>The json_autoconv_numbers is an optional configuration directive that determines whether to automatically detect and convert JSON strings that represent numbers into numeric attributes. The default value is 0 (do not convert strings into numbers).</p>
+<p>When this option is set to 1, values such as "1234" will be indexed as numbers instead of strings. If the option is set to 0, such values will be indexed as strings. This conversion applies to JSON attributes from all data sources, including SQL and XMLpipe2.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">json_autoconv_numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</code></pre></div>
+
+<h2 id="on_json_attr_error">on_json_attr_error</h2>
+<p>on_json_attr_error is an optional configuration directive that specifies the action to take if JSON format errors are found. The default value is <code>ignore_attr</code>(ignore errors). This setting applies only to <code>sql_attr_json</code> attributes.</p>
+<p>By default, JSON format errors are ignored (<code>ignore_attr</code>), and the indexer tool will show a warning. Setting this option to <code>fail_index</code> will cause indexing to fail at the first JSON format error.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">on_json_attr_error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ignore_attr</span>
+</code></pre></div>
+
+<h2 id="plugin_dir">plugin_dir</h2>
+<p>The plugin_dir is an optional configuration directive that specifies the trusted location for dynamic libraries (UDFs). The default path is  <code>/usr/local/lib/manticore/</code>.</p>
+<p>This directive sets the trusted directory from which the <a href="../22-extensions.html#toc-22.03.02-udf">UDF libraries</a> can be loaded.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">plugin_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/usr/local/lib/manticore/</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.03-special_suffixes">
+        <a class="chapter-link" href="#toc-20.03-special_suffixes"> ¶ 2.3</a>
+
+        
+        <h1 id="special-suffixes">Special suffixes</h1>
+<p>Manticore Search supports the use of special suffixes to simplify numeric values with specific meanings. These suffixes are categorized into size suffixes and time suffixes. The common format for suffixes is an <code>integer</code> followed by a <code>literal</code>, such as <code>10k</code> or <code>100d</code>. Literals are case-insensitive, so <code>10W</code> and <code>10w</code> are considered the same.</p>
+<ul>
+<li>Size suffixes: These suffixes can be used in settings that define the size of something, such as memory buffer, disk file size, or RAM limit. If no suffix is specified, the value is considered in bytes by default. The available size suffixes are:</li>
+<li><code>k</code> for kilobytes (1k = 1024 bytes)</li>
+<li><code>m</code> for megabytes (1m = 1024k)</li>
+<li><code>g</code> for gigabytes (1g = 1024m)</li>
+<li>
+<p><code>t</code> for terabytes (1t = 1024g)</p>
+</li>
+<li>
+<p>Time suffixes: These suffixes can be used in settings that define time interval values, such as delays or timeouts. Unadorned values for these parameters usually have a documented scale, but instead of guessing, you can use an explicit suffix. The available time suffixes are:</p>
+</li>
+<li><code>us</code> for microseconds</li>
+<li><code>ms</code> for milliseconds</li>
+<li><code>s</code> for seconds</li>
+<li><code>m</code> for minutes</li>
+<li><code>h</code> for hours</li>
+<li><code>d</code> for days</li>
+<li><code>w</code> for weeks</li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.04-scripted_configuration">
+        <a class="chapter-link" href="#toc-20.04-scripted_configuration"> ¶ 2.4</a>
+
+        
+        <h1 id="scripted-configuration">Scripted configuration</h1>
+<p>Manticore configuration supports shebang syntax, allowing the configuration to be written in a programming language and interpreted at loading. This enables dynamic settings, such as generating tables by querying a database table, modifying settings based on external factors, or including external files containing table and source declarations.</p>
+<p>The configuration file is parsed by the declared interpreter, and the output is used as the actual configuration. This occurs each time the configuration is read, not only at searchd startup.</p>
+<p>Note: This feature is not available on the Windows platform.</p>
+<p>In the following example, PHP is used to create multiple tables with different names and to scan a specific folder for files containing extra table declarations:</p>
+<div class="codehilite"><pre><span></span><code><span class="x">#!/usr/bin/php</span>
+<span class="x">...</span>
+<span class="cp">&lt;?php</span> <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;=</span><span class="mi">6</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="cp">?&gt;</span>
+<span class="x">table test_</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$i</span><span class="cp">?&gt;</span><span class="x"> {</span>
+<span class="x">  type = rt</span>
+<span class="x">  path = /var/lib/manticore/data/test_</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$i</span><span class="cp">?&gt;</span>
+<span class="x">  rt_field = subject</span>
+<span class="x">  ...</span>
+<span class="x"> }</span>
+<span class="x"> </span><span class="cp">&lt;?php</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+<span class="x"> ...</span>
+
+<span class="x"> </span><span class="cp">&lt;?php</span>
+ <span class="nv">$confd_folder</span><span class="o">=</span><span class="s1">&#39;/etc/manticore.conf.d/&#39;</span><span class="p">;</span>
+ <span class="nv">$files</span> <span class="o">=</span> <span class="nb">scandir</span><span class="p">(</span><span class="nv">$confd_folder</span><span class="p">);</span>
+ <span class="k">foreach</span><span class="p">(</span><span class="nv">$files</span> <span class="k">as</span> <span class="nv">$file</span><span class="p">)</span>
+ <span class="p">{</span>
+         <span class="k">if</span><span class="p">((</span><span class="nv">$file</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$file</span> <span class="o">==</span><span class="s1">&#39;..&#39;</span><span class="p">))</span>
+         <span class="p">{}</span> <span class="k">else</span> <span class="p">{</span>
+                 <span class="nv">$fp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplFileInfo</span><span class="p">(</span><span class="nv">$confd_folder</span><span class="o">.</span><span class="nv">$file</span><span class="p">);</span>
+                 <span class="k">if</span><span class="p">(</span><span class="s1">&#39;conf&#39;</span> <span class="o">==</span> <span class="nv">$fp</span><span class="o">-&gt;</span><span class="na">getExtension</span><span class="p">()){</span>
+                         <span class="k">include</span> <span class="p">(</span><span class="nv">$confd_folder</span><span class="o">.</span><span class="nv">$file</span><span class="p">);</span>
+                 <span class="p">}</span>
+         <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="cp">?&gt;</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.05-comments">
+        <a class="chapter-link" href="#toc-20.05-comments"> ¶ 2.5</a>
+
+        
+        <h1 id="comments">Comments</h1>
+<p>Manticore Search's configuration file supports comments, which help provide explanations or notes within the configuration file. The <code>#</code> character is used to start a comment section. You can place the comment character either at the beginning of a line or inline within a line.</p>
+<p>When using comments, be cautious when incorporating the <code>#</code> character in character tokenization settings, as everything following it will be ignored. To prevent this, use the <code>#</code> UTF-8 code, which is U+23.</p>
+<p>If you need to use the <code>#</code> character within your configuration file, such as within database credentials in source declarations, you can escape it using a backslash <code>\</code>. This allows you to include the <code>#</code> character in your settings without it being interpreted as the start of a comment.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.06-inheritance_of_table_and_source_declarations">
+        <a class="chapter-link" href="#toc-20.06-inheritance_of_table_and_source_declarations"> ¶ 2.6</a>
+
+        
+        <h1 id="inheritance-of-index-and-source-declarations">Inheritance of index and source declarations</h1>
+<p>Inheritance in <code>index</code> and <code>source</code> declarations enables better organization of tables with similar settings or structures and reduces the configuration size. Both parent and child tables or sources can utilize inheritance.</p>
+<p>No specific configurations are needed for a parent table or source.</p>
+<p>In the child table or source declaration, specify the table or source name followed by a colon (:) and the parent name:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">table parent {</span>
+<span class="na">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/lib/manticore/parent</span>
+<span class="na">...</span>
+<span class="na">}</span>
+
+<span class="na">table child</span><span class="o">:</span><span class="s">parent {</span>
+<span class="na">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/lib/manticore/child</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<p>The child will inherit the entire configuration of the parent. Any settings declared in the child will overwrite the inherited values. Be aware that for multi-value settings, defining a single value in the child will clear all inherited values. For example, if the parent has several <code>sql_query_pre</code> declarations and the child has a single <code>sql_query_pre</code> declaration, all inherited <code>sql_query_pre</code> declarations are cleared. To override some of the inherited values from the parent, explicitly declare them in the child. This is also applicable if you don't need a value from the parent. For example, if the <code>sql_query_pre</code> value from the parent is not needed, declare the directive with an empty value in the child like <code>sql_query_pre=</code>. </p>
+<p>Note that existing values of a multi-value setting will not be copied if the child declares one value for that setting.</p>
+<p>The inheritance behavior applies to fields and attributes, not just table options. For example, if the parent has two integer attributes and the child needs a new integer attribute, the integer attribute declarations from the parent must be copied into the child configuration.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-20.07-setting_variables_online">
+        <a class="chapter-link" href="#toc-20.07-setting_variables_online"> ¶ 2.7</a>
+
+        
+        <h1 id="setting-variables-online">Setting variables online</h1>
+<h2 id="set">SET</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="p">[</span><span class="k">GLOBAL</span><span class="p">]</span><span class="w"> </span><span class="n">server_variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span>
+<span class="k">SET</span><span class="w"> </span><span class="p">[</span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="p">]</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="o">@</span><span class="n">user_variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">int_val1</span><span class="w"> </span><span class="p">[,</span><span class="w"> </span><span class="n">int_val2</span><span class="p">,</span><span class="w"> </span><span class="p">...])</span>
+<span class="k">SET</span><span class="w"> </span><span class="k">NAMES</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">[</span><span class="k">COLLATE</span><span class="w"> </span><span class="n">value</span><span class="p">]</span>
+<span class="k">SET</span><span class="w"> </span><span class="o">@@</span><span class="n">dummy_variable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ignored_value</span>
+</code></pre></div>
+
+<p>The <code>SET</code> statement in Manticore Search allows you to modify variable values. Variable names are case-insensitive, and no variable value changes will persist after a server restart.</p>
+<p>Manticore Search supports the <code>SET NAMES</code> statement and <code>SET @@variable_name</code> syntax for compatibility with third-party MySQL client libraries, connectors, and frameworks that may require running these statements when connecting. However, these statements do not have any effect on Manticore Search itself.</p>
+<p>There are four classes of variables in Manticore Search:</p>
+<ol>
+<li>Per-session server variable: <code>set var_name = value</code></li>
+<li>Global server variable: <code>set global var_name = value</code></li>
+<li>Global user variable: <code>set global @var_name = (value)</code></li>
+<li>Global distributed variable: <code>set index dist_index_name global @var_name = (value)</code></li>
+</ol>
+<p>Global user variables are shared between concurrent sessions. The only supported value type is a list of BIGINTs, and these variables can be used with the IN() operator for filtering purposes. The primary use case for this feature is to upload large lists of values to <code>searchd</code> once and reuse them multiple times later, reducing network overhead. Global user variables can be transferred to all agents of a distributed table or set locally in the case of a local table defined in a distributed table. Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">//</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="o">@</span><span class="n">myfilter</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="p">);</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="o">//</span><span class="w"> </span><span class="n">later</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="o">@</span><span class="n">myfilter</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------+--------+----------+------------+-----------------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">           </span><span class="o">|</span><span class="w"> </span><span class="n">tag</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------+----------+------------+-----------------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1299338153</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">another</span><span class="w"> </span><span class="n">doc</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="mi">15</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1299338153</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="nb">number</span><span class="w"> </span><span class="n">four</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="mi">40</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------+----------+------------+-----------------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Manticore Search supports per-session and global server variables that affect specific server settings in their respective scopes. Below is a list of known per-session and global server variables:</p>
+<p>Known per-session server variables:</p>
+<ul>
+<li><code>AUTOCOMMIT = {0 | 1}</code> determines if data modification statements should be implicitly wrapped by <code>BEGIN</code> and <code>COMMIT</code>.</li>
+<li><code>COLLATION_CONNECTION = collation_name</code> selects the collation for <code>ORDER BY</code> or <code>GROUP BY</code> on string values in subsequent queries. Refer to <a href="../13-searching.html#toc-13.20-collations">Collations</a> for a list of known collation names.</li>
+<li><code>WAIT_TIMEOUT/net_read_timeout = &lt;value&gt;</code> sets connection timeout, either per session or global. Global can only be set on a VIP connection.</li>
+<li><code>net_write_timeout = &lt;value&gt;</code>: Tunes the network timeout for write operations, i.e., sending data. The global value can be changed only with VIP privileges.</li>
+<li><code>throttling_period = &lt;INT_VALUE&gt;</code>: Interval (in milliseconds) during which the current running query will reschedule. A value of 0 disables throttling, meaning the query will occupy CPU cores until it finishes. If concurrent queries come from other connections at the same time, they will be allocated to free cores or will be suspended until a core is released. Providing a negative value (-1) resets throttling to the default compiled-in value (100ms), which means the query will be rescheduled every 100ms, allowing concurrent queries a chance to be executed. The global value (set via <code>set global</code>) can only be set on a VIP connection.</li>
+<li><code>thread_stack = &lt;value&gt;</code>: Changes the default value on-the-fly, which limits the stack size provided to one task. Note that here 'thread' refers not to an OS thread, but to a userspace thread, also known as a coroutine. This can be useful if, for example, you load a percolate table with unexpectedly high requirements. In such cases, 'call pq' would fail with a message about insufficient stack size. Generally, you should stop the daemon, increase the value in the config, and then restart. However, you can also try a new value without restarting, by setting a new one with this variable. The global value can also be changed online with <code>set global thread_stack</code>, but this is available only from a VIP connection.</li>
+<li><code>optimize_by_id = {0 | 1}</code>: Internal flag used in some <code>debug</code> commands.</li>
+<li><code>threads_ex</code> (diagnostic): Forces Manticore to behave as if it is running on a CPU with the provided profile. As a short example, <code>set threads_ex='4/2+6/3'</code> indicates 'you have 4 free CPU cores, when scheduling multiple queries they should be batched by 2. Also, you have 6 free CPU cores for pseudo-sharding, parts should be batched by 3'. This option is diagnostic, as it is very helpful, for example, to see how your query would run on a configuration you don't have locally. For instance, on a 128-core CPU. Or, conversely, to quickly limit the daemon to behave as single-threaded, to locate a bottleneck or investigate a crash.</li>
+</ul>
+<details>
+
+    By default, Manticore starts a thread pool with a calculated number of CPU cores. All typical tasks are then distributed into this thread pool to ensure maximum CPU utilization. For instance, when a real-time table has several disk chunks, the search will be parallelized over the CPU cores. Similarly, for a single full-text search over a single index, the daemon will attempt to optimize search execution in parallel, using a technique referred to as "pseudo-sharding". Both features heavily depend on the total number of CPU cores and the number of free cores available for immediate use.
+
+    This approach enhances performance but can make incident investigation more challenging. For example, a query doing `COUNT(*)` may return an approximate result (e.g., greater than 100 matches), and a subsequent execution of the same query may yield an exact result (e.g., exactly 120 matches). This variability depends on the available cores, but since this factor is unpredictable, it generally leads to non-reproducible results. Although this is usually acceptable, it can sometimes pose a problem. The `threads_ex` option specifies a desired CPU cores configuration, making queries with this configuration reproducible.
+
+    `threads_ex` sets the CPU template for standard tasks and for pseudo-sharding, as pseudo-sharding can be part of the standard parallelization process. For example, if there are several disk chunks, they will be queried in parallel, but each may be further parallelized using pseudo-sharding. Thus, to manage this situation effectively, you need a couple of templates for each task type.
+
+    A template is a string like `10/3`, where 10 represents concurrency and 3 represents batch size. If concurrency is 0, the default concurrency will be used. If batch size is 0, the default trivial template will be used. Any zero value can be omitted or replaced with `*`. The default (trivial) template can be described as `''`, and also as `*/*`, `0/0`, `0/`, `*/`, `/0`, `*`, etc. This means the daemon uses all available CPU cores without special batching limitations.
+
+    A trivial template with 20 threads can be expressed as `20/*`, `20/0`, `20/`, or simply `20`. A round-robin template with a batch size of 2 is `*/2`, `0/2`, or simply `/2`. A round-robin dispatcher with 20 threads and a batch size of 3 is `20/3`.
+
+    `threads_ex` is a template for basic tasks and for pseudo-sharding, separated by `+`, like:
+
+    * `30+3` - a trivial base of 30 threads + trivial pseudo-sharding of 3 threads
+    * `+/2` - a trivial base + round-robin pseudo-sharding with default threads and batch=2
+    * `10` - a trivial base of 10 threads + default trivial pseudo-sharding
+    * `/1+10` - a round-robin base with default threads and batch=1 + trivial pseudo-sharding with 10 threads
+    * `4/2+2/1` - a round-robin base with 4 threads and batch=2 + round-robin pseudo-sharding with 2 threads and batch=1
+    * `1+1` - the most deterministic case. Exactly 1 thread + 1 pseudo-shard, i.e., no parallelization at all. With this setting, you can reproducibly repeat the same problematic query and investigate behavior details. Furthermore, if you set `throttling_period=0`, your query will 'stick' to the current thread and never be rescheduled during execution, creating an ideal environment for troubleshooting.
+
+    The option can be set globally from outside as an environment variable `MANTICORE_THREADS_EX`, like:
+
+    ```bash
+    export MANTICORE_THREADS_EX=8
+    export MANTICORE_THREADS_EX='16+8/2'
+  ```
+
+  Or, via the MySQL CLI, as:
+  ```sql
+  SET threads_ex='16';
+    SET GLOBAL threads_ex='/2';
+  ```
+
+  Or, as a query parameter, like:
+  ```sql
+  SELECT ... OPTION threads_ex='1+1';
+  ```
+
+  The `threads_ex` configuration follows a hierarchy: environment variables first, then the global variable, and lastly, query options, allowing specific settings to override general ones.
+
+  </details>
+
+<ul>
+<li><code>PROFILING = {0 | 1}</code> enables query profiling in the current session. Defaults to 0. See also <a href="../19-node_info_and_management.html#toc-19.09.01-query_profiling">show profile</a>.</li>
+<li><code>MAX_THREADS_PER_QUERY = &lt;POSITIVE_INT_VALUE&gt;</code> redefines <a href="../20-server_settings.html#max_threads_per_query">max_threads_per_query</a> in the runtime. Per-session variable influences only the queries run in the same session (connection), i.e. up to disconnect. Value 0 means 'no limit'. If both per-session and the global variables are set, the per-session one has a higher priority.</li>
+<li><code>ro = {1 | 0}</code> switches session to read-only mode or back. In <code>show variables</code> output the variable displayed with name <code>session_read_only</code>.</li>
+</ul>
+<p>Known global server variables are:</p>
+<ul>
+<li><code>QUERY_LOG_FORMAT = {plain | sphinxql}</code> Changes the current log format.</li>
+<li><code>LOG_LEVEL = {info | debug | replication | debugv | debugvv}</code> Changes the current log verboseness level.</li>
+<li><code>QCACHE_MAX_BYTES = &lt;value&gt;</code> Changes the <a href="../13-searching.html#toc-13.19-query_cache">query_cache</a> RAM use limit to a given value.</li>
+<li><code>QCACHE_THRESH_MSEC = &lt;value&gt;</code> Changes the <a href="../13-searching.html#toc-13.19-query_cache">query_cache&gt;</a> minimum wall time threshold to a given value.</li>
+<li><code>QCACHE_TTL_SEC = &lt;value&gt;</code> Changes the <a href="../13-searching.html#toc-13.19-query_cache">query_cache</a> TTL for a cached result to a given value.</li>
+<li><code>MAINTENANCE = {0 | 1}</code> When set to 1, puts the server in maintenance mode. Only clients with VIP connections can execute queries in this mode. All new non-VIP incoming connections are refused. Existing connections are left intact.</li>
+<li><code>GROUPING_IN_UTC = {0 | 1}</code> When set to 1, causes timed grouping functions (day(), month(), year(), yearmonth(), yearmonthday()) to be calculated in UTC. Read the doc for <a href="../20-server_settings.html#toc-20.01-searchd">grouping_in_utc</a> config params for more details.</li>
+<li><code>TIMEZONE = &lt;value&gt;</code> Specifies the timezone used by date/time-related functions. Read the doc for <a href="../20-server_settings.html#toc-20.01-searchd">timezone</a> config param for more details.</li>
+<li>
+<p><code>QUERY_LOG_MIN_MSEC = &lt;value&gt;</code> Changes the <a href="../20-server_settings.html#query_log_min_msec">query_log_min_msec</a> searchd settings value. In this case, it expects the value exactly in milliseconds and doesn't parse time suffixes, as in config.</p>
+<blockquote>
+<p>Warning: this is a very specific and 'hard' variable; filtered out messages will be just dropped and not written into the log at all. Better just filter your log with something like 'grep', in this case, you'll have at least the full original log as a backup.</p>
+</blockquote>
+</li>
+<li>
+<p><code>LOG_DEBUG_FILTER = &lt;string value&gt;</code> Filters out redundant log messages. If the value is set, then all logs with level &gt; INFO (i.e., <code>DEBUG</code>, <code>DEBUGV</code>, etc.) will be compared with the string and output only in the case they start with the given value.</p>
+</li>
+<li><code>MAX_THREADS_PER_QUERY = &lt;POSITIVE_INT_VALUE&gt;</code> Redefines <a href="../20-server_settings.html#max_threads_per_query">max_threads_per_query</a> at runtime. As global, it changes behavior for all sessions. Value 0 means 'no limit'. If both per-session and global variables are set, the per-session one has a higher priority.</li>
+<li><code>NET_WAIT = {-1 | 0 | POSITIVE_INT_VALUE}</code> Changes the <a href="../20-server_settings.html#net_wait_tm">net_wait_tm</a> searchd settings value.</li>
+<li><code>IOSTATS = {0 | 1}</code> Enables or disables I/O operations (except for attributes) reporting in the query log.</li>
+<li><code>CPUSTATS= {1|0}</code> Turns on/off <a href="../05-starting_the_server.html#searchd-command-line-options">CPU time tracking</a>.</li>
+<li><code>COREDUMP= {1|0}</code> Turns on/off saving a core file or a minidump of the server on crash. More details <a href="../05-starting_the_server.html#searchd-command-line-options">here</a>.</li>
+<li><code>AUTO_OPTIMIZE = {1|0}</code> Turns on/off <a href="../20-server_settings.html#auto_optimize">auto_optimize</a>.</li>
+<li><code>PSEUDO_SHARDING = {1|0}</code> Turns on/off search <a href="../20-server_settings.html#pseudo_sharding">pseudo-sharding</a>.</li>
+<li><code>SECONDARY_INDEXES = {1|0}</code> Turns on/off <a href="../20-server_settings.html#secondary_indexes">secondary indexes</a> for search queries.</li>
+<li><code>ES_COMPAT = {on/off/dashboards}</code> When set to <code>on</code> (default), Elasticsearch-like write requests are supported; <code>off</code> disables the support; <code>dashboards</code> enables the support and also allows requests from Kibana (this functionality is experimental).</li>
+<li><code>RESET_NETWORK_TIMEOUT_ON_PACKET = {1|0}</code> changes <a href="../20-server_settings.html#reset_network_timeout_on_packet">reset_network_timeout_on_packet</a> param. Only clients with VIP connections can change this variable.</li>
+<li><code>optimize_cutoff = &lt;value&gt;</code>: Changes the value of the config's <a href="../20-server_settings.html#optimize_cutoff">optimize_cutoff</a> setting on-the-fly.</li>
+<li><code>accurate_aggregation</code>: Sets the default value for the option <a href="../13-searching.html#accurate_aggregation">accurate_aggregation</a> of future queries.</li>
+<li><code>distinct_precision_threshold</code>: Sets the default value for the option <a href="../13-searching.html#distinct_precision_threshold">distinct_precision_threshold</a> of future queries.</li>
+<li><code>expansion_merge_threshold_docs</code>: Changes the value of the config's <a href="20-server_settings.html#expansion_merge_threshold_docs">expansion_merge_threshold_docs</a> setting on-the-fly.</li>
+<li><code>expansion_merge_threshold_hits</code>: Changes the value of the config's <a href="20-server_settings.html#expansion_merge_threshold_hits">expansion_merge_threshold_hits</a> setting on-the-fly.</li>
+</ul>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">autocommit</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">query_log_format</span><span class="o">=</span><span class="n">sphinxql</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="o">@</span><span class="n">banned</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="o">@</span><span class="n">banned</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>To make user variables persistent, make sure <a href="../20-server_settings.html#sphinxql_state">sphinxql_state</a> is enabled.</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

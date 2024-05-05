@@ -1,0 +1,1217 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Extensions - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-22-extensions">
+        <a class="chapter-link" href="#toc-22-extensions"> ¶ 22</a>
+
+        
+        <h1>Extensions</h1>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.01-sphinxse">
+        <a class="chapter-link" href="#toc-22.01-sphinxse"> ¶ 22.1</a>
+
+        
+        <h1 id="sphinxse">SphinxSE</h1>
+<p>SphinxSE is a MySQL storage engine that can be compiled into MySQL/MariaDB servers using their pluggable architecture.</p>
+<p>Despite its name, SphinxSE does <em>not</em> actually store any data itself. Instead, it serves as a built-in client that enables the MySQL server to communicate with <code>searchd</code>, execute search queries, and retrieve search results. All indexing and searching take place outside MySQL.</p>
+<p>Some common SphinxSE applications include:</p>
+<ul>
+<li>Simplifying the porting of MySQL Full-Text Search (FTS) applications to Manticore;</li>
+<li>Enabling Manticore use with programming languages for which native APIs are not yet available;</li>
+<li>Offering optimizations when additional Manticore result set processing is needed on the MySQL side (e.g., JOINs with original document tables or additional MySQL-side filtering).</li>
+</ul>
+<h2 id="installing-sphinxse">Installing SphinxSE</h2>
+<p>You will need to obtain a copy of MySQL sources, prepare those, and then recompile MySQL binary. MySQL sources (mysql-5.x.yy.tar.gz) could be obtained from <a href="http://dev.mysql.com">http://dev.mysql.com</a> website.</p>
+<h3 id="compiling-mysql-50x-with-sphinxse">Compiling MySQL 5.0.x with SphinxSE</h3>
+<ol>
+<li>copy <code>sphinx.5.0.yy.diff</code> patch file into MySQL sources directory and run</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>patch<span class="w"> </span>-p1<span class="w"> </span>&lt;<span class="w"> </span>sphinx.5.0.yy.diff
+</code></pre></div>
+
+<p>If there's no .diff file exactly for the specific version you need to:   build, try applying .diff with closest version numbers.  It is important that the patch should apply with no rejects.<br />
+2.  in MySQL sources directory, run</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>sh<span class="w"> </span>BUILD/autorun.sh
+</code></pre></div>
+
+<ol start="3">
+<li>in MySQL sources directory, create <code>sql/sphinx</code> directory in and copy all files in <code>mysqlse</code> directory from Manticore sources there. Example:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>cp<span class="w"> </span>-R<span class="w"> </span>/root/builds/sphinx-0.9.7/mysqlse<span class="w"> </span>/root/builds/mysql-5.0.24/sql/sphinx
+</code></pre></div>
+
+<ol start="4">
+<li>configure MySQL and enable the new engine:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>./configure<span class="w"> </span>--with-sphinx-storage-engine
+</code></pre></div>
+
+<ol start="5">
+<li>build and install MySQL:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>make
+$<span class="w"> </span>make<span class="w"> </span>install
+</code></pre></div>
+
+<h3 id="compiling-mysql-51x-with-sphinxse">Compiling MySQL 5.1.x with SphinxSE</h3>
+<ol>
+<li>In the MySQL sources directory, create a <code>storage/sphinx</code> directory and copy all files from the <code>mysqlse</code> directory in the Manticore sources to this new location. For example:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>cp<span class="w"> </span>-R<span class="w"> </span>/root/builds/sphinx-0.9.7/mysqlse<span class="w"> </span>/root/builds/mysql-5.1.14/storage/sphinx
+</code></pre></div>
+
+<ol start="2">
+<li>In the MySQL source directory, run:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>sh<span class="w"> </span>BUILD/autorun.sh
+</code></pre></div>
+
+<ol start="3">
+<li>Configure MySQL and enable the Manticore engine:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>./configure<span class="w"> </span>--with-plugins<span class="o">=</span>sphinx
+</code></pre></div>
+
+<ol start="4">
+<li>Build and install MySQL:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>make
+$<span class="w"> </span>make<span class="w"> </span>install
+</code></pre></div>
+
+<h3 id="checking-sphinxse-installation">Checking SphinxSE installation</h3>
+<!-- example Example_1 -->
+
+<p>To verify that SphinxSE has been successfully compiled into MySQL, start the newly built server, run the MySQL client, and issue the <code>SHOW ENGINES</code> query. You should see a list of all available engines. Manticore should be present, and the "Support" column should display "YES":</p>
+<!-- request -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">engines</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+----------+-------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Engine</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">Support</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="k">Comment</span><span class="w">                                                     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+----------+-------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">MyISAM</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="k">Default</span><span class="w"> </span><span class="n">engine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">MySQL</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span><span class="mi">23</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">great</span><span class="w"> </span><span class="n">performance</span><span class="w">      </span><span class="o">|</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="o">|</span><span class="w"> </span><span class="n">SPHINX</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">YES</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Manticore</span><span class="w"> </span><span class="k">storage</span><span class="w"> </span><span class="n">engine</span><span class="w">                                       </span><span class="o">|</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="o">+</span><span class="c1">------------+----------+-------------------------------------------------------------+</span>
+<span class="mi">13</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="using-sphinxse">Using SphinxSE</h2>
+<p>To search using SphinxSE, you'll need to create a special ENGINE=SPHINX "search table" and then use a <code>SELECT</code> statement with the full-text query placed in the <code>WHERE</code> clause for the query column.</p>
+<p>Here's an example create statement and search query:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t1</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w">          </span><span class="nb">INTEGER</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">weight</span><span class="w">      </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">query</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">3072</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">group_id</span><span class="w">    </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">INDEX</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">SPHINX</span><span class="w"> </span><span class="k">CONNECTION</span><span class="o">=</span><span class="ss">&quot;sphinx://localhost:9312/test&quot;</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test it;mode=any&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>In a search table, the first three columns <em>must</em> have the following types: <code>INTEGER UNSIGNED</code> or <code>BIGINT</code> for the 1st column (document ID), <code>INTEGER</code> or <code>BIGINT</code> for the 2nd column (match weight), and <code>VARCHAR</code> or <code>TEXT</code> for the 3rd column (your query). This mapping is fixed; you cannot omit any of these three required columns, move them around, or change their types. Additionally, the query column must be indexed, while all others should remain unindexed. Column names are ignored, so you can use any arbitrary names.</p>
+<p>Additional columns must be either <code>INTEGER</code>, <code>TIMESTAMP</code>, <code>BIGINT</code>, <code>VARCHAR</code>, or <code>FLOAT</code>. They will be bound to attributes provided in the Manticore result set by name, so their names must match the attribute names specified in <code>sphinx.conf</code>. If there's no matching attribute name in the Manticore search results, the column will have <code>NULL</code> values.</p>
+<p>Special "virtual" attribute names can also be bound to SphinxSE columns. Use <code>_sph_</code> instead of <code>@</code> for that purpose. For example, to obtain the values of <code>@groupby</code>, <code>@count</code>, or <code>@distinct</code> virtual attributes, use <code>_sph_groupby</code>, <code>_sph_count</code>, or <code>_sph_distinct</code> column names, respectively.</p>
+<p>The <code>CONNECTION</code> string parameter is used to specify the Manticore host, port, and table. If no connection string is specified in <code>CREATE TABLE</code>, the table name <code>*</code> (i.e., search all tables) and <code>localhost:9312</code> are assumed. The connection string syntax is as follows:</p>
+<div class="codehilite"><pre><span></span><code>CONNECTION=&quot;sphinx://HOST:PORT/TABLENAME&quot;
+</code></pre></div>
+
+<p>You can change the default connection string later:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">CONNECTION</span><span class="o">=</span><span class="ss">&quot;sphinx://NEWHOST:NEWPORT/NEWTABLENAME&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>You can also override these parameters on a per-query basis.</p>
+<p>As shown in the example, both the query text and search options should be placed in the <code>WHERE</code> clause on the search query column (i.e., the 3rd column). Options are separated by semicolons and their names from values by an equality sign. Any number of options can be specified. The available options are:</p>
+<ul>
+<li>query - query text;</li>
+<li>mode - matching mode. Must be one of "all", "any", "phrase", "boolean", or "extended". Default is "all";</li>
+<li>sort - match sorting mode. Must be one of "relevance", "attr_desc", "attr_asc", "time_segments", or "extended". In all modes besides "relevance", the attribute name (or sorting clause for "extended") is also required after a colon:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;sort=attr_asc:group_id&#39;</span><span class="p">;</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;sort=extended:@weight desc, group_id asc&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>offset - offset into the result set; default is 0;</li>
+<li>limit - number of matches to retrieve from the result set; default is 20;</li>
+<li>index - names of the tables to search:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;index=test1;&#39;</span><span class="p">;</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;index=test1,test2,test3;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>minid, maxid - min and max document ID to match;</li>
+<li>weights - comma-separated list of weights to be assigned to Manticore full-text fields:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;weights=1,2,3;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>filter, !filter - comma-separated attribute name and a set of values to match:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="o">#</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">groups</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">19</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;filter=group_id,1,5,19;&#39;</span><span class="p">;</span>
+<span class="o">#</span><span class="w"> </span><span class="n">exclude</span><span class="w"> </span><span class="n">groups</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">11</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;!filter=group_id,3,11;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>range, !range - comma-separated (integer or bigint) Manticore attribute name, and min and max values to match:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="o">#</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">groups</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="n">inclusive</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;range=group_id,3,7;&#39;</span><span class="p">;</span>
+<span class="o">#</span><span class="w"> </span><span class="n">exclude</span><span class="w"> </span><span class="n">groups</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="mi">25</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;!range=group_id,5,25;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>floatrange, !floatrange - comma-separated (floating point) Manticore attribute name, and min and max values to match:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="o">#</span><span class="w"> </span><span class="n">filter</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">float</span><span class="w"> </span><span class="k">size</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;floatrange=size,2,3;&#39;</span><span class="p">;</span>
+<span class="o">#</span><span class="w"> </span><span class="n">pick</span><span class="w"> </span><span class="k">all</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">within</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">meter</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">geoanchor</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;floatrange=@geodist,0,1000;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>maxmatches - maxmatches - per-query max matches value, as in <a href="../13-searching.html#max_matches">max_matches search option</a>:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;maxmatches=2000;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>cutoff - maximum allowed matches, as in <a href="../13-searching.html#cutoff">cutoff search option</a>:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;cutoff=10000;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>maxquerytime - maximum allowed query time (in milliseconds), as in <a href="../13-searching.html#max_query_time">max_query_time search option</a>:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;maxquerytime=1000;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>groupby - group-by function and attribute. Read <a href="../13-searching.html#just-grouping">this</a> about grouping search results:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;groupby=day:published_ts;&#39;</span><span class="p">;</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;groupby=attr:group_id;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>groupsort - group-by sorting clause:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;groupsort=@count desc;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>distinct - an attribute to compute <a href="../13-searching.html#count%28distinct-field%29">COUNT(DISTINCT)</a> for when doing group-by:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;groupby=attr:country_id;distinct=site_id&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>indexweights - comma-separated list of table names and weights to use when searching through several tables:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;indexweights=tbl_exact,2,tbl_stemmed,1;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>fieldweights - comma-separated list of per-field weights that can be used by the ranker:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;fieldweights=title,10,abstract,3,content,1;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>comment - a string to mark this query in query log, as in <a href="../13-searching.html#comment">comment search option</a>:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;comment=marker001;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>select - a string with expressions to compute:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;select=2*a+3*** as myexpr;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>host, port - remote <code>searchd</code> host name and TCP port, respectively:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;host=sphinx-test.loc;port=7312;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li>ranker - a ranking function to use with "extended" matching mode, as in <a href="../13-searching.html#ranker">ranker</a>. Known values are "proximity_bm25", "bm25", "none", "wordcount", "proximity", "matchany", "fieldmask", "sph04", "expr:EXPRESSION" syntax to support expression-based ranker (where EXPRESSION should be replaced with your specific ranking formula), and "export:EXPRESSION":</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;mode=extended;ranker=bm25;&#39;</span><span class="p">;</span>
+<span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;mode=extended;ranker=expr:sum(lcs);&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>The "export" ranker functions similarly to ranker=expr, but it retains the per-document factor values, while ranker=expr discards them after computing the final <code>WEIGHT()</code> value. Keep in mind that ranker=export is intended for occasional use, such as training a machine learning (ML) function or manually defining your own ranking function, and should not be used in actual production. When utilizing this ranker, you'll likely want to examine the output of the <code>RANKFACTORS()</code> function, which generates a string containing all the field-level factors for each document.</p>
+<!-- example SQL Example_2 -->
+<!-- request -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHT</span><span class="p">(),</span><span class="w"> </span><span class="n">RANKFACTORS</span><span class="p">()</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">myindex</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;dog&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;100*bm25&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<!-- response -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="err">\</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
+<span class="w">           </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">555617</span>
+<span class="w">    </span><span class="n">published</span><span class="p">:</span><span class="w"> </span><span class="mi">1110067331</span>
+<span class="w">   </span><span class="n">channel_id</span><span class="p">:</span><span class="w"> </span><span class="mi">1059819</span>
+<span class="w">        </span><span class="n">title</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span>
+<span class="w">      </span><span class="n">content</span><span class="p">:</span><span class="w"> </span><span class="mi">428</span>
+<span class="w">     </span><span class="n">weight</span><span class="p">():</span><span class="w"> </span><span class="mi">69900</span>
+<span class="n">rankfactors</span><span class="p">():</span><span class="w"> </span><span class="n">bm25</span><span class="o">=</span><span class="mi">699</span><span class="p">,</span><span class="w"> </span><span class="n">bm25a</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">666478</span><span class="p">,</span><span class="w"> </span><span class="n">field_mask</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">doc_word_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">field1</span><span class="o">=</span><span class="p">(</span><span class="n">lcs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">hit_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">word_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="n">tf_idf</span><span class="o">=</span><span class="mi">1</span><span class="p">.</span><span class="mi">038127</span><span class="p">,</span><span class="w"> </span><span class="n">min_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">max_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">sum_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span>
+<span class="n">min_hit_pos</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="n">min_best_span_pos</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="n">exact_hit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="n">max_window_hits</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">word1</span><span class="o">=</span><span class="p">(</span><span class="n">tf</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">)</span>
+
+<span class="o">***************************</span><span class="w"> </span><span class="mi">2</span><span class="err">\</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
+<span class="w">           </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">555313</span>
+<span class="w">    </span><span class="n">published</span><span class="p">:</span><span class="w"> </span><span class="mi">1108438365</span>
+<span class="w">   </span><span class="n">channel_id</span><span class="p">:</span><span class="w"> </span><span class="mi">1058561</span>
+<span class="w">        </span><span class="n">title</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span>
+<span class="w">      </span><span class="n">content</span><span class="p">:</span><span class="w"> </span><span class="mi">249</span>
+<span class="w">     </span><span class="n">weight</span><span class="p">():</span><span class="w"> </span><span class="mi">68500</span>
+<span class="n">rankfactors</span><span class="p">():</span><span class="w"> </span><span class="n">bm25</span><span class="o">=</span><span class="mi">685</span><span class="p">,</span><span class="w"> </span><span class="n">bm25a</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">675213</span><span class="p">,</span><span class="w"> </span><span class="n">field_mask</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="n">doc_word_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">field0</span><span class="o">=</span><span class="p">(</span><span class="n">lcs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">hit_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">word_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="n">tf_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">min_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">max_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">sum_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span>
+<span class="n">min_hit_pos</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">min_best_span_pos</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">exact_hit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_window_hits</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="n">field1</span><span class="o">=</span><span class="p">(</span><span class="n">lcs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">hit_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">word_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">tf_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">519063</span><span class="p">,</span>
+<span class="n">min_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">max_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">sum_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">,</span><span class="w"> </span><span class="n">min_hit_pos</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+<span class="n">min_best_span_pos</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span><span class="w"> </span><span class="n">exact_hit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_window_hits</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">word1</span><span class="o">=</span><span class="p">(</span><span class="n">tf</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="n">idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<ul>
+<li>geoanchor - geodistance anchor. Learn more about Geo-search <a href="../13-searching.html#toc-13.15-geo_search">in this section</a>. Takes 4 parameters, which are the latitude and longitude attribute names, and anchor point coordinates, respectively:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;test;geoanchor=latattr,lonattr,0.123,0.456&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>One <strong>very important</strong> note is that it is <strong>much</strong> more efficient to let Manticore handle sorting, filtering, and slicing the result set, rather than increasing the max matches count and using <code>WHERE</code>, <code>ORDER BY</code>, and <code>LIMIT</code> clauses on the MySQL side. This is due to two reasons. First, Manticore employs a variety of optimizations and performs these tasks better than MySQL. Second, less data would need to be packed by searchd, transferred, and unpacked by SphinxSE.</p>
+<!-- example Example_3 -->
+
+<p>You can obtain additional information related to the query results using the <code>SHOW ENGINE SPHINX STATUS</code> statement:</p>
+<!-- request -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">ENGINE</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------+-------+-------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Status</span><span class="w">                                          </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------+-------+-------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">total</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="k">found</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="k">time</span><span class="p">:</span><span class="w"> </span><span class="mi">126</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">words</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sphinx</span><span class="p">:</span><span class="mi">591</span><span class="p">:</span><span class="mi">1256</span><span class="w"> </span><span class="n">soft</span><span class="p">:</span><span class="mi">11076</span><span class="p">:</span><span class="mi">15945</span><span class="w">                </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------+-------+-------------------------------------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example Example_4 -->
+
+<p>You can also access this information through status variables. Keep in mind that using this method does not require super-user privileges.</p>
+<!-- request -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;sphinx_%&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------------+----------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------------+----------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">sphinx_total</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">25</span><span class="w">                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">sphinx_total_found</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">25</span><span class="w">                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">sphinx_time</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">126</span><span class="w">                              </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">sphinx_word_count</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">sphinx_words</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">sphinx</span><span class="p">:</span><span class="mi">591</span><span class="p">:</span><span class="mi">1256</span><span class="w"> </span><span class="n">soft</span><span class="p">:</span><span class="mi">11076</span><span class="p">:</span><span class="mi">15945</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------------+----------------------------------+</span>
+<span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL Example_5 -->
+
+<p>SphinxSE search tables can be joined with tables using other engines. Here's an example using the "documents" table from example.sql:</p>
+<!-- request -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">.</span><span class="n">documents</span><span class="w"> </span><span class="n">docs</span>
+<span class="o">-&gt;</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">docs</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="ss">&quot;one document;mode=any&quot;</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">ENGINE</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------------------------------+---------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">content</span><span class="w">                             </span><span class="o">|</span><span class="w"> </span><span class="n">docdate</span><span class="w">             </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------------------------+---------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">my</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">document</span><span class="w"> </span><span class="nb">number</span><span class="w"> </span><span class="n">two</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2006</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">17</span><span class="w"> </span><span class="mi">14</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">28</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">my</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">document</span><span class="w"> </span><span class="nb">number</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2006</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">17</span><span class="w"> </span><span class="mi">14</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">28</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------------------------+---------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="o">+</span><span class="c1">--------+-------+---------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Status</span><span class="w">                                      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------+-------+---------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">total</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="k">found</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="k">time</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">words</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">one</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="w"> </span><span class="n">document</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="w">                        </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------+-------+---------------------------------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="building-snippets-via-mysql">Building snippets via MySQL</h2>
+<p>SphinxSE also features a UDF function that allows you to create snippets using MySQL. This functionality is similar to <a href="../../13-searching.html#highlighting">HIGHLIGHT()</a>, but can be accessed through MySQL+SphinxSE.</p>
+<p>The binary providing the UDF is called <code>sphinx.so</code> and should be automatically built and installed in the appropriate location along with SphinxSE. If it doesn't install automatically for some reason, locate <code>sphinx.so</code> in the build directory and copy it to your MySQL instance's plugins directory. Once done, register the UDF with the following statement:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">sphinx_snippets</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="n">STRING</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;sphinx.so&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>The function name <em>must</em> be sphinx_snippets; you cannot use an arbitrary name. The function arguments are as follows:</p>
+<p><strong>Prototype:</strong> function sphinx_snippets ( document, table, words [, options] );</p>
+<p>The document and words arguments can be either strings or table columns. Options must be specified like this: <code>'value' AS option_name</code>. For a list of supported options, refer to the <a href="../13-searching.html#toc-13.07-highlighting">Highlighting section</a>. The only UDF-specific additional option is called <code>sphinx</code> and allows you to specify the searchd location (host and port).</p>
+<p>Usage examples:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">sphinx_snippets</span><span class="p">(</span><span class="s1">&#39;hello world doc&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;world&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;sphinx://192.168.1.1/&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sphinx</span><span class="p">,</span><span class="w"> </span><span class="k">true</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">exact_phrase</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;[**]&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">before_match</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;[/**]&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">after_match</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">documents</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="n">sphinx_snippets</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;index&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;mysql php&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="nb">text</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">sphinx</span><span class="p">,</span><span class="w"> </span><span class="n">documents</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;mysql php&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">sphinx</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">documents</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.02-federated">
+        <a class="chapter-link" href="#toc-22.02-federated"> ¶ 22.2</a>
+
+        
+        <h1 id="federated">FEDERATED</h1>
+<p>With the MySQL FEDERATED engine, you can connect to a local or remote Manticore instance from MySQL/MariaDB and perform search queries.</p>
+<h2 id="using-federated">Using FEDERATED</h2>
+<p>An actual Manticore query can't be used directly with the FEDERATED engine and must be "proxied" (sent as a string in a column) due to the FEDERATED engine's limitations and the fact that Manticore implements custom syntax like the <a href="../13-searching.html#toc-13.02.01-basic_usage">MATCH</a> clause.</p>
+<p>To search via <code>FEDERATED</code>, you first need to create a FEDERATED engine table. The Manticore query will be included in a <code>query</code> column in the <code>SELECT</code> performed over the FEDERATED table.</p>
+<!-- example create federated -->
+<p>Creating a FEDERATED-compatible MySQL table:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t1</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w">          </span><span class="nb">INTEGER</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">year</span><span class="w">        </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">rating</span><span class="w">      </span><span class="nb">FLOAT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">query</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">INDEX</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">FEDERATED</span>
+<span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span>
+<span class="k">CONNECTION</span><span class="o">=</span><span class="s1">&#39;mysql://FEDERATED@127.0.0.1:9306/DB/movies&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response SQL-->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example select federated -->
+<p>Query FEDERATED compatible table:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;SELECT * FROM movies WHERE MATCH (\&#39;</span><span class="n">pie</span><span class="err">\</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+<!-- response SQL-->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----+------+--------+------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">year</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">rating</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">query</span><span class="w">                                    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+--------+------------------------------------------+</span>
+<span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2019</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">movies</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pie&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+--------+------------------------------------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">04</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>The only fixed mapping is the <code>query</code> column. It is mandatory and must be the only column with a table attached.</p>
+<p>The Manticore table linked via <code>FEDERATED</code> <strong>must</strong> be a physical table (plain or real-time).</p>
+<p>The FEDERATED table should have columns with the same names as the remote Manticore table attributes since they will be bound to the attributes provided in the Manticore result set by name. However, it might map only some attributes, not all of them.</p>
+<p>Manticore server identifies a query from a FEDERATED client by the user name "FEDERATED". The <code>CONNECTION</code> string parameter is used to specify the Manticore host, SQL port, and tables for queries coming through the connection. The connection string syntax is as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">CONNECTION</span><span class="o">=</span><span class="s">&quot;mysql://FEDERATED@HOST:PORT/DB/TABLENAME&quot;</span>
+</code></pre></div>
+
+<p>Since Manticore doesn't have the concept of a database, the <code>DB</code> string can be random as it will be ignored by Manticore, but MySQL requires a value in the <code>CONNECTION</code> string definition. As seen in the example, the full <code>SELECT</code> SQL query should be placed in a WHERE clause against the <code>query</code> column.</p>
+<p>Only the <code>SELECT</code> statement is supported, not <code>INSERT</code>, <code>REPLACE</code>, <code>UPDATE</code>, or <code>DELETE</code>.</p>
+<h3 id="federated-tips">FEDERATED tips</h3>
+<p>One <strong>very important</strong> note is that it is <strong>much</strong> more efficient to allow Manticore to perform sorting, filtering, and slicing the result set than to increase the max matches count and use WHERE, ORDER BY, and LIMIT clauses on the MySQL side. This is for two reasons. First, Manticore implements a number of optimizations and performs better than MySQL for these tasks. Second, less data needs to be packed by searchd, transferred, and unpacked between Manticore and MySQL.</p>
+<!-- example federated join -->
+<p>JOINs can be performed between a FEDERATED table and other MySQL tables. This can be used to retrieve information that is not stored in a Manticore table.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+<div class='item-select'>
+Query to JOIN MySQL based table with FEDERATED table served by Manticore
+</div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">t1</span><span class="p">.</span><span class="k">year</span><span class="p">,</span><span class="w"> </span><span class="n">comments</span><span class="p">.</span><span class="k">comment</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">comments</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">comments</span><span class="p">.</span><span class="n">post_id</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;SELECT * FROM movies WHERE MATCH (\&#39;</span><span class="n">pie</span><span class="err">\</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+<!-- response SQL-->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----+------+--------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">year</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">comment</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+--------------+</span>
+<span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2019</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+--------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03-udfs_and_plugins">
+        <a class="chapter-link" href="#toc-22.03-udfs_and_plugins"> ¶ 22.3</a>
+
+        
+        <h1 id="udfs-and-plugins">UDFs and Plugins</h1>
+<p>Manticore can be extended with user-defined functions, or UDFs for short, like this:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">attr1</span><span class="p">,</span><span class="w"> </span><span class="n">myudf</span><span class="w"> </span><span class="p">(</span><span class="n">attr2</span><span class="p">,</span><span class="w"> </span><span class="n">attr3</span><span class="o">+</span><span class="n">attr4</span><span class="p">)</span><span class="w"> </span><span class="p">...</span>
+</code></pre></div>
+
+<p>You can dynamically load and unload UDFs into <code>searchd</code> without having to restart the server, and use them in expressions when searching, ranking, etc. A quick summary of the UDF features is as follows:</p>
+<ul>
+<li>UDFs can take integer (both 32-bit and 64-bit), float, string, MVA, or <code>PACKEDFACTORS()</code> arguments.</li>
+<li>UDFs can return integer, float, or string values.</li>
+<li>UDFs can check the argument number, types, and names during the query setup phase, and raise errors.</li>
+</ul>
+<p>We do not yet support aggregation functions. In other words, your UDFs will be called for just a single document at a time and are expected to return some value for that document. Writing a function that can compute an aggregate value like AVG() over the entire group of documents that share the same GROUP BY key is not yet possible. However, you can use UDFs within the built-in aggregate functions: that is, even though MYCUSTOMAVG() is not supported yet, AVG(MYCUSTOMFUNC()) should work just fine!</p>
+<p>UDFs offer a wide range of applications, such as:</p>
+<ul>
+<li>incorporating custom mathematical or string functions;</li>
+<li>accessing databases or files from within Manticore;</li>
+<li>creating complex ranking functions.</li>
+</ul>
+<h2 id="plugins">Plugins</h2>
+<p>Plugins offer additional opportunities to expand search functionality. They can currently be used to compute custom rankings and tokenize documents and queries.</p>
+<p>Here's the complete list of plugin types:</p>
+<ul>
+<li>UDF plugins (essentially UDFs, but since they're plugged in, they're also referred to as 'UDF plugins')</li>
+<li>ranker plugins</li>
+<li>indexing-time token filter plugins</li>
+<li>query-time token filter plugins</li>
+</ul>
+<p>This section covers the general process of writing and managing plugins; specifics related to creating different types of plugins are discussed in their respective subsections.</p>
+<p>So, how do you write and use a plugin? Here's a quick four-step guide:</p>
+<ul>
+<li>create a dynamic library (either .so or .dll), most likely using C or C++;</li>
+<li>load the plugin into searchd with <a href="../../22-extensions.html#toc-22.03.03.01-creating_a_plugin">CREATE PLUGIN</a>;</li>
+<li>use the plugin with plugin-specific calls (usually through specific OPTIONS).</li>
+<li>unload or reload a plugin with <a href="../../22-extensions.html#toc-22.03.03.02-deleting_a_plugin">DROP PLUGIN</a> and <a href="../../22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a>, respectively.</li>
+</ul>
+<p>Note that while UDFs are first-class plugins, they are installed using a separate <a href="../../22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> statement. This allows for a neat specification of the return type, without sacrificing backward compatibility or changing the syntax.</p>
+<p>Dynamic plugins are supported in threads and thread_pool workers. Multiple plugins (and/or UDFs) can be contained in a single library file. You may choose to either group all project-specific plugins in one large library or create a separate library for each UDF and plugin; it's up to you.</p>
+<p>As with UDFs, you should include the <code>src/sphinxudf.h</code> header file. At the very least, you'll need the <code>SPH_UDF_VERSION</code> constant to implement an appropriate version function. Depending on the specific plugin type, you may or may not need to link your plugin with <code>src/sphinxudf.c</code>. However, all functions implemented in <code>sphinxudf.c</code> are related to unpacking the <code>PACKEDFACTORS()</code> blob, and no plugin types have access to that data. So currently, linking with just the header should suffice. (In fact, if you copy over the UDF version number, you won't even need the header file for some plugin types.)</p>
+<p>Formally, plugins are simply sets of C functions that adhere to a specific naming pattern. You're typically required to define one key function for the primary task, but you can also define additional functions. For instance, to implement a ranker called "myrank", you must define a <code>myrank_finalize()</code> function that returns the rank value. However, you can also define <code>myrank_init()</code>, <code>myrank_update()</code>, and <code>myrank_deinit()</code> functions. Specific sets of well-known suffixes and call arguments differ based on the plugin type, but _init() and _deinit() are generic, and every plugin has them. Hint: for a quick reference on known suffixes and their argument types, refer to <code>sphinxplugin.h</code>, where the call prototypes are defined at the beginning of the file.</p>
+<p>Even though the public interface is defined in pure C, our plugins essentially follow an <em>object-oriented model</em>. Indeed, every <code>_init()</code> function receives a <code>void ** userdata</code> out-parameter, and the pointer value stored at <code>(*userdata)</code> is then passed as the first argument to all other plugin functions. So you can think of a plugin as a <em>class</em> that gets instantiated every time an object of that class is needed to handle a request: the <code>userdata</code> pointer serves as the <code>this</code> pointer; the functions act as methods, and the <code>_init()</code> and <code>_deinit()</code> functions work as constructor and destructor, respectively.</p>
+<p>This minor OOP-in-C complication arises because plugins run in a multi-threaded environment, and some need to maintain state. You can't store that state in a global variable in your plugin, so we pass around a userdata parameter, which naturally leads to the OOP model. If your plugin is simple and stateless, the interface allows you to omit <code>_init()</code>, <code>_deinit()</code>, and any other functions.</p>
+<p>To summarize, here's the simplest complete ranker plugin in just three lines of C code:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// gcc -fPIC -shared -o myrank.so myrank.c</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;sphinxudf.h&quot;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">myrank_ver</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">SPH_UDF_VERSION</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">myrank_finalize</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">123</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Here's how to use the simple ranker plugin:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">myrank</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;ranker&#39;</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;myrank.dll&#39;</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="p">()</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">myrank</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+<span class="o">+</span><span class="c1">------+----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">weight</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+----------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">123</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">123</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+----------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.01-listing_plugins">
+        <a class="chapter-link" href="#toc-22.03.01-listing_plugins"> ¶ 22.3.1</a>
+
+        
+        <h1 id="listing-plugins">Listing plugins</h1>
+<h2 id="show-plugins">SHOW PLUGINS</h2>
+<!-- example Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">PLUGINS</span>
+</code></pre></div>
+
+<p>Displays all the loaded plugins (except for Buddy plugins, see below) and UDFs. The "Type" column should be one of the <code>udf</code>, <code>ranker</code>, <code>index_token_filter</code>, or <code>query_token_filter</code>. The "Users" column is the number of thread that are currently using that plugin in a query. The "Extra" column is intended for various additional plugin-type specific information; currently, it shows the return type for the UDFs and is empty for all the other plugin types.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">PLUGINS</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+<!-- response -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+----------+----------------+-------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Name</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">Library</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="n">Users</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Extra</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+----------+----------------+-------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">udf</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">udfexample</span><span class="p">.</span><span class="n">dll</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="nb">INT</span><span class="w">   </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+----------+----------------+-------+-------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="show-buddy-plugins">SHOW BUDDY PLUGINS</h2>
+<!-- example Example_buddy -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGINS</span>
+</code></pre></div>
+
+<p>This will display all available plugins, including core and local ones.<br />
+To remove a plugin, make sure to use the name listed in the Package column.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGINS</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+------------------------------------------------+-----------------+---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">Package</span><span class="w">                                        </span><span class="o">|</span><span class="w"> </span><span class="nx">Plugin</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="nx">Version</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Info</span><span class="w">                                                                                                                                                     </span><span class="o">|</span>
+<span class="o">+------------------------------------------------+-----------------+---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">empty</span><span class="o">-</span><span class="kt">string</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="nx">empty</span><span class="o">-</span><span class="kt">string</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Handles</span><span class="w"> </span><span class="nx">empty</span><span class="w"> </span><span class="nx">queries</span><span class="p">,</span><span class="w"> </span><span class="nx">which</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">occur</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">trimming</span><span class="w"> </span><span class="nx">comments</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="nx">dealing</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">specific</span><span class="w"> </span><span class="nx">SQL</span><span class="w"> </span><span class="nx">protocol</span><span class="w"> </span><span class="nx">instructions</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">comments</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">supported</span><span class="w">      </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">backup</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="nx">backup</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">BACKUP</span><span class="w"> </span><span class="nx">sql</span><span class="w"> </span><span class="nx">statement</span><span class="w">                                                                                                                                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">emulate</span><span class="o">-</span><span class="nx">elastic</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">emulate</span><span class="o">-</span><span class="nx">elastic</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Emulates</span><span class="w"> </span><span class="nx">some</span><span class="w"> </span><span class="nx">Elastic</span><span class="w"> </span><span class="nx">queries</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">generates</span><span class="w"> </span><span class="nx">responses</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">they</span><span class="w"> </span><span class="nx">were</span><span class="w"> </span><span class="nx">made</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">ES</span><span class="w">                                                                         </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">insert</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="nx">insert</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Auto</span><span class="w"> </span><span class="nx">schema</span><span class="w"> </span><span class="nx">support</span><span class="p">.</span><span class="w"> </span><span class="nx">When</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">insert</span><span class="w"> </span><span class="nx">operation</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">performed</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">table</span><span class="w"> </span><span class="nx">does</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">exist</span><span class="p">,</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">creates</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="nx">types</span><span class="w"> </span><span class="kt">auto</span><span class="o">-</span><span class="nx">detection</span><span class="w">                    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="kd">alias</span><span class="w">           </span><span class="o">|</span><span class="w"> </span><span class="kd">alias</span><span class="w">           </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w">                                                                                                                                                          </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">select</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="nx">select</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Various</span><span class="w"> </span><span class="nx">SELECTs</span><span class="w"> </span><span class="nx">handlers</span><span class="w"> </span><span class="nx">needed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">mysqldump</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="nx">software</span><span class="w"> </span><span class="nx">support</span><span class="p">,</span><span class="w"> </span><span class="nx">mostly</span><span class="w"> </span><span class="nx">aiming</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">work</span><span class="w"> </span><span class="nx">similarly</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">MySQL</span><span class="w">                                       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">show</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="nx">show</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Various</span><span class="w"> </span><span class="s">&quot;show&quot;</span><span class="w"> </span><span class="nx">queries</span><span class="w"> </span><span class="nx">handlers</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">example</span><span class="p">,</span><span class="w"> </span><span class="err">`</span><span class="nx">show</span><span class="w"> </span><span class="nx">queries</span><span class="err">`</span><span class="p">,</span><span class="w"> </span><span class="err">`</span><span class="nx">show</span><span class="w"> </span><span class="nx">fields</span><span class="err">`</span><span class="p">,</span><span class="w"> </span><span class="err">`</span><span class="nx">show</span><span class="w"> </span><span class="nx">full</span><span class="w"> </span><span class="nx">tables</span><span class="err">`</span><span class="p">,</span><span class="w"> </span><span class="nx">etc</span><span class="w">                                                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">cli</span><span class="o">-</span><span class="nx">table</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nx">cli</span><span class="o">-</span><span class="nx">table</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">/</span><span class="nx">cli</span><span class="w"> </span><span class="nx">endpoint</span><span class="w"> </span><span class="nx">based</span><span class="w"> </span><span class="nx">on</span><span class="w"> </span><span class="o">/</span><span class="nx">cli_json</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">outputs</span><span class="w"> </span><span class="nx">query</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">table</span><span class="w">                                                                                       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">plugin</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="nx">plugin</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Core</span><span class="w"> </span><span class="nx">logic</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">plugin</span><span class="w"> </span><span class="nx">support</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">helpers</span><span class="p">.</span><span class="w"> </span><span class="nx">Also</span><span class="w"> </span><span class="nx">handles</span><span class="w"> </span><span class="err">`</span><span class="nx">create</span><span class="w"> </span><span class="nx">buddy</span><span class="w"> </span><span class="nx">plugin</span><span class="err">`</span><span class="p">,</span><span class="w"> </span><span class="err">`</span><span class="nx">delete</span><span class="w"> </span><span class="nx">buddy</span><span class="w"> </span><span class="nx">plugin</span><span class="err">`</span><span class="p">,</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="err">`</span><span class="nx">show</span><span class="w"> </span><span class="nx">buddy</span><span class="w"> </span><span class="nx">plugins</span><span class="err">`</span><span class="w">                           </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">test</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="nx">test</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Test</span><span class="w"> </span><span class="nx">plugin</span><span class="p">,</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="nx">exclusively</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">tests</span><span class="w">                                                                                                                  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">insert</span><span class="o">-</span><span class="nx">mva</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nx">insert</span><span class="o">-</span><span class="nx">mva</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Manages</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">restoration</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">MVA</span><span class="w"> </span><span class="nx">fields</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">mysqldump</span><span class="w">                                                                                                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">modify</span><span class="o">-</span><span class="nx">table</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="nx">modify</span><span class="o">-</span><span class="nx">table</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Assists</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">standardizing</span><span class="w"> </span><span class="nx">options</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">create</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">alter</span><span class="w"> </span><span class="nx">table</span><span class="w"> </span><span class="nx">statements</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">show</span><span class="w"> </span><span class="nx">option</span><span class="p">=</span><span class="mi">1</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">integers</span><span class="p">.</span><span class="w"> </span><span class="nx">Also</span><span class="w"> </span><span class="nx">manages</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">logic</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">creating</span><span class="w"> </span><span class="nx">sharded</span><span class="w"> </span><span class="nx">tables</span><span class="p">.</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">knn</span><span class="w">             </span><span class="o">|</span><span class="w"> </span><span class="nx">knn</span><span class="w">             </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Enables</span><span class="w"> </span><span class="nx">KNN</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">document</span><span class="w"> </span><span class="nx">id</span><span class="w">                                                                                                                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nx">manticoresoftware</span><span class="o">/</span><span class="nx">buddy</span><span class="o">-</span><span class="nx">plugin</span><span class="o">-</span><span class="nx">replace</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nx">replace</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="m m-Double">2.1.5</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nx">core</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Enables</span><span class="w"> </span><span class="k">partial</span><span class="w"> </span><span class="nx">replaces</span><span class="w">                                                                                                                                 </span><span class="o">|</span>
+<span class="o">+------------------------------------------------+-----------------+---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------+-----+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.02-udf">
+        <a class="chapter-link" href="#toc-22.03.02-udf"> ¶ 22.3.2</a>
+
+        
+        <h1 id="udf">UDF</h1>
+<p>UDFs are stored in external dynamic libraries (.so files on UNIX and .dll on Windows systems). Library files must be placed in a trusted folder specified by the <a href="../../20-server_settings.html#plugin_dir">plugin_dir</a> directive for security reasons: it's easier to secure a single folder than to allow anyone to install arbitrary code into <code>searchd</code>. You can dynamically load and unload UDFs into searchd using <a href="../../22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> and <a href="../../22-extensions.html#toc-22.03.02.02-deleting_a_function">DROP FUNCTION</a> SQL statements, respectively. Additionally, you can seamlessly reload UDFs (and other plugins) with the <a href="../../22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a> statement. Manticore keeps track of currently loaded functions; every time you create or drop a UDF, <code>searchd</code> updates its state in the <a href="../../20-server_settings.html#sphinxql_state">sphinxql_state</a> file as a plain SQL script.</p>
+<p>UDFs are local. To use them on a cluster, you must place the same library on all nodes and run CREATE statements on each node as well. This process may change in future versions.</p>
+<p>Once you successfully load a UDF, you can use it in your SELECT or other statements just like any built-in function:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">MYCUSTOMFUNC</span><span class="w"> </span><span class="p">(</span><span class="n">groupid</span><span class="p">,</span><span class="w"> </span><span class="n">authorname</span><span class="p">),</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myindex</span>
+</code></pre></div>
+
+<p>Multiple UDFs (and other plugins) can reside in a single library. The library will only be loaded once and is automatically unloaded once all the UDFs and plugins within it are dropped.</p>
+<p>In theory, you can write a UDF in any language, as long as its compiler can import standard C headers and emit standard dynamic libraries with properly exported functions. However, writing in C++ or plain C is the path of least resistance. We provide an example UDF library written in plain C that implements several functions (demonstrating various techniques) alongside our source code, found at <a href="https://github.com/manticoresoftware/manticore/blob/master/src/udfexample.c">src/udfexample.c</a>. This example includes the <a href="https://github.com/manticoresoftware/manticore/blob/master/src/sphinxudf.h">src/sphinxudf.h</a> header file, which contains definitions of several UDF-related structures and types. For most UDFs and plugins, simply using <code>#include "sphinxudf.h"</code> as shown in the example should be sufficient. However, if you're writing a ranking function and need to access ranking signals (factors) data from within the UDF, you'll also need to compile and link with <code>src/sphinxudf.c</code> (available in our source code), as the <em>implementations</em> of functions that let you access signal data from within the UDF reside in that file.</p>
+<p>Both the <code>sphinxudf.h</code> header and <code>sphinxudf.c</code> are standalone, so you can copy those files individually; they don't depend on any other parts of Manticore's source code.</p>
+<p>Within your UDF, you <strong>must</strong> implement and export only a couple of functions. First, for UDF interface version control, you <strong>must</strong> define a function <code>int LIBRARYNAME_ver()</code>, where LIBRARYNAME is the name of your library file, and you must return <code>SPH_UDF_VERSION</code> (a value defined in <code>sphinxudf.h</code>) from it. Here's an example.</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sphinxudf.h&gt;</span>
+
+<span class="c1">// our library will be called udfexample.so, thus, so it must define</span>
+<span class="c1">// a version function named udfexample_ver()</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">udfexample_ver</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">SPH_UDF_VERSION</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This precaution protects you from accidentally loading a library with a mismatching UDF interface version into a newer or older <code>searchd</code>. Secondly, you <strong>must</strong> implement the actual function as well.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">sphinx_int64_t</span><span class="w"> </span><span class="nf">testfunc</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SPH_UDF_INIT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">SPH_UDF_ARGS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error_flag</span><span class="w"> </span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">123</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>UDF function names in SQL are case-insensitive. However, the respective C function names are not; they need to be all <em>lower-case</em>, or the UDF will not load. More importantly, it is crucial that:</p>
+<ol>
+<li>the calling convention is C (aka __cdecl),</li>
+<li>the arguments list matches the plugin system expectations exactly, and</li>
+<li>the return type matches the one you specify in <code>CREATE FUNCTION</code>.</li>
+</ol>
+<p>Unfortunately, there is no (easy) way for us to check for these mistakes when loading the function, and they could crash the server and/or result in unexpected results. Last but not least, all the C functions you implement need to be thread-safe.</p>
+<p>The first argument, a pointer to <code>SPH_UDF_INIT</code> structure, is essentially a pointer to our function state. It is optional. In the example just above, the function is stateless, as it simply returns 123 every time it gets called. So, we do not have to define an initialization function, and we can simply ignore that argument.<br />
+This argument serves one more purpose. Since a single query can be executed on multiple threads (see <a href="../20-server_settings.html#pseudo_sharding">pseudo-sharding</a>), the daemon tries to determine whether a UDF is stateful or stateless by checking this argument. If the argument is initialized, parallel execution will be disabled. So, if your UDF is stateful but you don't use this argument, it will be called from multiple threads, and your code needs to be aware of that.</p>
+<p>The second argument, a pointer to <code>SPH_UDF_ARGS</code>, is the most important one. All the actual call arguments are passed to your UDF via this structure; it contains the call argument count, names, types, etc. So, whether your function gets called like <code>SELECT id, testfunc(1)</code> or like <code>SELECT id, testfunc('abc', 1000*id+gid, WEIGHT())</code> or any other way, it will receive the very same <code>SPH_UDF_ARGS</code> structure in all of these cases. However, the data passed in the <code>args</code> structure will be different. In the first example, <code>args-&gt;arg_count</code> will be set to 1, in the second example it will be set to 3, and the <code>args-&gt;arg_types</code> array will contain different type data, and so on.</p>
+<p>Finally, the third argument is an error flag. A UDF can raise it to indicate that some kind of internal error occurred, the UDF cannot continue, and the query should terminate early. You should <strong>not</strong> use this for argument type checks or for any other error reporting that is likely to happen during normal use. This flag is designed to report sudden critical runtime errors, such as running out of memory.</p>
+<p>If we wanted to, say, allocate temporary storage for our function to use, or check upfront whether the arguments are of the supported types, then we would need to add two more functions, for UDF initialization and deinitialization, respectively.</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">testfunc_init</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SPH_UDF_INIT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">SPH_UDF_ARGS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error_message</span><span class="w"> </span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// allocate and initialize a little bit of temporary storage</span>
+<span class="w">    </span><span class="n">init</span><span class="o">-&gt;</span><span class="n">func_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+
+<span class="w">    </span><span class="o">*</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span><span class="n">init</span><span class="o">-&gt;</span><span class="n">func_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// return a success code</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">testfunc_deinit</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SPH_UDF_INIT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">init</span><span class="w"> </span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// free up our temporary storage</span>
+<span class="w">    </span><span class="n">free</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">init</span><span class="o">-&gt;</span><span class="n">func_data</span><span class="w"> </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Note how <code>testfunc_init()</code> also receives the call arguments structure. By the time it is called, it does not receive any actual values, so the <code>args-&gt;arg_values</code> will be NULL. But the argument names and types are known and will be passed. You can check them in the initialization function and return an error if they are of an unsupported type.</p>
+<h2 id="sph_udf_args-types">SPH_UDF_ARGS types</h2>
+<p>UDFs can receive arguments of pretty much any valid internal Manticore type. Refer to the <code>sphinx_udf_argtype</code> enumeration in <code>sphinxudf.h</code> for a full list. Most of the types map straightforwardly to the respective C types.</p>
+<p>The most notable type is the <code>SPH_UDF_TYPE_FACTORS</code> argument type. You get that type by calling your UDF with a <a href="../../searching-and-ranking-functions#PACKEDFACTORS()">PACKEDFACTOR()</a> argument. Its data is a binary blob in a certain internal format, and to extract individual ranking signals from that blob, you need to use either of the two <code>sphinx_factors_XXX()</code> or <code>sphinx_get_YYY_factor()</code> families of functions.</p>
+<h3 id="sphinx_factors_xxx-functions">sphinx_factors_XXX() functions</h3>
+<p>This family consists of 3 functions.</p>
+<ul>
+<li><code>sphinx_factors_init()</code> initializes the unpacked <code>SPH_UDF_FACTORS</code> structure</li>
+<li><code>sphinx_factors_unpack()</code> unpacks a binary blob into <code>SPH_UDF_FACTORS</code> structure</li>
+<li><code>sphinx_factors_deinit()</code> cleans up and deallocates the <code>SPH_UDF_FACTORS</code>.</li>
+</ul>
+<p>First, you need to call <code>init()</code> and <code>unpack()</code>, then you can use the <code>SPH_UDF_FACTORS</code> fields, and finally, you need to clean up with <code>deinit()</code>.</p>
+<p>This approach is simple but may result in a bunch of memory allocations for each processed document, which could be slow.</p>
+<h3 id="sphinx_get_yyy_factor-functions">sphinx_get_YYY_factor() functions</h3>
+<p>The other interface, consisting of a bunch of <code>sphinx_get_YYY_factor()</code> functions, is a bit more verbose to use but accesses the blob data directly and guarantees no allocations. For top-notch ranking UDF performance, you'll want to use this approach.</p>
+<h2 id="return-types-of-udf">Return types of UDF</h2>
+<p>As for the return types, UDFs can currently return a single INTEGER, BIGINT, FLOAT, or STRING value. The C function return type should be <code>sphinx_int64_t</code>, <code>sphinx_int64_t</code>, <code>double</code>, or <code>char*</code> respectively. In the last case, you <strong>must</strong> use the <code>args-&gt;fn_malloc</code> function to allocate space for returned string values. Internally in your UDF, you can use whatever you want, so the <code>testfunc_init()</code> example above is correct code even though it uses malloc() directly: you manage that pointer yourself, it gets freed up using a matching free() call, and all is well. However, the returned strings values are managed by Manticore, and we have our own allocator, so for the return values specifically, you need to use it too.</p>
+<p>Depending on how your UDFs are used in the query, the main function call (<code>testfunc()</code> in our example) might be called in a rather different volume and order. Specifically,</p>
+<ul>
+<li>UDFs referenced in WHERE, ORDER BY, or GROUP BY clauses must and will be evaluated for every matched document. They will be called in the natural matching order.</li>
+<li>without subselects, UDFs that can be evaluated at the very last stage over the final result set will be evaluated that way, but before applying the <code>LIMIT</code> clause. They will be called in the result set order.</li>
+<li>with subselects, such UDFs will also be evaluated after applying the inner <code>LIMIT</code> clause.</li>
+</ul>
+<p>The calling sequence of the other functions is fixed, though. Namely,</p>
+<ul>
+<li><code>testfunc_init()</code> is called once when initializing the query. It can return a non-zero code to indicate a failure; in that case, the query will be terminated, and the error message from the <code>error_message</code> buffer will be returned.</li>
+<li><code>testfunc()</code> is called for every eligible row (see above), whenever Manticore needs to compute the UDF value. It can also indicate an (internal) failure error by writing a non-zero byte value to <code>error_flag</code>. In that case, it is guaranteed that it will not be called for subsequent rows, and a default return value of 0 will be substituted. Manticore might or might not choose to terminate such queries early; neither behavior is currently guaranteed.</li>
+<li><code>testfunc_deinit()</code> is called once when the query processing (in a given table shard) ends.</li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.02.01-creating_a_function">
+        <a class="chapter-link" href="#toc-22.03.02.01-creating_a_function"> ¶ 22.3.2.1</a>
+
+        
+        <h1 id="create-function">CREATE FUNCTION</h1>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">udf_name</span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="err">{</span><span class="nb">INT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">FLOAT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">STRING</span><span class="err">}</span>
+<span class="w">    </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;udf_lib_file&#39;</span>
+</code></pre></div>
+
+<p><code>CREATE FUNCTION</code> statement installs a user-defined function <a href="../../../22-extensions.html#toc-22.03.02-udf">UDF</a> with the specified name and type from the provided library file. The library file must be located in a trusted <a href="../../../20-server_settings.html#plugin_dir">plugin_dir</a> directory. Upon successful installation, the function becomes available for use in all subsequent queries received by the server. Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">avgmva</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;udfexample.dll&#39;</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">03</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">AVGMVA</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test1</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------+--------+---------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tag</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">q</span><span class="w">         </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------+---------+-----------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">000000</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">000000</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">15</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="mi">15</span><span class="p">.</span><span class="mi">000000</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="mi">40</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="mi">23</span><span class="p">.</span><span class="mi">500000</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------+---------+-----------+</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.02.02-deleting_a_function">
+        <a class="chapter-link" href="#toc-22.03.02.02-deleting_a_function"> ¶ 22.3.2.2</a>
+
+        
+        <h1 id="drop-function">DROP FUNCTION</h1>
+<div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">udf_name</span>
+</code></pre></div>
+
+<p><code>DROP FUNCTION</code> statement uninstalls a user-defined function <a href="../../../22-extensions.html#toc-22.03.02-udf">UDF</a> with the specified name. Upon successful removal, the function will no longer be available for use in subsequent queries. However, ongoing concurrent queries will not be affected, and if necessary, the library unloading will be delayed until those queries are completed. Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">avgmva</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03-plugins">
+        <a class="chapter-link" href="#toc-22.03.03-plugins"> ¶ 22.3.3</a>
+
+        
+        <h1>Plugins</h1>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03.01-creating_a_plugin">
+        <a class="chapter-link" href="#toc-22.03.03.01-creating_a_plugin"> ¶ 22.3.3.1</a>
+
+        
+        <h1 id="system-plugins">System plugins</h1>
+<h2 id="create-plugin">CREATE PLUGIN</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">plugin_name</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;plugin_type&#39;</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;plugin_library&#39;</span>
+</code></pre></div>
+
+<p>Loads the given library (if it is not already loaded) and loads the specified plugin from it. The available plugin types include:</p>
+<ul>
+<li><code>ranker</code></li>
+<li><code>index_token_filter</code></li>
+<li><code>query_token_filter</code></li>
+</ul>
+<p>For more information on writing plugins, please refer to the <a href="../../../22-extensions.html#plugins">plugins</a> documentation.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">myranker</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;ranker&#39;</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;myplugins.so&#39;</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="create-buddy-plugin">CREATE BUDDY PLUGIN</h2>
+<!-- example create_buddy_plugin -->
+<p>Buddy plugins can extend Manticore Search's functionality and enable certain queries that are not natively supported. To learn more about creating Buddy plugins, we recommend reading <a href="https://manticoresearch.com/blog/manticoresearch-buddy-pluggable-design/">this article</a>.</p>
+<p>To create a Buddy plugin, run the following SQL command:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;buddy&#39;</span><span class="w"> </span><span class="k">VERSION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="w"> </span><span class="k">version</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p>You can also use an alias command specifically created for Buddy plugins, which is easier to remember:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span><span class="w"> </span><span class="k">VERSION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="w"> </span><span class="k">version</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p>This command will install the <code>show-hostname</code> plugin to the <a href="../../20-server_settings.html#plugin_dir">plugin_dir</a> and enable it without the need to restart the server.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+### Examples
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="n">hostname</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;buddy&#39;</span><span class="w"> </span><span class="k">VERSION</span><span class="w"> </span><span class="s1">&#39;dev-main&#39;</span><span class="p">;</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="n">hostname</span><span class="w"> </span><span class="k">VERSION</span><span class="w"> </span><span class="s1">&#39;dev-main&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03.02-deleting_a_plugin">
+        <a class="chapter-link" href="#toc-22.03.03.02-deleting_a_plugin"> ¶ 22.3.3.2</a>
+
+        
+        <h1 id="delete-plugin">DELETE PLUGIN</h1>
+<div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">plugin_name</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;plugin_type&#39;</span>
+</code></pre></div>
+
+<p>Marks the designated plugin for unloading. The unloading process is <strong>not</strong> instantaneous, as concurrent queries may still be utilizing it. Nevertheless, following a <code>DROP</code>, new queries will no longer have access to the plugin. Subsequently, when all ongoing queries involving the plugin have finished, the plugin will be unloaded. If all plugins from the specified library are unloaded, the library will also be automatically unloaded.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">myranker</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;ranker&#39;</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="delete-buddy-plugin">DELETE BUDDY PLUGIN</h2>
+<!-- example delete_buddy_plugin -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span>
+</code></pre></div>
+
+<p>This action instantly and permanently removes the installed plugin from the <a href="../../20-server_settings.html#plugin_dir">plugin_dir</a>. Once removed, the plugin's features will no longer be available.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+### Example
+
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="n">hostname</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03.03-enabling_and_disabling_buddy_plugins">
+        <a class="chapter-link" href="#toc-22.03.03.03-enabling_and_disabling_buddy_plugins"> ¶ 22.3.3.3</a>
+
+        
+        <h1 id="enabling-and-disabling-buddy-plugins">Enabling and disabling Buddy plugins</h1>
+<p>To simplify the control of Buddy plugins, especially when developing a new one or modifying an existing one, the enable and disable Buddy plugin commands are provided. These commands act temporarily during runtime and will reset to their defaults after restarting the daemon or performing a Buddy reset. To permanently disable a plugin, it must be removed.</p>
+<p>You need the fully qualified package name of the plugin to enable or disable it. To find it, you can run the <code>SHOW BUDDY PLUGINS</code> query and look for the full qualified name in the <code>package</code> field. For example, the <code>SHOW</code> plugin has the fully qualified name <code>manticoresoftware/buddy-plugin-show</code>.</p>
+<!-- example enable_buddy_plugin -->
+<h2 id="enable-buddy-plugin">ENABLE BUDDY PLUGIN</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">ENABLE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span>
+</code></pre></div>
+
+<p>This command reactivates a previously disabled Buddy plugin, allowing it to process your requests again.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+### Example
+
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">ENABLE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example disable_buddy_plugin -->
+<h2 id="disable-buddy-plugin">DISABLE BUDDY PLUGIN</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">DISABLE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span>
+</code></pre></div>
+
+<p>This command deactivates an active Buddy plugin, preventing it from processing any further requests.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+### Example
+
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">DISABLE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span>
+</code></pre></div>
+
+
+
+After disabling, if you try the `SHOW QUERIES` command, you'll encounter an error because the plugin is disabled.
+<!-- end -->
+
+</div>
+
+</div>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03.04-reloading_plugins">
+        <a class="chapter-link" href="#toc-22.03.03.04-reloading_plugins"> ¶ 22.3.3.4</a>
+
+        
+        <h1 id="reloading-plugins">RELOADING PLUGINS</h1>
+<div class="codehilite"><pre><span></span><code><span class="n">RELOAD</span><span class="w"> </span><span class="n">PLUGINS</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;plugin_library&#39;</span>
+</code></pre></div>
+
+<p>Reloads all plugins (UDFs, rankers, etc.) from a given library. In a sense, the reload process is transactional, ensuring that:<br />
+1. all plugins are successfully updated to their new versions;<br />
+2. the update is atomic, meaning all plugins are replaced simultaneously. This atomicity ensures that queries using multiple functions from a reloaded library will never mix old and new versions.</p>
+<p>During the <code>RELOAD</code>, the set of plugins is guaranteed to be consistent; they will either be all old or all new.</p>
+<p>The reload process is also seamless, as some version of a reloaded plugin will always be available for concurrent queries, without any temporary disruptions. This is an improvement over using a pair of <code>DROP</code> and <code>CREATE</code> statements for reloading. With those, there is a brief window between the <code>DROP</code> and the subsequent <code>CREATE</code> during which queries technically refer to an unknown plugin and will therefore fail.</p>
+<p>If there's any failure, <code>RELOAD PLUGINS</code> does nothing, retains the old plugins, and reports an error.</p>
+<p>On Windows, overwriting or deleting a DLL library currently in use can be problematic. However, you can still rename it, place a new version under the old name, and then <code>RELOAD</code> will work. After a successful reload, you'll also be able to delete the renamed old library.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="n">PLUGINS</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;udfexample.dll&#39;</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03.05-ranker_plugins">
+        <a class="chapter-link" href="#toc-22.03.03.05-ranker_plugins"> ¶ 22.3.3.5</a>
+
+        
+        <h1 id="ranker-plugins">Ranker plugins</h1>
+<p>Ranker plugins let you implement a custom ranker that receives all the occurrences of the keywords matched in the document, and computes a  <code>WEIGHT()</code> value. They can be called as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">attr1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">myranker</span><span class="p">(</span><span class="s1">&#39;option1=1&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p>The call workflow proceeds as follows:</p>
+<ol>
+<li><code>XXX_init()</code> is invoked once per query per table, at the very beginning. Several query-wide options are passed to it via a <code>SPH_RANKER_INIT</code> structure, including the user options strings (for instance, "option1=1" in the example above).</li>
+<li><code>XXX_update()</code> is called multiple times for each matched document, with every matched keyword occurrence provided as its parameter, a <code>SPH_RANKER_HIT</code> structure. The occurrences within each document are guaranteed to be passed in ascending order of <code>hit-&gt;hit_pos</code> values.</li>
+<li><code>XXX_finalize()</code> is called once for each matched document when there are no more keyword occurrences. It must return the <code>WEIGHT()</code> value. This function is the only mandatory one.</li>
+<li><code>XXX_deinit()</code> is invoked once per query, at the very end.</li>
+</ol>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-22.03.03.06-token_filter_plugins">
+        <a class="chapter-link" href="#toc-22.03.03.06-token_filter_plugins"> ¶ 22.3.3.6</a>
+
+        
+        <h1 id="token-filter-plugins">Token filter plugins</h1>
+<p>Token filter plugins allow you to implement a custom tokenizer that creates tokens according to custom rules. There are two types:</p>
+<ul>
+<li>Index-time tokenizer declared by <a href="../../../06-creating_a_table.html#index_token_filter">index_token_filter</a> in table settings</li>
+<li>Query-time tokenizer declared by <a href="../../../13-searching.html#token_filter">token_filter</a> OPTION directive</li>
+</ul>
+<p>In the text processing pipeline, token filters will run after the base tokenizer processing occurs (which processes the text from fields or queries and creates tokens out of them).</p>
+<h2 id="index-time-tokenizer">Index-time tokenizer</h2>
+<p>Index-time tokenizer is created by <code>indexer</code> when indexing source data into a table or by an RT table when processing <code>INSERT</code> or <code>REPLACE</code> statements.</p>
+<p>Plugin is declared as <code>library name:plugin name:optional string of settings</code>. The init functions of the plugin can accept arbitrary settings that can be passed as a string in the format <code>option1=value1;option2=value2;..</code>.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">index_token_filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my_lib.so:email_process:field=email</span><span class="c1">;split=.io</span>
+</code></pre></div>
+
+<p>The call workflow for index-time token filter is as follows:</p>
+<ol>
+<li><code>XXX_init()</code> gets called right after <code>indexer</code> creates token filter with an empty fields list and then after indexer gets the table schema with the actual fields list. It must return zero for successful initialization or an error description otherwise.</li>
+<li><code>XXX_begin_document</code> gets called only for RT table <code>INSERT</code>/<code>REPLACE</code> for every document. It must return zero for a successful call or an error description otherwise. Using OPTION <code>token_filter_options</code>, additional parameters/settings can be passed to the function.<br />
+<code>sql
+    INSERT INTO rt (id, title) VALUES (1, 'some text corp@space.io') OPTION token_filter_options='.io'</code></li>
+<li><code>XXX_begin_field</code> gets called once for each field prior to processing the field with the base tokenizer, with the field number as its parameter.</li>
+<li><code>XXX_push_token</code> gets called once for each new token produced by the base tokenizer, with the source token as its parameter. It must return the token, count of extra tokens made by the token filter, and delta position for the token.</li>
+<li><code>XXX_get_extra_token</code> gets called multiple times in case <code>XXX_push_token</code> reports extra tokens. It must return the token and delta position for that extra token.</li>
+<li><code>XXX_end_field</code> gets called once right after the source tokens from the current field are processed.</li>
+<li><code>XXX_deinit</code> gets called at the very end of indexing.</li>
+</ol>
+<p>The following functions are mandatory to be defined: <code>XXX_begin_document</code>, <code>XXX_push_token</code>, and <code>XXX_get_extra_token</code>.</p>
+<h2 id="query-time-token-filter">query-time token filter</h2>
+<p>Query-time tokenizer gets created on search each time full-text is invoked by every table involved.</p>
+<p>The call workflow for query-time token filter is as follows:</p>
+<ol>
+<li><code>XXX_init()</code> gets called once per table prior to parsing the query with parameters - max token length and a string set by the <code>token_filter</code> option<br />
+<code>sql
+    SELECT * FROM index WHERE MATCH ('test') OPTION token_filter='my_lib.so:query_email_process:io'</code><br />
+    It must return zero for successful initialization or error description otherwise.</li>
+<li><code>XXX_push_token()</code> gets called once for each new token produced by the base tokenizer with parameters: token produced by the base tokenizer, pointer to raw token at source query string, and raw token length. It must return the token and delta position for the token.</li>
+<li><code>XXX_pre_morph()</code> gets called once for the token right before it gets passed to the morphology processor with a reference to the token and stopword flag. It might set the stopword flag to mark the token as a stopword.</li>
+<li><code>XXX_post_morph()</code> gets called once for the token after it is processed by the morphology processor with a reference to the token and stopword flag. It might set the stopword flag to mark the token as a stopword. It must return a flag, the non-zero value of which means to use the token prior to morphology processing.</li>
+<li><code>XXX_deinit()</code> gets called at the very end of query processing.</li>
+</ol>
+<p>Absence of the functions is tolerated.</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

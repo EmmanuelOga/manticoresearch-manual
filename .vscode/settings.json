@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true
+    },
+    // Python Environment.
+    "python.analysis.typeCheckingMode": "strict",
+    "python.defaultInterpreterPath": ".pixi/envs/default/bin/python3",
+    "python.envFile": "${workspaceFolder}/.vscode/dev.env",
+    "python.terminal.activateEnvironment": false, // Do not attempt to run conda activate.
+}

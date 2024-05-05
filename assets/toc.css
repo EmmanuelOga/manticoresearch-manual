@@ -1,0 +1,150 @@
+/* Grid Layout: https://gridbyexample.com/patterns/header-twocol-footer/ */
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pt Sans', 'sans-serif';
+    background-color: #fff;
+    color: #444;
+}
+
+h1 {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar,
+.content {
+    height: 100%;
+    overflow: auto;
+}
+
+/* make a grid */
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 10px;
+}
+
+.wrapper>* {
+    padding: .5rem;
+    /* needed for the floated layout*/
+    margin-bottom: 10px;
+}
+
+.header,
+.footer {
+    grid-column: 1 / -1;
+    /* needed for the floated layout */
+    clear: both;
+}
+
+.header {
+    color: white;
+    background: #1c87c9;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.header h1 {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.header a,
+.header a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.footer {
+    background: #eee;
+}
+
+
+/* We need to set the widths used on floated items back to auto, and remove the bottom margin as when we have grid we have gaps. */
+@supports (display: grid) {
+    .wrapper>* {
+        width: auto;
+        margin: 0;
+    }
+}
+
+/* Content */
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+li:has(a:focus) {
+    color: white;
+    background: #1c87c9;
+}
+
+/* Table of contents with leading dots. https://stackoverflow.com/a/28097029/855105 */
+
+.manual-toc {
+    padding: 0;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.manual-toc li {
+    display: flex;
+}
+
+.manual-toc li .title {
+    order: 1;
+}
+
+.manual-toc li .chapter {
+    order: 3;
+}
+
+.manual-toc li::after {
+    background-image: radial-gradient(circle, gray 1px, transparent 1.5px);
+    background-position: bottom;
+    background-size: 1ex 4.5px;
+    background-repeat: space no-repeat;
+    content: "";
+    flex-grow: 1;
+    height: 1em;
+    order: 2;
+}
+
+.manual-toc li.toc-indent-2 {
+    padding-left: 2em;
+}
+
+.manual-toc li.toc-indent-3 {
+    padding-left: 4em;
+}
+
+.manual-toc li.toc-indent-4 {
+    padding-left: 6em;
+}

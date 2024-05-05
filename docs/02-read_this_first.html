@@ -1,0 +1,140 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Read this first - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-02-read_this_first">
+        <a class="chapter-link" href="#toc-02-read_this_first"> ¶ 2</a>
+
+        
+        <h1 id="read-this-first">Read this first</h1>
+<h2 id="about-this-manual">About this manual</h2>
+<p>The manual is arranged to reflect the most likely way you would use Manticore:</p>
+<ul>
+<li>starting with basic information about it and how to install and connect</li>
+<li>essential things like adding documents and running searches</li>
+<li>performance optimization tips, tricks and extending Manticore with the help of plugins and custom functions</li>
+</ul>
+<h5 id="do-not-skip-1-2-3">Do not skip 1️⃣ 2️⃣ 3️⃣</h5>
+<p>Key sections of the manual are marked with 1️⃣, 2️⃣, 3️⃣ etc. in the menu for your convenience since their corresponding functionality is most used. If you are new to Manticore <strong>we highly recommend not skipping them</strong>.</p>
+<h5 id="quick-start-guide">Quick start guide</h5>
+<p>If you are looking for a quick understanding of how Manticore works in general <a href="04-quick_start_guide.html#toc-04-quick_start_guide">⚡ Quick start guide</a> is a good place to start.</p>
+<h5 id="using-examples">Using examples</h5>
+<p>Each query example has a little icon 📋 in the top-right corner:</p>
+<p><img alt="Copy example" src="copy_example.png" /></p>
+<p>You can use it to copy examples to the clipboard. <strong>If the query is an HTTP request it will be copied as a CURL command</strong>. You can configure the host/port if you press ⚙️.</p>
+<h5 id="search-in-this-manual">Search in this manual</h5>
+<p>We love search and we've made our best to make searching in this manual as convenient as possible. Of course it's backed by Manticore Search. Besides using the search bar which requires opening the manual first there is a very easy way to find something by just opening <strong>mnt.cr/your-search-keyword</strong> :</p>
+<p><img alt="mnt.cr quick manual search" src="mnt.cr.gif" /></p>
+<h2 id="best-practices">Best practices</h2>
+<p>There are few things you need to understand about Manticore Search that can help you follow the best practices of using it.</p>
+<h4 id="real-time-table-vs-plain-table">Real-time table vs plain table</h4>
+<ul>
+<li><strong><a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-time table</a></strong> allows adding, updating and deleting documents with immediate availability of the changes.</li>
+<li><strong><a href="06-creating_a_table.html#toc-06.02.02-plain_table">Plain table</a></strong> is a mostly immutable data structure and a basic element used by real-time tables. Plain table stores a set of documents, their common dictionary and indexation settings. One real-time table can consist of multiple plain tables (chunks), but <strong>besides that Manticore provides direct access to building plain tables</strong> using tool <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a>. It makes sense when your data is mostly immutable, therefore you don't need a real-time table for that.</li>
+</ul>
+<h4 id="real-time-mode-vs-plain-mode">Real-time mode vs plain mode</h4>
+<p>Manticore Search works in two modes:</p>
+<ul>
+<li><strong>Real-time mode</strong> (RT mode). This is a default one and allows to manage your data schema <strong>imperatively</strong>:</li>
+<li>allows managing your data schema online using SQL commands <code>CREATE</code>/<code>ALTER</code>/<code>DROP TABLE</code> and their equivalents in non-SQL clients</li>
+<li>in the configuration file you need to define only server-related settings including <a href="20-server_settings.html#data_dir">data_dir</a></li>
+<li><strong>Plain mode</strong> allows to define your data schemas in a configuration file, i.e. provides <strong>declarative</strong> kind of schema management. It makes sense in three cases:</li>
+<li>when you only deal with plain tables</li>
+<li>or when your data schema is very stable and you don't need replication (as it's available only in the RT mode)</li>
+<li>when you have to make your data schema portable (e.g. for easier deployment of it on a new server)</li>
+</ul>
+<p>You cannot combine the 2 modes and need to decide which one you want to follow by specifying <a href="20-server_settings.html#data_dir">data_dir</a> in your configuration file (which is the default behaviour). If you are unsure <strong>our recommendation is to follow the RT mode</strong> as if even you need a plain table you can <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">build</a> it with a separate plain table config and <a href="12-data_creation_and_modification.html#toc-12.02.06.04-importing_rt_table">import</a> to your main Manticore instance.</p>
+<p>Real-time tables can be used in both RT and plain modes. In the RT mode a real-time table is defined with a <code>CREATE TABLE</code> command, while in the plain mode it is defined in the configuration file. Plain (offline) tables are supported only in the plain mode. Plain tables cannot be created in the RT mode, but existing plain tables made in the plain mode can be <a href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">converted</a> to real-time tables and <a href="12-data_creation_and_modification.html#toc-12.02.06.04-importing_rt_table">imported</a> in the RT mode.</p>
+<h4 id="sql-vs-json">SQL vs JSON</h4>
+<p>Manticore provides multiple ways and interfaces to manage your schemas and data, but the two main are:</p>
+<ul>
+<li><strong>SQL</strong>. This is a native Manticore's language which enables all Manticore's functionality. <strong>The best practice is to use SQL to</strong>:</li>
+<li>manage your schemas and do other DBA routines as it's the easiest way to do that</li>
+<li>design your queries as SQL is much closer to natural language than the JSON DSL which is important when you design something new. You can use Manticore SQL via any MySQL client or <a href="11-connecting_to_the_server.html#toc-11.01-mysql_protocol">/sql</a>.</li>
+<li><strong>JSON</strong>. Most functionality is also available via JSON domain specific language. This is especially useful when you integrate Manticore with your application as with JSON you can do it more programmatically than with SQL. The best practice is to <strong>first explore how to do something via SQL and then use JSON to integrate it into your application.</strong></li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

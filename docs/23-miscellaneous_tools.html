@@ -1,0 +1,172 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Miscellaneous tools - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-23-miscellaneous_tools">
+        <a class="chapter-link" href="#toc-23-miscellaneous_tools"> ¶ 23</a>
+
+        
+        <h1 id="miscellaneous-tools">Miscellaneous tools</h1>
+<h2 id="indextool">indextool</h2>
+<p><code>indextool</code> is a helpful utility that extracts various information about a physical table, excluding <code>template</code> or <code>distributed</code> tables. Here's the general syntax for utilizing <code>indextool</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">indextool</span><span class="w"> </span><span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">options</span><span class="p">]</span>
+</code></pre></div>
+
+<h3 id="options">Options</h3>
+<p>These options are applicable to all commands:</p>
+<ul>
+<li><code>--config &lt;file&gt;</code> (<code>-c &lt;file&gt;</code> for short) lets you override the default configuration file names.</li>
+<li><code>--quiet</code> (<code>-q</code> for short) suppresses the output of banners and such by <code>indextool</code>.</li>
+<li><code>--help</code> (<code>-h</code> for short) displays all parameters available in your specific build of <code>indextool</code>.</li>
+<li><code>-v</code> displays the version information of your specific <code>indextool</code> build.</li>
+</ul>
+<h3 id="commands">Commands</h3>
+<p>Here are the available commands:</p>
+<ul>
+<li><code>--checkconfig</code> loads and verifies the config file, checking its validity and for any syntax errors.</li>
+<li><code>--buildidf DICTFILE1 [DICTFILE2 ...] --out IDFILE</code> constructs an IDF file from one or more dictionary dumps (refer to <code>--dumpdict</code>). The additional parameter <code>--skip-uniq</code> will omit unique words (df=1).</li>
+<li><code>--build-infixes TABLENAME</code> generates infixes for a pre-existing dict=keywords table (updates .sph, .spi in place). Use this option for legacy table files already employing dict=keywords, but now requiring infix search support; updating the table files with indextool may be simpler or quicker than recreating them from scratch with indexer.</li>
+<li><code>--dumpheader FILENAME.sph</code> promptly dumps the given table header file without disturbing any other table files or even the config file. The report offers a detailed view of all the table settings, especially the complete attribute and field list.</li>
+<li><code>--dumpconfig FILENAME.sph</code> extracts the table definition from the specified table header file in an (almost) manticore.conf file-compliant format.</li>
+<li><code>--dumpheader TABLENAME</code> dumps table header by table name while searching for the header path in the config file.</li>
+<li><code>--dumpdict TABLENAME</code> dumps the dictionary. An extra <code>-stats</code> switch will add the total document count to the dictionary dump. This is necessary for dictionary files used in IDF file creation.</li>
+<li><code>--dumpdocids TABLENAME</code> dumps document IDs by table name.</li>
+<li><code>--dumphitlist TABLENAME KEYWORD</code> dumps all instances (occurrences) of a specified keyword in a given table, with the keyword defined as text.</li>
+<li><code>--dumphitlist TABLENAME --wordid ID</code> dumps all instances (occurrences) of a specific keyword in a given table, with the keyword represented as an internal numeric ID.</li>
+<li><code>--docextract TBL DOCID</code> executes a standard table check pass of the entire dictionary/docs/hits, and gathers all the words and hits associated with the requested document. Subsequently, all the words are arranged according to their fields and positions, and the result is printed, grouped by field.</li>
+<li><code>--fold TABLENAME OPTFILE</code> This option helps understand how the tokenizer processes input. You can supply the indextool with text from a file, if specified, or from stdin otherwise. The output will replace separators with spaces (based on your <code>charset_table</code> settings) and convert letters in words to lowercase.</li>
+<li><code>--htmlstrip TABLENAME</code> applies the HTML stripper settings for a specified table to filter stdin, and sends the filtering results to stdout. Be aware that the settings will be fetched from manticore.conf, and not from the table header.</li>
+<li><code>--mergeidf NODE1.idf [NODE2.idf ...] --out GLOBAL.idf</code> combines multiple .idf files into a single one. The extra parameter <code>--skip-uniq</code> will ignore unique words (df=1).</li>
+<li><code>--morph TABLENAME</code> applies morphology to the given stdin and directs the result to stdout.</li>
+<li>
+<p><code>--check TABLENAME</code> evaluates the table data files for consistency errors that could be caused by bugs in <code>indexer</code> or hardware faults. <code>--check</code> is also functional on RT tables, RAM, and disk chunks. Additional options:</p>
+<ul>
+<li><code>--check-id-dups</code> assesses for duplicate ids</li>
+<li><code>--check-disk-chunk CHUNK_NAME</code> checks only a specific disk chunk of an RT table. The argument is the numeric extension of the RT table's disk chunk to be checked.</li>
+</ul>
+</li>
+<li>
+<p><code>--strip-path</code> removes the path names from all file names referred to from the table (stopwords, wordforms, exceptions, etc). This is helpful when verifying tables built on a different machine with possibly varying path layouts.</p>
+</li>
+<li><code>--rotate</code> is only compatible with <code>--check</code> and determines whether to check the table waiting for rotation, i.e., with a .new extension. This is useful when you wish to validate your table before actually putting it into use.</li>
+<li><code>--apply-killlists</code> loads and applies kill-lists for all tables listed in the config file. Changes are saved in .SPM files. Kill-list files (.SPK) are removed. This can be handy if you want to shift the application of tables from server startup to indexing stage.</li>
+</ul>
+<h2 id="spelldump">spelldump</h2>
+<p>The <code>spelldump</code> command is designed to retrieve the contents from a dictionary file that employs the <code>ispell</code> or <code>MySpell</code> format. This can be handy when you need to compile word lists for wordforms, as it generates all possible forms for you.</p>
+<p>Here's the general syntax:</p>
+<div class="codehilite"><pre><span></span><code>spelldump<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>&lt;dictionary&gt;<span class="w"> </span>&lt;affix&gt;<span class="w"> </span><span class="o">[</span>result<span class="o">]</span><span class="w"> </span><span class="o">[</span>locale-name<span class="o">]</span>
+</code></pre></div>
+
+<p>The primary parameters are the main file and the affix file of the dictionary. Typically, these are named as <code>[language-prefix].dict</code> and <code>[language-prefix].aff</code>, respectively. You can find these files in most standard Linux distributions or from numerous online sources.</p>
+<p>The <code>[result]</code> parameter is where the extracted dictionary data will be stored, and <code>[locale-name]</code> is the parameter used to specify the locale details of your choice.</p>
+<p>There's an optional <code>-c [file]</code> option as well. This option allows you to specify a file for case conversion details.</p>
+<p>Here are some usage examples:</p>
+<div class="codehilite"><pre><span></span><code>spelldump<span class="w"> </span>en.dict<span class="w"> </span>en.aff
+spelldump<span class="w"> </span>ru.dict<span class="w"> </span>ru.aff<span class="w"> </span>ru.txt<span class="w"> </span>ru_RU.CP1251
+spelldump<span class="w"> </span>ru.dict<span class="w"> </span>ru.aff<span class="w"> </span>ru.txt<span class="w"> </span>.1251
+</code></pre></div>
+
+<p>The resulting file will list all the words from the dictionary, arranged alphabetically and formatted like a wordforms file. You can then modify this file as per your specific requirements. Here's a sample of what the output file might look like:</p>
+<div class="codehilite"><pre><span></span><code>zone<span class="w"> </span>&gt;<span class="w"> </span>zone
+zoned<span class="w"> </span>&gt;<span class="w"> </span>zoned
+zoning<span class="w"> </span>&gt;<span class="w"> </span>zoning
+</code></pre></div>
+
+<h2 id="wordbreaker">wordbreaker</h2>
+<p>The <code>wordbreaker</code> tool is designed to deconstruct compound words, a common feature in URLs, into their individual components. For instance, it can dissect "lordoftherings" into four separate words or break down <code>http://manofsteel.warnerbros.com</code> into "man of steel warner bros". This ability enhances search functionality by eliminating the need for prefixes or infixes. To illustrate, a search for "sphinx" wouldn't yield "sphinxsearch" in the results. However, if you apply <code>wordbreaker</code> to disassemble the compound word and index the detached elements, a search will be successful without the file size expansion associated with prefix or infix usage in full-text indexing.</p>
+<p>Here are some examples of how to use <code>wordbreaker</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>manofsteel<span class="w"> </span><span class="p">|</span><span class="w"> </span>bin/wordbreaker<span class="w"> </span>-dict<span class="w"> </span>dict.txt<span class="w"> </span>split
+man<span class="w"> </span>of<span class="w"> </span>steel
+</code></pre></div>
+
+<p>The <code>-dict</code> dictionary file is used to separate the input stream into individual words. If no dictionary file is specified, Wordbreaker will look for a file named <code>wordbreaker-dict.txt</code> in the current working directory. (Ensure that the dictionary file matches the language of the compound word you're working with.) The <code>split</code> command breaks words from the standard input and sends the results to the standard output. The <code>test</code> and <code>bench</code> commands are also available to assess the splitting quality and measure the performance of the splitting function, respectively.</p>
+<p>Wordbreaker uses a dictionary to identify individual substrings within a given string. To distinguish between multiple potential splits, it considers the relative frequency of each word in the dictionary. A higher frequency indicates a higher likelihood for a word split. To generate a file of this nature, you can use the <code>indexer</code> tool:</p>
+<div class="codehilite"><pre><span></span><code>indexer<span class="w"> </span>--buildstops<span class="w"> </span>dict.txt<span class="w"> </span><span class="m">100000</span><span class="w"> </span>--buildfreqs<span class="w"> </span>myindex<span class="w"> </span>-c<span class="w"> </span>/path/to/manticore.conf
+</code></pre></div>
+
+<p>which will produce a text file named <code>dict.txt</code> that contains the 100,000 most frequently occurring words from <code>myindex</code>, along with their respective counts. Since this output file is a simple text document, you have the flexibility to manually edit it whenever needed. Feel free to add or remove words as required.</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

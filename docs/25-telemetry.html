@@ -1,0 +1,313 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Telemetry - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-25-telemetry">
+        <a class="chapter-link" href="#toc-25-telemetry"> ¶ 25</a>
+
+        
+        <h1 id="telemetry">Telemetry</h1>
+<p>At Manticore, we gather various anonymized metrics to enhance the quality of our products, including Manticore Search. By analyzing this data, we can not only improve the overall performance of our product but also identify which features would be most beneficial to prioritize in order to provide even more value to our users. The telemetry system operates on a separate thread in a non-blocking mode, taking snapshots and sending them once every few minutes.</p>
+<p>We take your privacy seriously, and you can rest assured that all metrics are completely anonymous and no sensitive information is transmitted. However, if you still wish to disable telemetry, you have the option to do so by:</p>
+<ul>
+<li>Setting the environment variable <code>TELEMETRY=0</code></li>
+<li>Or setting <code>telemetry = 0</code> in the section <code>searchd</code> of your configuration file</li>
+</ul>
+<p>Here is a list of all the metrics we collect:</p>
+<p>The ⏱️ symbol indicates that the metric is collected periodically, as opposed to other metrics which are collected based on specific events.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>invocation</code></td>
+<td>Sent when Manticore Buddy is launched</td>
+</tr>
+<tr>
+<td><code>plugin_*</code></td>
+<td>Indicates that the plugin with a given name was executed, <code>plugin_backup</code> for backup execution, for example</td>
+</tr>
+<tr>
+<td><code>command_*</code></td>
+<td>⏱️ All metrics with this prefix are sent from the <code>show status</code> query of the Manticore daemon</td>
+</tr>
+<tr>
+<td><code>uptime</code></td>
+<td>⏱️ The uptime of the Manticore Search daemon</td>
+</tr>
+<tr>
+<td><code>workers_total</code></td>
+<td>⏱️ The number of workers used by Manticore</td>
+</tr>
+<tr>
+<td><code>cluster_count</code></td>
+<td>⏱️ How many clusters this node handles</td>
+</tr>
+<tr>
+<td><code>cluster_size</code></td>
+<td>⏱️ How many nodes in all clusters</td>
+</tr>
+<tr>
+<td><code>table_*_count</code></td>
+<td>⏱️ The number of tables created for each type: plain, percolate, rt, or distributed</td>
+</tr>
+<tr>
+<td><code>*_field_*_count</code></td>
+<td>⏱️ The count for each field type for tables with rt and percolate types</td>
+</tr>
+<tr>
+<td><code>columnar</code></td>
+<td>⏱️ Indicates that the Columnar library was used</td>
+</tr>
+<tr>
+<td><code>columnar_field_count</code></td>
+<td>⏱️ The number of fields that use the Columnar library</td>
+</tr>
+</tbody>
+</table>
+<h2 id="backup-metrics">Backup metrics</h2>
+<p>The Manticore backup tool sends anonymized metrics to the Manticore metrics server by default in order to help improve the product. If you don't want to send telemetry, you can disable it by running the tool with the <code>--disable-metric</code> flag or by setting the environment variable <code>TELEMETRY=0</code>.</p>
+<p>The following is a list of all collected metrics:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>invocation</code></td>
+<td>Sent when backup was initiated</td>
+</tr>
+<tr>
+<td><code>failed</code></td>
+<td>Sent in case of failed backup</td>
+</tr>
+<tr>
+<td><code>done</code></td>
+<td>Sent when backup/restore is successful</td>
+</tr>
+<tr>
+<td><code>arg_*</code></td>
+<td>The arguments used to run the tool (excluding index names, etc.)</td>
+</tr>
+<tr>
+<td><code>backup_store_versions_fails</code></td>
+<td>Indicates failure in saving Manticore version in the backup</td>
+</tr>
+<tr>
+<td><code>backup_table_count</code></td>
+<td>Total number of backed up tables</td>
+</tr>
+<tr>
+<td><code>backup_no_permissions</code></td>
+<td>Failed backup due to insufficient permissions to destination directory</td>
+</tr>
+<tr>
+<td><code>backup_total_size</code></td>
+<td>Total size of the full backup</td>
+</tr>
+<tr>
+<td><code>backup_time</code></td>
+<td>Duration of the backup</td>
+</tr>
+<tr>
+<td><code>restore_searchd_running</code></td>
+<td>Failed to run restore process due to searchd already running</td>
+</tr>
+<tr>
+<td><code>restore_no_config_file</code></td>
+<td>No config file found in the backup during restore</td>
+</tr>
+<tr>
+<td><code>restore_time</code></td>
+<td>Duration of the restore</td>
+</tr>
+<tr>
+<td><code>fsync_time</code></td>
+<td>Duration of fsync</td>
+</tr>
+<tr>
+<td><code>restore_target_exists</code></td>
+<td>Occurs when a folder or index already exists in the destination folder for restore</td>
+</tr>
+<tr>
+<td><code>terminations</code></td>
+<td>Indicates that the process was terminated</td>
+</tr>
+<tr>
+<td><code>signal_*</code></td>
+<td>The signal used to terminate the process</td>
+</tr>
+<tr>
+<td><code>tables</code></td>
+<td>Number of tables in Manticore</td>
+</tr>
+<tr>
+<td><code>config_unreachable</code></td>
+<td>Specified configuration file does not exist</td>
+</tr>
+<tr>
+<td><code>config_data_dir_missing</code></td>
+<td>Failed to parse <code>data_dir</code> from specified configuration file</td>
+</tr>
+<tr>
+<td><code>config_data_dir_is_relative</code></td>
+<td><code>data_dir</code> path in Manticore instance's configuration file is relative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="labels">Labels</h2>
+<p>Each metric comes with the following labels:</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>collector</code></td>
+<td><code>buddy</code>. Indicates that this metric is collected through Manticore Buddy</td>
+</tr>
+<tr>
+<td><code>os_name</code></td>
+<td>Name of the operating system</td>
+</tr>
+<tr>
+<td><code>os_release_name</code></td>
+<td>Name from the <code>/etc/os-release</code> if presents or <code>unknown</code></td>
+</tr>
+<tr>
+<td><code>os_release_version</code></td>
+<td>Version from the <code>/etc/os-release</code> if presents or <code>unknown</code></td>
+</tr>
+<tr>
+<td><code>dockerized</code></td>
+<td>If it's run inside the Docker environment</td>
+</tr>
+<tr>
+<td><code>official_docker</code></td>
+<td>In case of Docker it's flag that shows we use official image</td>
+</tr>
+<tr>
+<td><code>machine_id</code></td>
+<td>Server identifier (the content of <code>/etc/machine-id</code> in Linux)</td>
+</tr>
+<tr>
+<td><code>arch</code></td>
+<td>Architecture of the machin we run on</td>
+</tr>
+<tr>
+<td><code>manticore_version</code></td>
+<td>Version of Manticore</td>
+</tr>
+<tr>
+<td><code>columnar_version</code></td>
+<td>Version of the Columnar library if it is installed</td>
+</tr>
+<tr>
+<td><code>secondary_version</code></td>
+<td>Version of the secondary library if the Columnar library is installed</td>
+</tr>
+<tr>
+<td><code>knn_version</code></td>
+<td>Version of the KNN library if the Columnar library is installed</td>
+</tr>
+<tr>
+<td><code>buddy_version</code></td>
+<td>Version of Manticore Buddy</td>
+</tr>
+</tbody>
+</table>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

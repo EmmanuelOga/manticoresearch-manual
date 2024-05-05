@@ -1,0 +1,374 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Updating table schema and settings - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-14-updating_table_schema_and_settings">
+        <a class="chapter-link" href="#toc-14-updating_table_schema_and_settings"> ¶ 14</a>
+
+        
+        <h1 id="updating-table-schema">Updating table schema</h1>
+<h2 id="updating-table-schema-in-rt-mode">Updating table schema in RT mode</h2>
+<!-- example ALTER -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">column_name</span><span class="w"> </span><span class="p">[</span><span class="err">{</span><span class="nb">INTEGER</span><span class="o">|</span><span class="nb">INT</span><span class="o">|</span><span class="nb">BIGINT</span><span class="o">|</span><span class="nb">FLOAT</span><span class="o">|</span><span class="n">BOOL</span><span class="o">|</span><span class="n">MULTI</span><span class="o">|</span><span class="n">MULTI64</span><span class="o">|</span><span class="n">JSON</span><span class="o">|</span><span class="n">STRING</span><span class="o">|</span><span class="k">TIMESTAMP</span><span class="o">|</span><span class="nb">TEXT</span><span class="w"> </span><span class="p">[</span><span class="n">INDEXED</span><span class="w"> </span><span class="p">[</span><span class="n">ATTRIBUTE</span><span class="p">]]</span><span class="err">}</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;columnar&#39;</span><span class="p">]</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">column_name</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">MODIFY</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">column_name</span><span class="w"> </span><span class="nb">bigint</span>
+</code></pre></div>
+
+<p>This feature only supports adding one field at a time for RT tables or the expansion of an <code>int</code> column to <code>bigint</code>. The supported data types are:</p>
+<ul>
+<li><code>int</code> - integer attribute</li>
+<li><code>timestamp</code> - timestamp attribute</li>
+<li><code>bigint</code> - big integer attribute</li>
+<li><code>float</code> - float attribute</li>
+<li><code>bool</code> - boolean attribute</li>
+<li><code>multi</code> - multi-valued integer attribute</li>
+<li><code>multi64</code> - multi-valued bigint attribute</li>
+<li><code>json</code> - json attribute</li>
+<li><code>string</code> / <code>text attribute</code> / <code>string attribute</code> - string attribute</li>
+<li><code>text</code> / <code>text indexed stored</code> / <code>string indexed stored</code> - full-text indexed field with original value stored in docstore</li>
+<li><code>text indexed</code> / <code>string indexed</code> - full-text indexed field, indexed only (the original value is not stored in docstore)</li>
+<li><code>text indexed attribute</code> / <code>string indexed attribute</code> - full text indexed field + string attribute (not storing the original value in docstore)</li>
+<li><code>text stored</code> / <code>string stored</code> - the value will be only stored in docstore, not full-text indexed, not a string attribute</li>
+<li>adding <code>engine='columnar'</code> to any attribute (except for json) will make it stored in the <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar storage</a></li>
+</ul>
+<h4 id="important-notes">Important notes:</h4>
+<ul>
+<li>❗It's recommended to <strong>backup table files</strong> before <code>ALTER</code>ing it to avoid data corruption in case of a sudden power interruption or other similar issues.</li>
+<li>Querying a table is impossible while a column is being added.</li>
+<li>Newly created attribute's values are set to 0.</li>
+<li><code>ALTER</code> will not work for distributed tables and tables without any attributes.</li>
+<li>You can't delete the <code>id</code> column.</li>
+<li>When dropping a field which is both a full-text field and a string attribute the first <code>ALTER DROP</code> drops the attribute, the second one drops the full-text field.</li>
+<li>Adding/dropping full-text field is only supported in the <a href="02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a>.</li>
+</ul>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">field</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">group_id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="nb">integer</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">field</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">group_id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="n">group_id</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">field</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="n">indexed</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Properties</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="n">attribute</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Properties</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">string</span><span class="w">    </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Properties</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Properties</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">    </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">      </span><span class="o">|</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+-----------+------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="updating-table-ft-settings-in-rt-mode">Updating table FT settings in RT mode</h2>
+<!-- example ALTER FT -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">ft_setting</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">[,</span><span class="w"> </span><span class="n">ft_setting2</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<p>You can use <code>ALTER</code> to modify the full-text settings of your table in  <a href="02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a>. However, it only affects new documents and not existing ones.<br />
+Example:</p>
+<ul>
+<li>create a table with a full-text field and <code>charset_table</code> that allows only 3 searchable characters: <code>a</code>, <code>b</code> and <code>c</code>.</li>
+<li>then we insert document 'abcd' and find it by query <code>abcd</code>, the <code>d</code> just gets ignored since it's not in the <code>charset_table</code> array</li>
+<li>then we understand, that we want <code>d</code> to be searchable too, so we add it with help of <code>ALTER</code></li>
+<li>but the same query <code>where match('abcd')</code> still says it searched by <code>abc</code>, because the existing document remembers previous contents of <code>charset_table</code></li>
+<li>then we add another document <code>abcd</code> and search by <code>abcd</code> again</li>
+<li>now it finds the both documents and <code>show meta</code> says it used two keywords: <code>abc</code> (to find the old document) and <code>abcd</code> (for the new one).</li>
+</ul>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="o">=</span><span class="s1">&#39;a,b,c&#39;</span><span class="p">;</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">rt</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">);</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">);</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">                  </span><span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">1514630637682688054</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">abcd</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">meta</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total_found</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">time</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">000</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">abc</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">charset_table</span><span class="o">=</span><span class="s1">&#39;a,b,c,d&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">);</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">                  </span><span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">1514630637682688054</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">abcd</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">meta</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total_found</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">time</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">000</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">abc</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">rt</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">);</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">);</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">                  </span><span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">1514630637682688055</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">abcd</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">1514630637682688054</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">abcd</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+-------+</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">meta</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total_found</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">time</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">000</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">abc</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">abcd</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="updating-table-ft-settings-in-plain-mode">Updating table FT settings in plain mode</h2>
+<!-- example ALTER RECONFIGURE -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">RECONFIGURE</span>
+</code></pre></div>
+
+<p><code>ALTER</code> can also reconfigure an RT table in the <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain-mode%29">plain mode</a>, so that new tokenization, morphology and other text processing settings from the configuration file take effect for new documents. Note, that the existing document will be left intact. Internally, it forcibly saves the current RAM chunk as a new disk chunk and adjusts the table header, so that new documents are tokenized using the updated full-text settings.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">settings</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">settings</span><span class="w">      </span><span class="o">|</span><span class="w">       </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+-------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">reconfigure</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">settings</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------------+----------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+----------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">settings</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stem_en</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+----------------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="rebuild-secondary-index">Rebuild secondary index</h2>
+<!-- example ALTER REBUILD SECONDARY -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">REBUILD</span><span class="w"> </span><span class="n">SECONDARY</span>
+</code></pre></div>
+
+<p>You can also use <code>ALTER</code> to rebuild secondary indexes in a given table. Sometimes, a secondary index can be disabled for the entire table or for one or multiple attributes within the table:</p>
+<ul>
+<li>When an attribute is updated, its secondary index gets disabled.</li>
+<li>If Manticore loads a table with an old version of secondary indexes that is no longer supported, the secondary indexes will be disabled for the entire table.</li>
+</ul>
+<p><code>ALTER TABLE table REBUILD SECONDARY</code> rebuilds secondary indexes from attribute data and enables them again.</p>
+<p>Additionally, an old version of secondary indexes may be supported but will lack certain features. <code>REBUILD SECONDARY</code> can be used to update secondary indexes.</p>
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">REBUILD</span><span class="w"> </span><span class="n">SECONDARY</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

@@ -1,0 +1,314 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Reporting bugs - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-27-reporting_bugs">
+        <a class="chapter-link" href="#toc-27-reporting_bugs"> ¶ 27</a>
+
+        
+        <h1 id="reporting-bugs">Reporting bugs</h1>
+<p>Unfortunately, Manticore is not yet 100% bug-free, although the development team is working hard towards that goal. You may encounter some issues from time to time. <br />
+It is crucial to report as much information as possible about each bug to fix it effectively.<br />
+To fix a bug, either it needs to be reproduced and fixed or its cause needs to be deduced based on the information you provide. To help with this, please follow the instructions below.</p>
+<h3 id="bug-tracker">Bug-tracker</h3>
+<p>Bugs and feature requests are tracked on <a href="https://github.com/manticoresoftware/manticore/issues">Github</a>. You are welcome to create a new ticket and describe your bug in detail to save time for both you and the developers.</p>
+<h3 id="documentation-updates">Documentation updates</h3>
+<p>Updates to the documentation (what you are reading now) are also done on <a href="https://github.com/manticoresoftware/manticoresearch/tree/master/manual">Github</a>.</p>
+<h3 id="crashes">Crashes</h3>
+<p>Manticore Search is written in C++, which is a low-level programming language that allows for direct communication with the computer for faster performance. However, there is a drawback to this approach as in rare cases, it may not be possible to elegantly handle a bug by writing an error to a log and skipping the processing of the command that caused the problem. Instead, the program may crash, resulting in it stopping completely and needing to be restarted.</p>
+<p>When Manticore Search crashes, it is important to let the Manticore team know by <a href="https://github.com/manticoresoftware/manticoresearch/issues/new?assignees=&amp;labels=&amp;template=bug_report.md&amp;title=">submitting a bug report</a> on GitHub or through Manticore's professional services in your private helpdesk. The Manticore team requires the following information:</p>
+<ol>
+<li>The searchd log</li>
+<li>The coredump</li>
+<li>The query log</li>
+</ol>
+<p>Additionally, it would be helpful if you could do the following:<br />
+1. Run gdb to inspect the coredump:</p>
+<div class="codehilite"><pre><span></span><code>gdb /usr/bin/searchd &lt;/path/to/coredump&gt;
+</code></pre></div>
+
+<ol start="2">
+<li>Find the crashed thread ID in the coredump file name (make sure you have <code>%p</code> in /proc/sys/kernel/core_pattern), e.g. <code>core.work_6.29050.server_name.1637586599</code> means thread_id=29050</li>
+<li>In gdb run:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nv">set</span><span class="w"> </span><span class="nv">pagination</span><span class="w"> </span><span class="nv">off</span>
+<span class="nv">info</span><span class="w"> </span><span class="nv">threads</span>
+#<span class="w"> </span><span class="nv">find</span><span class="w"> </span><span class="nv">thread</span><span class="w"> </span><span class="nv">number</span><span class="w"> </span><span class="nv">by</span><span class="w"> </span><span class="nv">it</span><span class="err">&#39;s id (e.g. for `LWP 29050` it will be thread number 8</span>
+<span class="err">thread apply all bt</span>
+<span class="err">thread &lt;thread number&gt;</span>
+<span class="err">bt full</span>
+<span class="err">info locals</span>
+<span class="err">quit</span>
+</code></pre></div>
+
+<ol start="4">
+<li>Provide the outputs</li>
+</ol>
+<h3 id="what-do-i-do-when-manticore-search-hangs">What do I do when Manticore Search hangs?</h3>
+<p>If Manticore Search hangs, you need to collect some information that may be useful in understanding the cause. Here's how you can do it:</p>
+<ol>
+<li>Run <code>show threads option format=all</code> trough a <a href="https://manual.manticoresearch.com/Connecting_to_the_server/HTTP#VIP-connection">VIP port</a></li>
+<li>collect the lsof output output, as hanging can be caused by too many connections or open file descriptors.</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="n">lsof</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="err">`</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">searchd</span><span class="o">.</span><span class="n">pid</span><span class="err">`</span>
+</code></pre></div>
+
+<ol start="3">
+<li>Dump the core:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="n">gcore</span><span class="w"> </span><span class="err">`</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">searchd</span><span class="o">.</span><span class="n">pid</span><span class="err">`</span>
+</code></pre></div>
+
+<p>(It will save the dump to the current directory.)</p>
+<ol start="4">
+<li>Install and run gdb:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="n">gdb</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span><span class="w"> </span><span class="err">`</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">searchd</span><span class="o">.</span><span class="n">pid</span><span class="err">`</span>
+</code></pre></div>
+
+<p>Note that this will halt your running searchd, but if it's already hanging, it shouldn't be a problem.<br />
+5. In gdb run:</p>
+<div class="codehilite"><pre><span></span><code>set pagination off
+info threads
+thread apply all bt
+quit
+</code></pre></div>
+
+<ol start="6">
+<li>Collect all the outputs and files and provide them in a bug report.</li>
+</ol>
+<p>For experts: the macros added in <a href="https://github.com/manticoresoftware/manticoresearch/commit/e317f7aa30aad51cb19d34595458bb7c8811be21">this commit</a> can be helpful in debugging.</p>
+<h3 id="how-to-enable-saving-coredumps-on-crash">How to enable saving coredumps on crash?</h3>
+<ul>
+<li>make sure you run searchd with <code>--coredump</code>. To avoid modifying scripts, you can use the  https://manual.manticoresearch.com/Starting_the_server/Linux#Custom-startup-flags-using-systemd , method. For example::</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">root@srv lib</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="k">set</span><span class="o">-</span><span class="n">environment</span><span class="w"> </span><span class="n">_ADDITIONAL_SEARCHD_PARAMS</span><span class="o">=</span><span class="s1">&#39;--coredump&#39;</span>
+<span class="o">[</span><span class="n">root@srv lib</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">manticore</span>
+<span class="o">[</span><span class="n">root@srv lib</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="n">aux</span><span class="o">|</span><span class="n">grep</span><span class="w"> </span><span class="n">searchd</span>
+<span class="n">mantico</span><span class="o">+</span><span class="w">  </span><span class="mi">1955</span><span class="w">  </span><span class="mf">0.0</span><span class="w">  </span><span class="mf">0.0</span><span class="w">  </span><span class="mi">61964</span><span class="w">  </span><span class="mi">1580</span><span class="w"> </span><span class="vm">?</span><span class="w">        </span><span class="n">S</span><span class="w">    </span><span class="mi">11</span><span class="err">:</span><span class="mi">02</span><span class="w">   </span><span class="mi">0</span><span class="err">:</span><span class="mi">00</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span><span class="w"> </span><span class="o">--</span><span class="n">config</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">manticoresearch</span><span class="o">/</span><span class="n">manticore</span><span class="p">.</span><span class="n">conf</span><span class="w"> </span><span class="o">--</span><span class="n">coredump</span>
+<span class="n">mantico</span><span class="o">+</span><span class="w">  </span><span class="mi">1956</span><span class="w">  </span><span class="mf">0.6</span><span class="w">  </span><span class="mf">0.0</span><span class="w"> </span><span class="mi">392744</span><span class="w">  </span><span class="mi">2664</span><span class="w"> </span><span class="vm">?</span><span class="w">        </span><span class="n">Sl</span><span class="w">   </span><span class="mi">11</span><span class="err">:</span><span class="mi">02</span><span class="w">   </span><span class="mi">0</span><span class="err">:</span><span class="mi">00</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span><span class="w"> </span><span class="c1">--config /etc/manticoresearch/manticore.conf --coredump</span>
+</code></pre></div>
+
+<ul>
+<li>Ensure that your operating system allows you to save core dumps by checking that: <code>/proc/sys/kernel/core_pattern</code> is not empty. This is the location where the core dumps will be saved. To save core dumps to a file such as <code>core.searchd.1773.centos-4gb-hel1-1.1636454937</code>, run the following command:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>echo &quot;/cores/core.%e.%p.%h.%t&quot; &gt; /proc/sys/kernel/core_pattern
+</code></pre></div>
+
+<ul>
+<li>searchd should be started with <code>ulimit -c unlimited</code>. If you start Manticore using systemctl, it will automatically set the limit to infinity as indicated by the following line in the manticore.service file:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">root@srv lib</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="n">CORE</span><span class="w"> </span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="k">system</span><span class="o">/</span><span class="n">manticore</span><span class="p">.</span><span class="n">service</span>
+<span class="n">LimitCORE</span><span class="o">=</span><span class="n">infinity</span>
+</code></pre></div>
+
+<h3 id="how-do-i-install-debug-symbols">How do I install debug symbols?</h3>
+<p>Manticore Search and Manticore Columnar Library are written in C++, which results in compiled binary files that execute optimally on your operating system. However, when running a binary, your system does not have full access to the names of variables, functions, methods, and classes. This information is provided in separate "debuginfo" or "symbol packages."</p>
+<p>Debug symbols are essential for troubleshooting and debugging, as they allow you to visualize the system state when it crashed, including the names of functions. Manticore Search provides a backtrace in the searchd log and generates a coredump if run with the --coredump flag. Without symbols, all you will see is internal offsets, making it difficult or impossible to decode the cause of the crash. If you need to make a bug report about a crash, the Manticore team will often require debug symbols to assist you.</p>
+<p>To install Manticore Search/Manticore Columnar Library debug symbols, you will need to install the <code>*debuginfo*</code> package for CentOS, the <code>*dbgsym*</code> package for Ubuntu and Debian, or the <code>*dbgsymbols*</code> package for Windows and macOS. These packages should be the same version as the installed Manticore. For example, if you installed Manticore Search in Centos 8 from the package https://repo.manticoresearch.com/repository/manticoresearch/release/centos/8/x86_64/manticore-4.0.2_210921.af497f245-1.el8.x86_64.rpm , the corresponding package with symbols would be https://repo.manticoresearch.com/repository/manticoresearch/release/centos/8/x86_64/manticore-debuginfo-4.0.2_210921.af497f245-1.el8.x86_64.rpm</p>
+<p>Note that both packages have the same commit id <code>af497f245</code>, which corresponds to the commit that this version was built from.</p>
+<p>If you have installed Manticore from a Manticore APT/YUM repository, you can use one of the following tools:</p>
+<ul>
+<li><code>debuginfo-install</code> in CentOS 7</li>
+<li><code>dnf debuginfo-install</code> CentOS 8</li>
+<li><code>find-dbgsym-packages</code> in Debian and Ubuntu</li>
+</ul>
+<p>to find a debug symbols package for you.</p>
+<h3 id="how-to-check-the-debug-symbols-exist">How to check the debug symbols exist?</h3>
+<ol>
+<li>Find the build ID in the output of <code>file /usr/bin/searchd</code>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">root@srv lib</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="k">file</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="nl">searchd</span><span class="p">:</span><span class="w"> </span><span class="n">ELF</span><span class="w"> </span><span class="mi">64</span><span class="o">-</span><span class="nc">bit</span><span class="w"> </span><span class="n">LSB</span><span class="w"> </span><span class="n">executable</span><span class="p">,</span><span class="w"> </span><span class="n">x86</span><span class="o">-</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">GNU</span><span class="o">/</span><span class="n">Linux</span><span class="p">),</span><span class="w"> </span><span class="n">dynamically</span><span class="w"> </span><span class="n">linked</span><span class="w"> </span><span class="p">(</span><span class="n">uses</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="n">libs</span><span class="p">),</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">GNU</span><span class="o">/</span><span class="n">Linux</span><span class="w"> </span><span class="mf">2.6.32</span><span class="p">,</span><span class="w"> </span><span class="n">BuildID</span><span class="o">[</span><span class="n">sha1</span><span class="o">]=</span><span class="mi">2</span><span class="n">c582e9f564ea1fbeb0c68406c271ba27034a6d3</span><span class="p">,</span><span class="w"> </span><span class="n">stripped</span>
+</code></pre></div>
+
+<p>In this case, the build ID is 2c582e9f564ea1fbeb0c68406c271ba27034a6d3.</p>
+<ol start="2">
+<li>Find symbols in <code>/usr/lib/debug/.build-id</code> like this:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">root@srv ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="o">-</span><span class="n">la</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="p">.</span><span class="n">build</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="mi">2</span><span class="n">c</span><span class="o">/</span><span class="mf">582e9</span><span class="n">f564ea1fbeb0c68406c271ba27034a6d3</span><span class="o">*</span>
+<span class="n">lrwxrwxrwx</span><span class="p">.</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="mi">23</span><span class="w"> </span><span class="n">Nov</span><span class="w">  </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="err">:</span><span class="mi">42</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="p">.</span><span class="n">build</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="mi">2</span><span class="n">c</span><span class="o">/</span><span class="mf">582e9</span><span class="n">f564ea1fbeb0c68406c271ba27034a6d3</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span>
+<span class="n">lrwxrwxrwx</span><span class="p">.</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="mi">27</span><span class="w"> </span><span class="n">Nov</span><span class="w">  </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="err">:</span><span class="mi">42</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="p">.</span><span class="n">build</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="mi">2</span><span class="n">c</span><span class="o">/</span><span class="mf">582e9</span><span class="n">f564ea1fbeb0c68406c271ba27034a6d3</span><span class="p">.</span><span class="n">debug</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span><span class="p">.</span><span class="n">debug</span>
+</code></pre></div>
+
+<h3 id="uploading-your-data">Uploading your data</h3>
+<p>To fix your bug, developers often need to reproduce it locally. To do this, they need your configuration file, table files, binlog (if present), and sometimes source data (such as data from external storages or XML/CSV files) and queries.</p>
+<p>Attach your data when you <a href="https://github.com/manticoresoftware/manticoresearch/issues/new">create a ticket on Github</a>. If the data is too large or sensitive, you can upload it to our write-only S3 storage at  <code>s3://s3.manticoresearch.com/write-only/</code>. Here's how you can do it using the Minio client:<br />
+1. Install the client https://min.io/docs/minio/linux/reference/minio-mc.html#install-mc<br />
+For example on 64-bit Linux:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">curl</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dl</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">mc</span><span class="o">/</span><span class="n">release</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">/</span><span class="n">mc</span><span class="w"> </span>\
+<span class="w">  </span><span class="o">--</span><span class="n">create</span><span class="o">-</span><span class="n">dirs</span><span class="w"> </span>\
+<span class="w">  </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">minio</span><span class="o">-</span><span class="n">binaries</span><span class="o">/</span><span class="n">mc</span>
+<span class="n">chmod</span><span class="w"> </span><span class="o">+</span><span class="n">x</span><span class="w"> </span><span class="o">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">minio</span><span class="o">-</span><span class="n">binaries</span><span class="o">/</span><span class="n">mc</span>
+<span class="k">export</span><span class="w"> </span><span class="n">PATH</span><span class="o">=$</span><span class="n">PATH</span><span class="p">:</span><span class="o">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">minio</span><span class="o">-</span><span class="n">binaries</span><span class="o">/</span>
+</code></pre></div>
+
+<ol start="2">
+<li>Add our s3 host (use full path to executable or change into its directory): <code>cd $HOME/minio-binaries</code> and then <code>./mc config host add manticore http://s3.manticoresearch.com:9000 manticore manticore</code></li>
+<li>Copy your files (use full path to executable or change into its directory): <code>cd $HOME/minio-binaries</code> and then <code>./mc cp -r issue-1234/ manticore/write-only/issue-1234</code> . Make sure the folder name is unique and best if it corresponds to the issue on GitHub where you described the bug.</li>
+</ol>
+<h3 id="debug">DEBUG</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">DEBUG</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="n">subcommand</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
+
+<p>The <code>DEBUG</code> statement is designed for developers and testers to call various internal or VIP commands. However, it is not intended for production use as the syntax of the  <code>subcommand</code> component may change freely in any build.</p>
+<p>To view a list of useful commands and <code>DEBUG</code> statement subcommands available in the current context, simply call <code>DEBUG</code> without any parameters.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">debug</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-------------------------------------------------------------------------+----------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">command</span><span class="w">                                                                 </span><span class="o">|</span><span class="w"> </span><span class="n">meaning</span><span class="w">                                                                                </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------------------------------------------------------------+----------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">flush</span><span class="w"> </span><span class="n">logs</span><span class="w">                                                              </span><span class="o">|</span><span class="w"> </span><span class="n">emulate</span><span class="w"> </span><span class="n">USR1</span><span class="w"> </span><span class="n">signal</span><span class="w">                                                                    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">reload</span><span class="w"> </span><span class="n">indexes</span><span class="w">                                                          </span><span class="o">|</span><span class="w"> </span><span class="n">emulate</span><span class="w"> </span><span class="n">HUP</span><span class="w"> </span><span class="n">signal</span><span class="w">                                                                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="w">                                                  </span><span class="o">|</span><span class="w"> </span><span class="n">calculate</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">password</span><span class="w">                                                           </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">malloc_stats</span><span class="w">                                                      </span><span class="o">|</span><span class="w"> </span><span class="n">perform</span><span class="w"> </span><span class="s1">&#39;malloc_stats&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">searchd</span><span class="p">.</span><span class="n">log</span><span class="w">                                          </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">malloc_trim</span><span class="w">                                                       </span><span class="o">|</span><span class="w"> </span><span class="n">pefrorm</span><span class="w"> </span><span class="s1">&#39;malloc_trim&#39;</span><span class="w"> </span><span class="k">call</span><span class="w">                                                             </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">sleep</span><span class="w"> </span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="w">                                                         </span><span class="o">|</span><span class="w"> </span><span class="n">sleep</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="w"> </span><span class="n">seconds</span><span class="w">                                                                  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">tasks</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">tasks</span><span class="w"> </span><span class="n">stat</span><span class="w"> </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">@@</span><span class="k">system</span><span class="p">.</span><span class="n">tasks</span><span class="w"> </span><span class="k">instead</span><span class="p">)</span><span class="w">                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">sched</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="n">task</span><span class="w"> </span><span class="n">manager</span><span class="w"> </span><span class="n">schedule</span><span class="w"> </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">@@</span><span class="k">system</span><span class="p">.</span><span class="n">sched</span><span class="w"> </span><span class="k">instead</span><span class="p">)</span><span class="w">                 </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">merge</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">into</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">Y</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">option</span><span class="w"> </span><span class="n">sync</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">byid</span><span class="o">=</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">For</span><span class="w"> </span><span class="n">RT</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">merge</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="n">Y</span><span class="w">                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">from</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">option</span><span class="w"> </span><span class="n">sync</span><span class="o">=</span><span class="mi">1</span><span class="p">]</span><span class="w">                     </span><span class="o">|</span><span class="w"> </span><span class="k">For</span><span class="w"> </span><span class="n">RT</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="n">X</span><span class="w">                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">option</span><span class="w"> </span><span class="n">format</span><span class="o">=</span><span class="k">all</span><span class="o">|</span><span class="k">external</span><span class="p">]</span><span class="w">                          </span><span class="o">|</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="n">belonging</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="p">.</span><span class="w"> </span><span class="s1">&#39;all&#39;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">including</span><span class="w"> </span><span class="k">external</span><span class="w"> </span><span class="p">(</span><span class="n">wordforms</span><span class="p">,</span><span class="w"> </span><span class="n">stopwords</span><span class="p">,</span><span class="w"> </span><span class="n">etc</span><span class="p">.)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="k">close</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="n">ask</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">close</span><span class="w"> </span><span class="k">connection</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">it</span><span class="s1">&#39;s side                                          |</span>
+<span class="s1">| debug compress &lt;TBL&gt; [chunk] &lt;X&gt; [option sync=1]                        | Compress disk chunk X of RT table &lt;TBL&gt; (wipe out deleted documents)                   |</span>
+<span class="s1">| debug split &lt;TBL&gt; [chunk] &lt;X&gt; on @&lt;uservar&gt; [option sync=1]             | Split disk chunk X of RT table &lt;TBL&gt; using set of DocIDs from @uservar                 |</span>
+<span class="s1">| debug wait &lt;cluster&gt; [like &#39;</span><span class="n">xx</span><span class="s1">&#39;] [option timeout=3]                     | wait &lt;cluster&gt; ready, but no more than 3 secs.                                         |</span>
+<span class="s1">| debug wait &lt;cluster&gt; status &lt;N&gt; [like &#39;</span><span class="n">xx</span><span class="s1">&#39;] [option timeout=13]         | wait &lt;cluster&gt; commit achieve &lt;N&gt;, but no more than 13 secs                            |</span>
+<span class="s1">| debug meta                                                              | Show max_matches/pseudo_shards. Needs set profiling=1                                  |</span>
+<span class="s1">| debug trace OFF|&#39;</span><span class="n">path</span><span class="o">/</span><span class="k">to</span><span class="o">/</span><span class="n">file</span><span class="s1">&#39; [&lt;N&gt;]                                    | trace flow to file until N bytes written, or &#39;</span><span class="n">trace</span><span class="w"> </span><span class="k">OFF</span><span class="err">&#39;</span><span class="w">                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">&lt;</span><span class="n">URL</span><span class="o">&gt;</span><span class="w">                                                        </span><span class="o">|</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="n">via</span><span class="w"> </span><span class="n">libcurl</span><span class="w">                                                          </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------------------------------------------------------------+----------------------------------------------------------------------------------------+</span>
+<span class="mi">19</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Same from VIP connection:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">debug</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-------------------------------------------------------------------------+----------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">command</span><span class="w">                                                                 </span><span class="o">|</span><span class="w"> </span><span class="n">meaning</span><span class="w">                                                                                </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------------------------------------------------------------+----------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">flush</span><span class="w"> </span><span class="n">logs</span><span class="w">                                                              </span><span class="o">|</span><span class="w"> </span><span class="n">emulate</span><span class="w"> </span><span class="n">USR1</span><span class="w"> </span><span class="n">signal</span><span class="w">                                                                    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">reload</span><span class="w"> </span><span class="n">indexes</span><span class="w">                                                          </span><span class="o">|</span><span class="w"> </span><span class="n">emulate</span><span class="w"> </span><span class="n">HUP</span><span class="w"> </span><span class="n">signal</span><span class="w">                                                                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">shutdown</span><span class="w"> </span><span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="w">                                               </span><span class="o">|</span><span class="w"> </span><span class="n">emulate</span><span class="w"> </span><span class="n">TERM</span><span class="w"> </span><span class="n">signal</span><span class="w">                                                                    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">crash</span><span class="w"> </span><span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="w">                                                  </span><span class="o">|</span><span class="w"> </span><span class="n">crash</span><span class="w"> </span><span class="n">daemon</span><span class="w"> </span><span class="p">(</span><span class="n">make</span><span class="w"> </span><span class="n">SIGSEGV</span><span class="w"> </span><span class="n">action</span><span class="p">)</span><span class="w">                                                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="w">                                                  </span><span class="o">|</span><span class="w"> </span><span class="n">calculate</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">password</span><span class="w">                                                           </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">malloc_stats</span><span class="w">                                                      </span><span class="o">|</span><span class="w"> </span><span class="n">perform</span><span class="w"> </span><span class="s1">&#39;malloc_stats&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">searchd</span><span class="p">.</span><span class="n">log</span><span class="w">                                          </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">malloc_trim</span><span class="w">                                                       </span><span class="o">|</span><span class="w"> </span><span class="n">pefrorm</span><span class="w"> </span><span class="s1">&#39;malloc_trim&#39;</span><span class="w"> </span><span class="k">call</span><span class="w">                                                             </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">procdump</span><span class="w">                                                          </span><span class="o">|</span><span class="w"> </span><span class="n">ask</span><span class="w"> </span><span class="n">watchdog</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">dump</span><span class="w"> </span><span class="n">us</span><span class="w">                                                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">setgdb</span><span class="w"> </span><span class="k">on</span><span class="o">|</span><span class="k">off</span><span class="w">                                                     </span><span class="o">|</span><span class="w"> </span><span class="n">enable</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">disable</span><span class="w"> </span><span class="n">potentially</span><span class="w"> </span><span class="n">dangerous</span><span class="w"> </span><span class="n">crash</span><span class="w"> </span><span class="n">dumping</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">gdb</span><span class="w">                         </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">setgdb</span><span class="w"> </span><span class="n">status</span><span class="w">                                                     </span><span class="o">|</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">current</span><span class="w"> </span><span class="k">mode</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">dumping</span><span class="w">                                                       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">sleep</span><span class="w"> </span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="w">                                                         </span><span class="o">|</span><span class="w"> </span><span class="n">sleep</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="w"> </span><span class="n">seconds</span><span class="w">                                                                  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">tasks</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">tasks</span><span class="w"> </span><span class="n">stat</span><span class="w"> </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">@@</span><span class="k">system</span><span class="p">.</span><span class="n">tasks</span><span class="w"> </span><span class="k">instead</span><span class="p">)</span><span class="w">                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">sched</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="n">task</span><span class="w"> </span><span class="n">manager</span><span class="w"> </span><span class="n">schedule</span><span class="w"> </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">@@</span><span class="k">system</span><span class="p">.</span><span class="n">sched</span><span class="w"> </span><span class="k">instead</span><span class="p">)</span><span class="w">                 </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">merge</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">into</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">Y</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">option</span><span class="w"> </span><span class="n">sync</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">byid</span><span class="o">=</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">For</span><span class="w"> </span><span class="n">RT</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">merge</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="n">Y</span><span class="w">                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">from</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">option</span><span class="w"> </span><span class="n">sync</span><span class="o">=</span><span class="mi">1</span><span class="p">]</span><span class="w">                     </span><span class="o">|</span><span class="w"> </span><span class="k">For</span><span class="w"> </span><span class="n">RT</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="n">X</span><span class="w">                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">option</span><span class="w"> </span><span class="n">format</span><span class="o">=</span><span class="k">all</span><span class="o">|</span><span class="k">external</span><span class="p">]</span><span class="w">                          </span><span class="o">|</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="n">belonging</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TBL</span><span class="o">&gt;</span><span class="p">.</span><span class="w"> </span><span class="s1">&#39;all&#39;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">including</span><span class="w"> </span><span class="k">external</span><span class="w"> </span><span class="p">(</span><span class="n">wordforms</span><span class="p">,</span><span class="w"> </span><span class="n">stopwords</span><span class="p">,</span><span class="w"> </span><span class="n">etc</span><span class="p">.)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="k">close</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="n">ask</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">close</span><span class="w"> </span><span class="k">connection</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">it</span><span class="s1">&#39;s side                                          |</span>
+<span class="s1">| debug compress &lt;TBL&gt; [chunk] &lt;X&gt; [option sync=1]                        | Compress disk chunk X of RT table &lt;TBL&gt; (wipe out deleted documents)                   |</span>
+<span class="s1">| debug split &lt;TBL&gt; [chunk] &lt;X&gt; on @&lt;uservar&gt; [option sync=1]             | Split disk chunk X of RT table &lt;TBL&gt; using set of DocIDs from @uservar                 |</span>
+<span class="s1">| debug wait &lt;cluster&gt; [like &#39;</span><span class="n">xx</span><span class="s1">&#39;] [option timeout=3]                     | wait &lt;cluster&gt; ready, but no more than 3 secs.                                         |</span>
+<span class="s1">| debug wait &lt;cluster&gt; status &lt;N&gt; [like &#39;</span><span class="n">xx</span><span class="s1">&#39;] [option timeout=13]         | wait &lt;cluster&gt; commit achieve &lt;N&gt;, but no more than 13 secs                            |</span>
+<span class="s1">| debug meta                                                              | Show max_matches/pseudo_shards. Needs set profiling=1                                  |</span>
+<span class="s1">| debug trace OFF|&#39;</span><span class="n">path</span><span class="o">/</span><span class="k">to</span><span class="o">/</span><span class="n">file</span><span class="s1">&#39; [&lt;N&gt;]                                    | trace flow to file until N bytes written, or &#39;</span><span class="n">trace</span><span class="w"> </span><span class="k">OFF</span><span class="err">&#39;</span><span class="w">                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">&lt;</span><span class="n">URL</span><span class="o">&gt;</span><span class="w">                                                        </span><span class="o">|</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="n">via</span><span class="w"> </span><span class="n">libcurl</span><span class="w">                                                          </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------------------------------------------------------------------+----------------------------------------------------------------------------------------+</span>
+<span class="mi">24</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>All <code>debug XXX</code> commands should be regarded as non-stable and subject to modification at any time, so don't be surprised if they change. This example output may not reflect the actual available commands, so try it on your system to see what is available on your instance. Additionally, there is no detailed documentation provided aside from this short 'meaning' column.</p>
+<p>As a quick illustration, two commands available only to VIP clients are described below - shutdown and crash. Both require a token, which can be generated with the debug token subcommand, and added to the <a href="20-server_settings.html#shutdown_token">shutdown_token</a> param in the searchd section of the config file. If no such section exists, or if the provided password hash does not match the token stored in the config, the subcommands will do nothing.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">hello</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-------------+------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">command</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">result</span><span class="w">                                   </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+------------------------------------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The subcommand <code>shutdown</code> will send a TERM signal to the server, causing it to shut down. This can be dangerous, as nobody wants to accidentally stop a production service. Therefore, it requires a VIP connection and the password to be used.</p>
+<p>The subcommand <code>crash</code> literally causes a crash. It may be used for testing purposes, such as to test how the system manager maintains the service's liveness or to test the feasibility of tracking coredumps.</p>
+<p>If some commands are found to be useful in a more general context, they may be moved from the debug subcommands to a more stable and generic location (as exemplified by the <code>debug tasks</code> and <code>debug sched</code> in the table).</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

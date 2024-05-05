@@ -1,0 +1,480 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Emptying a table - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-09-emptying_a_table">
+        <a class="chapter-link" href="#toc-09-emptying_a_table"> ¶ 9</a>
+
+        
+        <h1 id="emptying-a-table">Emptying a table</h1>
+<p>The table can be emptied with a <code>TRUNCATE TABLE</code> SQL statement or with a <code>truncate()</code> PHP client function.</p>
+<p>Here is the syntax for the SQL statement:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="p">[</span><span class="k">WITH</span><span class="w"> </span><span class="n">RECONFIGURE</span><span class="p">]</span>
+</code></pre></div>
+
+<!-- example truncate -->
+
+<p>When this statement is executed, it clears the RT table completely. It disposes the in-memory data, unlinks all the table data files, and releases the associated binary logs.</p>
+<p>A table can also be emptied with <code>DELETE FROM index WHERE id&gt;0</code>, but it's not recommended as it's slower than <code>TRUNCATE</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST /cli -d &quot;TRUNCATE TABLE products&quot;</span>
+</code></pre></div>
+
+
+
+<!-- response JSON -->
+
+<div class="codehilite"><pre><span></span><code><span class="err">{</span>
+<span class="err">&quot;total&quot;:0,</span>
+<span class="err">&quot;error&quot;:&quot;&quot;,</span>
+<span class="err">&quot;warning&quot;:&quot;&quot;</span>
+<span class="err">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [ &#39;index&#39; =&gt; &#39;products&#39; ];</span>
+<span class="x">$response = $client-&gt;indices()-&gt;truncate($params);</span>
+</code></pre></div>
+
+
+
+<!-- response PHP -->
+
+<div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
+<span class="x">    [total] =&gt; 0</span>
+<span class="x">    [error] =&gt; </span>
+<span class="x">    [warning] =&gt; </span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;TRUNCATE TABLE products&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;TRUNCATE TABLE products&quot;);
+</code></pre></div>
+
+
+
+<!-- response C# -->
+
+<div class="codehilite"><pre><span></span><code>{total=0, error=&quot;&quot;, warning=&quot;&quot;}
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>One of the possible uses of this command is before <a href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">attaching a table</a>.</p>
+<!-- example truncate with RECONFIGURE -->
+
+<p>When <code>RECONFIGURE</code> option is used new tokenization, morphology, and other text processing settings specified in the config take effect after the table gets cleared. In case the <a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">schema declaration</a> in config is different from the table schema the new schema from config got applied after table get cleared.</p>
+<p>With this option clearing and reconfiguring a table becomes one atomic operation.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">reconfigure</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
+<!-- request HTTP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST /cli -d &quot;TRUNCATE TABLE products with reconfigure&quot;</span>
+</code></pre></div>
+
+
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="err">{</span>
+<span class="err">&quot;total&quot;:0,</span>
+<span class="err">&quot;error&quot;:&quot;&quot;,</span>
+<span class="err">&quot;warning&quot;:&quot;&quot;</span>
+<span class="err">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [ &#39;index&#39; =&gt; &#39;products&#39;, &#39;with&#39; =&gt; &#39;reconfigure&#39; ];</span>
+<span class="x">$response = $client-&gt;indices()-&gt;truncate($params);</span>
+</code></pre></div>
+
+
+
+<!-- response PHP -->
+
+<div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
+<span class="x">    [total] =&gt; 0</span>
+<span class="x">    [error] =&gt; </span>
+<span class="x">    [warning] =&gt; </span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products WITH RECONFIGURE&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products WITH RECONFIGURE&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;TRUNCATE TABLE products WITH RECONFIGURE&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;TRUNCATE TABLE products WITH RECONFIGURE&quot;);
+</code></pre></div>
+
+
+
+<!-- response C# -->
+
+<div class="codehilite"><pre><span></span><code>{total=0, error=&quot;&quot;, warning=&quot;&quot;}
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

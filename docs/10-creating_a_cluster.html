@@ -1,0 +1,2669 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Creating a cluster - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-10-creating_a_cluster">
+        <a class="chapter-link" href="#toc-10-creating_a_cluster"> ¶ 1</a>
+
+        
+        <h1 id="manticore-cluster">Manticore cluster</h1>
+<p>Manticore Search is a highly distributed system that provides all the necessary components to create a highly available and scalable database for search. This includes:</p>
+<ul>
+<li><a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a> for sharding</li>
+<li><a href="../10-creating_a_cluster.html#toc-10.02.01-mirroring">Mirroring</a> for high availability</li>
+<li><a href="../10-creating_a_cluster.html#toc-10.02.02-load_balancing">Load balancing</a> for scalability</li>
+<li><a href="../10-creating_a_cluster.html#toc-10.03-setting_up_replication">Replication</a> for data safety</li>
+</ul>
+<p>Manticore Search offers great flexibility in terms of how you set up your cluster. There are no limitations, so it's up to you to design your cluster according to your needs. Simply learn about the tools mentioned above and use them to achieve your desired goal.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.01-adding_a_new_node">
+        <a class="chapter-link" href="#toc-10.01-adding_a_new_node"> ¶ 1.1</a>
+
+        
+        <h1 id="adding-a-new-node">Adding a new node</h1>
+<p>To add a new node to a cluster, simply start another instance of Manticore and ensure that it is accessible by the other nodes in the cluster. Connect the new node to the rest of the cluster using a <a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a> and ensure data safety with <a href="../10-creating_a_cluster.html#toc-10.03-setting_up_replication">replication</a>.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.02-remote_nodes">
+        <a class="chapter-link" href="#toc-10.02-remote_nodes"> ¶ 1.2</a>
+
+        
+        <h1 id="adding-a-distributed-table-with-remote-agents">Adding a distributed table with remote agents</h1>
+<p>To understand how to add a distributed table with remote agents, it is important to first have a basic understanding of  <a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed tables</a> In this article, we will focus on how to use a distributed table as the basis for creating a cluster of Manticore instances.</p>
+<!-- example conf dist 1 -->
+<p>Here is an example of how to split data over 4 servers, each serving one of the shards:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ini
+</div>
+
+<!-- request ini -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">table mydist {</span>
+<span class="w">          </span><span class="na">type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">distributed</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box1:9312:shard1</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box2:9312:shard2</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box3:9312:shard3</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box4:9312:shard4</span>
+<span class="na">}</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<p>In the event of a server failure, the distributed table will still work, but the results from the failed shard will be missing.</p>
+<!-- example conf dist 2 -->
+<p>Now that we've added mirrors, each shard is found on 2 servers. By default, the master (the searchd instance with the distributed table) will randomly pick one of the mirrors.</p>
+<p>The mode used for picking mirrors can be set using the <a href="../10-creating_a_cluster.html#ha_strategy">ha_strategy</a> setting. In addition to the default <code>random</code> mode there's also <code>ha_strategy = roundrobin</code>.</p>
+<p>More advanced strategies based on latency-weighted probabilities include <code>noerrors</code> and <code>nodeads</code>. These not only take out mirrors with issues but also monitor response times and do balancing. If a mirror responds slower (for example, due to some operations running on it), it will receive fewer requests. When the mirror recovers and provides better times, it will receive more requests.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ini
+</div>
+
+<!-- request ini -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">table mydist {</span>
+<span class="w">          </span><span class="na">type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">distributed</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box1:9312|box5:9312:shard1</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box2:9312:|box6:9312:shard2</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box3:9312:|box7:9312:shard3</span>
+<span class="w">          </span><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">box4:9312:|box8:9312:shard4</span>
+<span class="na">}</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.02.01-mirroring">
+        <a class="chapter-link" href="#toc-10.02.01-mirroring"> ¶ 1.2.1</a>
+
+        
+        <h1 id="mirroring">Mirroring</h1>
+<p><a href="../../06-creating_a_table.html#agent">Agent</a> mirrors can be used interchangeably when processing a search query. The Manticore instance(s) hosting the distributed table where the mirrored agents are defined keeps track of mirror status (alive or dead) and response times, and performs automatic failover and load balancing based on this information.</p>
+<h2 id="agent-mirrors">Agent mirrors</h2>
+<div class="codehilite"><pre><span></span><code><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">node1|node2|node3:9312:shard2</span>
+</code></pre></div>
+
+<p>The above example declares that <code>node1:9312</code>, <code>node2:9312</code>, and <code>node3:9312</code> all have a table called shard2, and can be used as interchangeable mirrors. If any of these servers go down, the queries will be distributed between the remaining two. When the server comes back online, the master will detect it and begin routing queries to all three nodes again.</p>
+<p>A mirror may also include an individual table list, as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">node1:9312:node1shard2|node2:9312:node2shard2</span>
+</code></pre></div>
+
+<p>This works similarly to the previous example, but different table names will be used when querying different servers. For example, node1shard2 will be used when querying node1:9312, and node2shard will be used when querying node2:9312.</p>
+<p>By default, all queries are routed to the best of the mirrors. The best mirror is selected based on recent statistics, as controlled by the <a href="../../20-server_settings.html#ha_period_karma">ha_period_karma</a> config directive. The master stores metrics (total query count, error count, response time, etc.) for each agent and groups these by time spans. The karma is the length of the time span. The best agent mirror is then determined dynamically based on the last two such time spans. The specific algorithm used to pick a mirror can be configured with the <a href="../../10-creating_a_cluster.html#ha_strategy">ha_strategy</a> directive.</p>
+<p>The karma period is in seconds and defaults to 60 seconds. The master stores up to 15 karma spans with per-agent statistics for instrumentation purposes (see <code>SHOW AGENT STATUS</code> statement). However, only the last two spans out of these are used for HA/LB logic.</p>
+<p>When there are no queries, the master sends a regular ping command every  <a href="../../10-creating_a_cluster.html#ha_ping_interval">ha_ping_interval</a> milliseconds in order to collect statistics and check if the remote host is still alive. The ha_ping_interval defaults to 1000 msec. Setting it to 0 disables pings, and statistics will only be accumulated based on actual queries.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># sharding table over 4 servers total</span>
+<span class="c1"># in just 2 shards but with 2 failover mirrors for each shard</span>
+<span class="c1"># node1, node2 carry shard1 as local</span>
+<span class="c1"># node3, node4 carry shard2 as local</span>
+
+<span class="c1"># config on node1, node2</span>
+<span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">node3:9312|node4:9312:shard2</span>
+
+<span class="c1"># config on node3, node4</span>
+<span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">node1:9312|node2:9312:shard1</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.02.02-load_balancing">
+        <a class="chapter-link" href="#toc-10.02.02-load_balancing"> ¶ 1.2.2</a>
+
+        
+        <h1 id="load-balancing">Load balancing</h1>
+<p>Load balancing is turned on by default for any <a href="../../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a> that uses <a href="../../10-creating_a_cluster.html#toc-10.02.01-mirroring">mirroring</a>. By default, queries are distributed randomly among the mirrors. You can change this behavior by using the <a href="../../10-creating_a_cluster.html#toc-10.02.02-load_balancing">ha_strategy</a>.</p>
+<h2 id="ha_strategy">ha_strategy</h2>
+<div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{random|nodeads|noerrors|roundrobin}</span>
+</code></pre></div>
+
+<p>The mirror selection strategy for load balancing is optional and is set to <code>random</code> by default.</p>
+<p>The strategy used for mirror selection, or in other words, choosing a specific <a href="../../10-creating_a_cluster.html#agent-mirrors">agent mirror</a> in a distributed table, is controlled by this directive. Essentially, this directive controls how master performs the load balancing between the configured mirror agent nodes. The following strategies are implemented:</p>
+<h3 id="simple-random-balancing">Simple random balancing</h3>
+<!-- example conf balancing 1 -->
+<p>The default balancing mode is simple linear random distribution among the mirrors. This means that equal selection probabilities are assigned to each mirror. This is similar to round-robin (RR), but does not impose a strict selection order.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">random</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="adaptive-randomized-balancing">Adaptive randomized balancing</h3>
+<p>The default simple random strategy does not take into account the status of mirrors, error rates, and most importantly, actual response latencies. To address heterogeneous clusters and temporary spikes in agent node load, there are a group of balancing strategies that dynamically adjust the probabilities based on the actual query latencies observed by the master.</p>
+<p>The adaptive strategies based on <strong>latency-weighted probabilities</strong>  work as follows:</p>
+<ol>
+<li>Latency stats are accumulated in blocks of ha_period_karma seconds.</li>
+<li>Latency-weighted probabilities are recomputed once per karma period.</li>
+<li>The "dead or alive" flag is adjusted once per request, including ping requests.</li>
+</ol>
+<p>Initially, the probabilities are equal. On every step, they are scaled by the inverse of the latencies observed during the last karma period, and then renormalized. For example, if during the first 60 seconds after the master startup, 4 mirrors had latencies of 10 ms, 5 ms, 30 ms, and 3 ms respectively, the first adjustment step would go as follows:</p>
+<ol>
+<li>Initial percentages: 0.25, 0.25, 0.25, 0.25.</li>
+<li>Observed latencies: 10 ms, 5 ms, 30 ms, 3 ms.</li>
+<li>Inverse latencies: 0.1, 0.2, 0.0333, 0.333.</li>
+<li>Scaled percentages: 0.025, 0.05, 0.008333, 0.0833.</li>
+<li>Renormalized percentages: 0.15, 0.30, 0.05, 0.50.</li>
+</ol>
+<p>This means that the first mirror would have a 15% chance of being chosen during the next karma period, the second one a 30% chance, the third one (slowest at 30 ms) only a 5% chance, and the fourth and fastest one (at 3 ms) a 50% chance. After that period, the second adjustment step would update those chances again, and so on.</p>
+<p>The idea is that once the  <strong>observed latencies</strong> stabilize, the <strong>latency weighted probabilities</strong> will stabilize as well. All these adjustment iterations are meant to converge at a point where the average latencies are roughly equal across all mirrors.</p>
+<!-- example conf balancing 2 -->
+<h4 id="nodeads">nodeads</h4>
+<p>Latency-weighted probabilities, but dead mirrors are excluded from the selection. A "dead" mirror is defined as a mirror that has resulted in multiple hard errors (e.g. network failure, or no answer, etc) in a row.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">nodeads</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example conf balancing 3 -->
+<h4 id="noerrors">noerrors</h4>
+<p>Latency-weighted probabilities, but mirrors with a worse error/success ratio are excluded from selection.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">noerrors</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="round-robin-balancing">Round-robin balancing</h3>
+<!-- example conf balancing 4 -->
+<p>Simple round-robin selection, that is, selecting the first mirror in the list, then the second one, then the third one, etc, and then repeating the process once the last mirror in the list is reached. Unlike with the randomized strategies, RR imposes a strict querying order (1, 2, 3, ..., N-1, N, 1, 2, 3, ..., and so on) and <em>guarantees</em> that no two consecutive queries will be sent to the same mirror.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">roundrobin</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="instance-wide-options">Instance-wide options</h2>
+<h3 id="ha_period_karma">ha_period_karma</h3>
+<div class="codehilite"><pre><span></span><code><span class="na">ha_period_karma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2m</span>
+</code></pre></div>
+
+<p><code>ha_period_karma</code> defines the size of the agent mirror statistics window, in seconds (or a time suffix). Optional, the default is 60.</p>
+<p>For a distributed table with agent mirrors, the server tracks several different per-mirror counters. These counters are then used for failover and balancing. (The server picks the best mirror to use based on the counters.) Counters are accumulated in blocks of <code>ha_period_karma</code> seconds.</p>
+<p>After beginning a new block, the master may still use the accumulated values from the previous one until the new one is half full. Thus, any previous history stops affecting the mirror choice after at most 1.5 times ha_period_karma seconds.</p>
+<p>Although at most 2 blocks are used for mirror selection, up to 15 last blocks are actually stored for instrumentation purposes. They can be inspected using the <code>SHOW AGENT STATUS</code> statement.</p>
+<h3 id="ha_ping_interval">ha_ping_interval</h3>
+<div class="codehilite"><pre><span></span><code><span class="na">ha_ping_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3s</span>
+</code></pre></div>
+
+<p><code>ha_ping_interval</code> directive defines the interval between pings sent to the agent mirrors, in milliseconds (or with a time suffix). This option is optional and its default value is 1000.</p>
+<p>For a distributed table with agent mirrors, the server sends all mirrors a ping command during idle periods to track their current status (whether they are alive or dead, network roundtrip time, etc.). The interval between pings is determined by the ha_ping_interval setting.</p>
+<p>If you want to disable pings, set ha_ping_interval to 0.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03-setting_up_replication">
+        <a class="chapter-link" href="#toc-10.03-setting_up_replication"> ¶ 1.3</a>
+
+        
+        <h1 id="setting-up-replication">Setting up replication</h1>
+<p>With Manticore, write transactions (such as <code>INSERT</code>, <code>REPLACE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, <code>UPDATE</code>, <code>COMMIT</code>) can be replicated to other cluster nodes before the transaction is fully applied on the current node. Currently, replication is supported for <code>percolate</code>, <code>rt</code> and <code>distributed</code> tables in Linux and macOS. However, Manticore Search packages for Windows do not provide replication support.</p>
+<p>Manticore's replication is powered by the <a href="https://github.com/codership/galera">Galera library</a> and boasts several impressive features:</p>
+<ul>
+<li>True multi-master: read and write to any node at any time.</li>
+<li><a href="https://galeracluster.com/library/documentation/overview.html">Virtually synchronous replication</a> no slave lag and no data loss after a node crash.</li>
+<li>Hot standby: no downtime during failover (since there is no failover).</li>
+<li>Tightly coupled: all nodes hold the same state and no diverged data between nodes is allowed.</li>
+<li>Automatic node provisioning: no need to manually backup the database and restore it on a new node.</li>
+<li>Easy to use and deploy.</li>
+<li>Detection and automatic eviction of unreliable nodes.</li>
+<li>Certification-based replication.</li>
+</ul>
+<p>To set up replication in Manticore Search:</p>
+<ul>
+<li>The <a href="../../20-server_settings.html#data_dir">data_dir</a> option must be set in the "searchd" section of the configuration file. Replication is not supported in plain mode.</li>
+<li>A <a href="../../20-server_settings.html#listen">listen</a>  directive must be specified, containing an IP address accessible by other nodes, or a <a href="../../20-server_settings.html#node_address">node_address</a> with an accessible IP address.</li>
+<li>Optionally, you can set unique values for <a href="../../20-server_settings.html#server_id">server_id</a> on each cluster node. If no value is set, the node will attempt to use the MAC address or a random number to generate the <code>server_id</code>.</li>
+</ul>
+<p>If there is no <code>replication</code> <a href="../../20-server_settings.html#listen">listen</a> directive set, Manticore will use the first two free ports in the range of 200 ports after the default protocol listening port for each created cluster. To set replication ports manually, the <a href="../../20-server_settings.html#listen">listen</a> directive (of <code>replication</code> type) port range must be defined and the address/port range pairs must not intersect between different nodes on the same server. As a rule of thumb, the port range should specify at least two ports per cluster.</p>
+<h2 id="replication-cluster">Replication cluster</h2>
+<p>A replication cluster is a group of nodes in which a write transaction is replicated. Replication is set up on a per-table basis, meaning that one table can only belong to one cluster. There is no limit on the number of tables that a cluster can have. All transactions such as <code>INSERT</code>, <code>REPLACE</code>, <code>DELETE</code>, <code>TRUNCATE</code> on any percolate or real-time table that belongs to a cluster are replicated to all the other nodes in that cluster. <a href="../../06-creating_a_table.html#creating-a-distributed-table">Distributed</a> tables can also be part of the replication process. Replication is multi-master, so writes to any node or multiple nodes simultaneously will work just as well.</p>
+<p>To create a cluster, you can typically use the command <a href="../../10-creating_a_cluster.html#creating-a-replication-cluster">create cluster</a> with <code>CREATE CLUSTER &lt;cluster name&gt;</code>, and to join a cluster, you can use <a href="../../10-creating_a_cluster.html#joining-a-replication-cluster">join cluster</a> with <code>JOIN CLUSTER &lt;cluster name&gt; at 'host:port'</code>. However, in some rare cases, you may want to fine-tune the behavior of <code>CREATE/JOIN CLUSTER</code>. The available options are:</p>
+<h3 id="name">name</h3>
+<p>This option specifies the name of the cluster. It should be unique among all the clusters in the system.</p>
+<blockquote>
+<p><strong>Note:</strong> The maximum allowable hostname length for the <code>JOIN</code> command is <strong>253</strong> characters. If you exceed this limit, searchd will generate an error.</p>
+</blockquote>
+<h3 id="path">path</h3>
+<p>The path option specifies the data directory for <a href="https://galeracluster.com/library/documentation/state-transfer.html#state-transfer-gcache">write-set cache replication</a> and incoming tables from other nodes. This value should be unique among all the clusters in the system and should be specified as a relative path to the <a href="../../20-server_settings.html#data_dir">data_dir</a>. directory. By default, it is set to the value of <a href="../../20-server_settings.html#data_dir">data_dir</a>.</p>
+<h3 id="nodes">nodes</h3>
+<p>The <code>nodes</code> option is a list of address:port pairs for all the nodes in the cluster, separated by commas. This list should be obtained using the node's API interface and can include the address of the current node as well. It is used to join the node to the cluster and to rejoin it after a restart.</p>
+<h3 id="options">options</h3>
+<p>The <code>options</code> option allows you to pass additional options directly to the Galera replication plugin, as described in the <a href="https://galeracluster.com/library/documentation/galera-parameters.html">Galera Documentation Parameters</a></p>
+<h2 id="write-statements">Write statements</h2>
+<!-- example write statements 1 -->
+<p>When working with a replication cluster, all write statements such as  <code>INSERT</code>, <code>REPLACE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, <code>UPDATE</code> that modify the content of a cluster's table must use the<code>cluster_name:index_name</code> expression instead of the table name. This ensures that the changes are propagated to all replicas in the cluster. If the correct expression is not used, an error will be triggered.</p>
+<p>In the JSON interface, the <code>cluster</code> property must be set along with the <code>table</code> name for all write statements to a cluster's table. Failure to set the <code>cluster</code> property will result in an error.</p>
+<p>The <a href="../../12-data_creation_and_modification.html#auto-id">Auto ID</a> for a table in a cluster should be valid as long as the <a href="../../20-server_settings.html#server_id">server_id</a> is correctly configured.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">posts</span><span class="p">:</span><span class="n">weekly_index</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;iphone case&#39;</span><span class="w"> </span><span class="p">)</span>
+<span class="k">TRUNCATE</span><span class="w"> </span><span class="n">RTINDEX</span><span class="w"> </span><span class="n">click_query</span><span class="p">:</span><span class="n">weekly_index</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">posts</span><span class="p">:</span><span class="n">rt_tags</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">tags</span><span class="o">=</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span><span class="w"> </span><span class="mi">302</span><span class="p">,</span><span class="w"> </span><span class="mi">304</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;use&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">201</span><span class="p">)</span>
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">clicks</span><span class="p">:</span><span class="n">rt</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;dumy&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">gid</span><span class="o">&gt;</span><span class="mi">206</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;doc&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;iphone case&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">19.85</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span><span class="err">&#39;</span>
+<span class="err">POST</span><span class="w"> </span><span class="err">/dele</span><span class="kc">te</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span>
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$index-&gt;addDocuments([</span>
+<span class="x">        1, [&#39;title&#39; =&gt; &#39;iphone case&#39;, &#39;price&#39; =&gt; 19.85]</span>
+<span class="x">]);</span>
+<span class="x">$index-&gt;deleteDocument(1);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="s2">&quot;doc&quot;</span><span class="p">:{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;iphone case&quot;</span><span class="p">,</span><span class="s2">&quot;price&quot;</span><span class="p">:</span><span class="mf">19.85</span><span class="p">}})</span>
+<span class="n">indexApi</span><span class="o">.</span><span class="n">delete</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="o">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="o">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="s2">&quot;doc&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;iphone case&quot;</span><span class="p">,</span><span class="s2">&quot;price&quot;</span><span class="o">:</span><span class="mf">19.85</span><span class="p">}});</span>
+<span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="ow">delete</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="o">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="o">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="mf">1</span><span class="p">});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
+<span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="s">&quot;Crossbody Bag with Tassel&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;price&quot;</span><span class="p">,</span><span class="mf">19.85</span><span class="p">);</span>
+<span class="p">}};</span>
+<span class="n">newdoc</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;weekly_index&quot;</span><span class="p">).</span><span class="na">cluster</span><span class="p">(</span><span class="s">&quot;posts&quot;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="mi">1L</span><span class="p">).</span><span class="na">setDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indexApi</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+
+<span class="n">DeleteDocumentRequest</span><span class="w"> </span><span class="n">deleteRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DeleteDocumentRequest</span><span class="p">();</span>
+<span class="n">deleteRequest</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;weekly_index&quot;</span><span class="p">).</span><span class="na">cluster</span><span class="p">(</span><span class="s">&quot;posts&quot;</span><span class="p">).</span><span class="na">setId</span><span class="p">(</span><span class="mi">1L</span><span class="p">);</span>
+<span class="n">indexApi</span><span class="p">.</span><span class="na">delete</span><span class="p">(</span><span class="n">deleteRequest</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Crossbody Bag with Tassel&quot;</span><span class="p">);</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">19.85</span><span class="p">);</span>
+<span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">(</span><span class="n">index</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cluster</span><span class="p">:</span><span class="n">posts</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="p">:</span><span class="w"> </span><span class="n">doc</span><span class="p">);</span>
+<span class="k">var</span><span class="w"> </span><span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indexApi</span><span class="o">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+
+<span class="n">DeleteDocumentRequest</span><span class="w"> </span><span class="n">deleteDocumentRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">DeleteDocumentRequest</span><span class="p">(</span><span class="n">index</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cluster</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">indexApi</span><span class="o">.</span><span class="n">Delete</span><span class="p">(</span><span class="n">deleteDocumentRequest</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="read-statements">Read statements</h2>
+<!-- example write statements 2 -->
+<p>Read statements such as <code>SELECT</code>, <code>CALL PQ</code>, <code>DESCRIBE</code> can either use regular table names that are not prepended with a cluster name, or they can use the  <code>cluster_name:index_name</code>format. If the latter is used, the <code>cluster_name</code> component is ignored.</p>
+<p>When using the HTTP endpoint <code>json/search</code>, the <code>cluster</code> property can be specified if desired, but it can also be omitted.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">weekly_index</span>
+<span class="k">CALL</span><span class="w"> </span><span class="n">PQ</span><span class="p">(</span><span class="s1">&#39;posts:weekly_index&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;document is here&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:{</span><span class="nt">&quot;match&quot;</span><span class="p">:{</span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;keyword&quot;</span><span class="p">}}</span>
+<span class="p">}</span><span class="err">&#39;</span>
+<span class="err">POST</span><span class="w"> </span><span class="err">/search</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:{</span><span class="nt">&quot;match&quot;</span><span class="p">:{</span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;keyword&quot;</span><span class="p">}}</span>
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="cluster-parameters">Cluster parameters</h2>
+<!-- example cluster parameters 1 -->
+<p>Replication plugin options can be adjusted using the <code>SET</code> statement.</p>
+<p>A list of available options can be found in the <a href="https://galeracluster.com/library/documentation/galera-parameters.html">Galera Documentation Parameters</a> .</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">SET CLUSTER click_query GLOBAL &#39;pc.bootstrap&#39; = 1</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="cluster-with-diverged-nodes">Cluster with diverged nodes</h2>
+<!-- example cluster with diverged nodes  1 -->
+<p>It's possible for replicated nodes to diverge from one another, leading to a state where all nodes are labeled as <code>non-primary</code>. This can occur as a result of a network split between nodes, a cluster crash, or if the replication plugin experiences an exception when determining the <code>primary component</code>. In such a scenario, it's necessary to select a node and promote it to the role of <code>primary component</code>.</p>
+<p>To identify the node that needs to be promoted, you should compare the <code>last_committed</code> cluster status variable value on all nodes. If all the servers are currently running, there's no need to restart the cluster. Instead, you can simply promote the node with the highest last_committed value to the <code>primary component</code> using the <code>SET</code> statement (as demonstrated in the example).</p>
+<p>The other nodes will then reconnect to the primary component and resynchronize their data based on this node.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">SET CLUSTER posts GLOBAL &#39;pc.bootstrap&#39; = 1</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="replication-and-cluster">Replication and cluster</h2>
+<!-- example replication and cluster 1 -->
+<p>To use replication, you need to define one <a href="../../20-server_settings.html#listen">listen</a> port for SphinxAPI protocol and one  <a href="../../20-server_settings.html#listen">listen</a> for replication address and port range in the configuration file. Also, specify the  <a href="../../20-server_settings.html#data_dir">data_dir</a> folder to receive incoming tables.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ini
+</div>
+
+<!-- request ini -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="w">  </span><span class="na">listen</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">9312</span>
+<span class="w">  </span><span class="na">listen</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.1.101:9360-9370:replication</span>
+<span class="w">  </span><span class="na">data_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/lib/manticore/</span>
+<span class="w">  </span><span class="na">...</span>
+<span class="w"> </span><span class="na">}</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example replication and cluster 2 -->
+<p>To replicate tables, you must create a cluster on the server that has the local tables to be replicated.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">CREATE CLUSTER posts</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">    &#39;cluster&#39; =&gt; &#39;posts&#39;</span>
+<span class="x">    ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;create($params);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;CREATE CLUSTER posts&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;CREATE CLUSTER posts&quot;);
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example replication and cluster 3 -->
+<p>Add these local tables to the cluster</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">pq_title</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">pq_clicks</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">ALTER CLUSTER posts ADD pq_title</span>
+<span class="s2">&quot;</span>
+<span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">ALTER CLUSTER posts ADD pq_clicks</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">     &#39;operation&#39; =&gt; &#39;add&#39;,</span>
+<span class="x">     &#39;index&#39; =&gt; &#39;pq_title&#39;</span>
+
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;alter($params);</span>
+<span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">     &#39;operation&#39; =&gt; &#39;add&#39;,</span>
+<span class="x">     &#39;index&#39; =&gt; &#39;pq_clicks&#39;</span>
+
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;alter($params);   </span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts ADD pq_title&#39;</span><span class="p">)</span>
+<span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts ADD pq_clicks&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts ADD pq_title&#39;</span><span class="p">);</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts ADD pq_clicks&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts ADD pq_title&quot;</span><span class="p">);</span>
+<span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts ADD pq_clicks&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER posts ADD pq_title&quot;);
+utilsApi.Sql(&quot;ALTER CLUSTER posts ADD pq_clicks&quot;);
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example replication and cluster 4 -->
+<p>All other nodes that wish to receive a replica of the cluster's tables should join the cluster as follows:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">AT</span><span class="w"> </span><span class="s1">&#39;192.168.1.101:9312&#39;</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">JOIN CLUSTER posts AT &#39;192.168.1.101:9312&#39;</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">      &#39;192.168.1.101:9312&#39;</span>
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster-&gt;join($params);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT </span><span class="se">\&#39;</span><span class="s1">192.168.1.101:9312</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT \&#39;192.168.1.101:9312\&#39;&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;JOIN CLUSTER posts AT &#39;192.168.1.101:9312&#39;&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;JOIN CLUSTER posts AT &#39;192.168.1.101:9312&#39;&quot;</span><span class="o">);</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example replication and cluster 5 -->
+<p>When running queries, prepend the table name with the cluster name <code>posts</code>: or use the <code>cluster</code> property for HTTP request object.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">posts</span><span class="p">:</span><span class="n">pq_title</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;test me&#39;</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;pq_title&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="nt">&quot;doc&quot;</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;test me&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$index-&gt;addDocuments([</span>
+<span class="x">        3, [&#39;title&#39; =&gt; &#39;test me&#39;]</span>
+<span class="x">]);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;pq_title&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">3</span><span class="s2">&quot;doc&quot;</span><span class="p">:{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;test me&quot;</span><span class="p">}})</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="o">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="o">:</span><span class="s2">&quot;pq_title&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="mf">3</span><span class="s2">&quot;doc&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;test me&quot;</span><span class="p">}});</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
+<span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span><span class="p">(){{</span>
+<span class="w">    </span><span class="n">put</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="s">&quot;test me&quot;</span><span class="p">);</span>
+<span class="p">}};</span>
+<span class="n">newdoc</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="s">&quot;pq_title&quot;</span><span class="p">).</span><span class="na">cluster</span><span class="p">(</span><span class="s">&quot;posts&quot;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="mi">3L</span><span class="p">).</span><span class="na">setDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indexApi</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;test me&quot;</span><span class="p">);</span>
+<span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">(</span><span class="n">index</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pq_title&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cluster</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="p">:</span><span class="w"> </span><span class="n">doc</span><span class="p">);</span>
+<span class="k">var</span><span class="w"> </span><span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indexApi</span><span class="o">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">newdoc</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>All queries that modify tables in the cluster are now replicated to all nodes in the cluster.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.01-creating_a_replication_cluster">
+        <a class="chapter-link" href="#toc-10.03.01-creating_a_replication_cluster"> ¶ 1.3.1</a>
+
+        
+        <h1 id="creating-a-replication-cluster">Creating a replication cluster</h1>
+<!-- example creating a replication cluster 1 -->
+<p>To create a replication cluster, you must set its <a href="../../10-creating_a_cluster.html#name">name</a> at a minimum.</p>
+<p>If you are creating a single cluster or the first cluster, you may omit the <a href="../../10-creating_a_cluster.html#path">path</a> option. In this case, the <a href="../../20-server_settings.html#data_dir">data_dir</a> option will be used as the cluster path. However, for all subsequent clusters, you must specify the <a href="../../10-creating_a_cluster.html#path">path</a> and the path must be available. The <a href="../../10-creating_a_cluster.html#nodes">nodes</a> option may also be set to list all nodes in the cluster.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="s1">&#39;/var/data/click_query/&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">path</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="s1">&#39;/var/data/click_query/&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nodes</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">CREATE CLUSTER posts</span>
+<span class="s2">&quot;</span>
+<span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">CREATE CLUSTER click_query &#39;/var/data/click_query/&#39; as path</span>
+<span class="s2">&quot;</span>
+<span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">CREATE CLUSTER click_query &#39;/var/data/click_query/&#39; as path, &#39;clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312&#39; as nodes</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">    &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">    ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;create($params);</span>
+<span class="x">$params = [</span>
+<span class="x">    &#39;cluster&#39; =&gt; &#39;click_query&#39;,</span>
+<span class="x">    &#39;body&#39; =&gt; [</span>
+<span class="x">        &#39;path&#39; =&gt; &#39;/var/data/click_query/&#39;</span>
+<span class="x">    ]    </span>
+<span class="x">    ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;create($params);</span>
+<span class="x">$params = [</span>
+<span class="x">    &#39;cluster&#39; =&gt; &#39;click_query&#39;,</span>
+<span class="x">    &#39;body&#39; =&gt; [</span>
+<span class="x">        &#39;path&#39; =&gt; &#39;/var/data/click_query/&#39;,</span>
+<span class="x">        &#39;nodes&#39; =&gt; &#39;clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312&#39;</span>
+<span class="x">    ]    </span>
+<span class="x">    ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;create($params);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">)</span>
+<span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER click_query </span><span class="se">\&#39;</span><span class="s1">/var/data/click_query/</span><span class="se">\&#39;</span><span class="s1"> as path&#39;</span><span class="p">)</span>
+<span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER click_query </span><span class="se">\&#39;</span><span class="s1">/var/data/click_query/</span><span class="se">\&#39;</span><span class="s1"> as path, </span><span class="se">\&#39;</span><span class="s1">clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312</span><span class="se">\&#39;</span><span class="s1"> as nodes&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">);</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER click_query \&#39;/var/data/click_query/\&#39; as path&#39;</span><span class="p">);</span>
+<span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER click_query \&#39;/var/data/click_query/\&#39; as path, \&#39;clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312\&#39; as nodes&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;CREATE CLUSTER posts&quot;</span><span class="p">);</span>
+<span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;CREATE CLUSTER click_query &#39;/var/data/click_query/&#39; as path&quot;</span><span class="p">);</span>
+<span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;CREATE CLUSTER click_query &#39;/var/data/click_query/&#39; as path, &#39;clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312&#39; as nodes&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">Sql</span><span class="p">(</span><span class="s2">&quot;CREATE CLUSTER posts&quot;</span><span class="p">);</span>
+<span class="n">utilsApi</span><span class="o">.</span><span class="n">Sql</span><span class="p">(</span><span class="s2">&quot;CREATE CLUSTER click_query &#39;/var/data/click_query/&#39; as path&quot;</span><span class="p">);</span>
+<span class="n">utilsApi</span><span class="o">.</span><span class="n">Sql</span><span class="p">(</span><span class="s2">&quot;CREATE CLUSTER click_query &#39;/var/data/click_query/&#39; as path, &#39;clicks_mirror1:9312,clicks_mirror2:9312,clicks_mirror3:9312&#39; as nodes&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>If the <a href="../../10-creating_a_cluster.html#nodes">nodes</a> option is not specified when creating a cluster, the first node that joins the cluster will be saved as the <a href="../../10-creating_a_cluster.html#nodes">nodes</a> option.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.02-joining_a_replication_cluster">
+        <a class="chapter-link" href="#toc-10.03.02-joining_a_replication_cluster"> ¶ 1.3.2</a>
+
+        
+        <h1 id="joining-a-replication-cluster">Joining a replication cluster</h1>
+<!-- example joining a replication cluster 1 -->
+<p>To join an existing cluster, you must specify at least:</p>
+<ul>
+<li>The <a href="../../10-creating_a_cluster.html#replication-cluster">name</a>of the cluster</li>
+<li>The <code>host:port</code> of another node in the cluster you are joining</li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">AT</span><span class="w"> </span><span class="s1">&#39;10.12.1.35:9312&#39;</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">JOIN CLUSTER posts AT &#39;10.12.1.35:9312&#39;</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">      &#39;10.12.1.35:9312&#39;</span>
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster-&gt;join($params);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT </span><span class="se">\&#39;</span><span class="s1">10.12.1.35:9312</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT \&#39;10.12.1.35:9312\&#39;&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;JOIN CLUSTER posts AT &#39;10.12.1.35:9312&#39;&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;JOIN CLUSTER posts AT &#39;10.12.1.35:9312&#39;&quot;</span><span class="o">);</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example joining a replication cluster 1_1 -->
+<p>In most cases, the above is sufficient when there is a single replication cluster. However, if you are creating multiple replication clusters, you must also set the <a href="../../10-creating_a_cluster.html#replication-cluster">path</a> and ensure that the directory is available.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="s1">&#39;127.0.0.1:10201&#39;</span><span class="w"> </span><span class="s1">&#39;c2&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">path</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<p>A node joins a cluster by obtaining data from a specified node and, if successful, updates the node lists across all other cluster nodes in the same way as if it was done manually through <a href="../../10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER ... UPDATE nodes</a>. This list is used to re-join nodes to the cluster upon restart.</p>
+<p>There are two lists of nodes:<br />
+1.<code>cluster_&lt;name&gt;_nodes_set</code>: used to re-join nodes to the cluster upon restart. It is updated across all nodes in the same way as <a href="../../10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER ... UPDATE nodes</a> does. <code>JOIN CLUSTER</code> command performs this update automatically. The <a href="../../10-creating_a_cluster.html#toc-10.03.06-replication_cluster_status">Cluster status</a> displays this list as <code>cluster_&lt;name&gt;_nodes_set</code>.<br />
+2. <code>cluster_&lt;name&gt;_nodes_view</code>:  this list contains all active nodes used for replication and does not require manual management. <a href="../../10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER ... UPDATE nodes</a> actually copies this list of nodes to the list of nodes used to re-join upon restart. The <a href="../../10-creating_a_cluster.html#toc-10.03.06-replication_cluster_status">Cluster status</a> displays this list as <code>cluster_&lt;name&gt;_nodes_view</code>.</p>
+<!-- example joining a replication cluster  2 -->
+<p>When nodes are located in different network segments or data centers, the <a href="../../10-creating_a_cluster.html#replication-cluster">nodes</a> option may be set explicitly. This minimizes traffic between nodes and utilizes gateway nodes for intercommunication between data centers. The following code joins an existing cluster using the <a href="../../10-creating_a_cluster.html#replication-cluster">nodes</a> option.</p>
+<blockquote>
+<p><strong>Note:</strong> The cluster <code>cluster_&lt;name&gt;_nodes_set</code> list is not updated automatically when this syntax is used. To update it, use <a href="../../10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER ... UPDATE nodes</a>.</p>
+</blockquote>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="s1">&#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nodes</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">JOIN CLUSTER click_query &#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39; as nodes</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">      &#39;nodes&#39; =&gt; &#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39;</span>
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster-&gt;join($params);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER click_query </span><span class="se">\&#39;</span><span class="s1">clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312</span><span class="se">\&#39;</span><span class="s1"> as nodes&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER click_query \&#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312\&#39; as nodes&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;JOIN CLUSTER click_query &#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39; as nodes&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;JOIN CLUSTER click_query &#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39; as nodes&quot;</span><span class="o">);</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>The <code>JOIN CLUSTER</code> command works synchronously and completes as soon as the node receives all data from the other nodes in the cluster and is in sync with them.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.03-deleting_a_replication_cluster">
+        <a class="chapter-link" href="#toc-10.03.03-deleting_a_replication_cluster"> ¶ 1.3.3</a>
+
+        
+        <h1 id="deleting-a-replication-cluster">Deleting a replication cluster</h1>
+<!-- example deleting a replication cluster  1 -->
+<p>The <code>DELETE CLUSTER</code> statement removes the specified cluster with its  <a href="../../10-creating_a_cluster.html#name">name</a>. Once the cluster is deleted, it is removed from all nodes, but its tables remain intact and become active local non-replicated tables.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;DELETE CLUSTER click_query&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">    &#39;cluster&#39; =&gt; &#39;click_query&#39;,</span>
+<span class="x">    &#39;body&#39; =&gt; []</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;delete($params);                </span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;DELETE CLUSTER click_query&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;DELETE CLUSTER click_query&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;DELETE CLUSTER click_query&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;DELETE CLUSTER click_query&quot;);
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.04-adding_and_removing_a_table_from_a_replication_cluster">
+        <a class="chapter-link" href="#toc-10.03.04-adding_and_removing_a_table_from_a_replication_cluster"> ¶ 1.3.4</a>
+
+        
+        <h1 id="adding-and-removing-a-table-from-a-replication-cluster">Adding and removing a table from a replication cluster</h1>
+<!-- example adding and removing a table from a replication cluster 1 -->
+<p><code>ALTER CLUSTER &lt;cluster_name&gt; ADD &lt;table_name&gt;</code> adds an existing local table to the cluster. The node that receives the ALTER query sends the table to the other nodes in the cluster. All the local tables with the same name on the other nodes of the cluster are replaced with the new table.</p>
+<p>Once the table is replicated, write statements can be performed on any node, but the table name must be prefixed with the cluster name, like <code>INSERT INTO &lt;clusterName&gt;:&lt;table_name&gt;</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">clicks_daily_index</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">ALTER CLUSTER click_query ADD clicks_daily_index</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;click_query&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">     &#39;operation&#39; =&gt; &#39;add&#39;,</span>
+<span class="x">     &#39;index&#39; =&gt; &#39;clicks_daily_index&#39;</span>
+
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;alter($params);        </span>
+</code></pre></div>
+
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER click_query ADD clicks_daily_index&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER click_query ADD clicks_daily_index&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER click_query ADD clicks_daily_index&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER click_query ADD clicks_daily_index&quot;);
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example adding and removing a table from a replication cluster 2 -->
+<p><code>ALTER CLUSTER &lt;cluster_name&gt; DROP &lt;table_name&gt;</code> forgets about a local table, meaning it does not remove the table files on the nodes, but rather just makes it an inactive, non-replicated table.</p>
+<p>Once a table is removed from a cluster, it becomes a <code>local</code> table, and write statements must use just the table name, like  <code>INSERT INTO &lt;table_name&gt;</code>, without the cluster prefix.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="n">weekly_index</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">ALTER CLUSTER posts DROP weekly_index</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">     &#39;operation&#39; =&gt; &#39;drop&#39;,</span>
+<span class="x">     &#39;index&#39; =&gt; &#39;weekly_index&#39;</span>
+
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster-&gt;alter($params);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts DROP weekly_index&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts DROP weekly_index&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts DROP weekly_index&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER posts DROP weekly_index&quot;);
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.05-managing_replication_nodes">
+        <a class="chapter-link" href="#toc-10.03.05-managing_replication_nodes"> ¶ 1.3.5</a>
+
+        
+        <h1 id="managing-replication-nodes">Managing replication nodes</h1>
+<!-- example managing replication nodes 1 -->
+<p>The <code>ALTER CLUSTER &lt;cluster_name&gt; UPDATE nodes</code>  statement updates the node lists on each node within the specified cluster to include all active nodes in the cluster. For more information on node lists, see <a href="../../10-creating_a_cluster.html#toc-10.03.02-joining_a_replication_cluster">Joining a cluster</a>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">nodes</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">ALTER CLUSTER posts UPDATE nodes</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">  &#39;cluster&#39; =&gt; &#39;posts&#39;,</span>
+<span class="x">  &#39;body&#39; =&gt; [</span>
+<span class="x">     &#39;operation&#39; =&gt; &#39;update&#39;,</span>
+
+<span class="x">  ]</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;cluster()-&gt;alter($params); </span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts UPDATE nodes&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts UPDATE nodes&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts UPDATE nodes&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER posts UPDATE nodes&quot;);
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>For instance, when the cluster was initially established, the list of nodes used to rejoin the cluster was <code>10.10.0.1:9312,10.10.1.1:9312</code>. Since then, other nodes joined the cluster and now the active nodes are <code>10.10.0.1:9312,10.10.1.1:9312,10.15.0.1:9312,10.15.0.3:9312</code>.However, the list of nodes used to rejoin the cluster has not been updated.</p>
+<p>To rectify this, you can run the <code>ALTER CLUSTER ... UPDATE nodes</code> statement to copy the list of active nodes to the list of nodes used to rejoin the cluster. After this, the list of nodes used to rejoin the cluster will include all the active nodes in the cluster. </p>
+<p>Both lists of nodes can be viewed using the <a href="../../10-creating_a_cluster.html#toc-10.03.06-replication_cluster_status">Cluster status</a> statement (<code>cluster_post_nodes_set</code> and <code>cluster_post_nodes_view</code>).</p>
+<h2 id="removing-node-from-cluster">Removing node from cluster</h2>
+<p>To remove a node from the replication cluster, follow these steps:<br />
+1. Stop the node<br />
+2. Remove the information about the cluster from  <code>&lt;data_dir&gt;/manticore.json</code> (usually <code>/var/lib/manticore/manticore.json</code>) on the node that has been stopped.<br />
+3. Run <code>ALTER CLUSTER cluster_name UPDATE nodes</code> on any other node.</p>
+<p>After these steps, the other nodes will forget about the detached node and the detached node will forget about the cluster. This action will not impact the tables in the cluster or on the detached node.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.06-replication_cluster_status">
+        <a class="chapter-link" href="#toc-10.03.06-replication_cluster_status"> ¶ 1.3.6</a>
+
+        
+        <h1 id="replication-cluster-status">Replication cluster status</h1>
+<!-- example Example -->
+
+<p>You can view the cluster status information by checking the node status. This can be done using the <a href="../../19-node_info_and_management.html#toc-19.01-node_status">Node status</a> command, which displays various information about the node, including the cluster status variables.</p>
+<p>The output format for the cluster status variables is as follows:  <code>cluster_name_variable_name</code> <code>variable_value</code>. Most of the variables are described in the <a href="https://galeracluster.com/library/documentation/galera-status-variables.html">Galera Documentation Status Variables</a>. In addition to these variables, Manticore Search also displays:</p>
+<ul>
+<li>cluster_name - the name of the cluster, as defined in the <a href="../../10-creating_a_cluster.html#replication-cluster">replication setup</a> </li>
+<li>node_state - the current state of the node: <code>closed</code>, <code>destroyed</code>, <code>joining</code>, <code>donor</code>, <code>synced</code></li>
+<li>indexes_count - the number of tables managed by the cluster</li>
+<li>indexes - a list of table names managed by the cluster</li>
+<li>nodes_set - the list of nodes in the cluster defined using the <code>CREATE</code>, <code>JOIN</code> or <code>ALTER UPDATE</code> commands</li>
+<li>nodes_view - the actual list of nodes in the cluster that the current node can see.</li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span>
+</code></pre></div>
+
+
+
+<!-- response SQL-->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------------------+-------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Counter</span><span class="w">                    </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                                                                               </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------------------+-------------------------------------------------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_name</span><span class="w">               </span><span class="o">|</span><span class="w"> </span><span class="n">post</span><span class="w">                                                                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_state_uuid</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">fba97c45</span><span class="o">-</span><span class="mi">36</span><span class="n">df</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">a84e</span><span class="o">-</span><span class="n">eb09d14b8ea7</span><span class="w">                                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_conf_id</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">                                                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_status</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="k">primary</span><span class="w">                                                                             </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_size</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">                                                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_local_index</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="w">                                                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_node_state</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">synced</span><span class="w">                                                                              </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_indexes_count</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">                                                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_indexes</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">pq1</span><span class="p">,</span><span class="n">pq_posts</span><span class="w">                                                                        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_nodes_set</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="mi">10</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">9312</span><span class="w">                                                                      </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">cluster_post_nodes_view</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="mi">10</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">9312</span><span class="p">,</span><span class="mi">10</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">9320</span><span class="p">:</span><span class="n">replication</span><span class="p">,</span><span class="mi">10</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">9312</span><span class="p">,</span><span class="mi">10</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">9320</span><span class="p">:</span><span class="n">replication</span><span class="w"> </span><span class="o">|</span>
+</code></pre></div>
+
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">SHOW STATUS</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+
+<!-- response JSON-->
+
+
+<div class="codehilite"><pre><span></span><code><span class="s2">&quot;</span>
+<span class="s2">{&quot;</span><span class="err">colum</span><span class="kc">ns</span><span class="s2">&quot;:[{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:{&quot;</span><span class="kc">t</span><span class="err">ype</span><span class="s2">&quot;:&quot;</span><span class="err">s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g</span><span class="s2">&quot;}},{&quot;</span><span class="err">Value</span><span class="s2">&quot;:{&quot;</span><span class="kc">t</span><span class="err">ype</span><span class="s2">&quot;:&quot;</span><span class="err">s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g</span><span class="s2">&quot;}}],</span>
+<span class="s2">&quot;</span><span class="err">da</span><span class="kc">ta</span><span class="s2">&quot;:[</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_</span><span class="kc">na</span><span class="err">me</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="err">pos</span><span class="kc">t</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_s</span><span class="kc">tate</span><span class="err">_uuid</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="kc">f</span><span class="err">ba</span><span class="mi">97</span><span class="err">c</span><span class="mi">45-36</span><span class="err">d</span><span class="kc">f</span><span class="mf">-11e9-</span><span class="err">a</span><span class="mf">84e-e</span><span class="err">b</span><span class="mi">09</span><span class="err">d</span><span class="mi">14</span><span class="err">b</span><span class="mf">8e</span><span class="err">a</span><span class="mi">7</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_co</span><span class="kc">nf</span><span class="err">_id</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="mi">1</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_s</span><span class="kc">tatus</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="err">primary</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_size</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="mi">5</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_local_i</span><span class="kc">n</span><span class="err">dex</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="mi">0</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_</span><span class="kc">n</span><span class="err">ode_s</span><span class="kc">tate</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="err">sy</span><span class="kc">n</span><span class="err">ced</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_i</span><span class="kc">n</span><span class="err">dexes_cou</span><span class="kc">nt</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="mi">2</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_i</span><span class="kc">n</span><span class="err">dexes</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="err">pq</span><span class="mi">1</span><span class="p">,</span><span class="err">pq_pos</span><span class="kc">ts</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_</span><span class="kc">n</span><span class="err">odes_se</span><span class="kc">t</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="mf">10.10.0.1</span><span class="p">:</span><span class="mi">9312</span><span class="s2">&quot;},</span>
+<span class="s2">{&quot;</span><span class="err">Cou</span><span class="kc">nter</span><span class="s2">&quot;:&quot;</span><span class="err">clus</span><span class="kc">ter</span><span class="err">_pos</span><span class="kc">t</span><span class="err">_</span><span class="kc">n</span><span class="err">odes_view</span><span class="s2">&quot;, &quot;</span><span class="err">Value</span><span class="s2">&quot;:&quot;</span><span class="mf">10.10.0.1</span><span class="p">:</span><span class="mi">9312</span><span class="p">,</span><span class="mf">10.10.0.1</span><span class="p">:</span><span class="mi">9320</span><span class="p">:</span><span class="err">replica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">,</span><span class="mf">10.10.1.1</span><span class="p">:</span><span class="mi">9312</span><span class="p">,</span><span class="mf">10.10.1.1</span><span class="p">:</span><span class="mi">9320</span><span class="p">:</span><span class="err">replica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="s2">&quot;}</span>
+<span class="s2">],</span>
+<span class="s2">&quot;</span><span class="kc">t</span><span class="err">o</span><span class="kc">tal</span><span class="s2">&quot;:0,</span>
+<span class="s2">&quot;</span><span class="err">error</span><span class="s2">&quot;:&quot;&quot;,</span>
+<span class="s2">&quot;</span><span class="err">war</span><span class="kc">n</span><span class="err">i</span><span class="kc">n</span><span class="err">g</span><span class="s2">&quot;:&quot;</span><span class="err">&quot;</span>
+<span class="err">}</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
+<span class="x">    &#39;body&#39; =&gt; []</span>
+<span class="x">];</span>
+<span class="x">$response = $client-&gt;nodes()-&gt;status($params);         </span>
+</code></pre></div>
+
+
+
+<!-- response PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">(</span>
+<span class="x">&quot;cluster_name&quot; =&gt; &quot;post&quot;,</span>
+<span class="x">&quot;cluster_post_state_uuid&quot; =&gt; &quot;fba97c45-36df-11e9-a84e-eb09d14b8ea7&quot;,</span>
+<span class="x">&quot;cluster_post_conf_id&quot; =&gt; 1,</span>
+<span class="x">&quot;cluster_post_status&quot; =&gt; &quot;primary&quot;,</span>
+<span class="x">&quot;cluster_post_size&quot; =&gt; 5,</span>
+<span class="x">&quot;cluster_post_local_index&quot; =&gt; 0,</span>
+<span class="x">&quot;cluster_post_node_state&quot; =&gt; &quot;synced&quot;,</span>
+<span class="x">&quot;cluster_post_indexes_count&quot; =&gt; 2,</span>
+<span class="x">&quot;cluster_post_indexes&quot; =&gt; &quot;pq1,pq_posts&quot;,</span>
+<span class="x">&quot;cluster_post_nodes_set&quot; =&gt; &quot;10.10.0.1:9312&quot;,</span>
+<span class="x">&quot;cluster_post_nodes_view&quot; =&gt; &quot;10.10.0.1:9312,10.10.0.1:9320:replication,10.10.1.1:9312,10.10.1.1:9320:replication&quot;</span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW STATUS&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- response Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
+              <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}}],</span>
+ <span class="sa">u</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_name&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;post&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_state_uuid&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;fba97c45-36df-11e9-a84e-eb09d14b8ea7&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_conf_id&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;1&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_status&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;primary&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_size&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;5&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_local_index&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;0&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_node_state&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;synced&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_indexes_count&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;2&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_indexes&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;pq1,pq_posts&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_nodes_set&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;10.10.0.1:9312&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;cluster_post_nodes_view&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;10.10.0.1:9312,10.10.0.1:9320:replication,10.10.1.1:9312,10.10.1.1:9320:replication&#39;</span><span class="p">}],</span>
+ <span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+ <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW STATUS&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response Javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
+<span class="w">              </span><span class="p">{</span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span>
+<span class="w"> </span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;post&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_state_uuid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;fba97c45-36df-11e9-a84e-eb09d14b8ea7&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_conf_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_status&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;primary&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_size&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;5&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_local_index&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_node_state&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;synced&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_indexes_count&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_indexes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;pq1,pq_posts&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_nodes_set&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;10.10.0.1:9312&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cluster_post_nodes_view&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;10.10.0.1:9312,10.10.0.1:9320:replication,10.10.1.1:9312,10.10.1.1:9320:replication&quot;</span><span class="p">}],</span>
+<span class="w"> </span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW STATUS&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+<!-- response Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="w"> </span><span class="p">}},</span>
+<span class="w">              </span><span class="p">{</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="w"> </span><span class="p">}}</span><span class="o">]</span><span class="p">,</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_name</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">post</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_state_uuid</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">fba97c45</span><span class="o">-</span><span class="mi">36</span><span class="n">df</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">a84e</span><span class="o">-</span><span class="n">eb09d14b8ea7</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_conf_id</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="mi">1</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_status</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">primary</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_size</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="mi">5</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_local_index</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="mi">0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_node_state</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">synced</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_indexes_count</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="mi">2</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_indexes</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">pq1</span><span class="p">,</span><span class="n">pq_posts</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_nodes_set</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="mf">10.10.0.1</span><span class="p">:</span><span class="mi">9312</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_nodes_view</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="mf">10.10.0.1</span><span class="p">:</span><span class="mi">9312</span><span class="p">,</span><span class="mf">10.10.0.1</span><span class="p">:</span><span class="mi">9320</span><span class="p">:</span><span class="n">replication</span><span class="p">,</span><span class="mf">10.10.1.1</span><span class="p">:</span><span class="mi">9312</span><span class="p">,</span><span class="mf">10.10.1.1</span><span class="p">:</span><span class="mi">9320</span><span class="p">:</span><span class="n">replication</span><span class="p">}</span><span class="o">]</span><span class="p">,</span>
+<span class="w">  </span><span class="n">error</span><span class="o">=</span><span class="w"> </span><span class="p">,</span>
+<span class="w">  </span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="n">warning</span><span class="o">=</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">sql</span><span class="ss">(</span><span class="s2">&quot;SHOW STATUS&quot;</span><span class="ss">)</span><span class="c1">;</span>
+</code></pre></div>
+
+
+<!-- response C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=</span><span class="p">[{</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">String</span><span class="w"> </span><span class="p">}},</span>
+<span class="w">              </span><span class="p">{</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">String</span><span class="w"> </span><span class="p">}}],</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_name</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">post</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_state_uuid</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">fba97c45</span><span class="o">-</span><span class="m">36d</span><span class="n">f</span><span class="o">-</span><span class="m">11</span><span class="n">e9</span><span class="o">-</span><span class="n">a84e</span><span class="o">-</span><span class="n">eb09d14b8ea7</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_conf_id</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="m">1</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_status</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">primary</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_size</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="m">5</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_local_index</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="m">0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_node_state</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">synced</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_indexes_count</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="m">2</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_indexes</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="n">pq1</span><span class="p">,</span><span class="n">pq_posts</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_nodes_set</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="m">10.10</span><span class="p">.</span><span class="m">0.1</span><span class="p">:</span><span class="m">9312</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="o">=</span><span class="n">cluster_post_nodes_view</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">=</span><span class="m">10.10</span><span class="p">.</span><span class="m">0.1</span><span class="p">:</span><span class="m">9312</span><span class="p">,</span><span class="m">10.10</span><span class="p">.</span><span class="m">0.1</span><span class="p">:</span><span class="m">9320</span><span class="p">:</span><span class="n">replication</span><span class="p">,</span><span class="m">10.10</span><span class="p">.</span><span class="m">1.1</span><span class="p">:</span><span class="m">9312</span><span class="p">,</span><span class="m">10.10</span><span class="p">.</span><span class="m">1.1</span><span class="p">:</span><span class="m">9320</span><span class="p">:</span><span class="n">replication</span><span class="p">}],</span>
+<span class="w">  </span><span class="n">error</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="p">,</span>
+<span class="w">  </span><span class="n">total</span><span class="o">=</span><span class="m">0</span><span class="p">,</span>
+<span class="w">  </span><span class="n">warning</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.07-restarting_a_cluster">
+        <a class="chapter-link" href="#toc-10.03.07-restarting_a_cluster"> ¶ 1.3.7</a>
+
+        
+        <h1 id="restarting-a-cluster">Restarting a cluster</h1>
+<p>In a multi-master replication cluster, a reference point must be established before other nodes can join and form the cluster. This is called cluster bootstrapping and involves starting a single node as the <code>primary component</code>. Restarting a single node or reconnecting after a shutdown can be done normally.</p>
+<p>In case of a full cluster shutdown, the server that was stopped last should be started first with the <code>--new-cluster</code> command line option or by running <code>manticore_new_cluster</code>   through systemd. To ensure that the server is capable of being the reference point, the <code>grastate.dat</code> file located at the cluster <a href="../../10-creating_a_cluster.html#replication-cluster">path</a> should be updated with a value of 1 for the <code>safe_to_bootstrap</code> option. Both conditions, <code>--new-cluster</code> and <code>safe_to_bootstrap=1</code>, must be met. If any other node is started without these options set, an error will occur. The <code>--new-cluster-force</code> command line option can be used to override this protection and start the cluster from another server forcibly. Alternatively, you can run <code>manticore_new_cluster --force</code> to use systemd.</p>
+<p>In the event of a hard crash or an unclean shutdown of all servers in the cluster, the most advanced node with the largest <code>seqno</code> in the <code>grastate.dat</code> file located at the cluster <a href="../../10-creating_a_cluster.html#replication-cluster">path</a> must be identified and started with the <code>--new-cluster-force</code> command line key.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-10.03.08-cluster_recovery">
+        <a class="chapter-link" href="#toc-10.03.08-cluster_recovery"> ¶ 1.3.8</a>
+
+        
+        <h1 id="cluster-recovery">Cluster recovery</h1>
+<p>In the event that the Manticore search daemon stops with no remaining nodes in the cluster to serve requests, recovery is necessary. Due to the multi-master nature of the Galera library used for replication, Manticore replication cluster is a single logical entity that maintains the consistency of its nodes and data, and the status of the entire cluster. This allows for safe writes on multiple nodes simultaneously and ensures the integrity of the cluster.</p>
+<p>However, this also poses challenges. Let's examine several scenarios, using a cluster of nodes A, B, and C, to see what needs to be done when some or all nodes become unavailable.</p>
+<h3 id="case-1">Case 1</h3>
+<p>When node A is stopped, the other nodes receive a "normal shutdown" message. The cluster size is reduced, and a quorum re-calculation takes place. </p>
+<p>Upon starting node A, it joins the cluster and will not serve any write transactions until it is fully synchronized with the cluster. If the writeset cache on donor nodes B or C (which can be controlled with the Galera cluster's <a href="https://galeracluster.com/library/documentation/galera-parameters.html#gcache-size">gcache.size</a>) still contains all of the transactions missed at node A, node A will receive a fast incremental state transfer (<a href="https://galeracluster.com/library/documentation/state-transfer.html#state-transfer-ist">IST</a>), that is, a transfer of only missed transactions. If not, a snapshot state transfer  (<a href="https://galeracluster.com/library/documentation/state-transfer.html#state-transfer-sst">SST</a>) will occur, which involves the transfer of table files.</p>
+<h3 id="case-2">Case 2</h3>
+<p>In the scenario where nodes A and B are stopped, the cluster size is reduced to one, with node C forming the primary component to handle write transactions. </p>
+<p>Nodes A and B can then be started as usual and will join the cluster after start-up. Node C acts as the donor, providing the state transfer to nodes A and B.</p>
+<h3 id="case-3">Case 3</h3>
+<p>All nodes are stopped as usual and the cluster is off.</p>
+<p>The problem now is how to initialize the cluster. It's important that on a clean shutdown of searchd the nodes write the number of last executed transaction into the cluster directory <a href="../../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">grastate.dat</a> file along with flag <code>safe_to_bootstrap</code>. The node which was stopped last will have option <code>safe_to_bootstrap: 1</code> and the most advanced <code>seqno</code> number.</p>
+<p>It is important that this node starts first to form the cluster. To bootstrap a cluster the server should be started on this node with flag <a href="../../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">--new-cluster</a>. On Linux you can also run <code>manticore_new_cluster</code> which will start Manticore in <code>--new-cluster</code> mode via systemd.</p>
+<p>If another node starts first and bootstraps the cluster, then the most advanced node joins that cluster, performs full SST and receives a table file where some transactions are missed in comparison with the table files it got before. That is why it is important to start first the node which was shut down last, it should have flag <code>safe_to_bootstrap: 1</code> in <a href="../../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">grastate.dat</a>.</p>
+<h3 id="case-4">Case 4</h3>
+<p>In the event of a crash or network failure causing Node A to disappear from the cluster, nodes B and C will attempt to reconnect with Node A. Upon failure, they will remove Node A from the cluster. With two out of the three nodes still running, the cluster maintains its quorum and continues to operate normally.</p>
+<p>When Node A is restarted, it will join the cluster automatically, as outlined in <a href="../../10-creating_a_cluster.html#case-1">Case 1</a>.</p>
+<h3 id="case-5">Case 5</h3>
+<p>Nodes A and B have gone offline. Node C is unable to form a quorum on its own as 1 node is less than half of the total nodes (3). As a result, the cluster on node C is shifted to a non-primary state and rejects any write transactions with an error message.</p>
+<p>Meanwhile, node C waits for the other nodes to connect and also tries to connect to them. If this happens, and the network is restored and nodes A and B are back online, the cluster will automatically reform. If nodes A and B are just temporarily disconnected from node C but can still communicate with each other, they will continue to operate as normal, as they still form the quorum.</p>
+<!-- example case 5 -->
+<p>However, if both nodes A and B have crashed or restarted due to a power failure, someone must activate the primary component on node C using the following command:</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">SET CLUSTER posts GLOBAL &#39;pc.bootstrap&#39; = 1</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>t's important to note that before executing this command, you must confirm that the other nodes are truly unreachable. Otherwise, a split-brain scenario may occur and separate clusters may form.</p>
+<h3 id="case-6">Case 6</h3>
+<p>All nodes have crashed. In this situation, the <a href="../../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">grastate.dat</a> file in the cluster directory has not been updated and does not contain a valid <code>seqno</code>sequence number.</p>
+<p>If this occurs, someone needs to locate the node with the most recent data and start the server on it using the <a href="../../10-creating_a_cluster.html#toc-10.03.07-restarting_a_cluster">--new-cluster-force</a> command line key. All other nodes will start as normal, as described in <a href="../../10-creating_a_cluster.html#case-3">Case 3</a>).<br />
+On Linux, you can also use the <code>manticore_new_cluster --force</code>, command, which will start Manticore in <code>--new-cluster-force</code> mode via systemd.</p>
+<h3 id="case-7">Case 7</h3>
+<p>Split-brain can cause the cluster to transition into a non-primary state. For example, consider a cluster comprised of an even number of nodes (four), such as two pairs of nodes located in different data centers. If a network failure interrupts the connection between the data centers, split-brain occurs as each group of nodes holds exactly half of the quorum. As a result, both groups stop handling write transactions, since the Galera replication model prioritizes data consistency, and the cluster cannot accept write transactions without a quorum. However, nodes in both groups attempt to reconnect with the nodes from the other group in an effort to restore the cluster.</p>
+<!-- example case 7 -->
+<p>If someone wants to restore the cluster before the network is restored, the same steps outlined in <a href="../../10-creating_a_cluster.html#case-5">Case 5</a> hould be taken, but only at one group of nodes. </p>
+<p>After the statement is executed, the group with the node that it was run on will be able to handle write transactions once again.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+
+
+<!-- request JSON -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">SET CLUSTER posts GLOBAL &#39;pc.bootstrap&#39; = 1</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>However, it's important to note that if the statement is issued at both groups, it will result in the formation of two separate clusters, and the subsequent network recovery will not result in the groups rejoining.</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

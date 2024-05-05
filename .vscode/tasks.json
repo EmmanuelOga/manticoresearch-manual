@@ -1,0 +1,34 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "pixi run python",
+            "type": "shell",
+            "command": "clear && pixi run python -m main",
+            "problemMatcher": {
+                "owner": "python",
+                "fileLocation": "autoDetect",
+                "pattern": [
+                    {
+                        "regexp": "^.*File \\\"([^\\\"]|.*)\\\", line (\\d+).*",
+                        "file": 1,
+                        "line": 2
+                    },
+                    {
+                        "regexp": "^.*raise.*$"
+                    },
+                    {
+                        "regexp": "^\\s*(.*)\\s*$",
+                        "message": 1
+                    }
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

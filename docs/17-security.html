@@ -1,0 +1,209 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Security - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-17-security">
+        <a class="chapter-link" href="#toc-17-security"> ¶ 17</a>
+
+        
+        <h1>Security</h1>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-17.01-ssl">
+        <a class="chapter-link" href="#toc-17.01-ssl"> ¶ 17.1</a>
+
+        
+        <h1 id="ssl">SSL</h1>
+<p>In many cases, you might want to encrypt traffic between your client and the server. To do that, you can specify that the server should use the <a href="../20-server_settings.html#listen">HTTPS protocol</a> rather than HTTP.</p>
+<!-- example CA 1 -->
+
+<p>To enable HTTPS, at least the following two directives should be set in the <a href="../20-server_settings.html#toc-20.01-searchd">searchd</a> section of the config, and there should be at least one <a href="../20-server_settings.html#listen">listener</a> set to <code>https</code></p>
+<ul>
+<li><a href="../20-server_settings.html#ssl_cert">ssl_cert</a> certificate file</li>
+<li><a href="../20-server_settings.html#ssl_key">ssl_key</a> key file</li>
+</ul>
+<p>In addition to that, you can specify the certificate authority's certificate (aka root certificate) in:</p>
+<ul>
+<li><a href="../20-server_settings.html#ssl_ca">ssl_ca</a> certificate authority's certificate file</li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+with CA
+</div>
+
+<!-- request with CA -->
+Example with CA:
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ssl_ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ca-cert.pem</span>
+<span class="na">ssl_cert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">server-cert.pem</span>
+<span class="na">ssl_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">server-key.pem</span>
+</code></pre></div>
+
+
+
+<!-- request without CA -->
+Example without CA:
+
+
+<div class="codehilite"><pre><span></span><code><span class="na">ssl_cert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">server-cert.pem</span>
+<span class="na">ssl_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">server-key.pem</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="generating-ssl-files">Generating SSL files</h2>
+<p>These steps will help you generate the SSL certificates using the 'openssl' tool.</p>
+<p>The server can use a Certificate Authority to verify the signature of certificates, but it can also work with just a private key and certificate (without the CA certificate).</p>
+<h4 id="generate-the-ca-key">Generate the CA key</h4>
+<div class="codehilite"><pre><span></span><code>openssl<span class="w"> </span>genrsa<span class="w"> </span><span class="m">2048</span><span class="w"> </span>&gt;<span class="w"> </span>ca-key.pem
+</code></pre></div>
+
+<h4 id="generate-the-ca-certificate-from-the-ca-key">Generate the CA certificate from the CA key</h4>
+<p>To generate a self-signed CA (root) certificate from the private key (make sure to fill in at least the "Common Name"), use the following command:</p>
+<div class="codehilite"><pre><span></span><code>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-x509<span class="w"> </span>-nodes<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-key<span class="w"> </span>ca-key.pem<span class="w"> </span>-out<span class="w"> </span>ca-cert.pem
+</code></pre></div>
+
+<h4 id="server-certificate">Server Certificate</h4>
+<p>The server uses the server certificate to secure communication with the client. To generate the certificate request and server private key (ensure that you fill in at least the "Common Name" and that it is different from the root certificate's common name), execute the following commands:</p>
+<div class="codehilite"><pre><span></span><code>openssl<span class="w"> </span>req<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-nodes<span class="w"> </span>-keyout<span class="w"> </span>server-key.pem<span class="w"> </span>-out<span class="w"> </span>server-req.pem
+openssl<span class="w"> </span>rsa<span class="w"> </span>-in<span class="w"> </span>server-key.pem<span class="w"> </span>-out<span class="w"> </span>server-key.pem
+openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>server-req.pem<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-CA<span class="w"> </span>ca-cert.pem<span class="w"> </span>-CAkey<span class="w"> </span>ca-key.pem<span class="w"> </span>-set_serial<span class="w"> </span><span class="m">01</span><span class="w"> </span>-out<span class="w"> </span>server-cert.pem
+</code></pre></div>
+
+<p>Once completed, you can verify that the key and certificate files were generated correctly by running:</p>
+<div class="codehilite"><pre><span></span><code>openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>ca-cert.pem<span class="w"> </span>server-cert.pem
+</code></pre></div>
+
+<h2 id="secured-connection-behaviour">Secured connection behaviour</h2>
+<p>When your SSL configuration is valid, the following features are available:</p>
+<ul>
+<li>You can connect to the multi-protocol port (when no <a href="../20-server_settings.html#listen">listener type</a> is specified) over HTTPS and run queries. Both the request and response will be SSL encrypted.</li>
+<li>You can connect to the dedicated https port with HTTP and run queries. The connection will be secured (attempting to connect to this port via plain HTTP will be rejected with a 400 error code).</li>
+<li>You can connect to the MySQL port with a MySQL client using a secured connection. The session will be secured. Note that the Linux <code>mysql</code> client tries to use SSL by default, so a typical connection to Manticore with a valid SSL configuration will most likely be secured. You can check this by running the SQL 'status' command after connecting.</li>
+</ul>
+<p>If your SSL configuration is not valid for any reason (which the daemon detects by the fact that a secured connection cannot be established), apart from an invalid configuration there may be other reasons, such as the inability to load the appropriate SSL library at all. In this case, the following things will not work or will work in a non-secured manner:</p>
+<ul>
+<li>You cannot connect to the multi-protocol port with HTTPS. The connection will be dropped.</li>
+<li>You cannot connect to the dedicated <code>https</code> port. The HTTPS connections will be dropped</li>
+<li>Connection to the <code>mysql</code> port via a MySQL client will not support SSL securing. If the client requires SSL, the connection will fail. If SSL is not required, it will use plain MySQL or compressed connections.</li>
+</ul>
+<h3 id="caution">Caution:</h3>
+<ul>
+<li>Binary API connections (such as connections from old clients or inter-daemons master-agent communication) are not secured.</li>
+<li>SSL for replication needs to be set up separately. However, since the SST stage of the replication is done through the binary API connection, it is not secured either.</li>
+<li>You can still use any external proxies (e.g., SSH tunneling) to secure your connections.</li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-17.02-readonly">
+        <a class="chapter-link" href="#toc-17.02-readonly"> ¶ 17.2</a>
+
+        
+        <h1 id="read-only-mode">Read-only mode</h1>
+<p>Read-only mode for a connection disables any table or global modifications. Therefore, queries like <code>create</code>, <code>drop</code>, various types of <code>alter</code>, <code>attach</code>, <code>optimize</code>, and data modification queries such as <code>insert</code>, <code>replace</code>, <code>delete</code>, <code>update</code>, and others will all be rejected. Changing daemon-wide settings using <code>SET GLOBAL</code> is also not possible in this mode.</p>
+<p>However, you can still perform all search operations, generate snippets, and run <code>CALL PQ</code> queries. Additionally, you can modify local (connection-wide) settings.</p>
+<p>To check if your current connection is read-only or not, execute the <code>show variables like 'session_read_only'</code> statement. A value of <code>1</code> indicates read-only, while <code>0</code> means not read-only (usual).</p>
+<h2 id="activation">Activation</h2>
+<p>Typically, you define a separate <a href="../20-server_settings.html#listen">listen</a> directive in read-only mode by adding the suffix <code>_readonly</code> to it. However, you can also do this interactively for the current connection by executing the <code>SET ro=1</code> statement via SQL.</p>
+<h2 id="deactivation">Deactivation</h2>
+<p>If you're connected to a <a href="../20-server_settings.html#listen">VIP</a> socket, you can execute <code>SET ro=0</code> (even if the socket you are connected to was defined as read-only in the config and not interactively). This will switch the connection to the usual (not read-only) mode with all modifications allowed.</p>
+<p>For standard (non-VIP) connections, escaping read-only mode is only possible by reconnecting if it was set interactively, or by updating the configuration file and restarting the daemon.</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

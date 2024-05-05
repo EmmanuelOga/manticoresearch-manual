@@ -1,0 +1,567 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Listing tables - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-07-listing_tables">
+        <a class="chapter-link" href="#toc-07-listing_tables"> ¶ 7</a>
+
+        
+        <h1 id="listing-tables">Listing tables</h1>
+<p>Manticore Search has a single level of hierarchy for tables.</p>
+<p>Unlike other DBMS, there is no concept of grouping tables into databases in Manticore. However, for interoperability with SQL dialects, Manticore accepts <code>SHOW DATABASES</code> statements for interoperability with SQL dialect, statements, but the statement does not return any results.</p>
+<!-- example listing -->
+<h2 id="show-tables">SHOW TABLES</h2>
+<p>General syntax:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
+
+<p>The <code>SHOW TABLES</code>statement lists all currently active tables along with their types. The existing table types are <code>local</code>, <code>distributed</code>, <code>rt</code>, <code>percolate</code> and <code>template</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------+-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">Index</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">        </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------+-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">dist</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">distributed</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">plain</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="k">local</span><span class="w">       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">pq</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">percolate</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">rt</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">rt</span><span class="w">          </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">template</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">template</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------+-------------+</span>
+<span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;table();</span>
+</code></pre></div>
+
+
+
+<!-- response PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [dist1] =&gt; distributed</span>
+<span class="x">    [rt] =&gt; rt</span>
+<span class="x">    [products] =&gt; rt</span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLES&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Index&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
+              <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}}],</span>
+ <span class="sa">u</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Index&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;dist1&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;distributed&#39;</span><span class="p">},</span>
+           <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Index&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;rt&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;rt&#39;</span><span class="p">},</span>
+           <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Index&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;rt&#39;</span><span class="p">}],</span>
+ <span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+ <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLES&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="p">[{</span><span class="s2">&quot;Index&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="s2">&quot;Type&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="p">[{</span><span class="s2">&quot;Index&quot;</span><span class="o">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="s2">&quot;Type&quot;</span><span class="o">:</span><span class="s2">&quot;rt&quot;</span><span class="p">}],</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW TABLES&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="n">Index</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="n">Type</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}}</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=[</span><span class="p">{</span><span class="n">Index</span><span class="o">=</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">Type</span><span class="o">=</span><span class="n">rt</span><span class="p">}</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;SHOW TABLES&quot;</span><span class="ss">)</span>
+</code></pre></div>
+
+
+
+<!-- response C# -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=</span><span class="p">[{</span><span class="n">Index</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="kt">string</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="n">Type</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="kt">string</span><span class="p">}}],</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="p">[{</span><span class="n">Index</span><span class="o">=</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">Type</span><span class="o">=</span><span class="n">rt</span><span class="p">}],</span><span class="w"> </span><span class="n">total</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example Example_2 -->
+<p>Optional LIKE clause is supported for filtering tables by name.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;pro%&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+<!-- response SQL -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------+-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">Index</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">        </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------+-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">distributed</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------+-------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- request PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;table([&#39;body&#39;=&gt;[&#39;pattern&#39;=&gt;&#39;pro%&#39;]]);</span>
+</code></pre></div>
+
+
+
+<!-- response PHP -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [products] =&gt; distributed</span>
+<span class="x">)</span>
+</code></pre></div>
+
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+
+<!-- request Python -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLES LIKE </span><span class="se">\&#39;</span><span class="s1">pro%</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- response Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Index&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
+              <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}}],</span>
+ <span class="sa">u</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Index&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;rt&#39;</span><span class="p">}],</span>
+ <span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+ <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+
+<!-- request javascript -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLES LIKE \&#39;pro%\&#39;&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="p">[{</span><span class="s2">&quot;Index&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="s2">&quot;Type&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="p">[{</span><span class="s2">&quot;Index&quot;</span><span class="o">:</span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="s2">&quot;Type&quot;</span><span class="o">:</span><span class="s2">&quot;rt&quot;</span><span class="p">}],</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+java
+</div>
+
+<!-- request Java -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW TABLES LIKE &#39;pro%&#39;&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<!-- response Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="n">Index</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="n">Type</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}}</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=[</span><span class="p">{</span><span class="n">Index</span><span class="o">=</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">Type</span><span class="o">=</span><span class="n">rt</span><span class="p">}</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+
+<!-- request C# -->
+
+
+<div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;SHOW TABLES LIKE &#39;pro%&#39;&quot;</span><span class="ss">)</span>
+</code></pre></div>
+
+
+
+<!-- response C# -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nx">columns</span><span class="p">=[{</span><span class="nx">Index</span><span class="p">={</span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="nx">Type</span><span class="p">={</span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="p">}}],</span><span class="w"> </span><span class="nx">data</span><span class="p">=[{</span><span class="nx">Index</span><span class="p">=</span><span class="nx">products</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">=</span><span class="nx">rt</span><span class="p">}],</span><span class="w"> </span><span class="nx">total</span><span class="p">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">=</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">warning</span><span class="p">=</span><span class="s">&quot;&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="describe">DESCRIBE</h2>
+<div class="codehilite"><pre><span></span><code><span class="err">{</span><span class="k">DESC</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DESCRIBE</span><span class="err">}</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
+
+<p>The <code>DESCRIBE</code> statement lists the table columns and their associated types. The columns are document ID, full-text fields, and attributes. The order matches the order in which fields and attributes are expected by <code>INSERT</code> and <code>REPLACE</code> statements. Column types  include <code>field</code>, <code>integer</code>, <code>timestamp</code>, <code>ordinal</code>, <code>bool</code>, <code>float</code>, <code>bigint</code>, <code>string</code>, and <code>mva</code>. ID column will be typed as <code>bigint</code>. Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------+---------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------+---------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">field</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">field</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">gid</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------+---------+</span>
+<span class="mi">4</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>An optional LIKE clause is supported. Refer to<br />
+<a href="19-node_info_and_management.html#toc-19.02-show_meta">SHOW META</a> for its syntax details.</p>
+<h3 id="select-from-nametable">SELECT FROM name.@table</h3>
+<!-- example name_table -->
+<p>You can also view the table schema by executing the query <code>select * from &lt;table_name&gt;.@table</code>. The benefit of this method is that you can use the <code>WHERE</code> clause for filtering:</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="p">.</span><span class="o">@</span><span class="k">table</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+-------+------+----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">properties</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+-------+------+----------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w"> </span><span class="n">stored</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+-------+------+----------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example name_table2 -->
+
+<p>You can also perform many other actions on <code>&lt;your_table_name&gt;.@table</code> considering it as a regular Manticore table with columns consisting of integer and string attributes.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="p">.</span><span class="o">@</span><span class="k">table</span><span class="p">;</span>
+<span class="k">select</span><span class="w"> </span><span class="n">field</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="p">.</span><span class="o">@</span><span class="k">table</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;uint&#39;</span><span class="p">);</span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="p">.</span><span class="o">@</span><span class="k">table</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">properties</span><span class="w"> </span><span class="k">any</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;stored&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="show-create-table">SHOW CREATE TABLE</h2>
+<!-- example show_create -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">name</span>
+</code></pre></div>
+
+<p>Prints the <code>CREATE TABLE</code> statement used to create the specified table.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tbl</span><span class="err">\</span><span class="k">G</span>
+</code></pre></div>
+
+
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="w">       </span><span class="k">Table</span><span class="p">:</span><span class="w"> </span><span class="n">tbl</span>
+<span class="k">Create</span><span class="w"> </span><span class="k">Table</span><span class="p">:</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="p">(</span>
+<span class="n">f</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="n">indexed</span><span class="w"> </span><span class="n">stored</span>
+<span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="o">=</span><span class="s1">&#39;non_cjk,cjk&#39;</span><span class="w"> </span><span class="n">morphology</span><span class="o">=</span><span class="s1">&#39;icu_chinese&#39;</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="percolate-table-schemas">Percolate table schemas</h3>
+<p>If you use the <code>DESC</code> statement on a percolate table, it will display the outer table schema, which is the schema of stored queries. This schema is static and the same for all local percolate tables:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">pq</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------+--------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">   </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------+--------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">query</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">tags</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">filters</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------+--------+</span>
+<span class="mi">4</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>If you want to view the expected document schema, use the following command:<br />
+<code>DESC &lt;pq table name&gt; table</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">pq</span><span class="w"> </span><span class="k">TABLE</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-------+--------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">   </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------+--------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w">   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">gid</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">uint</span><span class="w">   </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------+--------+</span>
+<span class="mi">3</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Also <code>desc pq table like ...</code> is supported and works as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">pq</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%title%&#39;</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-------+------+----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Properties</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------+------+----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">indexed</span><span class="w"> </span><span class="n">stored</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------+------+----------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

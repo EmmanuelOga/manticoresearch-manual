@@ -1,0 +1,1515 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Functions - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-15-functions">
+        <a class="chapter-link" href="#toc-15-functions"> ¶ 15</a>
+
+        
+        <h1 id="functions">Functions</h1>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.01-mathematical_functions">
+        <a class="chapter-link" href="#toc-15.01-mathematical_functions"> ¶ 15.1</a>
+
+        
+        <h1 id="mathematical-functions">Mathematical functions</h1>
+<h3 id="abs">ABS()</h3>
+<p>Returns the absolute value of the argument.</p>
+<h3 id="atan2">ATAN2()</h3>
+<p>Returns the arctangent function of two arguments, expressed in <strong>radians</strong>.</p>
+<h3 id="bitdot">BITDOT()</h3>
+<p><code>BITDOT(mask, w0, w1, ...)</code> returns the sum of products of each bit of a mask multiplied by its weight. <code>bit0*w0 + bit1*w1 + ...</code></p>
+<h3 id="ceil">CEIL()</h3>
+<p>Returns the smallest integer value greater than or equal to the argument.</p>
+<h3 id="cos">COS()</h3>
+<p>Returns the cosine of the argument.</p>
+<h3 id="crc32">CRC32()</h3>
+<p>Returns the CRC32 value of a string argument.</p>
+<h3 id="exp">EXP()</h3>
+<p>Returns the exponent of the argument (e=2.718... to the power of the argument).</p>
+<h3 id="fibonacci">FIBONACCI()</h3>
+<p>Returns the N-th Fibonacci number, where N is the integer argument. That is, arguments of 0 and up will generate the values 0, 1, 1, 2, 3, 5, 8, 13 and so on. Note that the computations are done using 32-bit integer math and thus numbers 48th and up will be returned modulo 2^32.</p>
+<h3 id="floor">FLOOR()</h3>
+<p>Returns the largest integer value lesser than or equal to the argument.</p>
+<h3 id="greatest">GREATEST()</h3>
+<p><code>GREATEST(attr_json.some_array)</code> function takes a JSON array as the argument, and returns the greatest value in that array. Also works for MVA.</p>
+<h3 id="idiv">IDIV()</h3>
+<p>Returns the result of an integer division of the first argument by the second argument. Both arguments must be of an integer type.</p>
+<h3 id="least">LEAST()</h3>
+<p><code>LEAST(attr_json.some_array)</code> function takes a JSON array as the argument, and returns the least value in that array. Also works for MVA.</p>
+<h3 id="ln">LN()</h3>
+<p>Returns the natural logarithm of the argument (with the base of e=2.718...).</p>
+<h3 id="log10">LOG10()</h3>
+<p>Returns the common logarithm of the argument (with the base of 10).</p>
+<h3 id="log2">LOG2()</h3>
+<p>Returns the binary logarithm of the argument (with the base of 2).</p>
+<h3 id="max">MAX()</h3>
+<p>Returns the larger of two arguments.</p>
+<h3 id="min">MIN()</h3>
+<p>Returns the smaller of two arguments.</p>
+<h2 id="pow">POW()</h2>
+<p>Returns the first argument raised to the power of the second argument.</p>
+<h3 id="rand">RAND()</h3>
+<p>Returns a random float between 0 and 1. It can optionally accept a <code>seed</code>, which can be a constant integer or an integer attribute's name. </p>
+<p>If you use a <code>seed</code>, keep in mind that it resets <code>rand()</code>'s starting point separately for each plain table, RT disk, RAM chunk, or pseudo shard. Therefore, queries to a distributed table in any form can return multiple identical random values.</p>
+<h3 id="sin">SIN()</h3>
+<p>Returns the sine of the argument.</p>
+<h3 id="sqrt">SQRT()</h3>
+<p>Returns the square root of the argument.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.02-searching_and_ranking_functions">
+        <a class="chapter-link" href="#toc-15.02-searching_and_ranking_functions"> ¶ 15.2</a>
+
+        
+        <h1 id="searching-and-ranking-functions">Searching and ranking functions</h1>
+<h3 id="bm25a">BM25A()</h3>
+<p><code>BM25A(k1,b)</code> returns the exact <code>BM25A()</code> value. Requires the <code>expr</code> ranker and enabled <code>index_field_lengths</code>. Parameters <code>k1</code> and <code>b</code> must be floats.</p>
+<h3 id="bm25f">BM25F()</h3>
+<p><code>BM25F(k1, b, {field=weight, ...})</code> returns the exact <code>BM25F()</code> value and requires <code>index_field_lengths</code> to be enabled. The <code>expr</code> ranker is also necessary. Parameters <code>k1</code> and <code>b</code> must be floats.</p>
+<h3 id="exist">EXIST()</h3>
+<p>Substitutes non-existent columns with default values. It returns either the value of an attribute specified by 'attr-name', or the 'default-value' if that attribute does not exist. STRING or MVA attributes are not supported. This function is useful when searching through multiple tables with different schemas.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">EXIST</span><span class="p">(</span><span class="s1">&#39;gid&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">cnd</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">i1</span><span class="p">,</span><span class="w"> </span><span class="n">i2</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">cnd</span><span class="o">&gt;</span><span class="mi">5</span>
+</code></pre></div>
+
+<h3 id="min_top_sortval">MIN_TOP_SORTVAL()</h3>
+<p>Returns the sort key value of the worst-ranked element in the current top-N matches if the sort key is a float, and 0 otherwise.</p>
+<h3 id="min_top_weight">MIN_TOP_WEIGHT()</h3>
+<p>Returns the weight of the worst-ranked element in the current top-N matches.</p>
+<h3 id="packedfactors">PACKEDFACTORS()</h3>
+<p><code>PACKEDFACTORS()</code> can be used in queries to display all calculated weighting factors during matching or to provide a binary attribute for creating a custom ranking UDF. This function only works if the expression ranker is specified and the query is not a full scan; otherwise, it returns an error. <code>PACKEDFACTORS()</code> can take an optional argument that disables ATC ranking factor calculation: <code>PACKEDFACTORS({no_atc=1})</code>. Calculating ATC significantly slows down query processing, so this option can be useful if you need to see the ranking factors but don't require ATC. <code>PACKEDFACTORS()</code> can also output in JSON format: <code>PACKEDFACTORS({json=1})</code>. The respective outputs in either key-value pair or JSON format are shown below. (Note that the examples below are wrapped for readability; actual returned values would be single-line.)</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">PACKEDFACTORS</span><span class="p">()</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test1</span>
+<span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test one&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">expr</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span><span class="w"> </span><span class="err">\</span><span class="k">G</span>
+
+<span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="err">\</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
+<span class="w">             </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">packedfactors</span><span class="p">():</span><span class="w"> </span><span class="n">bm25</span><span class="o">=</span><span class="mi">569</span><span class="p">,</span><span class="w"> </span><span class="n">bm25a</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">617197</span><span class="p">,</span><span class="w"> </span><span class="n">field_mask</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">doc_word_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">field1</span><span class="o">=</span><span class="p">(</span><span class="n">lcs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">hit_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">word_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">tf_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">152356</span><span class="p">,</span>
+<span class="w">        </span><span class="n">min_idf</span><span class="o">=-</span><span class="mi">0</span><span class="p">.</span><span class="mi">062982</span><span class="p">,</span><span class="w"> </span><span class="n">max_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">215338</span><span class="p">,</span><span class="w"> </span><span class="n">sum_idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">152356</span><span class="p">,</span><span class="w"> </span><span class="n">min_hit_pos</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="n">min_best_span_pos</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">exact_hit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_window_hits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">min_gaps</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="n">exact_order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">lccs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">wlccs</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">215338</span><span class="p">,</span><span class="w"> </span><span class="n">atc</span><span class="o">=-</span><span class="mi">0</span><span class="p">.</span><span class="mi">003974</span><span class="p">),</span>
+<span class="w">    </span><span class="n">word0</span><span class="o">=</span><span class="p">(</span><span class="n">tf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">idf</span><span class="o">=-</span><span class="mi">0</span><span class="p">.</span><span class="mi">062982</span><span class="p">),</span>
+<span class="w">    </span><span class="n">word1</span><span class="o">=</span><span class="p">(</span><span class="n">tf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">215338</span><span class="p">)</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">PACKEDFACTORS</span><span class="p">(</span><span class="err">{</span><span class="n">json</span><span class="o">=</span><span class="mi">1</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test1</span>
+<span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test one&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">expr</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span><span class="w"> </span><span class="err">\</span><span class="k">G</span>
+
+<span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="err">\</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
+<span class="w">                     </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">packedfactors</span><span class="p">(</span><span class="err">{</span><span class="n">json</span><span class="o">=</span><span class="mi">1</span><span class="err">}</span><span class="p">):</span>
+<span class="err">{</span>
+
+<span class="w">    </span><span class="ss">&quot;bm25&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">569</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;bm25a&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">617197</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;field_mask&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;doc_word_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="err">{</span>
+<span class="w">            </span><span class="ss">&quot;lcs&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;hit_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;word_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;tf_idf&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">152356</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;min_idf&quot;</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">062982</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;max_idf&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">215338</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;sum_idf&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">152356</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;min_hit_pos&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;min_best_span_pos&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;exact_hit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;max_window_hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;min_gaps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;exact_order&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;lccs&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;wlccs&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">215338</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;atc&quot;</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">003974</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="ss">&quot;words&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="err">{</span>
+<span class="w">            </span><span class="ss">&quot;tf&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;idf&quot;</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">062982</span>
+<span class="w">        </span><span class="err">}</span><span class="p">,</span>
+<span class="w">        </span><span class="err">{</span>
+<span class="w">            </span><span class="ss">&quot;tf&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">&quot;idf&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">215338</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="p">]</span>
+
+<span class="err">}</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This function can be used to implement custom ranking functions in UDFs, as in:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">CUSTOM_RANK</span><span class="p">(</span><span class="n">PACKEDFACTORS</span><span class="p">())</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">my_index</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">expr</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Where <code>CUSTOM_RANK()</code> is a function implemented in a UDF. It should declare a <code>SPH_UDF_FACTORS</code> structure (defined in sphinxudf.h), initialize this structure, unpack the factors into it before usage, and deinitialize it afterwards, as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">SPH_UDF_FACTORS</span><span class="w"> </span><span class="n">factors</span><span class="p">;</span>
+<span class="n">sphinx_factors_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">factors</span><span class="p">);</span>
+<span class="n">sphinx_factors_unpack</span><span class="p">((</span><span class="n">DWORD</span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="o">-&gt;</span><span class="n">arg_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="o">&amp;</span><span class="n">factors</span><span class="p">);</span>
+<span class="o">//</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">contents</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">factors</span><span class="w"> </span><span class="k">variable</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="p">...</span>
+<span class="n">sphinx_factors_deinit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">factors</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>PACKEDFACTORS()</code> data is available at all query stages, not just during the initial matching and ranking pass. This enables another particularly interesting application of <code>PACKEDFACTORS()</code>: re-ranking.</p>
+<p>In the example above, we used an expression-based ranker with a dummy expression and sorted the result set by the value computed by our UDF. In other words, we used the UDF to rank all our results. Now, let's assume for the sake of an example that our UDF is extremely expensive to compute, with a throughput of only 10,000 calls per second. If our query matches 1,000,000 documents, we would want to use a much simpler expression to do most of our ranking in order to maintain reasonable performance. Then, we would apply the expensive UDF to only a few top results, say, the top 100 results. In other words, we would build the top 100 results using a simpler ranking function and then re-rank those with a more complex one. This can be done with subselects:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">CUSTOM_RANK</span><span class="p">(</span><span class="n">PACKEDFACTORS</span><span class="p">())</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">my_index</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">expr</span><span class="p">(</span><span class="s1">&#39;sum(lcs)*1000+bm25&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">WEIGHT</span><span class="p">()</span><span class="w"> </span><span class="k">DESC</span>
+<span class="w">    </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span>
+<span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+
+<p>In this example, the expression-based ranker is called for every matched document to compute <code>WEIGHT()</code>, so it gets called 1,000,000 times. However, the UDF computation can be postponed until the outer sort, and it will only be performed for the top 100 matches by <code>WEIGHT()</code>, according to the inner limit. This means the UDF will only be called 100 times. Finally, the top 10 matches by UDF value are selected and returned to the application.</p>
+<p>For reference, in a distributed setup, the <code>PACKEDFACTORS()</code> data is sent from the agents to the master node in binary format. This makes it technically feasible to implement additional re-ranking passes on the master node if needed.</p>
+<p>When used in SQL but not called from any UDFs, the result of <code>PACKEDFACTORS()</code> is formatted as plain text, which can be used to manually assess the ranking factors. Note that this feature is not currently supported by the Manticore API.</p>
+<h3 id="remove_repeats">REMOVE_REPEATS()</h3>
+<p><code>REMOVE_REPEATS ( result_set, column, offset, limit )</code> - removes repeated adjusted rows with the same 'column' value.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">REMOVE_REPEATS</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">dist1</span><span class="p">),</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="weight">WEIGHT()</h3>
+<p>The <code>WEIGHT()</code> function returns the calculated matching score. If no ordering is specified, the result is sorted in descending order by the score provided by <code>WEIGHT()</code>. In this example, we order first by weight and then by an integer attribute.</p>
+<p>The search above performs a simple matching, where all words need to be present. However, we can do more (and this is just a simple example):</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="n">WEIGHT</span><span class="p">()</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">testrt</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;&quot;list of business laptops&quot;/3&#39;</span><span class="p">);</span>
+<span class="o">+</span><span class="c1">------+------+-------------------------------------+---------------------------+----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">gid</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">title</span><span class="w">                               </span><span class="o">|</span><span class="w"> </span><span class="n">content</span><span class="w">                   </span><span class="o">|</span><span class="w"> </span><span class="n">weight</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+-------------------------------------+---------------------------+----------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">10</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">List</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">HP</span><span class="w"> </span><span class="n">business</span><span class="w"> </span><span class="n">laptops</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="n">Elitebook</span><span class="w"> </span><span class="n">Probook</span><span class="w">         </span><span class="o">|</span><span class="w">     </span><span class="mi">2397</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">10</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">List</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">Dell</span><span class="w"> </span><span class="n">business</span><span class="w"> </span><span class="n">laptops</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Latitude</span><span class="w"> </span><span class="k">Precision</span><span class="w"> </span><span class="n">Vostro</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">2397</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">20</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">List</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">Dell</span><span class="w"> </span><span class="n">gaming</span><span class="w"> </span><span class="n">laptops</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="n">Inspirion</span><span class="w"> </span><span class="n">Alienware</span><span class="w">       </span><span class="o">|</span><span class="w">     </span><span class="mi">2375</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">30</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">List</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">ASUS</span><span class="w"> </span><span class="n">ultrabooks</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">laptops</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Zenbook</span><span class="w"> </span><span class="n">Vivobook</span><span class="w">          </span><span class="o">|</span><span class="w">     </span><span class="mi">2375</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+-------------------------------------+---------------------------+----------+</span>
+<span class="mi">4</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">META</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----------------+----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------+----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total_found</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">total_relation</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">eq</span><span class="w">       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="k">time</span><span class="w">           </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">000</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">list</span><span class="w">     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">of</span><span class="w">       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">business</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">keyword</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">laptops</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">docs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hits</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">        </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------+----------+</span>
+<span class="mi">16</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Here, we search for four words, but a match can occur even if only three of the four words are found. The search will rank documents containing all words higher.</p>
+<h3 id="zonespanlist">ZONESPANLIST()</h3>
+<p>The <code>ZONESPANLIST()</code> function returns pairs of matched zone spans. Each pair contains the matched zone span identifier, a colon, and the order number of the matched zone span. For example, if a document reads <code>&lt;emphasis role="bold"&gt;&lt;i&gt;text&lt;/i&gt; the &lt;i&gt;text&lt;/i&gt;&lt;/emphasis&gt;</code>, and you query for <code>'ZONESPAN:(i,b) text'</code>, then <code>ZONESPANLIST()</code> will return the string <code>"1:1 1:2 2:1"</code>, meaning that the first zone span matched "text" in spans 1 and 2, and the second zone span in span 1 only.</p>
+<h3 id="query">QUERY()</h3>
+<p><code>QUERY()</code> returns the current search query. <code>QUERY()</code> is a postlimit expression and is intended to be used with <a href="../15-functions.html#snippet%28%29">SNIPPET()</a>.</p>
+<p>Table functions are a mechanism for post-query result set processing. Table functions take an arbitrary result set as input and return a new, processed set as output. The first argument should be the input result set, but a table function can optionally take and handle more arguments. Table functions can completely change the result set, including the schema. Currently, only built-in table functions are supported. Table functions work for both outer <code>SELECT</code> and <a href="../13-searching.html#toc-13.12-subselects">nested SELECT</a>.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.03-type_casting_functions">
+        <a class="chapter-link" href="#toc-15.03-type_casting_functions"> ¶ 15.3</a>
+
+        
+        <h1 id="type-casting-functions">Type Casting Functions</h1>
+<p>Type casting comprises three principal actions: conversion, reinterpretation, and promotion.</p>
+<ul>
+<li><strong>Conversion</strong>. This refers to the process of changing the data type of a value to another data type. This involves additional computations and is exclusively performed by the <code>TO_STRING()</code> function.</li>
+<li><strong>Reinterpretation</strong>. This involves treating the binary data representing a value as if it were of a different data type, without actually changing the underlying data. This is handled by <code>SINT()</code>, doesn't involve extra computations; instead, it merely reinterprets existing data.</li>
+<li><strong>Promotion</strong>. This refers to the process of converting a value to a "larger" or more precise data type. It doesn't require extra computation either; it merely requests the argument to deliver a value of a different type. Only JSON fields and a few other functions can promote their values to integers. If an argument cannot yield a value of a different type, the promotion will fail. For instance, the <code>TIMEDIFF()</code> function usually returns a string, but can also return a number. So, <code>BIGINT(TIMEDIFF(1,2))</code> will execute successfully, compelling <code>TIMEDIFF()</code> to supply an integer value. Conversely, <code>DATE_FORMAT()</code> solely returns strings and can't yield a number, meaning that <code>BIGINT(DATE_FORMAT(...))</code> will fail.</li>
+</ul>
+<h3 id="bigint">BIGINT()</h3>
+<p>This function promotes an integer argument to a 64-bit type, leaving floating-point arguments untouched. It's designed to ensure the evaluation of specific expressions (such as <code>a*b</code>) in 64-bit mode, even if all arguments are 32-bit.</p>
+<h3 id="double">DOUBLE()</h3>
+<p>The <code>DOUBLE()</code> function promotes its argument to a floating-point type. This is designed to help enforce the evaluation of numeric JSON fields.</p>
+<h3 id="integer">INTEGER()</h3>
+<p>The <code>INTEGER()</code> function promotes its argument to a 64-bit signed type. This is designed to enforce the evaluation of numeric JSON fields.</p>
+<h3 id="to_string">TO_STRING()</h3>
+<p>This function forcefully converts its argument to a string type.</p>
+<h3 id="uint">UINT()</h3>
+<p>The <code>UINT()</code> function promotes its argument to a 32-bit unsigned integer type.</p>
+<h3 id="uint64">UINT64()</h3>
+<p>The <code>UINT64()</code> function promotes its argument to a 64-bit unsigned integer type.</p>
+<h3 id="sint">SINT()</h3>
+<p>The <code>SINT()</code> function forcefully reinterprets its 32-bit unsigned integer argument as signed and extends it to a 64-bit type (since the 32-bit type is unsigned). For instance, 1-2 ordinarily evaluates to 4294967295, but <code>SINT(1-2)</code> evaluates to -1.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.04-functions_to_handle_arrays_and_conditions">
+        <a class="chapter-link" href="#toc-15.04-functions_to_handle_arrays_and_conditions"> ¶ 15.4</a>
+
+        
+        <h1 id="arrays-and-conditions-functions">Arrays and conditions functions</h1>
+<h3 id="all">ALL()</h3>
+<!-- example all_json -->
+<p><code>ALL(cond FOR var IN json.array)</code> applies to JSON arrays and returns 1 if the condition is true for all elements in the array and 0 otherwise. <code>cond</code> is a general expression that can also use <code>var</code> as the current value of an array element within itself.</p>
+<!-- request ALL() with json -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ALL</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">4</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
+</code></pre></div>
+
+<!-- response ALL() with json -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+--------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">4</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+--------------------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ar&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w">                              </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ar&quot;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w">                              </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+--------------------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- request ALL() with json ex. 2 -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ALL</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">4</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cond</span><span class="o">=</span><span class="mi">1</span>
+</code></pre></div>
+
+<!-- response ALL() with json ex. 2 -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ar&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example all_mva -->
+<p><code>ALL(mva)</code> is a special constructor for multi-value attributes. When used with comparison operators (including comparison with <code>IN()</code>), it returns 1 if all values from the MVA attribute are found among the compared values.</p>
+<!-- request ALL() with MVA -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+
+<!-- response ALL() with MVA -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- request ALL() with MVA and IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- response ALL() with MVA and IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example all_not_in -->
+<p>To compare an MVA attribute with an array, avoid using <code>&lt;mva&gt; NOT ALL()</code>; use <code>ALL(&lt;mva&gt;) NOT IN()</code> instead.</p>
+<!-- request ALL() with MVA and NOT IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- response ALL() with MVA and NOT IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example all_string -->
+
+<p><code>ALL(string list)</code> is a special operation for filtering string tags.</p>
+<p>If all of the words enumerated as arguments of <code>ALL()</code> are present in the attribute, the filter matches. The optional <code>NOT</code> inverts the logic.</p>
+<p>This filter internally uses doc-by-doc matching, so in the case of a full scan query, it might be slower than expected. It is intended for attributes that are not indexed, like calculated expressions or tags in PQ tables. If you need such filtering, consider the solution of putting the string attribute as a full-text field, and then use the full-text operator <code>match()</code>, which will invoke a full-text search.</p>
+<!-- request ALL() with strings -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="s1">&#39;bug&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;release&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- response ALL() with strings -->
+
+<div class="codehilite"><pre><span></span><code><span class="nb">+------+---------------------------+</span>
+<span class="c">| id   | tags                      |</span>
+<span class="nb">+------+---------------------------+</span>
+<span class="c">|    1 | bug priority_high release |</span>
+<span class="c">|    2 | bug priority_low release  |</span>
+<span class="nb">+------+---------------------------+</span>
+<span class="c">2 rows in set (0</span><span class="nt">.</span><span class="c">00 sec)</span>
+</code></pre></div>
+
+<!-- request ALL() with strings and NOT -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
+
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">tags</span><span class="w">                      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">priority_high</span><span class="w"> </span><span class="n">release</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">priority_low</span><span class="w"> </span><span class="n">release</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="s1">&#39;bug&#39;</span><span class="p">)</span>
+
+<span class="n">Empty</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="any">ANY()</h3>
+<!-- example any_json -->
+<p><code>ANY(cond FOR var IN json.array)</code> applies to JSON arrays and returns 1 if the condition is true for any element in the array and 0 otherwise. <code>cond</code> is a general expression that can also use <code>var</code> as the current value of an array element within itself.</p>
+<!-- request ANY() with json -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ANY</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
+</code></pre></div>
+
+<!-- response ANY() with json -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+---------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">5</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+---------------------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ar&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w">                               </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ar&quot;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w">                               </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+---------------------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- request ANY() with json ex. 2 -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ANY</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cond</span><span class="o">=</span><span class="mi">1</span>
+</code></pre></div>
+
+<!-- response ANY() with json ex. 2 -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ar&quot;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+--------------+------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example any_mva -->
+<p><code>ANY(mva)</code> is a special constructor for multi-value attributes. When used with comparison operators (including comparison with <code>IN()</code>), it returns 1 if any of the MVA values is found among the compared values.</p>
+<p>When comparing an array using <code>IN()</code>, <code>ANY()</code> is assumed by default if not otherwise specified, but a warning will be issued regarding the missing constructor.</p>
+<!-- request ANY() with MVA -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
+
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span>
+
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- request ANY() with MVA and IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- response ANY() with MVA and IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example any_not_in -->
+<p>To compare an MVA attribute with an array, avoid using <code>&lt;mva&gt; NOT ANY()</code>; use <code>&lt;mva&gt; NOT IN()</code> instead or <code>ANY(&lt;mva&gt;) NOT IN()</code>.</p>
+<!-- request ANY() with MVA and NOT IN() -->
+
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
+
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example any_string -->
+
+<p><code>ANY(string list)</code> is a special operation for filtering string tags.</p>
+<p>If any of the words enumerated as arguments of <code>ANY()</code> is present in the attribute, the filter matches. The optional <code>NOT</code> inverts the logic.</p>
+<p>This filter internally uses doc-by-doc matching, so in the case of a full scan query, it might be slower than expected. It is intended for attributes that are not indexed, like calculated expressions or tags in PQ tables. If you need such filtering, consider the solution of putting the string attribute as a full-text field, and then use the full-text operator <code>match()</code>, which will invoke a full-text search.</p>
+<!-- request ANY() with strings -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="s1">&#39;bug&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;feature&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- response ANY() with strings -->
+
+<div class="codehilite"><pre><span></span><code><span class="nb">+------+---------------------------+</span>
+<span class="c">| id   | tags                      |</span>
+<span class="nb">+------+---------------------------+</span>
+<span class="c">|    1 | bug priority_high release |</span>
+<span class="c">|    2 | bug priority_low release  |</span>
+<span class="nb">+------+---------------------------+</span>
+<span class="c">2 rows in set (0</span><span class="nt">.</span><span class="c">00 sec)</span>
+</code></pre></div>
+
+<!-- request ANY() with strings and NOT -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
+<span class="c1">--------------</span>
+
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">tags</span><span class="w">                      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">priority_high</span><span class="w"> </span><span class="n">release</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">priority_low</span><span class="w"> </span><span class="n">release</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+
+<span class="c1">--------------</span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="s1">&#39;feature&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;priority_low&#39;</span><span class="p">)</span>
+<span class="c1">--------------</span>
+
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">tags</span><span class="w">                      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">priority_high</span><span class="w"> </span><span class="n">release</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+---------------------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="contains">CONTAINS()</h3>
+<p><code>CONTAINS(polygon, x, y)</code> checks whether the (x,y) point is within the given polygon, and returns 1 if true, or 0 if false. The polygon has to be specified using either the  <a href="../15-functions.html#poly2d%28%29">POLY2D()</a> function. The former function is intended for "small" polygons, meaning less than 500 km (300 miles) a side, and it doesn't take into account the Earth's curvature for speed. For larger distances, you should use <code>GEOPOLY2D</code>, which tessellates the given polygon in smaller parts, accounting for the Earth's curvature.</p>
+<h3 id="if">IF()</h3>
+<!-- example if -->
+<p>The behavior of <code>IF()</code> is slightly different from its MySQL counterpart. It takes 3 arguments, checks whether the 1st argument is equal to 0.0, returns the 2nd argument if it is not zero, or the 3rd one when it is. Note that unlike comparison operators, <code>IF()</code> does <strong>not</strong> use a threshold! Therefore, it's safe to use comparison results as its 1st argument, but arithmetic operators might produce unexpected results. For instance, the following two calls will produce <em>different</em> results even though they are logically equivalent:</p>
+<!-- request IF() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">IF</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="o">&lt;&gt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">)</span>
+<span class="k">IF</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<p>In the first case, the comparison operator &lt;&gt; will return 0.0 (false) due to a threshold, and <code>IF()</code> will always return <code>**</code> as a result. In the second case, the same <code>sqrt(3)*sqrt(3)-3</code> expression will be compared with zero <em>without</em> a threshold by the <code>IF()</code> function itself. However, its value will be slightly different from zero due to limited floating-point calculation precision. Because of this, the comparison with 0.0 done by <code>IF()</code> will not pass, and the second variant will return 'a' as a result.</p>
+<h3 id="histogram">HISTOGRAM()</h3>
+<!-- example histogram -->
+<p><code>HISTOGRAM(expr, {hist_interval=size, hist_offset=value})</code> takes a bucket size and returns the bucket number for the value. The key function is:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">key_of_the_bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">floor</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">offset</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+<p>The histogram argument <code>interval</code> must be positive. The histogram argument <code>offset</code> must be positive and less than <code>interval</code>. It is used in aggregation, <code>FACET</code>, and grouping.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+Example:
+
+<!-- request HISTOGRAM() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
+<span class="n">HISTOGRAM</span><span class="p">(</span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">hist_interval</span><span class="o">=</span><span class="mi">100</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">price_range</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">facets</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">price_range</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">price_range</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="in">IN()</h3>
+<p><code>IN(expr,val1,val2,...)</code> takes 2 or more arguments and returns 1 if the 1st argument (expr) is equal to any of the other arguments (val1..valN), or 0 otherwise. Currently, all the checked values (but not the expression itself) are required to be constant. The constants are pre-sorted, and binary search is used, so <code>IN()</code> even against a large arbitrary list of constants will be very quick. The first argument can also be an MVA attribute. In that case, <code>IN()</code> will return 1 if any of the MVA values are equal to any of the other arguments. <code>IN()</code> also supports <code>IN(expr,@uservar)</code> syntax to check whether the value belongs to the list in the given global user variable. The first argument can be a JSON attribute.</p>
+<h3 id="indexof">INDEXOF()</h3>
+<p><code>INDEXOF(cond FOR var IN json.array)</code> function iterates through all elements in the array and returns the index of the first element for which 'cond' is true, and -1 if 'cond' is false for every element in the array.</p>
+<h3 id="interval">INTERVAL()</h3>
+<p><code>INTERVAL(expr,point1,point2,point3,...)</code> takes 2 or more arguments and returns the index of the argument that is less than the first argument: it returns 0 if <code>expr&lt;point1</code>, 1 if <code>point1&lt;=expr&lt;point2</code>, and so on. It is required that <code>point1&lt;point2&lt;...&lt;pointN</code> for this function to work correctly.</p>
+<h3 id="length">LENGTH()</h3>
+<p><code>LENGTH(attr_mva)</code> function returns the number of elements in an MVA set. It works with both 32-bit and 64-bit MVA attributes. <code>LENGTH(attr_json)</code> returns the length of a field in JSON. The return value depends on the type of field. For example, <code>LENGTH(json_attr.some_int)</code> always returns 1, and <code>LENGTH(json_attr.some_array)</code> returns the number of elements in the array. <code>LENGTH(string_expr)</code> function returns the length of the string resulting from an expression.<br />
+<a href="../15-functions.html#to_string%28%29">TO_STRING()</a> must enclose the expression, regardless of whether the expression returns a non-string or it's simply a string attribute.</p>
+<h3 id="range">RANGE()</h3>
+<!-- example range -->
+<p><code>RANGE(expr, {range_from=value,range_to=value})</code> takes a set of ranges and returns the bucket number for the value.<br />
+This expression includes the <code>range_from</code> value and excludes the <code>range_to</code> value for each range. A range can be open - having only the <code>range_from</code> or only the <code>range_to</code> value. It is used in aggregation, <code>FACET</code>, and grouping.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+Example:
+
+<!-- request RANGE() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
+<span class="n">RANGE</span><span class="p">(</span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">range_to</span><span class="o">=</span><span class="mi">150</span><span class="err">}</span><span class="p">,</span><span class="err">{</span><span class="n">range_from</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span><span class="n">range_to</span><span class="o">=</span><span class="mi">300</span><span class="err">}</span><span class="p">,</span><span class="err">{</span><span class="n">range_from</span><span class="o">=</span><span class="mi">300</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="n">price_range</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">facets</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">price_range</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">price_range</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="remap">REMAP()</h3>
+<!-- example remap -->
+<p><code>REMAP(condition, expression, (cond1, cond2, ...), (expr1, expr2, ...))</code> function allows you to make some exceptions to expression values depending on condition values. The condition expression should always result in an integer, while the expression can result in an integer or float.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+Example:
+
+<!-- request REMAP() -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">size</span><span class="p">,</span><span class="w"> </span><span class="n">REMAP</span><span class="p">(</span><span class="k">size</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="n">s</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">products</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- request Another example -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">REMAP</span><span class="p">(</span><span class="n">userid</span><span class="p">,</span><span class="w"> </span><span class="n">karmapoints</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">67</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">999</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">REMAP</span><span class="p">(</span><span class="n">id</span><span class="o">%</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">employes</span><span class="p">;</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<p>This will put documents with sizes 5 and 6 first, followed by sizes 7 and 8. In case there's an original value not listed in the array (e.g. size 10), it will default to 15, and in this case, will be placed at the end.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.05-date_and_time_functions">
+        <a class="chapter-link" href="#toc-15.05-date_and_time_functions"> ¶ 15.5</a>
+
+        
+        <h1 id="date-and-time-functions">Date and time functions</h1>
+<p>Note, that <code>CURTIME()</code>, <code>UTC_TIME()</code>, <code>UTC_TIMESTAMP()</code>, and <code>TIMEDIFF()</code> can be promoted to numeric types using arbitrary conversion functions such as <code>BIGINT()</code>, <code>DOUBLE()</code>, etc.</p>
+<h3 id="now">NOW()</h3>
+<!-- example NOW -->
+<p>Returns the current timestamp as an INTEGER.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">NOW</span><span class="p">();</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">1615788407</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="curtime">CURTIME()</h3>
+<!-- example CURTIME -->
+<p>Returns the current time in the local timezone in <code>hh:ii:ss</code> format.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">CURTIME</span><span class="p">();</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">CURTIME</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">07</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">30</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="curdate">CURDATE()</h3>
+<!-- example CURDATE -->
+<p>Returns the current date in the local timezone in <code>YYYY-MM-DD</code> format.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">curdate</span><span class="p">();</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">curdate</span><span class="p">()</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">02</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="utc_time">UTC_TIME()</h3>
+<!-- example UTC_TIME -->
+<p>Returns the current time in UTC timezone in <code>hh:ii:ss</code> format.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">UTC_TIME</span><span class="p">();</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">UTC_TIME</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">18</span><span class="w">   </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="utc_timestamp">UTC_TIMESTAMP()</h3>
+<!-- example UTC_TIMESTAMP -->
+<p>Returns the current time in UTC timezone in <code>YYYY-MM-DD hh:ii:ss</code> format.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">UTC_TIMESTAMP</span><span class="p">();</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">UTC_TIMESTAMP</span><span class="p">()</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">2021</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">15</span><span class="w"> </span><span class="mi">06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">03</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="second">SECOND()</h3>
+<!-- example SECOND -->
+<p>Returns the integer second (in 0..59 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">second</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">second</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">52</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="minute">MINUTE()</h3>
+<!-- example MINUTE -->
+<p>Returns the integer minute (in 0..59 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">minute</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">minute</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">             </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="hour">HOUR()</h3>
+<!-- example HOUR -->
+<p>Returns the integer hour (in 0..23 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">hour</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">hour</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="w">           </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="day">DAY()</h3>
+<!-- example DAY -->
+<p>Returns the integer day of the month (in 1..31 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">day</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">day</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">15</span><span class="w">         </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="month">MONTH()</h3>
+<!-- example MONTH -->
+<p>Returns the integer month (in 1..12 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">month</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">month</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="quarter">QUARTER()</h3>
+<!-- example QUARTER -->
+<p>Returns the integer quarter of the year (in 1..4 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">quarter</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">quarter</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">              </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="year">YEAR()</h3>
+<!-- example YEAR -->
+<p>Returns the integer year (in 1969..2038 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">year</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">year</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="w">        </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="dayname">DAYNAME()</h3>
+<!-- example DAYNAME -->
+<p>Returns the weekday name for a given timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">dayname</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">dayname</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Wednesday</span><span class="w">      </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="monthname">MONTHNAME()</h3>
+<!-- example MONTHNAME -->
+<p>Returns the name of the month for a given timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">monthname</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">monthname</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">August</span><span class="w">           </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="dayofweek">DAYOFWEEK()</h3>
+<!-- example DAYOFWEEK -->
+<p>Returns the integer weekday index (in 1..7 range) for a given timestamp argument, according to the current timezone.<br />
+Note that the week starts on Sunday.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">dayofweek</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">dayofweek</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">                </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="dayofyear">DAYOFYEAR()</h3>
+<!-- example DAYOFYEAR -->
+<p>Returns the integer day of the year (in 1..366 range) for a given timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">dayofyear</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">dayofyear</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w">              </span><span class="mi">214</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="yearweek">YEARWEEK()</h3>
+<!-- example YEARWEEK -->
+<p>Returns the integer year and the day code of the first day of current week (in 1969001..2038366 range) for a given timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">yearweek</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">yearweek</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------------+</span>
+<span class="o">|</span><span class="w">         </span><span class="mi">2023211</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="yearmonth">YEARMONTH()</h3>
+<!-- example YEARMONTH -->
+<p>Returns the integer year and month code (in 196912..203801 range) from a timestamp argument, according to the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">yearmonth</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">yearmonth</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">202103</span><span class="w">           </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="yearmonthday">YEARMONTHDAY()</h3>
+<!-- example YEARMONTHDAY -->
+<p>Returns the integer year, month, and date code (ranging from 19691231 to 20380119) based on the current timezone.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">yearmonthday</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">yearmonthday</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">20210315</span><span class="w">            </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="timediff">TIMEDIFF()</h3>
+<!-- example TIMEDIFF -->
+<p>Calculates the difference between two timestamps in the format <code>hh:ii:ss</code>.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">timediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">);</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">timediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">555</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">23</span><span class="w">                        </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="datediff">DATEDIFF()</h3>
+<!-- example DATEDIFF -->
+<p>Calculates the number of days between two given timestamps.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">datediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">);</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">datediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------------------------+</span>
+<span class="o">|</span><span class="w">                               </span><span class="mi">23</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">----------------------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="date">DATE()</h3>
+<!-- example DATE -->
+<p>Formats the date part from a timestamp argument as a string in <code>YYYY-MM-DD</code> format.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="nb">date</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="nb">date</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">02</span><span class="w">  </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="time">TIME()</h3>
+<!-- example TIME -->
+<p>Formats the time part from a timestamp argument as a string in <code>HH:MM:SS</code> format.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">time</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">time</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">15</span><span class="p">:</span><span class="mi">21</span><span class="p">:</span><span class="mi">27</span><span class="w">    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="date_format">DATE_FORMAT()</h3>
+<!-- example DATE_FORMAT -->
+<p>Returns a formatted string based on the provided date and format arguments. The format argument uses the same specifiers as the <a href="https://man7.org/linux/man-pages/man3/strftime.3.html">strftime</a> function. For convenience, here are some common format specifiers:</p>
+<ul>
+<li><code>%Y</code> - Four-digit year</li>
+<li><code>%m</code> - Two-digit month (01-12)</li>
+<li><code>%d</code> - Two-digit day of the month (01-31)</li>
+<li><code>%H</code> - Two-digit hour (00-23)</li>
+<li><code>%M</code> - Two-digit minute (00-59)</li>
+<li><code>%S</code> - Two-digit second (00-59)</li>
+<li><code>%T</code> - Time in 24-hour format (<code>%H:%M:%S</code>)</li>
+</ul>
+<p>Note that this is not a complete list of the specifiers. Please consult the documentation for <code>strftime()</code> for your operating system to get the full list.</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;year %Y and time %T&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<!-- response SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;year %Y and time %T&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="k">year</span><span class="w"> </span><span class="mi">2023</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="mi">11</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">52</span><span class="w">              </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------------------------------+</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<p>This example formats the current date and time, displaying the four-digit year and the time in 24-hour format.</p>
+<h3 id="date_histogram">DATE_HISTOGRAM()</h3>
+<!-- example DATE_HISTOGRAM -->
+<p><code>DATE_HISTOGRAM(expr, {calendar_interval='unit_name'})</code> Takes a bucket size as a unit name and returns the bucket number for the value. Values are rounded to the closest bucket. The key function is:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">key_of_the_bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">floor</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+<p>Intervals are specified using the unit name, such as <code>week</code> or as a single unit like <code>1M</code>. Multiple units such as <code>2w</code> are not supported.</p>
+<p>The valid intervals are:</p>
+<ul>
+<li><code>minute</code>, <code>1m</code></li>
+<li><code>hour</code>, <code>1h</code></li>
+<li><code>day</code>, <code>1d</code></li>
+<li><code>week</code>, <code>1w</code> (a week is the interval between the start day of the week, hour, minute, second and the next week but the same day and time of the week)</li>
+<li><code>month</code>, <code>1M</code></li>
+<li><code>year</code>, <code>1y</code> (a year is the interval between the start day of the month, time and the next year but the same day of the month, time)</li>
+</ul>
+<p>Used in aggregation, <code>FACET</code>, and grouping.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
+<span class="n">DATE_HISTOGRAM</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">calendar_interval</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">months</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">facets</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">months</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">months</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+</code></pre></div>
+
+<h3 id="date_range">DATE_RANGE()</h3>
+<!-- example DATE_RANGE -->
+<p><code>DATE_RANGE(expr, {range_from='date_math', range_to='date_math'})</code> takes a set of ranges and returns the bucket number for the value.<br />
+The expression includes the <code>range_from</code> value and excludes the <code>range_to</code> value for each range. The range can be open - having only the <code>range_from</code> or only the <code>range_to</code> value.<br />
+The difference between this and the <a href="../15-functions.html#range%28%29">RANGE()</a> function is that the <code>range_from</code> and <code>range_to</code> values can be expressed in <a href="../15-functions.html#date-math">Date math</a> expressions.</p>
+<p>Used in aggregation, <code>FACET</code>, and grouping.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
+<span class="n">DATE_RANGE</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">range_to</span><span class="o">=</span><span class="s1">&#39;2017||+2M/M&#39;</span><span class="err">}</span><span class="p">,</span><span class="err">{</span><span class="n">range_from</span><span class="o">=</span><span class="s1">&#39;2017||+2M/M&#39;</span><span class="p">,</span><span class="n">range_to</span><span class="o">=</span><span class="s1">&#39;2017||+5M/M&#39;</span><span class="err">}</span><span class="p">,</span><span class="err">{</span><span class="n">range_from</span><span class="o">=</span><span class="s1">&#39;2017||+5M/M&#39;</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">points</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">idx_dates</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+</code></pre></div>
+
+<div class='item-select'>
+Date math
+</div>
+
+<p>Date math lets you work with dates and times directly in your searches. It's especially useful for handling data that changes over time. With date math, you can easily do things like find entries from a certain period, analyze data trends, or manage when information should be removed. It simplifies working with dates by letting you add or subtract time from a given date, round dates to the nearest time unit, and more, all within your search queries.</p>
+<p>To use date math, you start with a base date, which can be:<br />
+- <code>now</code> for the current date and time,<br />
+- or a specific date string ending with <code>||</code>.</p>
+<p>Then, you can modify this date with operations like:<br />
+- <code>+1y</code> to add one year,<br />
+- <code>-1h</code> to subtract one hour,<br />
+- <code>/m</code> to round to the nearest month.</p>
+<p>You can use these units in your operations:<br />
+- <code>s</code> for seconds,<br />
+- <code>m</code> for minutes,<br />
+- <code>h</code> (or <code>H</code>) for hours,<br />
+- <code>d</code> for days,<br />
+- <code>w</code> for weeks,<br />
+- <code>M</code> for months,<br />
+- <code>y</code> for years.</p>
+<p>Here are some examples of how you might use date math:<br />
+- <code>now+4h</code> means four hours from now.<br />
+- <code>now-2d/d</code> is the time two days ago, rounded to the nearest day.<br />
+- <code>2010-04-20||+2M/d</code> is June 20, 2010, rounded to the nearest day.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.06-geospatial_functions">
+        <a class="chapter-link" href="#toc-15.06-geospatial_functions"> ¶ 15.6</a>
+
+        
+        <h1 id="geo-spatial-functions">Geo spatial functions</h1>
+<h3 id="geodist">GEODIST()</h3>
+<p><code>GEODIST(lat1, lon1, lat2, lon2, [...])</code> function calculates the geosphere distance between two points specified by their coordinates. Note that by default, both latitudes and longitudes must be in <strong>radians</strong>, and the result will be in <strong>meters</strong>. You can use arbitrary expressions for any of the four coordinates. An optimized path will be chosen when one pair of arguments directly refers to a pair of attributes, and the other one is constant.</p>
+<p><code>GEODIST()</code> also accepts an optional 5th argument, allowing you to easily convert between input and output units and select the specific geodistance formula to use. The complete syntax and a few examples are as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">GEODIST</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span><span class="w"> </span><span class="n">lon1</span><span class="p">,</span><span class="w"> </span><span class="n">lat2</span><span class="p">,</span><span class="w"> </span><span class="n">lon2</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="k">option</span><span class="o">=</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="err">}</span><span class="p">)</span>
+
+<span class="n">GEODIST</span><span class="p">(</span><span class="mi">40</span><span class="p">.</span><span class="mi">7643929</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">73</span><span class="p">.</span><span class="mi">9997683</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">.</span><span class="mi">7642578</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">73</span><span class="p">.</span><span class="mi">9994565</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="k">in</span><span class="o">=</span><span class="n">degrees</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="o">=</span><span class="n">feet</span><span class="err">}</span><span class="p">)</span>
+
+<span class="n">GEODIST</span><span class="p">(</span><span class="mi">51</span><span class="p">.</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">29</span><span class="p">.</span><span class="mi">98</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">.</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="k">in</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="o">=</span><span class="n">mi</span><span class="err">}</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The known options and their values are:</p>
+<ul>
+<li><code>in = {deg | degrees | rad | radians}</code>, specifies the input units;</li>
+<li><code>out = {m | meters | km | kilometers | ft | feet | mi | miles}</code>, specifies the output units;</li>
+<li><code>method = {adaptive | haversine}</code>, specifies the geodistance calculation method.</li>
+</ul>
+<p>The default method is "adaptive". It is a well-optimized implementation that is both more precise <em>and</em> much faster at all times than "haversine".</p>
+<h3 id="geopoly2d">GEOPOLY2D()</h3>
+<p><code>GEOPOLY2D(lat1,lon1,lat2,lon2,lat3,lon3...)</code> creates a polygon to be used with the <a href="../15-functions.html#contains%28%29">CONTAINS()</a> function. This function takes into account the Earth's curvature by tessellating the polygon into smaller ones, and should be used for larger areas. For small areas, the <a href="../15-functions.html#poly2d%28%29">POLY2D()</a> function can be used instead. The function expects coordinates to be pairs of latitude/longitude coordinates in degrees; if radians are used, it will give the same result as <code>POLY2D()</code>.</p>
+<h3 id="poly2d">POLY2D()</h3>
+<p><code>POLY2D(x1,y1,x2,y2,x3,y3...)</code> creates a polygon to be used with the <a href="../15-functions.html#contains%28%29">CONTAINS()</a> function. This polygon assumes a flat Earth, so it should not be too large; for large areas, the <a href="../15-functions.html#geopoly2d%28%29">GEOPOLY2D()</a> function, which takes Earth's curvature into consideration, should be used.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.07-string_functions">
+        <a class="chapter-link" href="#toc-15.07-string_functions"> ¶ 15.7</a>
+
+        
+        <h1 id="string-functions">String functions</h1>
+<h3 id="concat">CONCAT()</h3>
+<p>Concatenates two or more strings into one. Non-string arguments must be explicitly converted to string using the <code>TO_STRING()</code> function.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">CONCAT</span><span class="p">(</span><span class="n">TO_STRING</span><span class="p">(</span><span class="n">float_attr</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">TO_STRING</span><span class="p">(</span><span class="n">int_attr</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="levenshtein">LEVENSHTEIN()</h3>
+<p><code>LEVENSHTEIN ( pattern, source, {normalize=0, length_delta=0})</code> returns number (Levenshtein distance) of single-character edits (insertions, deletions or substitutions) between <code>pattern</code> and <code>source</code> strings required to make in <code>pattern</code> to make it <code>source</code>.</p>
+<ul>
+<li><code>pattern</code>, <code>source</code> - constant string, string field name, JSON field name, or any expression that produces a string (like e.g., <a href="../15-functions.html#substring_index%28%29">SUBSTRING_INDEX()</a>)</li>
+<li><code>normalize</code> - option to return the distance as a float number in the range <code>[0.0 - 1.0]</code>, where 0.0 is an exact match, and 1.0 is the maximum difference. The default value is 0, meaning not to normalize and provide the result as an integer.</li>
+<li><code>length_delta</code> - skips Levenshtein distance calculation and returns <code>max(strlen(pattern), strlen(source))</code> if the option is set and the lengths of the strings differ by more than the <code>length_delta</code> value. The default value is 0, meaning to calculate Levenshtein distance for any input strings. This option can be useful when checking mostly similar strings.</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">LEVENSHTEIN</span><span class="p">(</span><span class="s1">&#39;gily&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">attr1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">dist</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHT</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">LEVENSHTEIN</span><span class="p">(</span><span class="s1">&#39;gily&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">length_delta</span><span class="o">=</span><span class="mi">6</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">dist</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHT</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">LEVENSHTEIN</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">normalize</span><span class="o">=</span><span class="mi">1</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">dist</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHT</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
+</code></pre></div>
+
+<h3 id="regex">REGEX()</h3>
+<p>The <code>REGEX(attr,expr)</code> function returns 1 if a regular expression matches the attribute's string, and 0 otherwise. It works with both string and JSON attributes.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">REGEX</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;box?&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">REGEX</span><span class="p">(</span><span class="n">j</span><span class="p">.</span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;red | pink&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Expressions should adhere to the RE2 syntax. To perform a case-insensitive search, for instance, you can use:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">REGEX</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(?i)box&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+</code></pre></div>
+
+<h3 id="snippet">SNIPPET()</h3>
+<p>The <code>SNIPPET()</code> function can be used to highlight search results within a given text. The first two arguments are: the text to be highlighted, and a query. <a href="../13-searching.html#highlighting-options">Options</a> can be passed to the function as the third, fourth, and so on arguments. <code>SNIPPET()</code> can obtain the text for highlighting directly from the table. In this case, the first argument should be the field name:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">SNIPPET</span><span class="p">(</span><span class="n">body</span><span class="p">,</span><span class="w"> </span><span class="n">QUERY</span><span class="p">())</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myIndex</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;my.query&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>In this example, the <code>QUERY()</code>  expression returns the current full-text query. <code>SNIPPET()</code> can also highlight non-indexed text:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">SNIPPET</span><span class="p">(</span><span class="s1">&#39;text to highlight&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;my.query&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;limit=100&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myIndex</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;my.query&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Additionally, it can be used to highlight text fetched from other sources using a User-Defined Function (UDF):</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">SNIPPET</span><span class="p">(</span><span class="n">myUdf</span><span class="p">(</span><span class="n">id</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;my.query&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;limit=100&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myIndex</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;my.query&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>In this context, <code>myUdf()</code> is a User-Defined Function (UDF) that retrieves a document by its ID from an external storage source. The <code>SNIPPET()</code> function is considered a "post limit" function, which means that the computation of snippets is delayed until the entire final result set is prepared, and even after the <code>LIMIT</code> clause has been applied. For instance, if a <code>LIMIT 20,10</code> clause is used, <code>SNIPPET()</code> will be called no more than 10 times.</p>
+<p>It is important to note that <code>SNIPPET()</code> does not support field-based limitations. For this functionality, use <a href="../13-searching.html#highlighting-via-sql">HIGHLIGHT()</a> instead.</p>
+<h3 id="substring_index">SUBSTRING_INDEX()</h3>
+<!-- example substring_index -->
+<p><code>SUBSTRING_INDEX(string, delimiter, number)</code> returns a substring of the original string, based on a specified number of delimiter occurrences:</p>
+<ul>
+<li>string - The original string, which can be a constant string or a string from a string/JSON attribute.</li>
+<li>delimiter - The delimiter to search for.</li>
+<li>number - The number of times to search for the delimiter. This can be either a positive or negative number. If it is a positive number, the function will return everything to the left of the delimiter. If it is a negative number, the function will return everything to the right of the delimiter.</li>
+</ul>
+<p><code>SUBSTRING_INDEX()</code> by default returns a string, but it can also be coerced into other types (such as integer or float) if necessary. Numeric values can be converted using specific functions (such as <code>BIGINT()</code>, <code>DOUBLE()</code>, etc.).</p>
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;www.w3schools.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="n">j</span><span class="p">.</span><span class="n">coord</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w">          </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="cm">/* &#39;1.2&#39; */</span>
+<span class="k">SELECT</span><span class="w">          </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="cm">/* &#39;3.4&#39; */</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">sint</span><span class="w"> </span><span class="p">(</span><span class="w">   </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 1 */</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">sint</span><span class="w"> </span><span class="p">(</span><span class="w">   </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 3 */</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 1.200000 */</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 3.400000 */</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="upper-and-lower">UPPER() and LOWER()</h3>
+<p><code>UPPER(string)</code> convert argument to upper case, <code>LOWER(string)</code> convert argument to lower case.</p>
+<p>Result also can be promoted to numeric, but only if string argument is convertible to a number. Numeric values could be promoted with arbitrary functions (<code>BITINT</code>, <code>DOUBLE</code>, etc.).</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">upper</span><span class="p">(</span><span class="s1">&#39;www.w3schools.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="cm">/* WWW.W3SCHOOLS.COM  */</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">(</span><span class="k">upper</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;1.2e3&#39;</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 1200.000000 */</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="p">(</span><span class="k">lower</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;12345&#39;</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 12345 */</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-15.08-other_functions">
+        <a class="chapter-link" href="#toc-15.08-other_functions"> ¶ 15.8</a>
+
+        
+        <h1 id="other-functions">Other functions</h1>
+<h3 id="last_insert_id">LAST_INSERT_ID()</h3>
+<p>Returns the IDs of documents that were inserted or replaced by the last statement in the current session.</p>
+<p>The same value can also be obtained via the <code>@@session.last_insert_id</code> variable.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">@@</span><span class="k">session</span><span class="p">.</span><span class="n">last_insert_id</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">--------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="o">@@</span><span class="k">session</span><span class="p">.</span><span class="n">last_insert_id</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="mi">32</span><span class="w">                    </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">LAST_INSERT_ID</span><span class="p">();</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">LAST_INSERT_ID</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">29</span><span class="w">         </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w">   </span>
+</code></pre></div>
+
+<h3 id="connection_id">CONNECTION_ID()</h3>
+<p>Returns the current connection ID.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">CONNECTION_ID</span><span class="p">();</span>
+<span class="o">+</span><span class="c1">-----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">CONNECTION_ID</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w">               </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="knn_dist">KNN_DIST()</h3>
+<p>Returns <a href="../13-searching.html#toc-13.22-knearest_neighbor_vector_search">KNN vector search</a> distance.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">knn</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">image_vector</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">286569</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">031816</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">066684</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">032926</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------+------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">81527930</span><span class="w"> </span><span class="o">|</span>
+<span class="o">+</span><span class="c1">------+------------+</span>
+<span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

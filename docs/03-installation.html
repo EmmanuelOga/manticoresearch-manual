@@ -1,0 +1,886 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Installation - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-03-installation">
+        <a class="chapter-link" href="#toc-03-installation"> ¶ 3</a>
+
+        
+        <h1 id="installation">Installation</h1>
+<!-- example installation expanded -->
+
+<!-- request RHEL, Centos, Alma, Amazon, Oracle -->
+
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.rpm
+sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra
+</code></pre></div>
+
+<p>If you are upgrading from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>--setopt<span class="o">=</span><span class="nv">tsflags</span><span class="o">=</span>noscripts<span class="w"> </span>remove<span class="w"> </span>manticore*
+</code></pre></div>
+
+<p>It won't remove your data. If you made changes to the configuration file, it will be saved to <code>/etc/manticoresearch/manticore.conf.rpmsave</code>.</p>
+<p>If you are looking for separate packages, please find them <a href="https://manticoresearch.com/install/#separate-packages">here</a>.</p>
+<p>For more details on the installation, see <a href="../03-installation.html#toc-03.02-redhat_and_centos">below</a>.</p>
+<!-- request Debian, Ubuntu, Mint -->
+
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.deb
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-repo.noarch.deb
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra
+</code></pre></div>
+
+<p>If you are upgrading to Manticore 6 from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>manticore*
+</code></pre></div>
+
+<p>It won't remove your data or configuration file.</p>
+<p>If you are looking for separate packages, please find them <a href="https://manticoresearch.com/install/#separate-packages">here</a>.</p>
+<p>For more details on the installation, see <a href="../03-installation.html#toc-03.03-debian_and_ubuntu">below</a>.</p>
+<!-- request MacOS -->
+
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>manticoresoftware/tap/manticoresearch<span class="w"> </span>manticoresoftware/tap/manticore-extra
+</code></pre></div>
+
+<p>Please find more details on the installation <a href="../03-installation.html#toc-03.04-macos">below</a>.</p>
+<!-- request Windows -->
+
+<ol>
+<li>Download the <a href="https://repo.manticoresearch.com/repository/manticoresearch_windows/release/x64/manticore-6.0.4-230314-1a3a4ea82-x64.exe">Manticore Search Installer</a> and run it. Follow the installation instructions.</li>
+<li>Choose the directory to install to.</li>
+<li>Select the components you want to install. We recommend installing all of them.</li>
+<li>Manticore comes with a preconfigured <code>manticore.conf</code> file in <a href="https://manual.manticoresearch.com/02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a>. No additional configuration is required.</li>
+</ol>
+<p>For more details on the installation, see <a href="../03-installation.html#installing-manticore-in-windows">below</a>.</p>
+<!-- request Docker -->
+
+<p>One-liner for a sandbox (not recommended for production use):</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>--rm<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Waiting for Manticore docker to start. Consider mapping the data_dir to make it start faster next time&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">until</span><span class="w"> </span>docker<span class="w"> </span>logs<span class="w"> </span>manticore<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;accepting connections&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>.<span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>manticore<span class="w"> </span>mysql<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>stop<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>This runs Manticore container and waits for it to boot up. After starting, it launches a MySQL client session. When you exit the MySQL client, the Manticore container ceases operation and gets deleted, leaving no stored data behind. For details on how to utilize Manticore in a live production setting, refer to the following section.</p>
+<p>For production use:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data:/var/lib/manticore<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9306:9306<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9308:9308<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<p>This setup will enable the Manticore Columnar Library and Manticore Buddy, and run Manticore on ports 9306 for MySQL connections and 9308 for all other connections, using <code>./data/</code> as the designated data directory.</p>
+<p>Read more about production use <a href="https://github.com/manticoresoftware/docker#production-use">in the documentation</a>.</p>
+<!-- end -->
+
+</div>
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.01-docker">
+        <a class="chapter-link" href="#toc-03.01-docker"> ¶ 3.1</a>
+
+        
+        <h1 id="installing-manticore-search-as-a-docker-image">Installing Manticore Search as a Docker image</h1>
+<p>Docker images of Manticore Search are publicly accessible on <a href="https://hub.docker.com/r/manticoresearch/manticore/">Docker Hub</a>, built from the <a href="https://github.com/manticoresoftware/docker">Manticore Search docker GitHub repository</a>.</p>
+<p>To retrieve the Manticore image, run the following command:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>manticoresearch/manticore
+</code></pre></div>
+
+<p>For more information about using Manticore in Docker, see the <a href="../05-starting_the_server.html#toc-05.03-in_docker">Using Manticore in Docker</a> section.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.02-redhat_and_centos">
+        <a class="chapter-link" href="#toc-03.02-redhat_and_centos"> ¶ 3.2</a>
+
+        
+        <h1 id="installing-manticore-packages-on-redhat-and-centos">Installing Manticore packages on RedHat and CentOS</h1>
+<h3 id="supported-releases">Supported releases:</h3>
+<ul>
+<li>CentOS 7, RHEL 7, Oracle Linux 7</li>
+<li>CentOS 8, RHEL 8, Oracle Linux 8, CentOS Stream 8</li>
+<li>Amazon Linux 2</li>
+<li>CentOS 9, RHEL 9, AlmaLinux 9</li>
+</ul>
+<h3 id="yum-repository">YUM repository</h3>
+<p>The simplest method to install Manticore on RedHat/CentOS is by using our YUM repository:</p>
+<p>Install the repository:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.rpm
+</code></pre></div>
+
+<p>Then install Manticore Search:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra
+</code></pre></div>
+
+<p>If you are upgrading to Manticore 6 from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>remove<span class="w"> </span>manticore*
+</code></pre></div>
+
+<p>It won't remove your data and configuration file.</p>
+<h6 id="development-packages">Development packages</h6>
+<p>If you prefer "Nightly" (development) versions do:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.rpm<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>--enablerepo<span class="w"> </span>manticore-dev<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra<span class="w"> </span>manticore-common<span class="w"> </span>manticore-server<span class="w"> </span>manticore-server-core<span class="w"> </span>manticore-tools<span class="w"> </span>manticore-executor<span class="w"> </span>manticore-buddy<span class="w"> </span>manticore-backup<span class="w"> </span>manticore-columnar-lib<span class="w"> </span>manticore-server-core-debuginfo<span class="w"> </span>manticore-tools-debuginfo<span class="w"> </span>manticore-columnar-lib-debuginfo<span class="w">  </span>manticore-icudata<span class="w"> </span>manticore-galera<span class="w"> </span>manticore-galera-debuginfo
+</code></pre></div>
+
+<h3 id="standalone-rpm-packages">Standalone RPM packages</h3>
+<p>To download standalone RPM files from the Manticore repository, follow the instructions available at https://manticoresearch.com/install/.</p>
+<h3 id="more-packages-you-may-need">More packages you may need</h3>
+<h4 id="for-indexer">For indexer</h4>
+<p>If you plan to use <a href="../12-data_creation_and_modification.html#indexer-tool">indexer</a> to create tables from external sources, you'll need to make sure you have installed corresponding client libraries in order to make available of indexing sources you want. The line below will install all of them at once; feel free to use it as is, or to reduce it to install only libraries you need (for only mysql sources - just <code>mysql-libs</code> should be enough, and unixODBC is not necessary).</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>mysql-libs<span class="w"> </span>postgresql-libs<span class="w"> </span>expat<span class="w"> </span>unixODBC
+</code></pre></div>
+
+<p>In CentOS Stream 8 you may need to run:</p>
+<div class="codehilite"><pre><span></span><code>dnf install mariadb-connector-c
+</code></pre></div>
+
+<p>if you get error <code>sql_connect: MySQL source wasn't initialized. Wrong name in dlopen?</code> trying to build a plain table from MySQL.</p>
+<h4 id="ukrainian-lemmatizer">Ukrainian lemmatizer</h4>
+<p>The lemmatizer requires Python 3.9+. <strong>Make sure you have it installed and that it's configured with <code>--enable-shared</code>.</strong></p>
+<p>Here's how to install Python 3.9 and the Ukrainian lemmatizer in Centos 7/8:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># install Manticore Search and UK lemmatizer from YUM repository</span>
+yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.rpm
+yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-lemmatizer-uk
+
+<span class="c1"># install packages needed for building Python</span>
+yum<span class="w"> </span>groupinstall<span class="w"> </span><span class="s2">&quot;Development Tools&quot;</span><span class="w"> </span>-y
+yum<span class="w"> </span>install<span class="w"> </span>openssl-devel<span class="w"> </span>libffi-devel<span class="w"> </span>bzip2-devel<span class="w"> </span>wget<span class="w"> </span>-y
+
+<span class="c1"># download, build and install Python 3.9</span>
+<span class="nb">cd</span><span class="w"> </span>~
+wget<span class="w"> </span>https://www.python.org/ftp/python/3.9.2/Python-3.9.2.tgz
+tar<span class="w"> </span>xvf<span class="w"> </span>Python-3.9.2.tgz
+<span class="nb">cd</span><span class="w"> </span>Python-3.9*/
+./configure<span class="w"> </span>--enable-optimizations<span class="w"> </span>--enable-shared
+make<span class="w"> </span>-j8<span class="w"> </span>altinstall
+
+<span class="c1"># update linker cache</span>
+ldconfig
+
+<span class="c1"># install pymorphy2 and UK dictionary</span>
+pip3.9<span class="w"> </span>install<span class="w"> </span>pymorphy2<span class="o">[</span>fast<span class="o">]</span>
+pip3.9<span class="w"> </span>install<span class="w"> </span>pymorphy2-dicts-uk
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.03-debian_and_ubuntu">
+        <a class="chapter-link" href="#toc-03.03-debian_and_ubuntu"> ¶ 3.3</a>
+
+        
+        <h1 id="installing-manticore-in-debian-or-ubuntu">Installing Manticore in Debian or Ubuntu</h1>
+<h3 id="supported-releases">Supported releases:</h3>
+<ul>
+<li>Debian</li>
+<li>10.0 (Buster)</li>
+<li>11.0 (Bullseye)</li>
+<li>
+<p>12.0 (Bookworm)</p>
+</li>
+<li>
+<p>Ubuntu</p>
+</li>
+<li>18.04 (Bionic)</li>
+<li>20.04 (Focal)</li>
+<li>21.04 (Hirsute Hippo)</li>
+<li>
+<p>22.04 (Ubuntu Jammy)</p>
+</li>
+<li>
+<p>Mint</p>
+</li>
+<li>19</li>
+<li>20</li>
+</ul>
+<h3 id="apt-repository">APT repository</h3>
+<p>The easiest way to install Manticore in Ubuntu/Debian/Mint is by using our APT repository.</p>
+<p>Install the repository:</p>
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.deb
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-repo.noarch.deb
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+</code></pre></div>
+
+<p>(install <code>wget</code> if it's not installed; install <code>gnupg2</code> if <code>apt-key</code> fails).</p>
+<p>Then install Manticore Search:</p>
+<div class="codehilite"><pre><span></span><code>sudo apt install manticore manticore-extra
+</code></pre></div>
+
+<p>If you are upgrading to Manticore 6 from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>manticore*
+</code></pre></div>
+
+<p>It won't remove your data and configuration file.</p>
+<h6 id="development-packages">Development packages</h6>
+<p>If you prefer "Nightly" (development) versions do:</p>
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-dev-repo.noarch.deb<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-dev-repo.noarch.deb<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>-y<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra<span class="w"> </span>manticore-common<span class="w"> </span>manticore-server<span class="w"> </span>manticore-server-core<span class="w"> </span>manticore-tools<span class="w"> </span>manticore-executor<span class="w"> </span>manticore-buddy<span class="w"> </span>manticore-backup<span class="w"> </span>manticore-columnar-lib<span class="w"> </span>manticore-server-core-dbgsym<span class="w"> </span>manticore-tools-dbgsym<span class="w"> </span>manticore-columnar-lib-dbgsym<span class="w"> </span>manticore-icudata-65l<span class="w"> </span>manticore-galera<span class="w"> </span>manticore-galera-dbgsym
+</code></pre></div>
+
+<h3 id="standalone-deb-packages">Standalone DEB packages</h3>
+<p>To download standalone DEB files from the Manticore repository, follow the instructions available at https://manticoresearch.com/install/.</p>
+<h3 id="more-packages-you-may-need">More packages you may need</h3>
+<h4 id="for-indexer">For indexer</h4>
+<p>Manticore package depends on zlib and ssl libraries, nothing else is strictly required. However, if you plan to use <a href="../12-data_creation_and_modification.html#indexer-tool">indexer</a> to create tables from external storages, you'll need to install appropriate client libraries. To find out what specific libraries <code>indexer</code> requires, run it and look at the top of its output:</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>sudo<span class="w"> </span>-u<span class="w"> </span>manticore<span class="w"> </span>indexer
+Manticore<span class="w"> </span><span class="m">3</span>.5.4<span class="w"> </span>13f8d08d@201211<span class="w"> </span>release
+Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2001</span>-2016,<span class="w"> </span>Andrew<span class="w"> </span>Aksyonoff
+Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2008</span>-2016,<span class="w"> </span>Sphinx<span class="w"> </span>Technologies<span class="w"> </span>Inc<span class="w"> </span><span class="o">(</span>http://sphinxsearch.com<span class="o">)</span>
+Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2017</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
+
+Built<span class="w"> </span>by<span class="w"> </span>gcc/clang<span class="w"> </span>v<span class="w"> </span><span class="m">5</span>.4.0,
+
+Built<span class="w"> </span>on<span class="w"> </span>Linux<span class="w"> </span>runner-0277ea0f-project-3858465-concurrent-0<span class="w"> </span><span class="m">4</span>.19.78-coreos<span class="w"> </span><span class="c1">#1 SMP Mon Oct 14 22:56:39 -00 2019 x86_64 x86_64 x86_64 GNU/Linux</span>
+
+Configured<span class="w"> </span>by<span class="w"> </span>CMake<span class="w"> </span>with<span class="w"> </span>these<span class="w"> </span>definitions:<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>RelWithDebInfo<span class="w"> </span>-DDISTR_BUILD<span class="o">=</span>xenial<span class="w"> </span>-DUSE_SSL<span class="o">=</span>ON<span class="w"> </span>-DDL_UNIXODBC<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DUNIXODBC_LIB<span class="o">=</span>libodbc.so.2<span class="w"> </span>-DDL_EXPAT<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DEXPAT_LIB<span class="o">=</span>libexpat.so.1<span class="w"> </span>-DUSE_LIBICONV<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DDL_MYSQL<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DMYSQL_LIB<span class="o">=</span>libmysqlclient.so.20<span class="w"> </span>-DDL_PGSQL<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DPGSQL_LIB<span class="o">=</span>libpq.so.5<span class="w"> </span>-DLOCALDATADIR<span class="o">=</span>/var/data<span class="w"> </span>-DFULL_SHARE_DIR<span class="o">=</span>/usr/share/manticore<span class="w"> </span>-DUSE_ICU<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DUSE_BISON<span class="o">=</span>ON<span class="w"> </span>-DUSE_FLEX<span class="o">=</span>ON<span class="w"> </span>-DUSE_SYSLOG<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_EXPAT<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_ICONV<span class="o">=</span>ON<span class="w"> </span>-DWITH_MYSQL<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_ODBC<span class="o">=</span>ON<span class="w"> </span>-DWITH_POSTGRESQL<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_RE2<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_STEMMER<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_ZLIB<span class="o">=</span>ON<span class="w"> </span>-DGALERA_SOVERSION<span class="o">=</span><span class="m">31</span><span class="w"> </span>-DSYSCONFDIR<span class="o">=</span>/etc/manticoresearch
+</code></pre></div>
+
+<p>Here you can see mentions of <strong>libodbc.so.2</strong>, <strong>libexpat.so.1</strong>, <strong>libmysqlclient.so.20</strong>, and <strong>libpq.so.5</strong>.</p>
+<p>Below is a reference table with a list of all the client libraries for different Debian/Ubuntu versions:</p>
+<table>
+<thead>
+<tr>
+<th>Distr</th>
+<th>MySQL</th>
+<th>PostgreSQL</th>
+<th>XMLpipe</th>
+<th>UnixODBC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ubuntu Trusty</td>
+<td>libmysqlclient.so.18</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.1</td>
+</tr>
+<tr>
+<td>Ubuntu Bionic</td>
+<td>libmysqlclient.so.20</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Ubuntu Focal</td>
+<td>libmysqlclient.so.21</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Ubuntu Hirsute</td>
+<td>libmysqlclient.so.21</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Ubuntu Jammy</td>
+<td>libmysqlclient.so.21</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Debian Jessie</td>
+<td>libmysqlclient.so.18</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Debian Buster</td>
+<td>libmariadb.so.3</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Debian Bullseye</td>
+<td>libmariadb.so.3</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+<tr>
+<td>Debian Bookworm</td>
+<td>libmariadb.so.3</td>
+<td>libpq.so.5</td>
+<td>libexpat.so.1</td>
+<td>libodbc.so.2</td>
+</tr>
+</tbody>
+</table>
+<p>To find packages that provide the libraries, you can use, for example, <code>apt-file</code>:</p>
+<div class="codehilite"><pre><span></span><code>apt-file<span class="w"> </span>find<span class="w"> </span>libmysqlclient.so.20
+libmysqlclient20:<span class="w"> </span>/usr/lib/x86_64-linux-gnu/libmysqlclient.so.20
+libmysqlclient20:<span class="w"> </span>/usr/lib/x86_64-linux-gnu/libmysqlclient.so.20.2.0
+libmysqlclient20:<span class="w"> </span>/usr/lib/x86_64-linux-gnu/libmysqlclient.so.20.3.6
+</code></pre></div>
+
+<p>Note that you only need libraries for the types of storages you're going to use. So if you plan to build tables only from MySQL, then you might need to install only the MySQL library (in the above case <code>libmysqlclient20</code>).</p>
+<p>Finally, install the needed packages:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libmysqlclient20<span class="w"> </span>libodbc1<span class="w"> </span>libpq5<span class="w"> </span>libexpat1
+</code></pre></div>
+
+<p>If you aren't going to use the <code>indexer</code> tool at all, you don't need to find and install any libraries.</p>
+<p>To enable CJK tokenization support, the official packages contain binaries with embedded ICU library and include ICU data file. They are independent from any ICU runtime library which might be available on your system, and can't be upgraded.</p>
+<h4 id="ukrainian-lemmatizer">Ukrainian lemmatizer</h4>
+<p>The lemmatizer requires Python 3.9+. <strong>Make sure you have it installed and that it's configured with <code>--enable-shared</code>.</strong></p>
+<p>Here's how to install Python 3.9 and the Ukrainian lemmatizer on Debian and Ubuntu:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># install Manticore Search and UK lemmatizer from APT repository</span>
+<span class="nb">cd</span><span class="w"> </span>~
+wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.deb
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-repo.noarch.deb
+sudo<span class="w"> </span>apt<span class="w"> </span>-y<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-lemmatizer-uk
+
+<span class="c1"># install packages needed for building Python</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>-y<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>wget<span class="w"> </span>build-essential<span class="w"> </span>libreadline-dev<span class="w"> </span>libncursesw5-dev<span class="w"> </span>libssl-dev<span class="w"> </span>libsqlite3-dev<span class="w"> </span>tk-dev<span class="w"> </span>libgdbm-dev<span class="w"> </span>libc6-dev<span class="w"> </span>libbz2-dev<span class="w"> </span>libffi-dev<span class="w"> </span>zlib1g-dev
+
+<span class="c1"># download, build and install Python 3.9</span>
+<span class="nb">cd</span><span class="w"> </span>~
+wget<span class="w"> </span>https://www.python.org/ftp/python/3.9.4/Python-3.9.4.tgz
+tar<span class="w"> </span>xzf<span class="w"> </span>Python-3.9.4.tgz
+<span class="nb">cd</span><span class="w"> </span>Python-3.9.4
+./configure<span class="w"> </span>--enable-optimizations<span class="w"> </span>--enable-shared
+sudo<span class="w"> </span>make<span class="w"> </span>-j8<span class="w"> </span>altinstall
+
+<span class="c1"># update linker cache</span>
+sudo<span class="w"> </span>ldconfig
+
+<span class="c1"># install pymorphy2 and UK dictionary</span>
+sudo<span class="w"> </span>pip3.9<span class="w"> </span>install<span class="w"> </span>pymorphy2<span class="o">[</span>fast<span class="o">]</span>
+sudo<span class="w"> </span>pip3.9<span class="w"> </span>install<span class="w"> </span>pymorphy2-dicts-uk
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.04-macos">
+        <a class="chapter-link" href="#toc-03.04-macos"> ¶ 3.4</a>
+
+        
+        <h1 id="installing-manticore-on-macos">Installing Manticore on MacOS</h1>
+<h2 id="via-homebrew-package-manager">Via Homebrew package manager</h2>
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>manticoresoftware/tap/manticoresearch<span class="w"> </span>manticoresoftware/tap/manticore-extra
+</code></pre></div>
+
+<p>Start Manticore as a brew service:</p>
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>services<span class="w"> </span>start<span class="w"> </span>manticoresearch
+</code></pre></div>
+
+<p>The default configuration file for Manticore is located at either <code>/usr/local/etc/manticoresearch/manticore.conf</code> or <code>/opt/homebrew/etc/manticoresearch/manticore.conf</code>.</p>
+<p>If you plan to use <a href="../06-creating_a_table.html#toc-06.02.02-plain_table">indexer</a> to fetch data from sources such as MySQL, PostgreSQL, or another database using ODBC, you may need additional libraries, such as <code>mysql@5.7</code>, <code>libpq</code>, and <code>unixodbc</code>, respectively.</p>
+<h6 id="development-packages">Development packages</h6>
+<p>If you prefer "Nightly" (development) versions do:</p>
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>tap<span class="w"> </span>manticoresoftware/tap-dev
+brew<span class="w"> </span>install<span class="w"> </span>manticoresoftware/tap-dev/manticoresearch-dev<span class="w"> </span>manticoresoftware/tap-dev/manticore-extra-dev
+brew<span class="w"> </span>services<span class="w"> </span>start<span class="w"> </span>manticoresearch-dev
+</code></pre></div>
+
+<!--
+## From tarball with binaries
+
+Download it [from the website](https://manticoresearch.com/install/) and unpack to a folder:
+
+
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>manticore
+
+<span class="nb">cd</span><span class="w"> </span>manticore
+
+wget<span class="w"> </span>https://repo.manticoresearch.com/repository/manticoresearch_macos/release/manticore-5.0.2-220530-348514c86-main.tar.gz
+
+tar<span class="w"> </span>-xf<span class="w"> </span>manticore-5.0.2-220530-348514c86-main.tar.gz
+
+wget<span class="w"> </span>https://repo.manticoresearch.com/repository/manticoresearch_macos/release/manticore-columnar-lib-1.15.4-220522-2fef34e-osx10.14.4-x86_64.tar.gz
+
+tar<span class="w"> </span>-xf<span class="w"> </span>manticore-columnar-lib-1.15.4-220522-2fef34e-osx10.14.4-x86_64.tar.gz
+
+<span class="c1"># Start Manticore</span>
+<span class="nv">FULL_SHARE_DIR</span><span class="o">=</span>./share/manticore<span class="w"> </span>./bin/searchd<span class="w"> </span>-c<span class="w"> </span>./etc/manticoresearch/manticore.conf
+
+<span class="c1"># Run indexer</span>
+<span class="nv">FULL_SHARE_DIR</span><span class="o">=</span>./share/manticore<span class="w"> </span>./bin/indexer<span class="w"> </span>-c<span class="w"> </span>./etc/manticoresearch/manticore.conf
+</code></pre></div>
+
+
+
+Manticore configuration file is `./etc/manticoresearch/manticore.conf` after you unpack the archive.
+
+-->
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.05-windows">
+        <a class="chapter-link" href="#toc-03.05-windows"> ¶ 3.5</a>
+
+        
+        <h1 id="installing-manticore-in-windows">Installing Manticore in Windows</h1>
+<ol>
+<li>Download the <a href="https://repo.manticoresearch.com/repository/manticoresearch_windows/release/x64/manticore-6.0.4-230314-1a3a4ea82-x64.exe">Manticore Search Installer</a> and run it. Follow the installation instructions.</li>
+<li>Choose the directory to install to.</li>
+<li>Select the components you want to install. We recommend installing all of them.</li>
+<li>Manticore comes with a preconfigured <code>manticore.conf</code> file in <a href="../02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a>. No additional configuration is required.</li>
+</ol>
+<h2 id="installing-as-a-windows-service">Installing as a Windows service</h2>
+<p>To install <code>searchd</code> (Manticore Search server) as a Windows service, run:</p>
+<div class="codehilite"><pre><span></span><code>\path\to\searchd.exe --install --config \path\to\config --servicename Manticore
+</code></pre></div>
+
+<p>Make sure to use the full path of the configuration file, otherwise <code>searchd.exe</code>  will not be able to locate it when it starts as a service.</p>
+<p>After installation, the service can be started from the Services snap-in of the Microsoft Management Console.</p>
+<p>Once started, you can access Manticore using the MySQL command line interface:</p>
+<div class="codehilite"><pre><span></span><code>mysql -P9306 -h127.0.0.1
+</code></pre></div>
+
+<p>Note that in most examples in this manual, we use <code>-h0</code> to connect to the local host, but in Windows, you must use <code>localhost</code> or <code>127.0.0.1</code> explicitly.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.06-compiling_from_sources">
+        <a class="chapter-link" href="#toc-03.06-compiling_from_sources"> ¶ 3.6</a>
+
+        
+        <h1 id="compiling-manticore-from-source">Compiling Manticore from source</h1>
+<p>Compiling Manticore Search from sources enables custom build configurations, such as disabling certain features or adding new patches for testing. For example, you may want to compile from sources and disable the embedded ICU in order to use a different version installed on your system that can be upgraded independently of Manticore. This is also useful if you are interested in contributing to the Manticore Search project.</p>
+<h2 id="building-using-ci-docker">Building using CI Docker</h2>
+<p>To prepare <a href="https://repo.manticoresearch.com/">official release and development packages</a>, we use Docker and a special building image. This image includes essential tooling and is designed to be used with external sysroots, so one container can build packages for all operating systems. You can build the image using the <a href="https://github.com/manticoresoftware/manticoresearch/blob/master/dist/build_dockers/cross/external_toolchain/Dockerfile">Dockerfile</a> and <a href="https://github.com/manticoresoftware/manticoresearch/blob/master/dist/build_dockers/README.md">README</a> or use an image from <a href="https://hub.docker.com/r/manticoresearch/external_toolchain/tags">Docker Hub</a>. This is the easiest way to create binaries for any supported operating system and architecture. You'll also need to specify the following environment variables when running the container:</p>
+<ul>
+<li><code>DISTR</code>: the target platform</li>
+<li><code>arch</code>: the architecture</li>
+<li><code>SYSROOT_URL</code>: the URL to the system roots archives. You can use https://repo.manticoresearch.com/repository/sysroots unless you are building the sysroots yourself (instructions can be found <a href="https://github.com/manticoresoftware/manticoresearch/tree/master/dist/build_dockers/cross/sysroots">here</a>).</li>
+<li>Use the CI workflow files as a reference to find the other environment variables you might need to use:</li>
+<li>https://github.com/manticoresoftware/manticoresearch/blob/master/.github/workflows/pack_publish.yml</li>
+<li>https://github.com/manticoresoftware/manticoresearch/blob/master/.github/workflows/build_template.yml</li>
+</ul>
+<p>To find possible values for <code>DISTR</code> and <code>arch</code>, you can use the directory https://repo.manticoresearch.com/repository/sysroots/roots_with_zstd/ as a reference, as it includes sysroots for all supported combinations.</p>
+<p>After that, building packages inside the Docker container is as easy as calling:</p>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>-DPACK<span class="o">=</span><span class="m">1</span><span class="w"> </span>/path/to/sources
+cmake<span class="w"> </span>--build<span class="w"> </span>.
+</code></pre></div>
+
+<p>For instance, to create a package for RHEL7-compatible operating systems that is similar to the official version Manticore Core Team provides, you should execute the following commands in the directory containing the Manticore Search sources. This directory is the root of a cloned repository from https://github.com/manticoresoftware/manticoresearch:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">SYSROOT_URL</span><span class="o">=</span>https://repo.manticoresearch.com/repository/sysroots<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">arch</span><span class="o">=</span>x86_64<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">DISTR</span><span class="o">=</span>rhel7<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">boost</span><span class="o">=</span>boost_rhel_feb17<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">sysroot</span><span class="o">=</span>roots_nov22<span class="w"> </span><span class="se">\</span>
+-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/manticore_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<span class="w"> </span><span class="se">\</span>
+manticoresearch/external_toolchain:clang16_cmake3263<span class="w"> </span>bash
+
+<span class="c1"># following is to be run inside docker shell</span>
+<span class="nb">cd</span><span class="w"> </span>/manticore_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/
+mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>-DPACK<span class="o">=</span><span class="m">1</span><span class="w"> </span>..
+
+cmake<span class="w"> </span>--build<span class="w"> </span>.
+<span class="c1"># or if you want to build packages:</span>
+<span class="c1"># cmake --build . --target package</span>
+</code></pre></div>
+
+<p>The long source directory path is required or it may fail to build the sources.</p>
+<p>The same process can be used to build binaries/packages not only for popular Linux distributions, but also for FreeBSD, Windows, and macOS.</p>
+<h2 id="building-manually">Building manually</h2>
+<p>Compiling Manticore without using the building Docker is <strong>not recommended</strong>, but if you need to do it, here's what you may need to know:</p>
+<h3 id="required-tools">Required tools</h3>
+<ul>
+<li>C++ compiler</li>
+<li>In Linux - GNU (4.7.2 and above) or Clang can be used</li>
+<li>In Windows - Microsoft Visual Studio 2019 and above (community edition is enough)</li>
+<li>On macOS - Clang (from command line tools of XCode, use <code>xcode-select --install</code> to install).</li>
+<li>Bison, Flex - on most systems, they are available as packages, on Windows they are available in the cygwin framework.</li>
+<li>Cmake - used on all platforms (version 3.19 or above required)</li>
+</ul>
+<h3 id="fetching-sources">Fetching sources</h3>
+<h4 id="from-git">From git</h4>
+<p>Manticore source code is <a href="https://github.com/manticoresoftware/manticoresearch">hosted on GitHub</a>. <br />
+To obtain the source code, clone the repository and then check out the desired branch or tag. The branch <code>master</code> represents the main development branch. Upon release, a versioned tag is created, such as <code>3.6.0</code> and a new branch for the current release is started, in this case <code>manticore-3.6.0</code>. The head of the versioned branch after all changes is used as source to build all binary releases. For example, to take sources of version 3.6.0 you can run:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/manticoresoftware/manticoresearch.git
+<span class="nb">cd</span><span class="w"> </span>manticoresearch
+git<span class="w"> </span>checkout<span class="w"> </span>manticore-3.6.0
+</code></pre></div>
+
+<h4 id="from-archive">From archive</h4>
+<p>You can download the desired code from GitHub by using the "Download ZIP" button. Both .zip and .tar.gz formats are suitable.</p>
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>-c<span class="w"> </span>https://github.com/manticoresoftware/manticoresearch/archive/refs/tags/3.6.0.tar.gz
+tar<span class="w"> </span>-zxf<span class="w"> </span><span class="m">3</span>.6.0.tar.gz
+<span class="nb">cd</span><span class="w"> </span>manticoresearch-3.6.0
+</code></pre></div>
+
+<h3 id="configuring">Configuring</h3>
+<p>Manticore uses CMake. Assuming you are inside the root directory of the cloned repository:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>..
+</code></pre></div>
+
+<p>CMake will investigate available features and configure the build according to them. By default, all features are considered enabled if they are available. The script also downloads and builds some external libraries, assuming that you want to use them. Implicitly, you get support for the maximal number of features.</p>
+<p>You can also configure the build explicitly with flags and options.  To enable feature <code>FOO</code> add <code>-DFOO=1</code> to the CMake call.<br />
+To disable it, use <code>-DFOO=0</code>. If not explicitly noted, enabling a feature that is not available((such as <code>WITH_GALERA</code> on an MS Windows build)) will cause the configuration to fail with an error. Disabling a feature, apart from excluding it from the build, also disables its investigation on the system and disables the downloading/building of any related external libraries.</p>
+<h4 id="configuration-flags-and-options">Configuration flags and options</h4>
+<ul>
+<li><strong>USE_SYSLOG</strong> - allows the use of<code>syslog</code> in <a href="18-logging.html#toc-18.01-query_logging">query logging</a>.</li>
+<li><strong>WITH_GALERA</strong> -Enables support for replication on the search daemon. Support will be configured for the build, and the sources for the Galera library will be downloaded, built, and included in the distribution/installation. Usually, it is safe to build with Galera, but not distribute the library itself (so no Galera module, no replication). However, sometimes you may need to explicitly disable it, such as if you want to build a static binary that by design cannot load any libraries, so that even the presence of a call to the 'dlopen' function inside the daemon will cause a link error.</li>
+<li><strong>WITH_RE2</strong> - Builds with the use of the RE2 regular expression library. This is necessary for functions like <a href="../15-functions.html#regex%28%29">REGEX()</a>, and the <a href="../06-creating_a_table.html#regexp_filter">regexp_filter</a><br />
+  feature.</li>
+<li><strong>WITH_RE2_FORCE_STATIC</strong> - Downloads the sources of RE2, compiles them, and links them statically, so that the final binaries will not depend on the presence of a shared  <code>RE2</code> library in your system.</li>
+<li><strong>WITH_STEMMER</strong> - Builds with the use of the Snowball stemming library.</li>
+<li><strong>WITH_STEMMER_FORCE_STATIC</strong> - Downloads the Snowball sources, compiles them, and links them statically, so that the final binaries will not depend on the presence of a shared  <code>libstemmer</code> library in your system.</li>
+<li><strong>WITH_ICU</strong> - Builds with the use of ICU, the International Components for Unicode library. This is used in tokenization of Chinese, for text segmentation. This is in play when morphology like <code>icu_chinese</code> is in use.</li>
+<li><strong>WITH_ICU_FORCE_STATIC</strong> - Downloads the ICU sources, compiles them, and links them statically, so that the final binaries will not depend on the presence of a shared <code>icu</code> library in your system. Also includes the ICU data file into the installation/distribution. The purpose of a statically linked ICU is to have a library of a known version, so that behavior is determined and not dependent on any system libraries. You will most likely prefer to use the system ICU instead, as it may be updated over time without the need to recompile the Manticore daemon. In this case, you need to explicitly disable this option. This will also save you some space occupied by the ICU data file (about 30M), as it will not be included in the distribution.</li>
+<li><strong>WITH_SSL</strong> - Used for support for HTTPS, and also encrypted MySQL connections to the daemon. The system OpenSSL library will be linked to the daemon. This implies that OpenSSL will be required to start the daemon. This is mandatory for support for HTTPS, but not strictly mandatory for the server (i.e. no SSL means no possibility to connect via HTTPS, but other protocols will work). SSL library versions starting from 1.0.2 to 1.1.1 may be used by Manticore,  however note that <strong>for the sake of security it's highly recommended to use the freshest possible SSL<br />
+  library</strong>. For now only v1.1.1 is supported, the rest are outdated (<br />
+  see <a href="https://www.openssl.org/policies/releasestrat.html">openssl release strategy</a></li>
+<li><strong>WITH_ZLIB</strong> - used by the indexer to work with compressed columns from MySQL. Used by the daemon to provide support for the compressed MySQL protocol.</li>
+<li><strong>WITH_ODBC</strong> - used by the indexer to support indexing sources from ODBC providers (they're typically UnixODBC and iODBC). On MS Windows, ODBC is the proper way to work with MS SQL sources, so indexing of <code>MSSQL</code> also implies this flag.</li>
+<li><strong>DL_ODBC</strong> - don't link with the ODBC library. If ODBC is linked, but not available, you can't start indexer tool even if you want to process something not related to ODBC. This option asks the indexer to load the library at runtime only when you want to deal with ODBC source.</li>
+<li><strong>ODBC_LIB</strong> - name of the ODBC library file. The indexer will try to load that file when you want to process ODBC source. This option is written automatically from available ODBC shared library investigation. You can also override that name at runtime by providing the environment variable <code>ODBC_LIB</code> with the proper path to an alternative library before running the indexer.</li>
+<li><strong>WITH_EXPAT</strong> - used by the indexer to support indexing xmlpipe sources.</li>
+<li><strong>DL_EXPAT</strong> - don't link with the EXPAT library. If EXPAT is linked, but not available, you can't start <code>indexer</code> tool even if you want to process something not related to xmlpipe. This option asks the indexer to load the library at runtime only when you want to deal with xmlpipe source.</li>
+<li><strong>EXPAT_LIB</strong> - name of the EXPAT library file. The indexer will try to load that file when you want to process xmlpipe source. This option is written automatically from available EXPAT shared library investigation. You can also override that name at runtime by providing the environment variable EXPAT_LIB with the proper path to an alternative library before running the indexer.</li>
+<li><strong>WITH_ICONV</strong> - for support different encodings when indexing xmlpipe sources with the indexer.</li>
+<li><strong>DL_ICONV</strong> - don't link with the iconv library. If iconv is linked, but not available, you can't start <code>indexer</code> tool even if you want to process something not related to xmlpipe. This option asks the indexer to load the library at runtime only when you want to deal with xmlpipe source.</li>
+<li><strong>ICONV_LIB</strong> - name of the iconv library file. The indexer will try to load that file when you want to process xmlpipe source. This option is written automatically from the available iconv shared library investigation. You can also override that name at runtime by providing the environment variable <code>ICONV_LIB</code> with the proper path to an alternative library before running the indexer.</li>
+<li><strong>WITH_MYSQL</strong> - used by the indexer to support indexing MySQL sources.</li>
+<li><strong>DL_MYSQL</strong> - don't link with the MySQL library. If MySQL is linked, but not available, you can't start the<code>indexer</code> tool even if you want to process something not related to MySQL. This option asks the indexer to load the library at runtime only when you want to deal with a MySQL source.</li>
+<li><strong>MYSQL_LIB</strong> -- name of the MySQL library file. The indexer will try to load that file when you want to process a MySQL source. This option is written automatically from the available MySQL shared library investigation. You can also override that name at runtime by providing the environment variable <code>MYSQL_LIB</code> with the proper path to an alternative library before running the indexer.</li>
+<li><strong>WITH_POSTGRESQL</strong> - used by the indexer to support indexing PostgreSQL sources.</li>
+<li><strong>DL_POSTGRESQL</strong> - don't link with the PostgreSQL library. If PostgreSQL is linked, but not available, you can't start the <code>indexer</code> ool even if you want to process something not related to PostgreSQL. This option asks the indexer to load the library at runtime only when you want to deal with a PostgreSQL source.</li>
+<li><strong>POSTGRESQL_LIB</strong> - name of postgresql library file. The indexer will attempt to load the specified postgresql library file when processing a postgresql source. This option is automatically determined from available postgresql shared library investigation. You can also override the name at runtime by providing the environment variable  <code>POSTGRESQL_LIB</code> with the proper path to an alternative library before running the indexer.</li>
+<li><strong>LOCALDATADIR</strong> - default path where the daemon stores binlogs. If this path is not provided or explicitly disabled in the daemon's runtime config (i.e. the file <code>manticore.conf</code>, which is not related to this build configuration), binlogs will be placed in this path. It is typically an absolute path, however, it is not required to be and relative paths can also be used. You probably would not need to change the default value defined by the configuration, which, depending on the target system, might be something like <code>/var/data</code>, <code>/var/lib/manticore/data</code>, or <code>/usr/local/var/lib/manticore/data</code>.</li>
+<li><strong>FULL_SHARE_DIR</strong> - default path where all assets are stored. It can be overridden by the environment variable <code>FULL_SHARE_DIR</code> before starting any tool that utilizes files from that folder. This is an important path as many things are expected to be found there by default. These include predefined charset tables, stopwords, manticore modules, and icu data files, all placed in that folder. The configuration script usually determines this path to be something like <code>/usr/share/manticore</code>, or <code>/usr/local/share/manticore</code>.</li>
+<li><strong>DISTR_BUILD</strong> - a shortcut for the options for releasing packages. This is a string value with the name of the target platform. It can be used instead of manually configuring all the options. On Debian and Redhat Linuxes, the default value might be determined by light introspection and set to a generic 'Debian' or 'RHEL'. Otherwise, the value is not defined.</li>
+<li><strong>PACK</strong> - an even more convenient shortcut. It reads the <code>DISTR</code> environment variable, assigns it to the <strong>DISTR_BUILD</strong> parameter, and then works as usual. This is very useful when building in prepared build systems, like Docker containers, where the  <code>DISTR</code> variable is set at the system level and reflects the target system for which the container is intended.</li>
+<li><strong>CMAKE_INSTALL_PREFIX</strong> (path) - where Manticore is expected to be installed. Building does not perform any installations, but it prepares the installation rules that are executed when you run the <code>cmake --install</code> command or create a package and then install it. The prefix can be changed at any time, even during installation, by invoking<br />
+<code>cmake --install . --prefix /path/to/installation</code>. However, at config time, this variable is used to initialize the default values of  <code>LOCALDATADIR</code> and <code>FULL_SHARE_DIR</code>. For example, setting it to <code>/my/custom</code> at configure<br />
+  time will hardcode <code>LOCALDATADIR</code> as <code>/my/custom/var/lib/manticore/data</code>, and <code>FULL_SHARE_DIR</code> as<br />
+<code>/my/custom/usr/share/manticore</code>.</li>
+<li><strong>BUILD_TESTING</strong> (bool) whether to support testing. If enabled, after the build, you can run 'ctest' and test the build. Note that testing implies additional dependencies, like at least the presence of PHP cli, Python, and an available MySQL server with a test database. By default, this parameter is on. So, for 'just build', you might want to disable the option by explicitly specifying 'off' value.</li>
+<li><strong>LIBS_BUNDLE</strong> - path to a folder with different libraries. This is mostly relevant for Windows building, but may also be helpful if you have to build often in order to avoid downloading third-party sources each time. By default, this path is never modified by the configuration script; you should put everything there manually. When, say, we want support for a stemmer - the sources will be downloaded from Snowball homepage, then extracted, configured, built, etc. Instead, you can store the original source tarball (which is <code>libstemmer_c.tgz</code>) in this folder. Next time you want to build from scratch, the configuration script will first look up in the bundle, and if it finds the stemmer there, it will not download it again from the Internet.</li>
+<li><strong>CACHEB</strong> - path to a folder with stored builds of 3-rd party libraries. Usually features like galera, re2, icu, etc. first downloaded or being got from bundle, then unpacked, built, and installed into a temporary internal folder. When building manticore, that folder is then used as the place where the things required to support the asked feature are live. Finally, they either link with manticore, if it is a library; either go directly to distribution/installation (like galera or icu data). When <strong>CACHEB</strong> is defined either as cmake config param, either as a system environment variable, it is used as the target folder for that builds. This folder might be kept across builds, so that stored libraries there will not be rebuilt anymore, making the whole build process much shorter.</li>
+</ul>
+<p>Note, that some options are organized in triples: <code>WITH_XXX</code>, <code>DL_XXX</code> and <code>XXX_LIB</code> - like support of mysql, odbc, etc. <code>WITH_XXX</code> determines whether next two have an effect or not. I.e., if you set <code>WITH_ODBC</code> to <code>0</code> - there is no sence to provide <code>DL_ODBC</code> and <code>ODBC_LIB</code>, and these two will have no effect if the whole feature is disabled. Also, <code>XXX_LIB</code> has no sense without <code>DL_XXX</code>, because if you don't want <code>DL_XXX</code> option, dynamic loading will not be used, and name provided by <code>XXX_LIB</code> is useless. That is used by default introspection.</p>
+<p>Also, using the <code>iconv</code> library assumes <code>expat</code> and is useless if the last is disabled.</p>
+<p>Also, some libraries may be always available, and so, there is no sense to avoid linkage with them. For example, in Windows that is ODBC. On macOS that is Expat, iconv, and m.b. others. Default introspection determines such libraries and effectively emits only <code>WITH_XXX</code> for them, without <code>DL_XXX</code> and <code>XXX_LIB</code>, that makes the things simpler.</p>
+<p>With some options in game configuring might look like:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>-DWITH_MYSQL<span class="o">=</span><span class="m">1</span><span class="w"> </span>-DWITH_RE2<span class="o">=</span><span class="m">1</span><span class="w"> </span>..
+</code></pre></div>
+
+<p>Apart general configuration values, you may also investigate file <code>CMakeCache.txt</code> which is left in build folder right after you run configuration. Any values defined there might be redefined explicitly when running cmake. For example, you may run <code>cmake -DHAVE_GETADDRINFO_A=FALSE ...</code>, and that config run will not assume investigated value of that variable, but will use one you've provided.</p>
+<h4 id="specific-environment-variables">Specific environment variables</h4>
+<p>Environment variables are useful for providing some kind of global settings which are stored aside from build configuration and are always present. For persistence, they may be set globally on the system using different ways - like adding them to the <code>.bashrc</code> file, or embedding them into a Dockerfile if you produce a docker-based build system, or writing them in system preferences environment variables on Windows. Also, you may set them short-lived using <code>export VAR=value</code> in the shell. Or even shorter, by prepending values to the cmake call, like <code>CACHEB=/my/cache cmake ...</code> - this way it will only work on this call and will not be visible on the next.</p>
+<p>Some of such variables are known to be used in general by cmake and some other tools. That is things like <code>CXX</code> which determines the current C++ compiler, or <code>CXX_FLAGS</code> to provide compiler flags, etc.</p>
+<p>However, we have some variables that are specific to manticore configuration, which are invented solely for our builds.</p>
+<ul>
+<li><strong>CACHEB</strong> - same as the config <strong>CACHEB</strong> option</li>
+<li><strong>LIBS_BUNDLE</strong> - same as the config <strong>LIBS_BUNDLE</strong> option</li>
+<li><strong>DISTR</strong> - used to initialize the <code>DISTR_BUILD</code> option when <code>-DPACK=1</code> is used.</li>
+<li><strong>DIAGNOSTIC</strong> - makes the output of cmake configuration much more verbose, explaining everything happening</li>
+<li><strong>WRITEB</strong> - assumes <strong>LIBS_BUNDLE</strong> and, if set, will download source archive files for different tools to the LIBS_BUNDLE folder. That is, if a fresh version of the stemmer comes out - you can manually remove libstemmer_c.tgz from the bundle and then run a one-shot <code>WRITEB=1 cmake ...</code> - it will not find the stemmer's sources in the bundle and will then download them from the vendor's site to the bundle (without WRITEB it will download them into a temporary folder inside the build and will disappear when you wipe the build folder).</li>
+</ul>
+<p>At the end of configuration, you may see what is available and will be used in a list like this one:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="w"> </span><span class="nx">Enabled</span><span class="w"> </span><span class="nx">features</span><span class="w"> </span><span class="nx">compiled</span><span class="w"> </span><span class="k">in</span><span class="p">:</span>
+
+<span class="o">*</span><span class="w"> </span><span class="nx">Galera</span><span class="p">,</span><span class="w"> </span><span class="nx">replication</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">tables</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">re2</span><span class="p">,</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">regular</span><span class="w"> </span><span class="nx">expression</span><span class="w"> </span><span class="kn">library</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">stemmer</span><span class="p">,</span><span class="w"> </span><span class="nx">stemming</span><span class="w"> </span><span class="kn">library</span><span class="w"> </span><span class="p">(</span><span class="nx">Snowball</span><span class="p">)</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">icu</span><span class="p">,</span><span class="w"> </span><span class="nx">International</span><span class="w"> </span><span class="nx">Components</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">Unicode</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">OpenSSL</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">encrypted</span><span class="w"> </span><span class="nx">networking</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">ZLIB</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">compressed</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">networking</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">ODBC</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">indexing</span><span class="w"> </span><span class="nx">MSSQL</span><span class="w"> </span><span class="p">(</span><span class="nx">windows</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">generic</span><span class="w"> </span><span class="nx">ODBC</span><span class="w"> </span><span class="nx">sources</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">indexer</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">EXPAT</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">indexing</span><span class="w"> </span><span class="nx">xmlpipe</span><span class="w"> </span><span class="nx">sources</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">indexer</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">Iconv</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">support</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">different</span><span class="w"> </span><span class="nx">encodings</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">indexing</span><span class="w"> </span><span class="nx">xmlpipe</span><span class="w"> </span><span class="nx">sources</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">indexer</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">MySQL</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">indexing</span><span class="w"> </span><span class="nx">MySQL</span><span class="w"> </span><span class="nx">sources</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">indexer</span>
+<span class="o">*</span><span class="w"> </span><span class="nx">PostgreSQL</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">indexing</span><span class="w"> </span><span class="nx">PostgreSQL</span><span class="w"> </span><span class="nx">sources</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">indexer</span>
+</code></pre></div>
+
+<h3 id="building">Building</h3>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>RelWithDebInfo
+</code></pre></div>
+
+<h3 id="installation">Installation</h3>
+<p>To install run:</p>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>--install<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>RelWithDebInfo
+</code></pre></div>
+
+<p>to install into custom (non-default) folder, run</p>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>--install<span class="w"> </span>.<span class="w"> </span>--prefix<span class="w"> </span>path/to/build<span class="w"> </span>--config<span class="w"> </span>RelWithDebInfo
+</code></pre></div>
+
+<h3 id="building-packages">Building packages</h3>
+<p>For building a package, use the target <code>package</code>. It will build the package according to the selection provided by the <code>-DDISTR_BUILD</code> option. By default, it will be a simple .zip or .tgz archive with all binaries and supplementary files.</p>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>package<span class="w"> </span>--config<span class="w"> </span>RelWithDebInfo
+</code></pre></div>
+
+<h2 id="some-advanced-things-about-building">Some advanced things about building</h2>
+<h3 id="recompilation-update-on-single-config">Recompilation (update) on single-config</h3>
+<p>If you haven't changed the path for sources and build, simply move to your build folder and run:</p>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>.
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--clean-first<span class="w"> </span>--config<span class="w"> </span>RelWithDebInfo
+</code></pre></div>
+
+<p>If by any reason it doesn't work, you can delete file <code>CMakeCache.txt</code> located in the build folder. After this step you<br />
+have to run cmake again, pointing to the source folder and configuring the options.</p>
+<p>If it also doesn't help, just wipe out your build folder and begin from scratch.</p>
+<h3 id="build-types">Build types</h3>
+<p>Briefly - just use <code>--config RelWithDebInfo</code> as written above. It will make no mistake.</p>
+<p>We use two build types. For development, it is <code>Debug</code> - it assigns compiler flags for optimization and other things in a way that it is very friendly for development, meaning the debug runs with step-by-step execution. However, the produced binaries are quite large and slow for production.</p>
+<p>For releasing, we use another type - <code>RelWithDebInfo</code> - which means 'release build with debug info'. It produces production binaries with embedded debug info. The latter is then split away into separate debuginfo packages which are stored aside with release packages and might be used in case of some issues like crashes - for investigation and bugfixing. Cmake also provides <code>Release</code> and <code>MinSizeRel</code>, but we don't use them. If the build type is not available, cmake will make a <code>noconfig</code> build.</p>
+<h4 id="build-system-generators">Build system generators</h4>
+<p>There are two types of generators: single-config and multi-config.</p>
+<ul>
+<li>Single-config needs the build type provided during configuration, via the <code>CMAKE_BUILD_TYPE</code> parameter. If it is not defined, the build will fall back to the <code>RelWithDebInfo</code> type which is suitable if you just want to build Manticore from sources and not participate in development. For explicit builds, you should provide a build type, like <code>-DCMAKE_BUILD_TYPE=Debug</code>.</li>
+<li>Multi-config selects the build type during the build. It should be provided with the <code>--config</code> option, otherwise it will build a kind of <code>noconfig</code>, which is not desirable. So, you should always specify the build type, like <code>--config Debug</code>.</li>
+</ul>
+<p>If you want to specify the build type but don't want to care about whether it is a 'single' or 'multi' config generator - just provide the necessary keys in both places. I.e., configure with <code>-DCMAKE_BUILD_TYPE=Debug</code>, and then build with <code>--config Debug</code>. Just be sure that both values are the same. If the target builder is a single-config, it will consume the configuration param. If it is multi-config, the configuration param will be ignored, but the correct build configuration will be selected by the <code>--config</code> key.</p>
+<p>If you want <code>RelWithDebInfo</code> (i.e. just build for production) and know you're on a single-config platform (that is all, except Windows) - you can omit the <code>--config</code> flag on the cmake invocation. The default <code>CMAKE_BUILD_TYPE=RelWithDebInfo</code> will be configured then, and used. All the commands for 'building', 'installation' and 'building package' will become shorter then.</p>
+<h4 id="explicitly-select-build-system-generators">Explicitly select build system generators</h4>
+<p>Cmake is the tool that doesn't perform building by itself, but it generates rules for the local build system.<br />
+Usually, it determines the available build system well, but sometimes you might need to provide a generator explicitly. You<br />
+can run <code>cmake -G</code> and review the list of available generators.</p>
+<ul>
+<li>On Windows, if you have more than one version of Visual Studio installed, you might need to specify which one to use,<br />
+as:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>-G<span class="w"> </span><span class="s2">&quot;Visual Studio 16 2019&quot;</span><span class="w"> </span>....
+<span class="w">  </span><span class="sb">```</span>
+-<span class="w"> </span>On<span class="w"> </span>all<span class="w"> </span>other<span class="w"> </span>platforms<span class="w"> </span>-<span class="w"> </span>usually<span class="w"> </span>Unix<span class="w"> </span>Makefiles<span class="w"> </span>are<span class="w"> </span>used,<span class="w"> </span>but<span class="w"> </span>you<span class="w"> </span>can<span class="w"> </span>specify<span class="w"> </span>another<span class="w"> </span>one,<span class="w"> </span>such<span class="w"> </span>as<span class="w"> </span>Ninja,<span class="w"> </span>or<span class="w"> </span>Ninja<span class="w"> </span>Multi-Config,<span class="w"> </span>as:
+<span class="w">  </span>Multi-Config<span class="sb">`</span>,<span class="w"> </span>as:
+<span class="sb">```</span>bash
+<span class="w">  </span>cmake<span class="w"> </span>-GNinja<span class="w"> </span>...
+<span class="w">  </span><span class="sb">```</span>
+<span class="w">  </span>or
+<span class="sb">```</span>bash
+<span class="w">  </span>cmake<span class="w"> </span>-G<span class="s2">&quot;Ninja Multi-Config&quot;</span><span class="w"> </span>...
+</code></pre></div>
+
+<p>Ninja Multi-Config is quite useful as it is really 'multi-config' and available on Linux/macOS/BSD. With this generator, you may shift the choosing of configuration type to build time, and also you may build several configurations in one and the same build folder, changing only the  <code>--config</code> param.</p>
+<h3 id="caveats">Caveats</h3>
+<ol>
+<li>If you want to finally build a full-featured RPM package, the path to the build directory must be long enough in order to correctly build debug symbols.<br />
+Like <code>/manticore012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789</code>, for example. That is because RPM tools modify the path over compiled binaries when building debug info, and it can just write over existing room and won't allocate more. The aforementioned long path has 100 chars and that is quite enough for such a case.</li>
+</ol>
+<h2 id="external-dependencies">External dependencies</h2>
+<p>Some libraries should be available if you want to use them.<br />
+- For indexing (<code>indexer</code> tool): <code>expat</code>, <code>iconv</code>, <code>mysql</code>, <code>odbc</code>, <code>postgresql</code>. Without them, you can only process <code>tsv</code> and <code>csv</code> sources.<br />
+- For serving queries (<code>searchd</code> daemon): <code>openssl</code> might be necessary.<br />
+- For all (required, mandatory!) we need the Boost library. The minimal version is 1.61.0, however, we build the binaries with a fresher version 1.75.0. Even more recent versions (like 1.76) should also be okay. On Windows, you can download pre-built Boost from their site (boost.org) and install it into the default suggested path (i.e. <code>C:\\boost...</code>). On MacOs, the one provided in brew is okay. On Linux, you can check the available version in official repositories, and if it doesn't match requirements, you can build from sources. We need the component 'context', you can also build components 'system' and 'program_options', they will be necessary if you also want to build Galera library from the sources. Look into <code>dist/build_dockers/xxx/boost_175/Dockerfile</code> for a short self-documented script/instruction on how to do it.</p>
+<p>On the build system, you need the 'dev' or 'devel' versions of these packages installed (i.e. - libmysqlclient-devel, unixodbc-devel, etc. Look to our dockerfiles for the names of concrete packages).</p>
+<p>On run systems, these packages should be present at least in the final (non-dev) variants. (devel variants usually larger, as they include not only target binaries, but also different development stuff like include headers, etc.).</p>
+<h3 id="building-on-windows">Building on Windows</h3>
+<p>Apart from necessary prerequisites, you might need prebuilt <code>expat</code>, <code>iconv</code>, <code>mysql</code>, and <code>postgresql</code> client libraries. You have to either build them yourself or contact us to get our build bundle (a simple zip archive where the folder with these targets is located).</p>
+<ul>
+<li>ODBC is not necessary as it is a system library.</li>
+<li>OpenSSL might be built from sources or downloaded prebuilt from https://slproweb.com/products/Win32OpenSSL.html (as mentioned in the cmake internal script on FindOpenSSL).</li>
+<li>Boost might be downloaded pre-built from https://www.boost.org/ releases.</li>
+</ul>
+<h3 id="see-what-is-compiled">See what is compiled</h3>
+<p>Run <code>indexer -h</code>. It will show which features were configured and built (whether they're explicit or investigated, doesn't matter):</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Built</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">Linux</span><span class="w"> </span><span class="n">x86_64</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">GNU</span><span class="w"> </span><span class="mf">8.3</span><span class="o">.</span><span class="mi">1</span><span class="w"> </span><span class="n">compiler</span><span class="o">.</span>
+
+<span class="n">Configured</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">definitions</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="n">DDISTR_BUILD</span><span class="o">=</span><span class="n">rhel8</span><span class="w"> </span><span class="o">-</span><span class="n">DUSE_SYSLOG</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_GALERA</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_RE2</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_RE2_FORCE_STATIC</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">-</span><span class="n">DWITH_STEMMER</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_STEMMER_FORCE_STATIC</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_ICU</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_ICU_FORCE_STATIC</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_SSL</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_ZLIB</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_ODBC</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DDL_ODBC</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">-</span><span class="n">DODBC_LIB</span><span class="o">=</span><span class="n">libodbc</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_EXPAT</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DDL_EXPAT</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DEXPAT_LIB</span><span class="o">=</span><span class="n">libexpat</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_ICONV</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_MYSQL</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DDL_MYSQL</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">-</span><span class="n">DMYSQL_LIB</span><span class="o">=</span><span class="n">libmariadb</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_POSTGRESQL</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DDL_POSTGRESQL</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="n">DPOSTGRESQL_LIB</span><span class="o">=</span><span class="n">libpq</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">5</span><span class="w"> </span><span class="o">-</span><span class="n">DLOCALDATADIR</span><span class="o">=/</span><span class="k">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">data</span>
+<span class="o">-</span><span class="n">DFULL_SHARE_DIR</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">manticore</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-03.07-migration_from_sphinx">
+        <a class="chapter-link" href="#toc-03.07-migration_from_sphinx"> ¶ 3.7</a>
+
+        
+        <h1 id="migration-from-sphinx-search">Migration from Sphinx Search</h1>
+<h2 id="sphinx-2x-manticore-2x">Sphinx 2.x -&gt; Manticore 2.x</h2>
+<p>Manticore Search 2.x maintains compatibility with Sphinxsearch 2.x and can load existing tables created by Sphinxsearch. In most cases, upgrading is just a matter of replacing the binaries.</p>
+<p>Instead of sphinx.conf (in Linux normally located at <code>/etc/sphinxsearch/sphinx.conf</code>) Manticore by default uses <code>/etc/manticoresearch/manticore.conf</code>. It also runs under a different user and use different folders.</p>
+<p>Systemd service name has changed from <code>sphinx/sphinxsearch</code> to <code>manticore</code> and the service runs under user <code>manticore</code> (Sphinx was using <code>sphinx</code> or <code>sphinxsearch</code>). It also uses a different folder for the PID file.</p>
+<p>The folders used by default are <code>/var/lib/manticore</code>, <code>/var/log/manticore</code>, <code>/var/run/manticore</code>. You can still use the existing Sphinx config, but you need to manually change permissions for <code>/var/lib/sphinxsearch</code> and <code>/var/log/sphinxsearch</code> folders. Or, just rename globally 'sphinx' to 'manticore' in system files. If you use other folders (for data, wordforms files etc.) the ownership must be also switched to user <code>manticore</code>. The <code>pid_file</code> location should be changed to match the manticore.service to <code>/var/run/manticore/searchd.pid</code>.</p>
+<p>If you want to use the Manticore folder instead, the table files need to be moved to the new data folder (<code>/var/lib/manticore</code>) and the permissions must be changed to user <code>manticore</code>.</p>
+<h2 id="sphinx-2x-manticore-2x-manticore-3x">Sphinx 2.x / Manticore 2.x -&gt; Manticore 3.x</h2>
+<p>Upgrading from Sphinx / Manticore 2.x to 3.x is not straightforward, as the table storage engine has undergone a significant upgrade and the new searchd cannot load older tables and upgrade them to the new format on-the-fly.</p>
+<p>Manticore Search 3 got a redesigned table storage. Tables created with Manticore/Sphinx 2.x cannot be loaded by Manticore Search 3 without a <a href="../03-installation.html#index_converter">conversion</a>. Because of the 4GB limitation, a real-time table in 2.x could still have several disk chunks after an optimize operation. After upgrading to 3.x, these tables can now be optimized to 1-disk chunk with the usual <a href="../16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE</a> command. Index files also changed. The only component that didn't get any structural changes is the <code>.spp</code> file (hitlists). <code>.sps</code> (strings/json) and <code>.spm</code> (MVA) are now held by <code>.spb</code> (var-length attributes). The new format has an <code>.spm</code> file present, but it's used for row map (previously it was dedicated for MVA attributes). The new extensions added are <code>.spt</code> (docid lookup), <code>.sphi</code> ( secondary index histograms), <code>.spds</code> (document storage). In case you are using scripts that manipulate table files, they should be adapted for the new file extensions.</p>
+<p>The upgrade procedure may differ depending on your setup (number of servers in the cluster, whether you have high availability or not, etc.), but in general, it involves creating new 3.x table versions and replacing your existing ones, as well as replacing older 2.x binaries with the new ones.</p>
+<p>There are two special requirements to take care:</p>
+<ul>
+<li>Real-time tables need to be flushed using <a href="../16-securing_and_compacting_a_table.html#flush-ramchunk">FLUSH RAMCHUNK</a></li>
+<li>Plain tables with kill-lists require adding a new directive in table configuration (see <a href="../06-creating_a_table.html#killlist_target">killlist_target</a>)</li>
+</ul>
+<p>Manticore Search 3 includes a new tool - <a href="../03-installation.html#index_converter">index_converter</a> - that can convert Sphinx 2.x / Manticore 2.x tables to 3.x format. <code>index_converter</code> comes in a separate package which should be installed first. Using the convert tool create 3.x versions of your tables. <code>index_converter</code> can write the new files in the existing data folder and backup the old files or it can write the new files to a chosen folder.</p>
+<h2 id="basic-upgrade-instruction">Basic upgrade instruction</h2>
+<p>If you have a single server:</p>
+<ul>
+<li>Install the manticore-converter package</li>
+<li>Use index_converter to create new versions of the tables in a different folder than the existing data folder (using the <code>--output-dir</code> option)</li>
+<li>Stop the existing Manticore/Sphinx, upgrade to 3.0, move the new tables to the data folder, and start Manticore</li>
+</ul>
+<p>To minimize downtime, you can copy 2.x tables, config (you'll need to edit paths here for tables, logs, and different ports), and binaries to a separate location and start this on a separate port. Point your application to it. After upgrading to 3.0 and the new server is started, you can point the application back to the normal ports. If everything is good, stop the 2.x copy and delete the files to free up space.</p>
+<p>If you have a spare box (like a testing or staging server), you can do the table upgrade there first and even install Manticore 3 to perform several tests. If everything is okay, copy the new table files to the production server. If you have multiple servers that can be pulled out of production, do it one by one and perform the upgrade on each. For distributed setups, 2.x searchd can work as a master with 3.x nodes, so you can do the upgrading on the data nodes first, and then on the master node.</p>
+<p>There have been no changes made to the way clients should connect to the engine, or any changes to the querying mode or behavior of queries.</p>
+<h2 id="kill-lists-in-sphinx-manticore-2x-vs-manticore-3x">kill-lists in Sphinx / Manticore 2.x vs Manticore 3.x</h2>
+<p><a href="../12-data_creation_and_modification.html#toc-12.02.06.02-killlists_in_plain_tables">Kill-lists</a> have been redesigned in Manticore Search 3. In previous versions, kill-lists were applied to the result set provided by each previously searched table at query time.</p>
+<p>Thus, in 2.x, the table order at query time mattered. For example, if a delta table had a kill-list, in order to apply it against the main table, the order had to be main, delta (either in a distributed table or in the FROM clause).</p>
+<p>In Manticore 3, kill-lists are applied to a table when it's loaded during searchd startup or gets rotated. The new directive <code>killlist_target</code> in table configuration specifies target tables and defines which doc ids from the source table should be used for suppression. These can be ids from the defined kill-list, actual doc ids of the table or both.</p>
+<p>Documents from the kill-lists are deleted from the target tables, they are not returned in results even if the search doesn't include the table that provided the kill-lists. Because of that, the order of tables for searching does not matter anymore. Now, <code>delta, main</code> and <code>main, delta</code> will provide the same results.</p>
+<p>In previous versions, tables were rotated following the order from the configuration file. In Manticore 3 table rotation order is much smarter and works in accordance with killlist targets. Before starting to rotate tables, the server looks for chains of tables by <code>killlist_target</code> definitions. It will then first rotate tables not referenced anywhere as kill-lists targets. Next, it will rotate tables targeted by already rotated tables and so on. For example, if we do  <code>indexer --all</code> and we have 3 tables: main, delta_big (which targets at the main) and delta_small (with target at delta_big), first, delta_small is rotated, then delta_big and finally the main. This is to ensure that when a dependent table is rotated it gets the most actual kill-list from other tables.</p>
+<h2 id="configuration-keys-removed-in-manticore-3x">Configuration keys removed in Manticore 3.x</h2>
+<ul>
+<li><code>docinfo</code> - everything is now extern</li>
+<li><code>inplace_docinfo_gap</code> - not needed anymore</li>
+<li><code>mva_updates_pool</code> - MVAs don’t have anymore a dedicated pool for updates, as now they can be updated directly in the blob (see below).</li>
+</ul>
+<h2 id="updating-var-length-attributes-in-manticore-3x">Updating var-length attributes in Manticore 3.x</h2>
+<p>String, JSON and MVA attributes can be updated in Manticore 3.x using <code>UPDATE</code> statement.</p>
+<p>In 2.x string attributes required <code>REPLACE</code>, for JSON it was only possible to update scalar properties (as they were fixed-width) and MVAs could be updated using the MVA pool. Now updates are performed directly on the blob component. One setting that may require tuning is <a href="../12-data_creation_and_modification.html#attr_update_reserve">attr_update_reserve</a> which allows changing the allocated extra space at the end of the blob used to avoid frequent resizes in case the new values are bigger than the existing values in the blob.</p>
+<h2 id="document-ids-in-manticore-3x">Document IDs in Manticore 3.x</h2>
+<p>Doc ids used to be UNSIGNED 64-bit integers. Now they are POSITIVE SIGNED 64-bit integers.</p>
+<h2 id="rt-mode-in-manticore-3x">RT mode in Manticore 3.x</h2>
+<p>Read here about the <a href="../02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a></p>
+<h2 id="special-suffixes-since-manticore-3x">Special suffixes since Manticore 3.x</h2>
+<p>Manticore 3.x recognizes and parses special suffixes which makes easier to use numeric values with special meaning. Common form for them is integer number + literal, like 10k or 100d, but not 40.3s (since 40.3 is not integer), or not 2d 4h (since there are two, not one value). Literals are case-insensitive, so 10W is the same as 10w. There are 2 types of such suffixes currently supported:</p>
+<ul>
+<li>Size suffixes - can be used in parameters that define size of something (memory buffer, disk file, limit of RAM, etc. ) in bytes. "Naked" numbers in that places mean literally size in bytes (octets). Size values take suffix <code>k</code> for kilobytes (1k=1024), <code>m</code> for megabytes (1m=1024k), <code>g</code> for gigabytes (1g=1024m) and <code>t</code> for terabytes (1t=1024g).</li>
+<li>Time suffixes - can be used in parameters defining some time interval values like delays, timeouts, etc. "Naked" values for those parameters usually have documented scale, and you must know if their numbers, say, 100, means '100 seconds' or '100 milliseconds'. However instead of guessing you just can write suffixed value and it will be fully determined by it's suffix. Time values take suffix <code>us</code> for useconds (microseconds), <code>ms</code> for milliseconds, <code>s</code> for seconds, <code>m</code> for minutes, <code>h</code> for hours, <code>d</code> for days and <code>w</code> for weeks.</li>
+</ul>
+<h2 id="index_converter">index_converter</h2>
+<p><code>index_converter</code> is a tool for converting tables created with Sphinx/Manticore Search 2.x to the Manticore Search 3.x table format. The tool can be used in several different ways:</p>
+<h4 id="convert-one-table-at-a-time">Convert one table at a time</h4>
+<div class="codehilite"><pre><span></span><code><span class="na">$ index_converter --config /home/myuser/manticore.conf --index tablename</span>
+</code></pre></div>
+
+<h4 id="convert-all-tables">Convert all tables</h4>
+<div class="codehilite"><pre><span></span><code><span class="na">$ index_converter --config /home/myuser/manticore.conf --all</span>
+</code></pre></div>
+
+<h4 id="convert-tables-found-in-a-folder">Convert tables found in a folder</h4>
+<div class="codehilite"><pre><span></span><code><span class="na">$ index_converter  --path /var/lib/manticoresearch/data --all</span>
+</code></pre></div>
+
+<p>The new version of the table is written by default in the same folder. The previous version's files are saved with the <code>.old</code> extension in their name. An exception is the <code>.spp</code> (hitlists) file, which is the only table component that didn't have any changes in the new format.</p>
+<p>You can save the new table version to a different folder using the <code>-–output-dir</code> option</p>
+<div class="codehilite"><pre><span></span><code><span class="na">$ index_converter --config /home/myuser/manticore.conf --all --output-dir /new/path</span>
+</code></pre></div>
+
+<h4 id="convert-kill-lists">Convert kill lists</h4>
+<p>A special case is for tables containing kill-lists. As the behaviour of how kill-lists works has changed (see <a href="../06-creating_a_table.html#killlist_target">killlist_target</a>), the delta table should know which are the target tables for applying the kill-lists. There are 3 ways to have a converted table ready for setting targeted tables for applying kill-lists:</p>
+<ul>
+<li>
+<p>Use <code>-–killlist-target</code> when converting a table<br />
+<code>ini
+  $ index_converter --config /home/myuser/manticore.conf --index deltaindex --killlist-target mainindex:kl</code></p>
+</li>
+<li>
+<p>Add killlist_target in the configuration before doing the conversion</p>
+</li>
+<li>use <a href="../12-data_creation_and_modification.html#killlist_target">ALTER ... KILLIST_TARGET</a> command after conversion</li>
+</ul>
+<h4 id="complete-list-of-index_converter-options">Complete list of index_converter options</h4>
+<p>Here's the complete list of <code>index_converter</code> options:</p>
+<ul>
+<li><code>--config &lt;file&gt;</code> (<code>-c &lt;file&gt;</code> for short) tells index_converter to use the given file as its configuration. Normally, it will look for manticore.conf in the installation directory (e.g. <code>/usr/local/manticore/etc/manticore.conf</code> if installed into <code>/usr/local/sphinx</code>), followed by the current directory you are in when calling index_converter from the shell.</li>
+<li><code>--index</code> specifies which table should be converted</li>
+<li><code>--path</code> - instead of using a config file, a path containing table(s) can be used</li>
+<li><code>--strip-path</code> - strips path from filenames referenced by table: stopwords, exceptions and wordforms</li>
+<li><code>--large-docid</code> - allows to convert documents with ids larger than 2^63 and display a warning, otherwise it will just exit on the large id with an error. This option was added as in Manticore 3.x doc ids are signed bigint, while previously they were unsigned</li>
+<li><code>--output-dir &lt;dir&gt;</code> - writes the new files in a chosen folder rather than the same location as with the existing table files. When this option set, existing table files will remain untouched at their location.</li>
+<li><code>--all</code> - converts all tables from the config</li>
+<li><code>--killlist-target &lt;targets&gt;</code> sets the target tables for which kill-lists will be applied. This option should be used only in conjunction with the <code>--index</code> option</li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

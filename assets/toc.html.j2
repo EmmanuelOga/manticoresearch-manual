@@ -1,0 +1,43 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="toc.css" />
+    <title>Manticore Search {{version}}</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <h1>Manticore Search</h1>
+            <span class="version">
+                <a href="https://github.com/manticoresoftware/manticoresearch/">{{version}}</a>
+            </span>
+        </header>
+
+        <aside class="sidebar">
+            <ul class="manual-toc">
+                {%- for entry in entries -%}
+                <li class="toc-indent-{{entry.nest_level}}">
+                    <span class="title">
+                        <a target="content" href="{{entry.toc_path}}">{{entry.title}}</a>
+                    </span>
+                    <span class="chapter">{{entry.clean_breadcrumb()}}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <article class="content">
+            <iframe name="content" src="{{first_path}}"></iframe>
+        </article>
+
+        <footer class="footer">
+            <a href="https://github.com/emmanueloga/manticore-manual">Doc Sources</a>
+        </footer>
+    </div>
+</body>

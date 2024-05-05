@@ -1,0 +1,454 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Logging - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-18-logging">
+        <a class="chapter-link" href="#toc-18-logging"> ¶ 18</a>
+
+        
+        <h1>Logging</h1>
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-18.01-query_logging">
+        <a class="chapter-link" href="#toc-18.01-query_logging"> ¶ 18.1</a>
+
+        
+        <h1 id="query-logging">Query logging</h1>
+<!-- example query_logging -->
+<p>Query logging can be enabled by setting the <a href="../20-server_settings.html#query_log">query_log</a> directive in the searchd section of the configuration file.</p>
+<p>Queries can also be sent to syslog by setting <code>syslog</code> instead of a file path. In this case, all search queries will be sent to the syslog daemon with <code>LOG_INFO</code> priority, prefixed with <code>[query]</code> instead of a timestamp. Only the <code>plain</code> log format is supported for syslog.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+`query_log` example:
+<!-- request Config -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/query.log</span>
+<span class="w">    </span><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinxql</span><span class="w"> </span><span class="c1"># default</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="logging-format">Logging format</h2>
+<p>Two query log formats are supported:</p>
+<ul>
+<li><code>sphinxql</code> (default): Logs in SQL format. It also provides an easy way to replay logged queries.</li>
+<li><code>plain</code>: Logs full-text queries in a simple text format. Recommended if most of your queries are primarily full-text, or if you don't care about non-full-text components of your queries, such as filtering by attributes, sorting, grouping, etc. Queries logged in the <code>plain</code> format cannot be replayed.</li>
+</ul>
+<p>To switch between the formats, you can use the searchd setting <a href="../20-server_settings.html#query_log_format">query_log_format</a>.</p>
+<h3 id="sql-log-format">SQL log format</h3>
+<!-- example sphixql_log -->
+<p>The SQL log format is the default setting. In this mode, Manticore logs all successful and unsuccessful select queries. Requests sent as SQL or via the binary API are logged in the SQL format, but JSON queries are logged as is. This type of logging only works with plain log files and does not support the 'syslog' service for logging.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+`query_log_format` example:
+<!-- request Config -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinxql</span><span class="w"> </span><span class="c1"># default</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example sphixql_log2 -->
+<p>The features of the Manticore SQL log format compared to the <a href="../../18-logging.html#plain-log-format">plain format</a> include:</p>
+<ul>
+<li>Full statement data is logged where possible.</li>
+<li>Errors and warnings are logged.</li>
+<li>The query log can be replayed.</li>
+<li>Additional performance counters (currently, per-agent distributed query times) are logged.</li>
+<li>Each log entry is a valid Manticore SQL/JSON statement that reconstructs the full request, except if the logged request is too large and needs to be shortened for performance reasons.</li>
+<li>JSON requests and additional messages, counters, etc., are logged as comments.</li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+`sphinxql` log entries example:
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="cm">/* Sun Apr 28 12:38:02.808 2024 conn 2 (127.0.0.1:53228) real 0.000 wall 0.000 found 0 */</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">proximity</span><span class="p">;</span>
+<span class="cm">/* Sun Apr 28 12:38:05.585 2024 conn 2 (127.0.0.1:53228) real 0.001 wall 0.001 found 0 */</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">channel_id</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">proximity</span><span class="p">;</span>
+<span class="cm">/* Sun Apr 28 12:40:57.366 2024 conn 4 (127.0.0.1:53256) real 0.000 wall 0.000 found 0 */</span><span class="w">  </span><span class="cm">/*{</span>
+<span class="cm">    &quot;index&quot; : &quot;test&quot;,</span>
+<span class="cm">    &quot;query&quot;:</span>
+<span class="cm">    {</span>
+<span class="cm">        &quot;match&quot;:</span>
+<span class="cm">        {</span>
+<span class="cm">            &quot;*&quot; : &quot;test&quot;</span>
+<span class="cm">        }</span>
+<span class="cm">    },</span>
+<span class="cm">    &quot;_source&quot;: [&quot;f&quot;],</span>
+<span class="cm">    &quot;limit&quot;: 30</span>
+<span class="cm">} */</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="plain-log-format">Plain log format</h3>
+<!-- example plain_log -->
+<p>With the <code>plain</code> log format, Manticore logs all successfully executed search queries in a simple text format. Non-full-text parts of queries are not logged. JSON queries are logged as flattened to a single line.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+`query_log_format` example:
+<!-- request Config -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">plain</span>
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<!-- example plain_log2 -->
+<p>The log format is as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">query-date</span><span class="o">]</span><span class="w"> </span><span class="nc">real</span><span class="o">-</span><span class="nc">time</span><span class="w"> </span><span class="n">wall</span><span class="o">-</span><span class="nc">time</span><span class="w"> </span><span class="o">[</span><span class="n">match-mode/filters-count/sort-mode total-matches (offset,limit) @groupby-attr</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">table-name</span><span class="o">]</span><span class="w"> </span><span class="err">{</span><span class="n">perf</span><span class="o">-</span><span class="n">stats</span><span class="err">}</span><span class="w"> </span><span class="n">query</span>
+</code></pre></div>
+
+<p>where:</p>
+<ul>
+<li><code>real-time</code> is the time from the start to the finish of the query.</li>
+<li><code>wall-time</code> is similar to real-time, but excludes time spent waiting for agents and merging result sets from them.</li>
+<li><code>perf-stats</code> includes CPU/IO stats when Manticore is started with <code>--cpustats</code> (or it was enabled via <code>SET GLOBAL cpustats=1</code>) and/or <code>--iostats</code> (or it was enabled via <code>SET GLOBAL iostats=1</code>):</li>
+<li><code>ios</code> is the number of file I/O operations carried out;</li>
+<li><code>kb</code> is the amount of data in kilobytes read from the table files;</li>
+<li><code>ms</code> is the time spent on I/O operations.</li>
+<li>
+<p><code>cpums</code> is the time in milliseconds spent on CPU processing the query.</p>
+</li>
+<li>
+<p><code>match-mode</code> can have one of the following values:</p>
+</li>
+<li>"all" for <code>SPH_MATCH_ALL</code> mode;</li>
+<li>"any" for <code>SPH_MATCH_ANY</code> mode;</li>
+<li>"phr" for <code>SPH_MATCH_PHRASE</code> mode;</li>
+<li>"bool" for <code>SPH_MATCH_BOOLEAN</code> mode;</li>
+<li>"ext" for <code>SPH_MATCH_EXTENDED</code> mode;</li>
+<li>"ext2" for <code>SPH_MATCH_EXTENDED2</code> mode;</li>
+<li>
+<p>"scan" if the full scan mode was used, either by being specified with <code>SPH_MATCH_FULLSCAN</code> or if the query was empty.</p>
+</li>
+<li>
+<p><code>sort-mode</code> can have one of the following values:</p>
+</li>
+<li>"rel" for <code>SPH_SORT_RELEVANCE</code> mode;</li>
+<li>"attr-" for <code>SPH_SORT_ATTR_DESC</code> mode;</li>
+<li>"attr+" for <code>SPH_SORT_ATTR_ASC</code> mode;</li>
+<li>"tsegs" for <code>SPH_SORT_TIME_SEGMENTS</code> mode;</li>
+<li>"ext" for <code>SPH_SORT_EXTENDED</code> mode.</li>
+</ul>
+<p>Note: the <code>SPH*</code> modes are specific to the <code>sphinx</code> legacy interface. SQL and JSON interfaces will log, in most cases, <code>ext2</code> as <code>match-mode</code> and <code>ext</code> and <code>rel</code> as <code>sort-mode</code>.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+Query log example:
+<!-- request Example -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">[Fri Jun 29 21</span><span class="o">:</span><span class="s">17:58 2021] 0.004 sec [all/0/rel 35254 (0,20)] [lj] [ios=6 kb=111.1 ms=0.5] test</span>
+<span class="na">[Fri Jun 29 21</span><span class="o">:</span><span class="s">17:58 2021] 0.004 sec [all/0/rel 35254 (0,20)] [lj] [ios=6 kb=111.1 ms=0.5 cpums=0.3] test</span>
+<span class="na">[Sun Apr 28 15</span><span class="o">:</span><span class="s">09:38.712 2024] 0.000 sec 0.000 sec [ext2/0/ext 0 (0,20)] [test] test</span>
+<span class="na">[Sun Apr 28 15</span><span class="o">:</span><span class="s">09:44.974 2024] 0.000 sec 0.000 sec [ext2/0/ext 0 (0,20) @channel_id] [test] test</span>
+<span class="na">[Sun Apr 28 15</span><span class="o">:</span><span class="s">24:32.975 2024] 0.000 sec 0.000 sec [ext2/0/ext 0 (0,30)] [test] {     &quot;index&quot; : &quot;test&quot;,     &quot;query&quot;:     {         &quot;match&quot;:         {             &quot;*&quot; : &quot;test&quot;         }     },     &quot;_source&quot;: [&quot;f&quot;],     &quot;limit&quot;: 30 }</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="logging-only-slow-queries">Logging only slow queries</h2>
+<!-- example query_log_min_msec -->
+<p>By default, all queries are logged. If you want to log only queries with execution times exceeding a specified limit, the <code>query_log_min_msec</code> directive can be used.</p>
+<p>The expected unit of measurement is milliseconds, but time suffix expressions can also be used.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+`query_log_min_msec` example:
+<!-- request Config -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/query.log</span>
+<span class="w">    </span><span class="na">query_log_min_msec</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span>
+<span class="w">    </span><span class="c1"># query_log_min_msec  = 1s</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h2 id="log-file-permission-mode">Log file permission mode</h2>
+<!-- Example query_log_mode -->
+<p>By default, the searchd and query log files are created with permission <code>600</code>, so only the user under which Manticore is running and <code>root</code> can read the log files. The <code>query_log_mode</code> option allows setting a different permission. This can be helpful for allowing other users to read the log files (for example, monitoring solutions running on non-root users).</p>
+<!-- intro -->
+<p><code>query_log_mode</code> example:</p>
+<!-- request Config -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/query.log</span>
+<span class="w">    </span><span class="na">query_log_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">666</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-18.02-server_logging">
+        <a class="chapter-link" href="#toc-18.02-server_logging"> ¶ 18.2</a>
+
+        
+        <h1 id="server-logging">Server logging</h1>
+<p>By default, Manticore search daemon logs all runtime events in a <code>searchd.log</code> file in the directory where searchd was started. In Linux by default, you can find the log at <code>/var/log/manticore/searchd.log</code>.</p>
+<p>The log file path/name can be overridden by setting <code>log</code> in the <code>searchd</code> section of the configuration file.</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/custom/path/to/searchd.log</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<ul>
+<li>You can also use <code>syslog</code> as the file name. In this case, events will be sent to your server's syslog daemon.</li>
+<li>In some cases, you might want to use <code>/dev/stdout</code> as the file name. In this case, on Linux, Manticore will simply output the events. This can be useful in Docker/Kubernetes environments.</li>
+</ul>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-18.03-binary_logging">
+        <a class="chapter-link" href="#toc-18.03-binary_logging"> ¶ 18.3</a>
+
+        
+        <h1 id="binary-logging">Binary logging</h1>
+<p>Binary logging serves as a recovery mechanism for <a href="../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a> table data, as well as attribute updates for plain tables that would otherwise only be stored in RAM until a flush occurs. When binary logs are enabled, <code>searchd</code> records each transaction to the binlog file and utilizes it for recovery following an unclean shutdown. During a clean shutdown, RAM chunks are saved to disk, and all binlog files are subsequently unlinked.</p>
+<h2 id="disabling-binary-logging">Disabling binary logging</h2>
+<p>By default, binary logging is enabled. On Linux systems, the default location for <code>binlog.*</code> files is <code>/var/lib/manticore/data/</code>.<br />
+In <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>, binary logs are stored in the <code>data_dir</code> folder, unless specified otherwise.</p>
+<p>To disable binary logging, set <code>binlog_path</code> to empty:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">binlog_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="c1"># disable logging</span>
+<span class="na">...</span>
+</code></pre></div>
+
+<p>Disabling binary logging can lead to better performance for Real-Time tables, but it also puts their data at risk.</p>
+<p>You can use the following directive to set a custom path:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">binlog_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/data</span>
+<span class="na">...</span>
+</code></pre></div>
+
+<h2 id="operations">Operations</h2>
+<p>When logging is enabled, each transaction committed to an RT table is written to a log file. After an unclean shutdown, logs are automatically replayed upon startup, recovering any logged changes.</p>
+<h3 id="log-size">Log size</h3>
+<p>During normal operation, a new binlog file is opened whenever the <code>binlog_max_log_size</code> limit is reached. Older, closed binlog files are retained until all transactions stored in them (from all tables) are flushed as a disk chunk. Setting the limit to 0 essentially prevents the binlog from being unlinked while <code>searchd</code> is running; however, it will still be unlinked upon a clean shutdown. By default, there is no limit to the log file size.</p>
+<div class="codehilite"><pre><span></span><code><span class="na">binlog_max_log_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16M</span>
+</code></pre></div>
+
+<h3 id="binary-flushing-strategies">Binary flushing strategies</h3>
+<p>There are 3 different binlog flushing strategies, controlled by the <code>binlog_flush</code> directive:</p>
+<ul>
+<li>0 - Flush and sync every second. This provides the best performance, but up to 1 second's worth of committed transactions may be lost in the event of a server crash or an OS/hardware crash.</li>
+<li>1 - Flush and sync every transaction. This has the worst performance, but guarantees that every committed transaction's data is saved.</li>
+<li>2 - Flush every transaction and sync every second. This offers good performance, and every committed transaction is guaranteed to be saved in the case of a server crash. However, up to 1 second's worth of committed transactions may be lost in the event of an OS/hardware crash.</li>
+</ul>
+<p>The default mode is to flush every transaction and sync every second (mode 2).</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">binlog_flush</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="c1"># ultimate safety, low speed</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<h3 id="recovery">Recovery</h3>
+<p>During recovery after an unclean shutdown, binlogs are replayed, and all logged transactions since the last good on-disk state are restored. Transactions are checksummed, so in case of binlog file corruption, garbage data will <strong>not</strong> be replayed; such a broken transaction will be detected and will stop the replay.</p>
+<h3 id="flushing-rt-ram-chunks">Flushing RT RAM chunks</h3>
+<p>Intensive updates to a small RT table that fully fits into a RAM chunk can result in an ever-growing binlog that can never be unlinked until a clean shutdown. Binlogs essentially serve as append-only deltas against the last known good saved state on disk, and they cannot be unlinked unless the RAM chunk is saved. An ever-growing binlog is not ideal for disk usage and crash recovery time. To address this issue, you can configure <code>searchd</code> to perform periodic RAM chunk flushes using the <code>rt_flush_period</code> directive. With periodic flushes enabled, <code>searchd</code> will maintain a separate thread that checks whether RT table RAM chunks need to be written back to disk. Once this occurs, the respective binlogs can be (and are) safely unlinked.</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">    </span><span class="na">rt_flush_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3600</span><span class="w"> </span><span class="c1"># 1 hour</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<p>The default RT flush period is set to 10 hours.</p>
+<p>It's important to note that <code>rt_flush_period</code> only controls the frequency at which <em>checks</em> occur. There are no <em>guarantees</em> that a specific RAM chunk will be saved. For example, it doesn't make sense to regularly re-save a large RAM chunk that only receives a few rows worth of updates. Manticore automatically determines whether to perform the flush using a few heuristics.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-18.04-docker_logging">
+        <a class="chapter-link" href="#toc-18.04-docker_logging"> ¶ 18.4</a>
+
+        
+        <h1 id="docker-logging">Docker logging</h1>
+<p>When you use the <a href="https://hub.docker.com/r/manticoresearch/manticore/">official Manticore docker image</a>, the server log is sent to <code>/dev/stdout</code> which can be viewed from host with:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>manticore
+</code></pre></div>
+
+<p>The query log can be diverted to the Docker log by passing the variable <code>QUERY_LOG_TO_STDOUT=true</code>.</p>
+<p>The log folder is the same as in the case of the Linux package, set to <code>/var/log/manticore</code>. If desired, it can be mounted to a local path to view or process the logs.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-18.05-rotating_query_and_server_logs">
+        <a class="chapter-link" href="#toc-18.05-rotating_query_and_server_logs"> ¶ 18.5</a>
+
+        
+        <h1 id="rotating-query-and-server-logs">Rotating query and server logs</h1>
+<p>Manticore Search accepts the USR1 signal for reopening server and query log files.</p>
+<p>The official <a href="https://manticoresearch.com/install/">DEB and RPM packages</a> install a Logrotate configuration file for all files in the default log folder.</p>
+<p>A simple logrotate configuration for log files looks like:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">/var/log/manticore/*.log {</span>
+<span class="w">       </span><span class="na">weekly</span>
+<span class="w">       </span><span class="na">rotate 10</span>
+<span class="w">       </span><span class="na">copytruncate</span>
+<span class="w">       </span><span class="na">delaycompress</span>
+<span class="w">       </span><span class="na">compress</span>
+<span class="w">       </span><span class="na">notifempty</span>
+<span class="w">       </span><span class="na">missingok</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<h2 id="flush-logs">FLUSH LOGS</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FLUSH</span><span class="w"> </span><span class="n">LOGS</span><span class="p">;</span>
+<span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Additionally, the <code>FLUSH LOGS</code> SQL command is available, which works the same way as the USR1 system signal. It initiates the reopening of searchd log and query log files, allowing you to implement log file rotation. The command is non-blocking (i.e., it returns immediately).</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

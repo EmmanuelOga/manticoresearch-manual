@@ -1,0 +1,839 @@
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="chapter.css" />
+    <link rel="stylesheet" href="pygments.css" />
+
+    <title>Connecting to the server - Manticore Search 6.2.12 (Aug 23, 2023)</title>
+</head>
+
+<body>
+    
+    <section class="chapter-section" id="toc-11-connecting_to_the_server">
+        <a class="chapter-link" href="#toc-11-connecting_to_the_server"> ¶ 11</a>
+
+        
+        <h1 id="connecting-to-the-server">Connecting to the server</h1>
+<!-- example connect -->
+<p>With default configuration, Manticore is waiting for your connections on:</p>
+<ul>
+<li>port 9306 for MySQL clients</li>
+<li>port 9308 for HTTP/HTTPS connections</li>
+<li>port 9312 for HTTP/HTTPS, and connections from other Manticore nodes and clients based on Manticore binary API</li>
+</ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via MySQL
+</div>
+
+<!-- request SQL -->
+
+<div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-h0<span class="w"> </span>-P9306
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via JSON over HTTP
+</div>
+
+<!-- request HTTP -->
+HTTP is a stateless protocol, so it doesn't require any special connection phase:
+
+
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:9308/search&quot;</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via [PHP client](https//github.com/manticoresoftware/manticoresearch-php)
+</div>
+
+<!-- request PHP -->
+
+<div class="codehilite"><pre><span></span><code><span class="x">require_once __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
+<span class="x">$config = [&#39;host&#39;=&gt;&#39;127.0.0.1&#39;,&#39;port&#39;=&gt;9308];</span>
+<span class="x">$client = new \Manticoresearch\Client($config);</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Python
+</div>
+<!-- request Python -->
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">manticoresearch</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">Configuration</span><span class="p">(</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:9308&quot;</span>
+<span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span>  <span class="n">manticoresearch</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">indexApi</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">IndexApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">searchApi</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">searchApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">utilsApi</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+</code></pre></div>
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Javascript
+</div>
+<!-- request Javascript -->
+
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;manticoresearch&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">client</span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">ApiClient</span><span class="p">()</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">basePath</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:9308&quot;</span><span class="p">;</span>
+<span class="nx">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">IndexApi</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+<span class="nx">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">SearchApi</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+<span class="nx">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">UtilsApi</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Java
+</div>
+<!-- request Java -->
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.ApiClient</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.ApiException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.Configuration</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.model.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.api.IndexApi</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.api.UtilsApi</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.api.SearchApi</span><span class="p">;</span>
+
+<span class="n">ApiClient</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Configuration</span><span class="p">.</span><span class="na">getDefaultApiClient</span><span class="p">();</span>
+<span class="n">client</span><span class="p">.</span><span class="na">setBasePath</span><span class="p">(</span><span class="s">&quot;http://127.0.0.1:9308&quot;</span><span class="p">);</span>
+
+<span class="n">IndexApi</span><span class="w"> </span><span class="n">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IndexApi</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="n">SearchApi</span><span class="w"> </span><span class="n">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="n">UtilsApi</span><span class="w"> </span><span class="n">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UtilsApi</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+C
+</div>
+<!-- request C# -->
+
+<div class="codehilite"><pre><span></span><code><span class="nt">using</span><span class="w"> </span><span class="nt">ManticoreSearch</span><span class="p">.</span><span class="nc">Client</span><span class="o">;</span>
+<span class="nt">using</span><span class="w"> </span><span class="nt">ManticoreSearch</span><span class="p">.</span><span class="nc">Api</span><span class="o">;</span>
+<span class="nt">using</span><span class="w"> </span><span class="nt">ManticoreSearch</span><span class="p">.</span><span class="nc">Model</span><span class="o">;</span>
+
+<span class="nt">string</span><span class="w"> </span><span class="nt">basePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://127.0.0.1:9308&quot;</span><span class="o">;</span>
+<span class="nt">IndexApi</span><span class="w"> </span><span class="nt">indexApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">IndexApi</span><span class="o">(</span><span class="nt">basePath</span><span class="o">);</span>
+<span class="nt">SearchApi</span><span class="w"> </span><span class="nt">searchApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">UtilsApi</span><span class="o">(</span><span class="nt">basePath</span><span class="o">);</span>
+<span class="nt">UtilsApi</span><span class="w"> </span><span class="nt">utilsApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">new</span><span class="w"> </span><span class="nt">UtilsApi</span><span class="o">(</span><span class="nt">basePath</span><span class="o">);</span>
+</code></pre></div>
+
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Connect via Docker
+</div>
+If you are familiar with Docker, you can use Manticore's [official Docker image](https://github.com/manticoresoftware/docker) to run Manticore. Here is how you can connect to Manticore's docker via MySQL:
+<!-- request docker -->
+Run Manticore container and use built-in MySQL client to connect to the node.
+
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>manticore<span class="w"> </span>mysql
+</code></pre></div>
+
+
+<!-- end -->
+
+</div>
+
+</div>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-11.01-mysql_protocol">
+        <a class="chapter-link" href="#toc-11.01-mysql_protocol"> ¶ 11.1</a>
+
+        
+        <h1 id="mysql-protocol">MySQL protocol</h1>
+<p>Manticore Search implements an SQL interface using the MySQL protocol, allowing any MySQL library or connector and many MySQL clients to be used to connect to Manticore Search and work with it as if it were a MySQL server, not Manticore.</p>
+<p>However, the SQL dialect is different and implements only a subset of the SQL commands or functions available in MySQL. Additionally, there are clauses and functions that are specific to Manticore Search, such as the <code>MATCH()</code> clause for full-text search.</p>
+<p>Manticore Search does not support server-side prepared statements, but client-side prepared statements can be used. It is important to note that Manticore implements the multi-value (MVA) data type, which has no equivalent in MySQL or libraries implementing prepared statements. In these cases, the MVA values must be crafted in the raw query.</p>
+<p>Some MySQL clients/connectors require values for user/password and/or database name. Since Manticore Search does not have the concept of databases and there is no user access control implemented, these values can be set arbitrarily as Manticore will simply ignore them.</p>
+<h2 id="configuration">Configuration</h2>
+<p><strong>The default port for the SQL interface is 9306</strong> and it's enabled by default. </p>
+<p>You can configure the MySQL port in the searchd section of the configuration file using the <code>listen</code> directive like this:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9306:mysql</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<p>Keep in mind that Manticore doesn't have user authentication, so make sure that the MySQL port is not accessible to anyone outside of your network.</p>
+<h3 id="vip-connection">VIP connection</h3>
+<p>A separate MySQL port can be used for performing "VIP" connections. When connecting to this port, the thread pool is bypassed, and a new dedicated thread is always created. This is useful in cases of severe overload, where the server would either stall or prevent a connection through the regular port.</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9306:mysql</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9307:mysql_vip</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<h2 id="connecting-via-standard-mysql-client">Connecting via standard MySQL client</h2>
+<p>The easiest way to connect to Manticore is by using a standard MySQL client:</p>
+<div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-P9306<span class="w"> </span>-h0
+</code></pre></div>
+
+<h2 id="secured-mysql-connection">Secured MySQL connection</h2>
+<p>The MySQL protocol supports <a href="../17-security.html#toc-17.01-ssl">SSL encryption</a>. Secure connections can be made on the same <code>mysql</code> listening port.</p>
+<h2 id="compressed-mysql-connection">Compressed MySQL connection</h2>
+<p>Compression can be used with MySQL connections and is available to clients by default. The client just needs to specify that the connection should use compression.</p>
+<p>An example using the MySQL client:</p>
+<div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-P9306<span class="w"> </span>-h0<span class="w"> </span>-C
+</code></pre></div>
+
+<p>Compression can be used in both secured and non-secured connections.</p>
+<h2 id="notes-on-mysql-connectors">Notes on MySQL connectors</h2>
+<p>The official MySQL connectors can be used to connect to Manticore Search, however they might require certain settings passed in the DSN string as the connector can try running certain SQL commands not implemented yet in Manticore.</p>
+<p>JDBC Connector 6.x and above require Manticore Search 2.8.2 or greater and the DSN string should contain the following options:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">jdbc</span><span class="o">:</span><span class="s">mysql://IP:PORT/DB/?characterEncoding=utf8&amp;maxAllowedPacket=512000&amp;serverTimezone=XXX</span>
+</code></pre></div>
+
+<p>By default Manticore Search will report it's own version to the connector, however this may cause some troubles. To overcome that <code>mysql_version_string</code> directive in searchd section of the configuration should be set to a version lower than 5.1.1:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">mysql_version_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5.0.37</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<p>.NET MySQL connector uses connection pools by default. To correctly get the statistics of <code>SHOW META</code>, queries along with <code>SHOW META</code> command should be sent as a single multistatement (<code>SELECT ...;SHOW META</code>). If pooling is enabled option <code>Allow Batch=True</code> is required to be added to the connection string to allow multistatements:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">Server</span><span class="o">=</span><span class="s">127.0.0.1</span><span class="c1">;Port=9306;Database=somevalue;Uid=somevalue;Pwd=;Allow Batch=True;</span>
+</code></pre></div>
+
+<h2 id="notes-on-odbc-connectivity">Notes on ODBC connectivity</h2>
+<p>Manticore can be accessed using ODBC. It's recommended to set <code>charset=UTF8</code> in the ODBC string. Some ODBC drivers will not like the reported version by the Manticore server as they will see it as a very old MySQL server. This can be overridden with <code>mysql_version_string</code> option.</p>
+<h2 id="comment-syntax">Comment syntax</h2>
+<p>Manticore SQL over MySQL supports C-style comment syntax. Everything from an opening <code>/*</code> sequence to a closing <code>*/</code> sequence is ignored. Comments can span multiple lines, can not nest, and should not get logged. MySQL specific <code>/*! ... */</code> comments are also currently ignored. (As the comments support was rather added for better compatibility with <code>mysqldump</code> produced dumps, rather than improving general query interoperability between Manticore and MySQL.)</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="cm">/*! SQL_CALC_FOUND_ROWS */</span><span class="w"> </span><span class="n">col1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">table1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">...</span>
+</code></pre></div>
+
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-11.02-http">
+        <a class="chapter-link" href="#toc-11.02-http"> ¶ 11.2</a>
+
+        
+        <h1 id="http">HTTP</h1>
+<p>You can connect to Manticore Search through HTTP/HTTPS.</p>
+<h2 id="configuration">Configuration</h2>
+<!-- example HTTP -->
+<p>By default, Manticore listens for HTTP, HTTPS, and binary requests on ports 9308 and 9312.</p>
+<p>In the "searchd" section of your configuration file, you can define the HTTP port using the <code>listen</code> directive as follows:</p>
+<p>Both lines are valid and have the same meaning (except for the port number). They both define listeners that will serve all API/HTTP/HTTPS protocols. There are no special requirements, and any HTTP client can be used to connect to Manticore.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9312:http</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<p>All HTTP endpoints return <code>application/json</code> content type. For the most part, endpoints use JSON payloads for requests. However, there are some exceptions that use NDJSON or simple URL-encoded payloads.</p>
+<p>Currently, there is no user authentication. Therefore, make sure that the HTTP interface is not accessible to anyone outside your network. As Manticore functions like any other web server, you can use a reverse proxy, such as Nginx, to implement HTTP authentication or caching.</p>
+<!-- example HTTPS -->
+<p>The HTTP protocol also supports <a href="../17-security.html#toc-17.01-ssl">SSL encryption</a>:<br />
+If you specify <code>:https</code> instead of <code>:http</code> <strong>only</strong> secured connections will be accepted. Otherwise in case of no valid key/certificate provided, but the client trying to connect via https - the connection will be dropped. If you make not HTTPS, but an HTTP request to 9443 it will respond with HTTP code 400.</p>
+<!-- request HTTPS -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9443:https</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="vip-connection">VIP Connection</h3>
+<!-- example VIP -->
+<p>Separate HTTP interface can be used for 'VIP' connections. In this case, the connection bypasses a thread pool and always creates a new dedicated thread. This is useful for managing Manticore Search during periods of severe overload when the server might stall or not allow regular port connections.</p>
+<p>For more information on the <code>listen</code> directive, see <a href="../20-server_settings.html#listen">this section</a>.</p>
+<!-- request VIP -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9318:_vip</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="sql-over-http">SQL over HTTP</h2>
+<p>Endpoints <code>/sql</code> and <code>/cli</code> allow running SQL queries via HTTP.</p>
+<ul>
+<li><code>/sql</code> endpoint accepts only SELECT statements and returns the response in HTTP JSON format. The query parameter should be URL-encoded.</li>
+<li>The <code>/sql?mode=raw</code> endpoint accepts any SQL query and returns the response in raw format, similar to what you would receive via mysql. The <code>query</code> parameter should also be URL-encoded.</li>
+<li>The <code>/cli</code> endpoint accepts any SQL query and returns the response in raw format, similar to what you would receive via mysql. Unlike the <code>/sql</code> and <code>/sql?mode=raw</code> endpoints, the <code>query</code> parameter should not be URL-encoded. This endpoint is intended for manual actions using a browser or command line HTTP clients such as curl. It is not recommended to use the <code>/cli</code> endpoint in scripts.</li>
+</ul>
+<h3 id="sql">/sql</h3>
+<!-- example SQL_over_HTTP -->
+
+<p><code>/sql</code> accepts an <strong>SQL <a href="../13-searching.html#sql">SELECT</a> query</strong> via HTTP JSON interface.</p>
+<p>Query payload <strong>must</strong> be URL encoded, otherwise query statements with <code>=</code> (filtering or setting options) will result in an error.</p>
+<p>It returns a JSON response which contains hits information and execution time. The response has the same format as <a href="../13-searching.html#http-json">json/search</a> endpoint. Note, that <code>/sql</code> endpoint supports only single search requests. If you are looking for processing a multi-query see below.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=select%20id%2Csubject%2Cauthor_id%20%20from%20forum%20where%20match%28%27%40subject%20php%20manticore%27%29%20group%20by%20author_id%20order%20by%20id%20desc%20limit%200%2C5&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2356</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;php manticore&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;author_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2356</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;php manticore&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;author_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL_over_HTTP_2 -->
+<h3 id="sqlmoderaw">/sql?mode=raw</h3>
+<p><code>/sql</code> endpoint also has a special mode <strong>"raw"</strong>, which allows to send <strong>any valid sphinxql queries including multi-queries</strong>. The returned value is a json array of one or more result sets.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql?mode<span class="o">=</span>raw<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=desc%20test&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;columns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bigint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;indexed&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gid&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;j&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;new1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;warning&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL_over_HTTP_4 -->
+<h3 id="cli">/cli</h3>
+<p>While the <code>/sql</code> endpoint is useful to control Manticore programmatically from your application, there's also endpoint <code>/cli</code> which makes it easier to maintain a Manticore instance via curl or your browser manually. It accepts POST and GET HTTP methods. Everything after <code>/cli?</code> is taken by Manticore as is, even if you don't escape it manually via curl or let the browser encode it automatically. The <code>+</code> sign is not decoded to a space as well, eliminating the necessity of encoding it. The response format is tabular, similar to the one returned by  MySQL console.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code>+-------+--------+----------------+
+<span class="p">|</span><span class="w"> </span>Field<span class="w"> </span><span class="p">|</span><span class="w"> </span>Type<span class="w">   </span><span class="p">|</span><span class="w"> </span>Properties<span class="w">     </span><span class="p">|</span>
++-------+--------+----------------+
+<span class="p">|</span><span class="w"> </span>id<span class="w">    </span><span class="p">|</span><span class="w"> </span>bigint<span class="w"> </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
+<span class="p">|</span><span class="w"> </span>body<span class="w">  </span><span class="p">|</span><span class="w"> </span>text<span class="w">   </span><span class="p">|</span><span class="w"> </span>indexed<span class="w"> </span>stored<span class="w"> </span><span class="p">|</span>
+<span class="p">|</span><span class="w"> </span>title<span class="w"> </span><span class="p">|</span><span class="w"> </span>string<span class="w"> </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
++-------+--------+----------------+
+<span class="m">3</span><span class="w"> </span>rows<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>.001<span class="w"> </span>sec<span class="o">)</span>
+</code></pre></div>
+
+<!-- request Browser -->
+
+<p><img alt="using /cli in browser" src="cli_browser.png" /></p>
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL_over_HTTP_cli_json -->
+
+<h3 id="cli_json">/cli_json</h3>
+<p>The <code>/cli_json</code> endpoint provides the same functionality as <code>/cli</code> , but returns the response in JSON format.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli_json<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">[{</span>
+<span class="nt">&quot;columns&quot;</span><span class="p">:[{</span><span class="nt">&quot;Field&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Type&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Properties&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span>
+<span class="nt">&quot;data&quot;</span><span class="p">:[</span>
+<span class="p">{</span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="s2">&quot;id&quot;</span><span class="p">,</span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="s2">&quot;bigint&quot;</span><span class="p">,</span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">},</span>
+<span class="p">{</span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="s2">&quot;body&quot;</span><span class="p">,</span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="s2">&quot;indexed stored&quot;</span><span class="p">},</span>
+<span class="p">{</span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="s2">&quot;title&quot;</span><span class="p">,</span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+<span class="p">],</span>
+<span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+<span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="nt">&quot;warning&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span>
+<span class="p">}]</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="keep-alive">Keep-alive</h3>
+<p>HTTP keep-alive is also supported, which makes working via the HTTP JSON interface stateful as long as the client supports keep-alive too. For example, using the new <a href="../11-connecting_to_the_server.html#/cli">/cli</a> endpoint you can call <code>SHOW META</code> after <code>SELECT</code> and it will work the same way it works via mysql.</p>
+<!-- proofread -->
+        
+    </section>
+    
+    <section class="chapter-section" id="toc-11.03-sql_over_http">
+        <a class="chapter-link" href="#toc-11.03-sql_over_http"> ¶ 11.3</a>
+
+        
+        <h1 id="http">HTTP</h1>
+<p>You can connect to Manticore Search through HTTP/HTTPS.</p>
+<h2 id="configuration">Configuration</h2>
+<!-- example HTTP -->
+<p>By default, Manticore listens for HTTP, HTTPS, and binary requests on ports 9308 and 9312.</p>
+<p>In the "searchd" section of your configuration file, you can define the HTTP port using the <code>listen</code> directive as follows:</p>
+<p>Both lines are valid and have the same meaning (except for the port number). They both define listeners that will serve all API/HTTP/HTTPS protocols. There are no special requirements, and any HTTP client can be used to connect to Manticore.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9312:http</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<p>All HTTP endpoints return <code>application/json</code> content type. For the most part, endpoints use JSON payloads for requests. However, there are some exceptions that use NDJSON or simple URL-encoded payloads.</p>
+<p>Currently, there is no user authentication. Therefore, make sure that the HTTP interface is not accessible to anyone outside your network. As Manticore functions like any other web server, you can use a reverse proxy, such as Nginx, to implement HTTP authentication or caching.</p>
+<!-- example HTTPS -->
+<p>The HTTP protocol also supports <a href="../17-security.html#toc-17.01-ssl">SSL encryption</a>:<br />
+If you specify <code>:https</code> instead of <code>:http</code> <strong>only</strong> secured connections will be accepted. Otherwise in case of no valid key/certificate provided, but the client trying to connect via https - the connection will be dropped. If you make not HTTPS, but an HTTP request to 9443 it will respond with HTTP code 400.</p>
+<!-- request HTTPS -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9443:https</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="vip-connection">VIP Connection</h3>
+<!-- example VIP -->
+<p>Separate HTTP interface can be used for 'VIP' connections. In this case, the connection bypasses a thread pool and always creates a new dedicated thread. This is useful for managing Manticore Search during periods of severe overload when the server might stall or not allow regular port connections.</p>
+<p>For more information on the <code>listen</code> directive, see <a href="../20-server_settings.html#listen">this section</a>.</p>
+<!-- request VIP -->
+
+<div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
+<span class="na">...</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
+<span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9318:_vip</span>
+<span class="na">...</span>
+<span class="na">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h2 id="sql-over-http">SQL over HTTP</h2>
+<p>Endpoints <code>/sql</code> and <code>/cli</code> allow running SQL queries via HTTP.</p>
+<ul>
+<li><code>/sql</code> endpoint accepts only SELECT statements and returns the response in HTTP JSON format. The query parameter should be URL-encoded.</li>
+<li>The <code>/sql?mode=raw</code> endpoint accepts any SQL query and returns the response in raw format, similar to what you would receive via mysql. The <code>query</code> parameter should also be URL-encoded.</li>
+<li>The <code>/cli</code> endpoint accepts any SQL query and returns the response in raw format, similar to what you would receive via mysql. Unlike the <code>/sql</code> and <code>/sql?mode=raw</code> endpoints, the <code>query</code> parameter should not be URL-encoded. This endpoint is intended for manual actions using a browser or command line HTTP clients such as curl. It is not recommended to use the <code>/cli</code> endpoint in scripts.</li>
+</ul>
+<h3 id="sql">/sql</h3>
+<!-- example SQL_over_HTTP -->
+
+<p><code>/sql</code> accepts an <strong>SQL <a href="../13-searching.html#sql">SELECT</a> query</strong> via HTTP JSON interface.</p>
+<p>Query payload <strong>must</strong> be URL encoded, otherwise query statements with <code>=</code> (filtering or setting options) will result in an error.</p>
+<p>It returns a JSON response which contains hits information and execution time. The response has the same format as <a href="../13-searching.html#http-json">json/search</a> endpoint. Note, that <code>/sql</code> endpoint supports only single search requests. If you are looking for processing a multi-query see below.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=select%20id%2Csubject%2Cauthor_id%20%20from%20forum%20where%20match%28%27%40subject%20php%20manticore%27%29%20group%20by%20author_id%20order%20by%20id%20desc%20limit%200%2C5&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2356</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;php manticore&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;author_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2356</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;php manticore&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;author_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL_over_HTTP_2 -->
+<h3 id="sqlmoderaw">/sql?mode=raw</h3>
+<p><code>/sql</code> endpoint also has a special mode <strong>"raw"</strong>, which allows to send <strong>any valid sphinxql queries including multi-queries</strong>. The returned value is a json array of one or more result sets.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql?mode<span class="o">=</span>raw<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=desc%20test&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;columns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bigint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;indexed&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gid&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;j&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;new1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;warning&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL_over_HTTP_4 -->
+<h3 id="cli">/cli</h3>
+<p>While the <code>/sql</code> endpoint is useful to control Manticore programmatically from your application, there's also endpoint <code>/cli</code> which makes it easier to maintain a Manticore instance via curl or your browser manually. It accepts POST and GET HTTP methods. Everything after <code>/cli?</code> is taken by Manticore as is, even if you don't escape it manually via curl or let the browser encode it automatically. The <code>+</code> sign is not decoded to a space as well, eliminating the necessity of encoding it. The response format is tabular, similar to the one returned by  MySQL console.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code>+-------+--------+----------------+
+<span class="p">|</span><span class="w"> </span>Field<span class="w"> </span><span class="p">|</span><span class="w"> </span>Type<span class="w">   </span><span class="p">|</span><span class="w"> </span>Properties<span class="w">     </span><span class="p">|</span>
++-------+--------+----------------+
+<span class="p">|</span><span class="w"> </span>id<span class="w">    </span><span class="p">|</span><span class="w"> </span>bigint<span class="w"> </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
+<span class="p">|</span><span class="w"> </span>body<span class="w">  </span><span class="p">|</span><span class="w"> </span>text<span class="w">   </span><span class="p">|</span><span class="w"> </span>indexed<span class="w"> </span>stored<span class="w"> </span><span class="p">|</span>
+<span class="p">|</span><span class="w"> </span>title<span class="w"> </span><span class="p">|</span><span class="w"> </span>string<span class="w"> </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
++-------+--------+----------------+
+<span class="m">3</span><span class="w"> </span>rows<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>.001<span class="w"> </span>sec<span class="o">)</span>
+</code></pre></div>
+
+<!-- request Browser -->
+
+<p><img alt="using /cli in browser" src="cli_browser.png" /></p>
+<!-- end -->
+
+</div>
+</div>
+<!-- example SQL_over_HTTP_cli_json -->
+
+<h3 id="cli_json">/cli_json</h3>
+<p>The <code>/cli_json</code> endpoint provides the same functionality as <code>/cli</code> , but returns the response in JSON format.</p>
+<!-- request HTTP -->
+
+<div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli_json<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
+</code></pre></div>
+
+<!-- response HTTP -->
+
+<div class="codehilite"><pre><span></span><code><span class="p">[{</span>
+<span class="nt">&quot;columns&quot;</span><span class="p">:[{</span><span class="nt">&quot;Field&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Type&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Properties&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span>
+<span class="nt">&quot;data&quot;</span><span class="p">:[</span>
+<span class="p">{</span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="s2">&quot;id&quot;</span><span class="p">,</span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="s2">&quot;bigint&quot;</span><span class="p">,</span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">},</span>
+<span class="p">{</span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="s2">&quot;body&quot;</span><span class="p">,</span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="s2">&quot;indexed stored&quot;</span><span class="p">},</span>
+<span class="p">{</span><span class="nt">&quot;Field&quot;</span><span class="p">:</span><span class="s2">&quot;title&quot;</span><span class="p">,</span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="nt">&quot;Properties&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+<span class="p">],</span>
+<span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+<span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="nt">&quot;warning&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span>
+<span class="p">}]</span>
+</code></pre></div>
+
+<!-- end -->
+
+</div>
+</div>
+<h3 id="keep-alive">Keep-alive</h3>
+<p>HTTP keep-alive is also supported, which makes working via the HTTP JSON interface stateful as long as the client supports keep-alive too. For example, using the new <a href="../11-connecting_to_the_server.html#/cli">/cli</a> endpoint you can call <code>SHOW META</code> after <code>SELECT</code> and it will work the same way it works via mysql.</p>
+<!-- proofread -->
+        
+    </section>
+    
+
+    <script>
+        const hide = (el) => el.style.display = 'none';
+        const show = (el) => el.style.display = '';
+
+        function gen(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content;
+        }
+
+        function processCodeBlock(block) {
+            block.append(gen(`<div class="selectors"></div><div class="codes"></div>`));
+
+            let selectors = block.querySelector(".selectors");
+            let codes = block.querySelector(".codes");
+
+            function hideAllCodes() {
+                for (let i = 0; i < codes.children.length; i++) {
+                    hide(codes.children[i]);
+                }
+            }
+
+            function clearSelection() {
+                for (let i = 0; i < selectors.children.length; i++) {
+                    selectors.children[i].classList.remove('selected');
+                }
+            }
+
+            let items = block.querySelectorAll('.xcodeblock-item');
+            for (let i = 0; i < items.length; i++) {
+                let lang = items[i];
+
+                lang.remove();
+
+                let sel = lang.querySelector('.item-select');
+                let code = lang.querySelector('.codehilite');
+
+                if (!sel || !code){
+                    continue
+                }
+
+                sel.remove();
+                code.remove();
+
+                selectors.append(sel);
+                codes.append(code);
+
+                if (i == 0) {
+                    sel.classList.add('selected');
+                } else {
+                    hide(code);
+                } 
+
+                sel.addEventListener('click', () => {
+                    hideAllCodes();
+                    clearSelection();
+                    show(code);
+                    sel.classList.add('selected');
+                });
+            }
+        }
+
+        let codeBlocks = document.querySelectorAll('.xcodeblock');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            processCodeBlock(codeBlocks[i]);
+        }
+    </script>
+</body>

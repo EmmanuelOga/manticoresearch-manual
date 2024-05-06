@@ -432,7 +432,7 @@ SQL
 </code></pre></div>
 
 <p><code>FLUSH TABLE</code> forcefully flushes RT table RAM chunk contents to disk.</p>
-<p>The real-time table <a href="../../06-creating_a_table.html#real-time-table-files-structure">RAM chunk</a> is automatically flushed to disk during a clean shutdown, or periodically every <a href="../20-server_settings.html#rt_flush_period">rt_flush_period</a> seconds.</p>
+<p>The real-time table <a href="06-creating_a_table.html#real-time-table-files-structure">RAM chunk</a> is automatically flushed to disk during a clean shutdown, or periodically every <a href="../20-server_settings.html#rt_flush_period">rt_flush_period</a> seconds.</p>
 <p>Issuing a <code>FLUSH TABLE</code> command not only forces the RAM chunk contents to be written to disk but also triggers the cleanup of binary log files.</p>
 <!-- intro -->
 

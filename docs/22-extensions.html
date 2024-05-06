@@ -412,7 +412,7 @@ $<span class="w"> </span>make<span class="w"> </span>install
 </div>
 </div>
 <h2 id="building-snippets-via-mysql">Building snippets via MySQL</h2>
-<p>SphinxSE also features a UDF function that allows you to create snippets using MySQL. This functionality is similar to <a href="../../13-searching.html#highlighting">HIGHLIGHT()</a>, but can be accessed through MySQL+SphinxSE.</p>
+<p>SphinxSE also features a UDF function that allows you to create snippets using MySQL. This functionality is similar to <a href="13-searching.html#highlighting">HIGHLIGHT()</a>, but can be accessed through MySQL+SphinxSE.</p>
 <p>The binary providing the UDF is called <code>sphinx.so</code> and should be automatically built and installed in the appropriate location along with SphinxSE. If it doesn't install automatically for some reason, locate <code>sphinx.so</code> in the build directory and copy it to your MySQL instance's plugins directory. Once done, register the UDF with the following statement:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">sphinx_snippets</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="n">STRING</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;sphinx.so&#39;</span><span class="p">;</span>
 </code></pre></div>
@@ -615,11 +615,11 @@ Query to JOIN MySQL based table with FEDERATED table served by Manticore
 <p>So, how do you write and use a plugin? Here's a quick four-step guide:</p>
 <ul>
 <li>create a dynamic library (either .so or .dll), most likely using C or C++;</li>
-<li>load the plugin into searchd with <a href="../../22-extensions.html#toc-22.03.03.01-creating_a_plugin">CREATE PLUGIN</a>;</li>
+<li>load the plugin into searchd with <a href="22-extensions.html#toc-22.03.03.01-creating_a_plugin">CREATE PLUGIN</a>;</li>
 <li>use the plugin with plugin-specific calls (usually through specific OPTIONS).</li>
-<li>unload or reload a plugin with <a href="../../22-extensions.html#toc-22.03.03.02-deleting_a_plugin">DROP PLUGIN</a> and <a href="../../22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a>, respectively.</li>
+<li>unload or reload a plugin with <a href="22-extensions.html#toc-22.03.03.02-deleting_a_plugin">DROP PLUGIN</a> and <a href="22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a>, respectively.</li>
 </ul>
-<p>Note that while UDFs are first-class plugins, they are installed using a separate <a href="../../22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> statement. This allows for a neat specification of the return type, without sacrificing backward compatibility or changing the syntax.</p>
+<p>Note that while UDFs are first-class plugins, they are installed using a separate <a href="22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> statement. This allows for a neat specification of the return type, without sacrificing backward compatibility or changing the syntax.</p>
 <p>Dynamic plugins are supported in threads and thread_pool workers. Multiple plugins (and/or UDFs) can be contained in a single library file. You may choose to either group all project-specific plugins in one large library or create a separate library for each UDF and plugin; it's up to you.</p>
 <p>As with UDFs, you should include the <code>src/sphinxudf.h</code> header file. At the very least, you'll need the <code>SPH_UDF_VERSION</code> constant to implement an appropriate version function. Depending on the specific plugin type, you may or may not need to link your plugin with <code>src/sphinxudf.c</code>. However, all functions implemented in <code>sphinxudf.c</code> are related to unpacking the <code>PACKEDFACTORS()</code> blob, and no plugin types have access to that data. So currently, linking with just the header should suffice. (In fact, if you copy over the UDF version number, you won't even need the header file for some plugin types.)</p>
 <p>Formally, plugins are simply sets of C functions that adhere to a specific naming pattern. You're typically required to define one key function for the primary task, but you can also define additional functions. For instance, to implement a ranker called "myrank", you must define a <code>myrank_finalize()</code> function that returns the rank value. However, you can also define <code>myrank_init()</code>, <code>myrank_update()</code>, and <code>myrank_deinit()</code> functions. Specific sets of well-known suffixes and call arguments differ based on the plugin type, but _init() and _deinit() are generic, and every plugin has them. Hint: for a quick reference on known suffixes and their argument types, refer to <code>sphinxplugin.h</code>, where the call prototypes are defined at the beginning of the file.</p>
@@ -747,7 +747,7 @@ To remove a plugin, make sure to use the name listed in the Package column.</p>
 
         
         <h1 id="udf">UDF</h1>
-<p>UDFs are stored in external dynamic libraries (.so files on UNIX and .dll on Windows systems). Library files must be placed in a trusted folder specified by the <a href="../../20-server_settings.html#plugin_dir">plugin_dir</a> directive for security reasons: it's easier to secure a single folder than to allow anyone to install arbitrary code into <code>searchd</code>. You can dynamically load and unload UDFs into searchd using <a href="../../22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> and <a href="../../22-extensions.html#toc-22.03.02.02-deleting_a_function">DROP FUNCTION</a> SQL statements, respectively. Additionally, you can seamlessly reload UDFs (and other plugins) with the <a href="../../22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a> statement. Manticore keeps track of currently loaded functions; every time you create or drop a UDF, <code>searchd</code> updates its state in the <a href="../../20-server_settings.html#sphinxql_state">sphinxql_state</a> file as a plain SQL script.</p>
+<p>UDFs are stored in external dynamic libraries (.so files on UNIX and .dll on Windows systems). Library files must be placed in a trusted folder specified by the <a href="20-server_settings.html#plugin_dir">plugin_dir</a> directive for security reasons: it's easier to secure a single folder than to allow anyone to install arbitrary code into <code>searchd</code>. You can dynamically load and unload UDFs into searchd using <a href="22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> and <a href="22-extensions.html#toc-22.03.02.02-deleting_a_function">DROP FUNCTION</a> SQL statements, respectively. Additionally, you can seamlessly reload UDFs (and other plugins) with the <a href="22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a> statement. Manticore keeps track of currently loaded functions; every time you create or drop a UDF, <code>searchd</code> updates its state in the <a href="20-server_settings.html#sphinxql_state">sphinxql_state</a> file as a plain SQL script.</p>
 <p>UDFs are local. To use them on a cluster, you must place the same library on all nodes and run CREATE statements on each node as well. This process may change in future versions.</p>
 <p>Once you successfully load a UDF, you can use it in your SELECT or other statements just like any built-in function:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">MYCUSTOMFUNC</span><span class="w"> </span><span class="p">(</span><span class="n">groupid</span><span class="p">,</span><span class="w"> </span><span class="n">authorname</span><span class="p">),</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myindex</span>
@@ -808,7 +808,7 @@ This argument serves one more purpose. Since a single query can be executed on m
 <p>Note how <code>testfunc_init()</code> also receives the call arguments structure. By the time it is called, it does not receive any actual values, so the <code>args-&gt;arg_values</code> will be NULL. But the argument names and types are known and will be passed. You can check them in the initialization function and return an error if they are of an unsupported type.</p>
 <h2 id="sph_udf_args-types">SPH_UDF_ARGS types</h2>
 <p>UDFs can receive arguments of pretty much any valid internal Manticore type. Refer to the <code>sphinx_udf_argtype</code> enumeration in <code>sphinxudf.h</code> for a full list. Most of the types map straightforwardly to the respective C types.</p>
-<p>The most notable type is the <code>SPH_UDF_TYPE_FACTORS</code> argument type. You get that type by calling your UDF with a <a href="../../searching-and-ranking-functions#PACKEDFACTORS()">PACKEDFACTOR()</a> argument. Its data is a binary blob in a certain internal format, and to extract individual ranking signals from that blob, you need to use either of the two <code>sphinx_factors_XXX()</code> or <code>sphinx_get_YYY_factor()</code> families of functions.</p>
+<p>The most notable type is the <code>SPH_UDF_TYPE_FACTORS</code> argument type. You get that type by calling your UDF with a <a href="searching-and-ranking-functions#PACKEDFACTORS()">PACKEDFACTOR()</a> argument. Its data is a binary blob in a certain internal format, and to extract individual ranking signals from that blob, you need to use either of the two <code>sphinx_factors_XXX()</code> or <code>sphinx_get_YYY_factor()</code> families of functions.</p>
 <h3 id="sphinx_factors_xxx-functions">sphinx_factors_XXX() functions</h3>
 <p>This family consists of 3 functions.</p>
 <ul>
@@ -848,7 +848,7 @@ This argument serves one more purpose. Since a single query can be executed on m
 <span class="w">    </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;udf_lib_file&#39;</span>
 </code></pre></div>
 
-<p><code>CREATE FUNCTION</code> statement installs a user-defined function <a href="../../../22-extensions.html#toc-22.03.02-udf">UDF</a> with the specified name and type from the provided library file. The library file must be located in a trusted <a href="../../../20-server_settings.html#plugin_dir">plugin_dir</a> directory. Upon successful installation, the function becomes available for use in all subsequent queries received by the server. Example:</p>
+<p><code>CREATE FUNCTION</code> statement installs a user-defined function <a href="../22-extensions.html#toc-22.03.02-udf">UDF</a> with the specified name and type from the provided library file. The library file must be located in a trusted <a href="../20-server_settings.html#plugin_dir">plugin_dir</a> directory. Upon successful installation, the function becomes available for use in all subsequent queries received by the server. Example:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">avgmva</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;udfexample.dll&#39;</span><span class="p">;</span>
 <span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">03</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 
@@ -875,7 +875,7 @@ This argument serves one more purpose. Since a single query can be executed on m
 <div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">udf_name</span>
 </code></pre></div>
 
-<p><code>DROP FUNCTION</code> statement uninstalls a user-defined function <a href="../../../22-extensions.html#toc-22.03.02-udf">UDF</a> with the specified name. Upon successful removal, the function will no longer be available for use in subsequent queries. However, ongoing concurrent queries will not be affected, and if necessary, the library unloading will be delayed until those queries are completed. Example:</p>
+<p><code>DROP FUNCTION</code> statement uninstalls a user-defined function <a href="../22-extensions.html#toc-22.03.02-udf">UDF</a> with the specified name. Upon successful removal, the function will no longer be available for use in subsequent queries. However, ongoing concurrent queries will not be affected, and if necessary, the library unloading will be delayed until those queries are completed. Example:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">avgmva</span><span class="p">;</span>
 <span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -907,7 +907,7 @@ This argument serves one more purpose. Since a single query can be executed on m
 <li><code>index_token_filter</code></li>
 <li><code>query_token_filter</code></li>
 </ul>
-<p>For more information on writing plugins, please refer to the <a href="../../../22-extensions.html#plugins">plugins</a> documentation.</p>
+<p>For more information on writing plugins, please refer to the <a href="../22-extensions.html#plugins">plugins</a> documentation.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">myranker</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;ranker&#39;</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;myplugins.so&#39;</span><span class="p">;</span>
 <span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -923,7 +923,7 @@ This argument serves one more purpose. Since a single query can be executed on m
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span><span class="w"> </span><span class="k">VERSION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="w"> </span><span class="k">version</span><span class="o">&gt;</span>
 </code></pre></div>
 
-<p>This command will install the <code>show-hostname</code> plugin to the <a href="../../20-server_settings.html#plugin_dir">plugin_dir</a> and enable it without the need to restart the server.</p>
+<p>This command will install the <code>show-hostname</code> plugin to the <a href="20-server_settings.html#plugin_dir">plugin_dir</a> and enable it without the need to restart the server.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -969,7 +969,7 @@ This argument serves one more purpose. Since a single query can be executed on m
 <div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">/</span><span class="n">package</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packagist</span><span class="p">.</span><span class="n">org</span><span class="o">/&gt;</span>
 </code></pre></div>
 
-<p>This action instantly and permanently removes the installed plugin from the <a href="../../20-server_settings.html#plugin_dir">plugin_dir</a>. Once removed, the plugin's features will no longer be available.</p>
+<p>This action instantly and permanently removes the installed plugin from the <a href="20-server_settings.html#plugin_dir">plugin_dir</a>. Once removed, the plugin's features will no longer be available.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -1104,8 +1104,8 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
         <h1 id="token-filter-plugins">Token filter plugins</h1>
 <p>Token filter plugins allow you to implement a custom tokenizer that creates tokens according to custom rules. There are two types:</p>
 <ul>
-<li>Index-time tokenizer declared by <a href="../../../06-creating_a_table.html#index_token_filter">index_token_filter</a> in table settings</li>
-<li>Query-time tokenizer declared by <a href="../../../13-searching.html#token_filter">token_filter</a> OPTION directive</li>
+<li>Index-time tokenizer declared by <a href="../06-creating_a_table.html#index_token_filter">index_token_filter</a> in table settings</li>
+<li>Query-time tokenizer declared by <a href="../13-searching.html#token_filter">token_filter</a> OPTION directive</li>
 </ul>
 <p>In the text processing pipeline, token filters will run after the base tokenizer processing occurs (which processes the text from fields or queries and creates tokens out of them).</p>
 <h2 id="index-time-tokenizer">Index-time tokenizer</h2>

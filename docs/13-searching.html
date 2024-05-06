@@ -71,18 +71,18 @@
 
         
         <h1 id="match">MATCH</h1>
-<p>The <code>MATCH</code> clause allows for full-text searches in text fields. The input query string is <a href="../../06-creating_a_table.html#toc-06.03.01-data_tokenization">tokenized</a> using the same settings applied to the text during indexing. In addition to the tokenization of input text, the query string supports a number of <a href="../../13-searching.html#toc-13.02.02-operators">full-text operators</a> that enforce various rules on how keywords should provide a valid match.</p>
-<p>Full-text match clauses can be combined with attribute <a href="../../13-searching.html#toc-13.04-filters">filters</a> as an AND boolean. <strong>OR relations between full-text matches and attribute filters are not supported</strong>.</p>
-<p>The match query is always executed first in the filtering process, followed by the <a href="../../13-searching.html#toc-13.04-filters">attribute filters</a>. The attribute filters are applied to the result set of the match query. A query without a match clause is called a fullscan.</p>
+<p>The <code>MATCH</code> clause allows for full-text searches in text fields. The input query string is <a href="06-creating_a_table.html#toc-06.03.01-data_tokenization">tokenized</a> using the same settings applied to the text during indexing. In addition to the tokenization of input text, the query string supports a number of <a href="13-searching.html#toc-13.02.02-operators">full-text operators</a> that enforce various rules on how keywords should provide a valid match.</p>
+<p>Full-text match clauses can be combined with attribute <a href="13-searching.html#toc-13.04-filters">filters</a> as an AND boolean. <strong>OR relations between full-text matches and attribute filters are not supported</strong>.</p>
+<p>The match query is always executed first in the filtering process, followed by the <a href="13-searching.html#toc-13.04-filters">attribute filters</a>. The attribute filters are applied to the result set of the match query. A query without a match clause is called a fullscan.</p>
 <p>There must be at most one <code>MATCH()</code> in the <code>SELECT</code> clause.</p>
-<p>Using the <a href="../../13-searching.html#toc-13.02.02-operators">full-text query syntax</a>, matching is performed across all indexed text fields of a document, unless the expression requires a match within a field (like phrase search) or is limited by field operators.</p>
+<p>Using the <a href="13-searching.html#toc-13.02.02-operators">full-text query syntax</a>, matching is performed across all indexed text fields of a document, unless the expression requires a match within a field (like phrase search) or is limited by field operators.</p>
 <h2 id="sql">SQL</h2>
 <!-- example Example_1 -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myindex</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;cats|birds&#39;</span><span class="p">);</span>
 </code></pre></div>
 
-<p>The <a href="../../13-searching.html#sql">SELECT</a> statement uses a <a href="../../13-searching.html#toc-13.02.01-basic_usage">MATCH</a> clause, which must come after WHERE, for performing full-text searches. <code>MATCH()</code> accepts an input string in which all <a href="../../13-searching.html#toc-13.02.02-operators">full-text operators</a> are available.</p>
+<p>The <a href="13-searching.html#sql">SELECT</a> statement uses a <a href="13-searching.html#toc-13.02.01-basic_usage">MATCH</a> clause, which must come after WHERE, for performing full-text searches. <code>MATCH()</code> accepts an input string in which all <a href="13-searching.html#toc-13.02.02-operators">full-text operators</a> are available.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -196,7 +196,7 @@ An example of a more complex query using MATCH with WHERE filters.
 </code></pre></div>
 
 <h3 id="combining-full-text-filtering-with-other-filters">Combining full-text filtering with other filters</h3>
-<p>All full-text match clauses can be combined with <a href="../../13-searching.html#must">must</a>, <a href="../../13-searching.html#must_not">must_not</a>, and <a href="../../13-searching.html#should">should</a> operators of a <a href="../../13-searching.html#bool-query">JSON <code>bool</code> query</a>.</p>
+<p>All full-text match clauses can be combined with <a href="13-searching.html#must">must</a>, <a href="13-searching.html#must_not">must_not</a>, and <a href="13-searching.html#should">should</a> operators of a <a href="13-searching.html#bool-query">JSON <code>bool</code> query</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -615,7 +615,7 @@ Go
 </code></pre></div>
 
 <p>The negation operator enforces a rule for a word to not exist.</p>
-<p>Queries containing <strong>only</strong> negations are <strong>not</strong> supported by default. To enable, use the server option <a href="../../20-server_settings.html#not_terms_only_allowed">not_terms_only_allowed</a>.</p>
+<p>Queries containing <strong>only</strong> negations are <strong>not</strong> supported by default. To enable, use the server option <a href="20-server_settings.html#not_terms_only_allowed">not_terms_only_allowed</a>.</p>
 <h3 id="field-search-operator">Field search operator</h3>
 <div class="codehilite"><pre><span></span><code><span class="o">@</span><span class="n">title</span><span class="w"> </span><span class="n">hello</span><span class="w"> </span><span class="o">@</span><span class="n">body</span><span class="w"> </span><span class="n">world</span>
 </code></pre></div>
@@ -677,16 +677,16 @@ Go
 <span class="o">=</span><span class="ss">&quot;exact phrase&quot;</span>
 </code></pre></div>
 
-<p>The exact form keyword modifier matches a document only if the keyword appears in the exact form specified. By default, a document is considered a match if the stemmed/lemmatized keyword matches. For instance, the query "runs" will match both a document containing "runs" and one containing "running", because both forms stem to just "run". However, the <code>=runs</code> query will only match the first document. The exact form operator requires the <a href="../../06-creating_a_table.html#index_exact_words">index_exact_words</a> option to be enabled.</p>
-<p>Another use case is to prevent <a href="../../06-creating_a_table.html#expand_keywords">expanding</a> a keyword to its <code>*keyword*</code> form. For example, with <code>index_exact_words=1</code> + <code>expand_keywords=1/star</code>, <code>bcd</code> will find a document containing <code>abcde</code>, but <code>=bcd</code> will not.</p>
+<p>The exact form keyword modifier matches a document only if the keyword appears in the exact form specified. By default, a document is considered a match if the stemmed/lemmatized keyword matches. For instance, the query "runs" will match both a document containing "runs" and one containing "running", because both forms stem to just "run". However, the <code>=runs</code> query will only match the first document. The exact form operator requires the <a href="06-creating_a_table.html#index_exact_words">index_exact_words</a> option to be enabled.</p>
+<p>Another use case is to prevent <a href="06-creating_a_table.html#expand_keywords">expanding</a> a keyword to its <code>*keyword*</code> form. For example, with <code>index_exact_words=1</code> + <code>expand_keywords=1/star</code>, <code>bcd</code> will find a document containing <code>abcde</code>, but <code>=bcd</code> will not.</p>
 <p>As a modifier affecting the keyword, it can be used within operators such as phrase, proximity, and quorum operators. Applying an exact form modifier to the phrase operator is possible, and in this case, it internally adds the exact form modifier to all terms in the phrase.</p>
 <h3 id="wildcard-operators">Wildcard operators</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">nation</span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">nation</span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="k">national</span>
 </code></pre></div>
 
-<p>Requires <a href="../../06-creating_a_table.html#min_infix_len">min_infix_len</a> for prefix (expansion in trail) and/or suffix (expansion in head). If only prefixing is desired, <a href="../../06-creating_a_table.html#min_prefix_len">min_prefix_len</a> can be used instead.</p>
-<p>The search will attempt to find all expansions of the wildcarded tokens, and each expansion is recorded as a matched hit. The number of expansions for a token can be controlled with the <a href="../../06-creating_a_table.html#expansion_limit">expansion_limit</a> table setting. Wildcarded tokens can have a significant impact on query search time, especially when tokens have short lengths. In such cases, it is desirable to use the expansion limit.</p>
-<p>The wildcard operator can be automatically applied if the <a href="../../13-searching.html#expand_keywords">expand_keywords</a> table setting is used.</p>
+<p>Requires <a href="06-creating_a_table.html#min_infix_len">min_infix_len</a> for prefix (expansion in trail) and/or suffix (expansion in head). If only prefixing is desired, <a href="06-creating_a_table.html#min_prefix_len">min_prefix_len</a> can be used instead.</p>
+<p>The search will attempt to find all expansions of the wildcarded tokens, and each expansion is recorded as a matched hit. The number of expansions for a token can be controlled with the <a href="06-creating_a_table.html#expansion_limit">expansion_limit</a> table setting. Wildcarded tokens can have a significant impact on query search time, especially when tokens have short lengths. In such cases, it is desirable to use the expansion limit.</p>
+<p>The wildcard operator can be automatically applied if the <a href="13-searching.html#expand_keywords">expand_keywords</a> table setting is used.</p>
 <p>In addition, the following inline wildcard operators are supported:</p>
 <ul>
 <li><code>?</code> can match any single character: <code>t?st</code> will match <code>test</code>, but not <code>teast</code></li>
@@ -697,8 +697,8 @@ Go
 <div class="codehilite"><pre><span></span><code><span class="n">REGEX</span><span class="p">(</span><span class="o">/</span><span class="n">t</span><span class="p">.</span><span class="o">?</span><span class="n">e</span><span class="o">/</span><span class="p">)</span>
 </code></pre></div>
 
-<p>Requires the <a href="../../06-creating_a_table.html#min_infix_len">min_infix_len</a> or <a href="../../06-creating_a_table.html#min_prefix_len">min_prefix_len</a> and <a href="../../06-creating_a_table.html#dict">dict</a>=keywords options to be set (which is a default).</p>
-<p>Similarly to the <a href="../../13-searching.html#wildcard-operators">wildcard operators</a>, the REGEX operator attempts to find all tokens matching the provided pattern, and each expansion is recorded as a matched hit. Note, this can have a significant impact on query search time, as the entire dictionary is scanned, and every term in the dictionary undergoes matching with the REGEX pattern.</p>
+<p>Requires the <a href="06-creating_a_table.html#min_infix_len">min_infix_len</a> or <a href="06-creating_a_table.html#min_prefix_len">min_prefix_len</a> and <a href="06-creating_a_table.html#dict">dict</a>=keywords options to be set (which is a default).</p>
+<p>Similarly to the <a href="13-searching.html#wildcard-operators">wildcard operators</a>, the REGEX operator attempts to find all tokens matching the provided pattern, and each expansion is recorded as a matched hit. Note, this can have a significant impact on query search time, as the entire dictionary is scanned, and every term in the dictionary undergoes matching with the REGEX pattern.</p>
 <p>The patterns should adhere to the <a href="https://github.com/google/re2/wiki/Syntax">RE2 syntax</a>. The REGEX expression delimiter is the first symbol after the open bracket. In other words, all text between the open bracket followed by the delimiter and the delimiter and the closed bracket is considered as a RE2 expression.<br />
 Please note that the terms stored in the dictionary undergo <code>charset_table</code> transformation, meaning that for example, REGEX may not be able to match uppercase characters if all characters are lowercased according to the <code>charset_table</code> (which happens by default). To successfully match a term using a REGEX expression, the pattern must correspond to the entire token. To achieve partial matching, place <code>.*</code> at the beginning and/or end of your pattern.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">REGEX</span><span class="p">(</span><span class="o">/</span><span class="p">.</span><span class="err">{</span><span class="mi">3</span><span class="err">}</span><span class="n">t</span><span class="o">/</span><span class="p">)</span>
@@ -720,7 +720,7 @@ Please note that the terms stored in the dictionary undergo <code>charset_table<
 </code></pre></div>
 
 <p>The <code>NEAR</code> operator is a more generalized version of the proximity operator. Its syntax is <code>NEAR/N</code>, which is case-sensitive and does not allow spaces between the <code>NEAR</code> keywords, slash sign, and distance value.</p>
-<p>While the original proximity operator works only on sets of keywords, <code>NEAR</code> is more versatile and can accept arbitrary subexpressions as its two arguments. It matches a document when both subexpressions are found within N words of each other, regardless of their order. <code>NEAR</code> is left-associative and shares the same (lowest) precedence as <a href="../../13-searching.html#strict-order-operator">BEFORE</a>.</p>
+<p>While the original proximity operator works only on sets of keywords, <code>NEAR</code> is more versatile and can accept arbitrary subexpressions as its two arguments. It matches a document when both subexpressions are found within N words of each other, regardless of their order. <code>NEAR</code> is left-associative and shares the same (lowest) precedence as <a href="13-searching.html#strict-order-operator">BEFORE</a>.</p>
 <p>It is important to note that <code>one NEAR/7 two NEAR/7 three</code> is not exactly equivalent to <code>"one two three"~7</code>. The key difference is that the proximity operator allows up to 6 non-matching words between all three matching words, while the version with <code>NEAR</code> is less restrictive: it permits up to 6 words between <code>one</code> and <code>two</code>, and then up to 6 more between that two-word match and <code>three</code>.</p>
 <h3 id="notnear-operator">NOTNEAR operator</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">Church</span><span class="w"> </span><span class="n">NOTNEAR</span><span class="o">/</span><span class="mi">3</span><span class="w"> </span><span class="n">street</span>
@@ -735,7 +735,7 @@ Please note that the terms stored in the dictionary undergo <code>charset_table<
 </code></pre></div>
 
 <p>The <code>SENTENCE</code> and <code>PARAGRAPH</code> operators match a document when both of their arguments are within the same sentence or the same paragraph of text, respectively. These arguments can be keywords, phrases, or instances of the same operator.</p>
-<p>The order of the arguments within the sentence or paragraph is irrelevant. These operators function only with tables built with <a href="../../06-creating_a_table.html#index_sp">index_sp</a> (sentence and paragraph indexing feature) enabled and revert to a simple AND operation otherwise. For information on what constitutes a sentence and a paragraph, refer to the <a href="../../06-creating_a_table.html#index_sp">index_sp</a> directive documentation.</p>
+<p>The order of the arguments within the sentence or paragraph is irrelevant. These operators function only with tables built with <a href="06-creating_a_table.html#index_sp">index_sp</a> (sentence and paragraph indexing feature) enabled and revert to a simple AND operation otherwise. For information on what constitutes a sentence and a paragraph, refer to the <a href="06-creating_a_table.html#index_sp">index_sp</a> directive documentation.</p>
 <h3 id="zone-limit-operator">ZONE limit operator</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">ZONE</span><span class="p">:(</span><span class="n">h3</span><span class="p">,</span><span class="n">h4</span><span class="p">)</span>
 
@@ -748,7 +748,7 @@ Please note that the terms stored in the dictionary undergo <code>charset_table<
 <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>Table 2. World-wide brand awareness.<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
 </code></pre></div>
 
-<p>The <code>ZONE</code> operator influences the query until the next field or <code>ZONE</code> limit operator, or until the closing parenthesis. It functions exclusively with tables built with zone support (refer to <a href="../../06-creating_a_table.html#index_zones">index_zones</a>) and will be disregarded otherwise.</p>
+<p>The <code>ZONE</code> operator influences the query until the next field or <code>ZONE</code> limit operator, or until the closing parenthesis. It functions exclusively with tables built with zone support (refer to <a href="06-creating_a_table.html#index_zones">index_zones</a>) and will be disregarded otherwise.</p>
 <h3 id="zonespan-limit-operator">ZONESPAN limit operator</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">ZONESPAN</span><span class="p">:(</span><span class="n">h2</span><span class="p">)</span>
 
@@ -2078,7 +2078,7 @@ Go
 
 <h2 id="viewing-the-match-factors-values">Viewing the match factors values</h2>
 <!-- example factors -->
-<p>When using an expression ranker, it's possible to reveal the values of the calculated factors with the <a href="../../15-functions.html#packedfactors%28%29">PACKEDFACTORS()</a> function.</p>
+<p>When using an expression ranker, it's possible to reveal the values of the calculated factors with the <a href="15-functions.html#packedfactors%28%29">PACKEDFACTORS()</a> function.</p>
 <p>The function returns:</p>
 <ul>
 <li>The values of document-level factors (such as bm25, field_mask, doc_word_count)</li>
@@ -2141,7 +2141,7 @@ Example:
 <li>Common OR NOT: <code>((A !(N | N1)) | (B !(N | N2)))</code> becomes <code>(( (A !N1) | (B !N2) ) !N)</code><br />
 Note that optimizing queries consumes CPU time, so for simple queries or hand-optimized queries, you'll achieve better results with the default <code>boolean_simplify=0</code> value. Simplifications often benefit complex queries or algorithmically generated queries.</li>
 </ul>
-<p>Queries like <code>-dog</code>, which could potentially include all documents from the collection are not allowed by default. To allow them, you must specify <code>not_terms_only_allowed=1</code> either as a <a href="../../20-server_settings.html#not_terms_only_allowed">global setting</a> or as a <a href="../../20-server_settings.html#not_terms_only_allowed">search option</a>.</p>
+<p>Queries like <code>-dog</code>, which could potentially include all documents from the collection are not allowed by default. To allow them, you must specify <code>not_terms_only_allowed=1</code> either as a <a href="20-server_settings.html#not_terms_only_allowed">global setting</a> or as a <a href="20-server_settings.html#not_terms_only_allowed">search option</a>.</p>
 <!-- proofread -->
         
     </section>
@@ -2408,7 +2408,7 @@ Note that optimizing queries consumes CPU time, so for simple queries or hand-op
 </div>
 <!-- example must_not -->
 <h3 id="must">must</h3>
-<p>Queries and filters specified in the <code>must</code> section are required to match the documents. If multiple fulltext queries or filters are specified, all of them must match. This is the equivalent of <code>AND</code> queries in SQL. Note that if you want to match against an array (<a href="../../06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a>), you can specify the attribute multiple times. The result will be positive only if all the queried values are found in the array, e.g.:</p>
+<p>Queries and filters specified in the <code>must</code> section are required to match the documents. If multiple fulltext queries or filters are specified, all of them must match. This is the equivalent of <code>AND</code> queries in SQL. Note that if you want to match against an array (<a href="06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a>), you can specify the attribute multiple times. The result will be positive only if all the queried values are found in the array, e.g.:</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&quot;must&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span><span class="nt">&quot;equals&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;product_codes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">}},</span>
 <span class="w">  </span><span class="p">{</span><span class="nt">&quot;equals&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;product_codes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="p">}}</span>
@@ -2421,7 +2421,7 @@ Note that optimizing queries consumes CPU time, so for simple queries or hand-op
 
 <p>(see details below).</p>
 <h3 id="should">should</h3>
-<p>Queries and filters specified in the <code>should</code> section should match the documents. If some queries are specified in <code>must</code> or <code>must_not</code>, <code>should</code> queries are ignored. On the other hand, if there are no queries other than <code>should</code>, then at least one of these queries must match a document for it to match the bool query. This is the equivalent of <code>OR</code> queries. Note, if you want to match against an array (<a href="../../06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a>) you can specify the attribute multiple times, e.g.:</p>
+<p>Queries and filters specified in the <code>should</code> section should match the documents. If some queries are specified in <code>must</code> or <code>must_not</code>, <code>should</code> queries are ignored. On the other hand, if there are no queries other than <code>should</code>, then at least one of these queries must match a document for it to match the bool query. This is the equivalent of <code>OR</code> queries. Note, if you want to match against an array (<a href="06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a>) you can specify the attribute multiple times, e.g.:</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span><span class="nt">&quot;equals&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;product_codes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">}},</span>
 <span class="w">  </span><span class="p">{</span><span class="nt">&quot;equals&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;product_codes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="p">}}</span>
@@ -2632,7 +2632,7 @@ Note that optimizing queries consumes CPU time, so for simple queries or hand-op
 </div>
 </div>
 <!-- example equals_any -->
-<p>Filter <code>equals</code> can be applied to a <a href="../../06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a> and you can use:</p>
+<p>Filter <code>equals</code> can be applied to a <a href="06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a> and you can use:</p>
 <ul>
 <li><code>any()</code> which will be positive if the attribute has at least one value which equals to the queried value;</li>
 <li><code>all()</code> which will be positive if the attribute has a single value and it equals to the queried value</li>
@@ -2674,7 +2674,7 @@ Note that optimizing queries consumes CPU time, so for simple queries or hand-op
 </div>
 </div>
 <!-- example set_any -->
-<p>When applied to a <a href="../../06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a> you can use:</p>
+<p>When applied to a <a href="06-creating_a_table.html#multi-value-integer-%28mva%29">multi-value attribute</a> you can use:</p>
 <ul>
 <li><code>any()</code> (equivalent to no function) which will be positive if there's at least one match between the attribute values and the queried values;</li>
 <li><code>all()</code> which will be positive if all the attribute values are in the queried set</li>

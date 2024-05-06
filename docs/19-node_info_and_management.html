@@ -4387,7 +4387,7 @@ JSON short format
 
 </div>
 
-<p>See also <a href="../../13-searching.html#profiling-without-running-a-query">EXPLAIN QUERY</a>. It displays the execution tree of a full-text query <strong>without actually executing the query</strong>. Note that when using <code>SHOW PLAN</code> after a query to a real-time table, the result will be based on a random disk/RAM chunk. Therefore, if you have recently modified the table's tokenization settings, or if the chunks vary significantly in terms of dictionaries, etc., you might not get the result you are expecting. Take this into account and consider using <code>EXPLAIN QUERY</code> as well.</p>
+<p>See also <a href="13-searching.html#profiling-without-running-a-query">EXPLAIN QUERY</a>. It displays the execution tree of a full-text query <strong>without actually executing the query</strong>. Note that when using <code>SHOW PLAN</code> after a query to a real-time table, the result will be based on a random disk/RAM chunk. Therefore, if you have recently modified the table's tokenization settings, or if the chunks vary significantly in terms of dictionaries, etc., you might not get the result you are expecting. Take this into account and consider using <code>EXPLAIN QUERY</code> as well.</p>
 <h2 id="json-result-set-notes">JSON result set notes</h2>
 <p><code>query</code> property contains the transformed full-text query tree. Each node contains:</p>
 <ul>
@@ -4482,7 +4482,7 @@ JSON short format
 <li><code>mem_limit</code>: actual value of <code>rt_mem_limit</code> for the table.</li>
 <li><code>mem_limit_rate</code>: the rate at which the RAM chunk will be flushed as a disk chunk, e.g., if <code>rt_mem_limit</code> is 128M and the rate is 50%, a new disk chunk will be saved when the RAM chunk exceeds 64M.</li>
 <li><code>ram_bytes_retired</code>: represents the size of garbage in RAM chunks (e.g., deleted or replaced documents not yet permanently removed).</li>
-<li><code>locked</code>: a value greater than 0 indicates that the table is currently locked by <a href="../../16-securing_and_compacting_a_table.html#freezing-a-table">FREEZE</a>. The number represents how many times the table has been frozen. For instance, a table might be frozen by <code>manticore-backup</code> and then frozen again by replication. It should only be completely unfrozen when no other process requires it to be frozen.</li>
+<li><code>locked</code>: a value greater than 0 indicates that the table is currently locked by <a href="16-securing_and_compacting_a_table.html#freezing-a-table">FREEZE</a>. The number represents how many times the table has been frozen. For instance, a table might be frozen by <code>manticore-backup</code> and then frozen again by replication. It should only be completely unfrozen when no other process requires it to be frozen.</li>
 <li><code>max_stack_need</code>: stack space we need to calculate most complex from the stored percolate queries. That is dynamic value, depends on build details as compiler, optimization, hardware, etc.</li>
 <li><code>average_stack_base</code>: stack space which is usually occupied on start of calculation of percolate query.</li>
 <li><code>desired_thread_stack</code>: sum of above values, rounded up to 128 bytes edge. If this value is greater than <code>thread_stack</code>, you may not execute <code>call pq</code> over this table, as some stored queries will fail. Default <code>thread_stack</code> value is 1M (which is 1048576); other values should be configured.</li>
@@ -4923,7 +4923,7 @@ Go
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">index_name</span><span class="p">[.</span><span class="n">N</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">CHUNK</span><span class="w"> </span><span class="n">N</span><span class="p">]</span><span class="w"> </span><span class="n">SETTINGS</span>
 </code></pre></div>
 
-<p>The output resembles the <a href="../../23-miscellaneous_tools.html#indextool">--dumpconfig</a> option of the <a href="../../23-miscellaneous_tools.html#indextool">indextool</a> utility. The report provides a breakdown of all table settings, including tokenizer and dictionary options.</p>
+<p>The output resembles the <a href="23-miscellaneous_tools.html#indextool">--dumpconfig</a> option of the <a href="23-miscellaneous_tools.html#indextool">indextool</a> utility. The report provides a breakdown of all table settings, including tokenizer and dictionary options.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>

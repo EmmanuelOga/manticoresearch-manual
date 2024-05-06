@@ -39,13 +39,13 @@
         
         <h1 id="adding-documents-to-a-real-time-table">Adding documents to a real-time table</h1>
 <blockquote>
-<p>If you're looking for information on adding documents to a plain table, please refer to the section on <a href="../../12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">adding data from external storages</a>.</p>
+<p>If you're looking for information on adding documents to a plain table, please refer to the section on <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">adding data from external storages</a>.</p>
 </blockquote>
 <!-- example insert -->
-<p>Adding documents in real-time is supported only for <a href="../../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a> and <a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> tables. The corresponding SQL command, HTTP endpoint, or client functions insert new rows (documents) into a table with the provided field values. It's not necessary for a table to exist before adding documents to it. If the table doesn't exist, Manticore will attempt to create it automatically. For more information, see <a href="../../12-data_creation_and_modification.html#auto-schema">Auto schema</a>.</p>
-<p>You can insert a single or <a href="../../12-data_creation_and_modification.html#bulk-adding-documents">multiple documents</a> with values for all fields of the table or just a portion of them. In this case, the other fields will be filled with their default values (0 for scalar types, an empty string for text types).</p>
+<p>Adding documents in real-time is supported only for <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a> and <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> tables. The corresponding SQL command, HTTP endpoint, or client functions insert new rows (documents) into a table with the provided field values. It's not necessary for a table to exist before adding documents to it. If the table doesn't exist, Manticore will attempt to create it automatically. For more information, see <a href="12-data_creation_and_modification.html#auto-schema">Auto schema</a>.</p>
+<p>You can insert a single or <a href="12-data_creation_and_modification.html#bulk-adding-documents">multiple documents</a> with values for all fields of the table or just a portion of them. In this case, the other fields will be filled with their default values (0 for scalar types, an empty string for text types).</p>
 <p>Expressions are not currently supported in <code>INSERT</code>, so values must be explicitly specified.</p>
-<p>The ID field/value can be omitted, as RT and PQ tables support <a href="../../12-data_creation_and_modification.html#auto-id">auto-id</a> functionality. You can also use <code>0</code> as the id value to force automatic ID generation. Rows with duplicate IDs will not be overwritten by <code>INSERT</code>. Instead, you can use <a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> for that purpose.</p>
+<p>The ID field/value can be omitted, as RT and PQ tables support <a href="12-data_creation_and_modification.html#auto-id">auto-id</a> functionality. You can also use <code>0</code> as the id value to force automatic ID generation. Rows with duplicate IDs will not be overwritten by <code>INSERT</code>. Instead, you can use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> for that purpose.</p>
 <p>When using the HTTP JSON protocol, you have two different request formats to choose from: a common Manticore format and an Elasticsearch-like format. Both formats are demonstrated in the examples below.</p>
 <p>Additionally, when using the Manticore JSON request format, keep in mind that the <code>doc</code> node is required, and all the values should be provided within it.</p>
 <!-- intro -->
@@ -364,7 +364,7 @@ C
 </div>
 
 <h2 id="auto-schema">Auto schema</h2>
-<p>Manticore features an automatic table creation mechanism, which activates when a specified table in the insert query doesn't yet exist. This mechanism is enabled by default. To disable it, set <code>auto_schema = 0</code> in the <a href="../../20-server_settings.html#auto_schema">Searchd</a> section of your Manticore config file.</p>
+<p>Manticore features an automatic table creation mechanism, which activates when a specified table in the insert query doesn't yet exist. This mechanism is enabled by default. To disable it, set <code>auto_schema = 0</code> in the <a href="20-server_settings.html#auto_schema">Searchd</a> section of your Manticore config file.</p>
 <!-- example auto-schema -->
 
 <p>By default, all text values in the <code>VALUES</code> clause are considered to be of the <code>text</code> type, except for values representing valid email addresses, which are treated as the <code>string</code> type.</p>
@@ -480,10 +480,10 @@ SQL
 
 <h2 id="auto-id">Auto ID</h2>
 <!-- example autoid -->
-<p>Manticore provides an auto ID generation functionality for the column ID of documents inserted or replaced into a real-time or <a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate table</a>. The generator produces a unique ID for a document with some guarantees, but it should not be considered an auto-incremented ID.</p>
+<p>Manticore provides an auto ID generation functionality for the column ID of documents inserted or replaced into a real-time or <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate table</a>. The generator produces a unique ID for a document with some guarantees, but it should not be considered an auto-incremented ID.</p>
 <p>The generated ID value is guaranteed to be unique under the following conditions:</p>
 <ul>
-<li>The <a href="../../20-server_settings.html#server_id">server_id</a> value of the current server is in the range of 0 to 127 and is unique among nodes in the cluster, or it uses the default value generated from the MAC address as a seed</li>
+<li>The <a href="20-server_settings.html#server_id">server_id</a> value of the current server is in the range of 0 to 127 and is unique among nodes in the cluster, or it uses the default value generated from the MAC address as a seed</li>
 <li>The system time does not change for the Manticore node between server restarts</li>
 <li>The auto ID is generated fewer than 16 million times per second between search server restarts</li>
 </ul>
@@ -689,8 +689,8 @@ C
 <ul>
 <li>The larger the batch, the higher the latency of each insert operation</li>
 <li>The larger the batch, the higher the indexation speed you can expect</li>
-<li>You might want to increase the <a href="../../20-server_settings.html#max_packet_size">max_packet_size</a> value to allow for larger batches</li>
-<li>Normally, each batch insert operation is considered a single <a href="../../12-data_creation_and_modification.html#toc-12.05-transactions">transaction</a> with atomicity guarantee, so you will either have all the new documents in the table at once or, in case of failure, none of them will be added. See more details about an empty line or switching to another table in the "JSON" example.</li>
+<li>You might want to increase the <a href="20-server_settings.html#max_packet_size">max_packet_size</a> value to allow for larger batches</li>
+<li>Normally, each batch insert operation is considered a single <a href="12-data_creation_and_modification.html#toc-12.05-transactions">transaction</a> with atomicity guarantee, so you will either have all the new documents in the table at once or, in case of failure, none of them will be added. See more details about an empty line or switching to another table in the "JSON" example.</li>
 </ul>
 <p>Note that the <code>/bulk</code> HTTP endpoint does not support automatic creation of tables (auto schema). Only the <code>/_bulk</code> (Elasticsearch-like) HTTP endpoint and the SQL interface support this feature.</p>
 <h4 id="chunked-transfer-in-bulk">Chunked transfer in /bulk</h4>
@@ -748,7 +748,7 @@ Expressions are currently not supported in `INSERT`, and values should be explic
 JSON
 </div>
 <!-- request JSON -->
-The syntax is generally the same as for [inserting a single document](../../04-quick_start_guide.html#add-documents). Just provide more lines, one for each document, and use the `/bulk` endpoint instead of `/insert`. Enclose each document in the "insert" node. Note that it also requires:
+The syntax is generally the same as for [inserting a single document](04-quick_start_guide.html#add-documents). Just provide more lines, one for each document, and use the `/bulk` endpoint instead of `/insert`. Enclose each document in the "insert" node. Note that it also requires:
 
 * `Content-Type: application/x-ndjson`
 * The data should be formatted as newline-delimited JSON (NDJSON). Essentially, this means that each line should contain exactly one JSON statement and end with a newline `\n` and possibly `\r`.
@@ -1209,7 +1209,7 @@ C
 
 <!-- example JSON_insert -->
 <h2 id="inserting-json">Inserting JSON</h2>
-<p>JSON value can be inserted as an <a href="../../13-searching.html#toc-13.02.03-escaping">escaped</a> string (via SQL or JSON) or as a JSON object (via the JSON interface).</p>
+<p>JSON value can be inserted as an <a href="13-searching.html#toc-13.02.03-escaping">escaped</a> string (via SQL or JSON) or as a JSON object (via the JSON interface).</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -1432,7 +1432,7 @@ C
         
         <h1 id="adding-rules-to-a-percolate-table">Adding rules to a percolate table</h1>
 <!-- example -->
-<p>In a <a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a> documents that are percolate query rules are stored and must follow the exact schema of four fields:</p>
+<p>In a <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a> documents that are percolate query rules are stored and must follow the exact schema of four fields:</p>
 <table>
 <thead>
 <tr>
@@ -1450,12 +1450,12 @@ C
 <tr>
 <td>query</td>
 <td>string</td>
-<td>Full-text query (can be empty) compatible with the <a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a></td>
+<td>Full-text query (can be empty) compatible with the <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a></td>
 </tr>
 <tr>
 <td>filters</td>
 <td>string</td>
-<td>Additional filters by non-full-text fields (can be empty) compatible with the <a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a></td>
+<td>Additional filters by non-full-text fields (can be empty) compatible with the <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a></td>
 </tr>
 <tr>
 <td>tags</td>
@@ -1508,7 +1508,7 @@ JSON
 <!-- request JSON -->
 There are two ways you can add a percolate query into a percolate table:
 
-* Query in JSON /search compatible format, described at [json/search](../../13-searching.html#http-json)
+* Query in JSON /search compatible format, described at [json/search](13-searching.html#http-json)
 
 <div class="codehilite"><pre><span></span><code><span class="err">PUT</span><span class="w"> </span><span class="err">/pq/pq_</span><span class="kc">ta</span><span class="err">ble/doc/</span><span class="mi">1</span>
 <span class="p">{</span>
@@ -1528,7 +1528,7 @@ There are two ways you can add a percolate query into a percolate table:
 
 
 
-* Query in SQL format, described at [search query syntax](../../13-searching.html#queries-in-sql-format)
+* Query in SQL format, described at [search query syntax](13-searching.html#queries-in-sql-format)
 
 <div class="codehilite"><pre><span></span><code><span class="err">PUT</span><span class="w"> </span><span class="err">/pq/pq_</span><span class="kc">ta</span><span class="err">ble/doc/</span><span class="mi">2</span>
 <span class="p">{</span>
@@ -1661,7 +1661,7 @@ C
 
 <!-- example noid -->
 <h2 id="auto-id-provisioning">Auto ID provisioning</h2>
-<p>If you don't specify an ID, it will be assigned automatically. You can read more about auto-ID <a href="../../12-data_creation_and_modification.html#auto-id">here</a>.</p>
+<p>If you don't specify an ID, it will be assigned automatically. You can read more about auto-ID <a href="12-data_creation_and_modification.html#auto-id">here</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -1924,7 +1924,7 @@ C
 </div>
 <!-- example replace -->
 <h2 id="replacing-rules-in-a-pq-table">Replacing rules in a PQ table</h2>
-<p>To replace an existing PQ rule with a new one in SQL, just use a regular <a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> command. There's a special syntax <code>?refresh=1</code> to replace a PQ rule <strong>defined in JSON mode</strong> via the HTTP JSON interface.</p>
+<p>To replace an existing PQ rule with a new one in SQL, just use a regular <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> command. There's a special syntax <code>?refresh=1</code> to replace a PQ rule <strong>defined in JSON mode</strong> via the HTTP JSON interface.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -2043,7 +2043,7 @@ SQL
         
         <h1 id="plain-tables-creation">Plain tables creation</h1>
 <p>Plain tables are tables that are created one-time by fetching data at creation from one or several sources. A plain table is immutable as documents cannot be added or deleted during its lifespan. It is only possible to update values of numeric attributes (including MVA). Refreshing the data is only possible by recreating the whole table.</p>
-<p>Plain tables are available only in the <a href="../../06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a> and their definition is made up of a table declaration and one or several source declarations. The data gathering and table creation are not made by the <code>searchd</code> server but by the auxiliary tool <code>indexer</code>.</p>
+<p>Plain tables are available only in the <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a> and their definition is made up of a table declaration and one or several source declarations. The data gathering and table creation are not made by the <code>searchd</code> server but by the auxiliary tool <code>indexer</code>.</p>
 <p><strong>Indexer</strong> is a command-line tool that can be called directly from the command line or from shell scripts.</p>
 <p>It can accept a number of arguments when called, but there are also several settings of its own in the Manticore configuration file.</p>
 <p>In the typical scenario, indexer does the following:</p>
@@ -2103,7 +2103,7 @@ SQL
 <p><code>shell
   sudo -u manticore indexer --config /home/myuser/manticore.conf --all</code></p>
 <ul>
-<li><code>--rotate</code> is used for rotating tables. Unless you have the situation where you can take the search function offline without troubling users you will almost certainly need to keep search running whilst indexing new documents. <code>--rotate</code> creates a second table, parallel to the first (in the same place, simply including <code>.new</code> in the filenames). Once complete, <code>indexer</code> notifies <code>searchd</code> via sending the <code>SIGHUP</code> signal, and the <code>searchd</code> will attempt to rename the tables (renaming the existing ones to include <code>.old</code> and renaming the <code>.new</code> to replace them), and then will start serving from the newer files. Depending on the setting of <a href="../../20-server_settings.html#seamless_rotate">seamless_rotate</a> there may be a slight delay in being able to search the newer tables. In case multiple tables are rotated at once which are chained by <a href="../../06-creating_a_table.html#killlist_target">killlist_target</a> relations rotation will start with the tables that are not targets and finish with the ones at the end of target chain. Example usage:</li>
+<li><code>--rotate</code> is used for rotating tables. Unless you have the situation where you can take the search function offline without troubling users you will almost certainly need to keep search running whilst indexing new documents. <code>--rotate</code> creates a second table, parallel to the first (in the same place, simply including <code>.new</code> in the filenames). Once complete, <code>indexer</code> notifies <code>searchd</code> via sending the <code>SIGHUP</code> signal, and the <code>searchd</code> will attempt to rename the tables (renaming the existing ones to include <code>.old</code> and renaming the <code>.new</code> to replace them), and then will start serving from the newer files. Depending on the setting of <a href="20-server_settings.html#seamless_rotate">seamless_rotate</a> there may be a slight delay in being able to search the newer tables. In case multiple tables are rotated at once which are chained by <a href="06-creating_a_table.html#killlist_target">killlist_target</a> relations rotation will start with the tables that are not targets and finish with the ones at the end of target chain. Example usage:</li>
 </ul>
 <p><code>shell
   sudo -u manticore indexer --rotate --all</code></p>
@@ -2118,7 +2118,7 @@ SQL
 <p><code>shell
   sudo -u manticore indexer --rotate --all --noprogress</code></p>
 <ul>
-<li><code>--buildstops &lt;outputfile.text&gt; &lt;N&gt;</code> reviews the table source, as if it were indexing the data, and produces a list of the terms that are being indexed. In other words, it produces a list of all the searchable terms that are becoming part of the table. Note, it does not update the table in question, it simply processes the data as if it were indexing, including running queries defined with <a href="../../12-data_creation_and_modification.html#sql_query_pre">sql_query_pre</a> or <a href="../../12-data_creation_and_modification.html#sql_query_post">sql_query_post</a>. <code>outputfile.txt</code> will contain the list of words, one per line, sorted by frequency with most frequent first, and <code>N</code> specifies the maximum number of words that will be listed. If it's sufficiently large to encompass every word in the table, only that many words will be returned. Such a dictionary list could be used for client application features around "Did you mean…" functionality, usually in conjunction with <code>--buildfreqs</code>, below. Example:</li>
+<li><code>--buildstops &lt;outputfile.text&gt; &lt;N&gt;</code> reviews the table source, as if it were indexing the data, and produces a list of the terms that are being indexed. In other words, it produces a list of all the searchable terms that are becoming part of the table. Note, it does not update the table in question, it simply processes the data as if it were indexing, including running queries defined with <a href="12-data_creation_and_modification.html#sql_query_pre">sql_query_pre</a> or <a href="12-data_creation_and_modification.html#sql_query_post">sql_query_post</a>. <code>outputfile.txt</code> will contain the list of words, one per line, sorted by frequency with most frequent first, and <code>N</code> specifies the maximum number of words that will be listed. If it's sufficiently large to encompass every word in the table, only that many words will be returned. Such a dictionary list could be used for client application features around "Did you mean…" functionality, usually in conjunction with <code>--buildfreqs</code>, below. Example:</li>
 </ul>
 <p><code>shell
   sudo -u manticore indexer mytable --buildstops word_freq.txt 1000</code></p>
@@ -2130,7 +2130,7 @@ SQL
   sudo -u manticore indexer mytable --buildstops word_freq.txt 1000 --buildfreqs</code></p>
 <p>This would produce the <code>word_freq.txt</code> as above, however after each word would be the number of times it occurred in the table in question.</p>
 <ul>
-<li><code>--merge &lt;dst-table&gt; &lt;src-table&gt;</code> is used for physically merging tables together, for example if you have a <a href="../../06-creating_a_table.html#main+delta-scenario">main+delta scheme</a>, where the main table rarely changes, but the delta table is rebuilt frequently, and <code>--merge</code> would be used to combine the two. The operation moves from right to left - the contents of <code>src-table</code> get examined and physically combined with the contents of <code>dst-table</code> and the result is left in <code>dst-table</code>. In pseudo-code, it might be expressed as: <code>dst-table += src-table</code> An example:</li>
+<li><code>--merge &lt;dst-table&gt; &lt;src-table&gt;</code> is used for physically merging tables together, for example if you have a <a href="06-creating_a_table.html#main+delta-scenario">main+delta scheme</a>, where the main table rarely changes, but the delta table is rebuilt frequently, and <code>--merge</code> would be used to combine the two. The operation moves from right to left - the contents of <code>src-table</code> get examined and physically combined with the contents of <code>dst-table</code> and the result is left in <code>dst-table</code>. In pseudo-code, it might be expressed as: <code>dst-table += src-table</code> An example:</li>
 </ul>
 <p><code>shell
   sudo -u manticore indexer --merge main delta --rotate</code></p>
@@ -2178,14 +2178,14 @@ SQL
 </code></pre></div>
 
 <p>Lemmatizer cache size. Optional, default is 256K.</p>
-<p>Our <a href="../../20-server_settings.html#lemmatizer_base">lemmatizer</a> implementation uses a compressed dictionary format that enables a space/speed tradeoff. It can either perform lemmatization off the compressed data, using more CPU but less RAM, or it can decompress and precache the dictionary either partially or fully, thus using less CPU but more RAM. The lemmatizer_cache directive lets you control how much RAM exactly can be spent for that uncompressed dictionary cache.</p>
+<p>Our <a href="20-server_settings.html#lemmatizer_base">lemmatizer</a> implementation uses a compressed dictionary format that enables a space/speed tradeoff. It can either perform lemmatization off the compressed data, using more CPU but less RAM, or it can decompress and precache the dictionary either partially or fully, thus using less CPU but more RAM. The lemmatizer_cache directive lets you control how much RAM exactly can be spent for that uncompressed dictionary cache.</p>
 <p>Currently, the only available dictionaries are <a href="https://manticoresearch.com/install/">ru.pak, en.pak, and de.pak</a>. These are the Russian, English, and German dictionaries. The compressed dictionary is approximately 2 to 10 MB in size. Note that the dictionary stays in memory at all times too. The default cache size is 256 KB. The accepted cache sizes are 0 to 2047 MB. It's safe to raise the cache size too high; the lemmatizer will only use the needed memory. For example, the entire Russian dictionary decompresses to approximately 110 MB; thus setting<code>lemmatizer_cache</code> higher than that will not affect the memory use. Even when 1024 MB is allowed for the cache, if only 110 MB is needed, it will only use those 110 MB.</p>
 <h4 id="max_file_field_buffer">max_file_field_buffer</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">max_file_field_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">128M</span>
 </code></pre></div>
 
 <p>Maximum file field adaptive buffer size in bytes. Optional, default is 8MB, minimum is 1MB.</p>
-<p>The file field buffer is used to load files referred to from <a href="../../12-data_creation_and_modification.html#sql_file_field">sql_file_field</a> columns. This buffer is adaptive, starting at 1 MB at first allocation, and growing in 2x steps until either the file contents can be loaded or the maximum buffer size, specified by the <code>max_file_field_buffer</code> directive, is reached.</p>
+<p>The file field buffer is used to load files referred to from <a href="12-data_creation_and_modification.html#sql_file_field">sql_file_field</a> columns. This buffer is adaptive, starting at 1 MB at first allocation, and growing in 2x steps until either the file contents can be loaded or the maximum buffer size, specified by the <code>max_file_field_buffer</code> directive, is reached.</p>
 <p>Thus, if no file fields are specified, no buffer is allocated at all. If all files loaded during indexing are under (for example) 2 MB in size, but the <code>max_file_field_buffer</code> value is 128 MB, the peak buffer usage would still be only 2 MB. However, files over 128 MB would be entirely skipped.</p>
 <h4 id="max_iops">max_iops</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">max_iops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">40</span>
@@ -2199,7 +2199,7 @@ SQL
 </code></pre></div>
 
 <p>Maximum allowed I/O operation size, in bytes, for I/O throttling. Optional, default is 0 (unlimited).</p>
-<p>I/O throttling related option. It limits the maximum file I/O operation (read or write) size for all operations performed by <code>indexer</code>. A value of 0 means that no limit is imposed. Reads or writes that are bigger than the limit will be split into several smaller operations, and counted as several operations by the <a href="../../12-data_creation_and_modification.html#max_iops">max_iops</a> setting. At the time of this writing, all I/O calls should be under 256 KB (default internal buffer size) anyway, so max_iosize values higher than 256 KB should not have any effect.</p>
+<p>I/O throttling related option. It limits the maximum file I/O operation (read or write) size for all operations performed by <code>indexer</code>. A value of 0 means that no limit is imposed. Reads or writes that are bigger than the limit will be split into several smaller operations, and counted as several operations by the <a href="12-data_creation_and_modification.html#max_iops">max_iops</a> setting. At the time of this writing, all I/O calls should be under 256 KB (default internal buffer size) anyway, so max_iosize values higher than 256 KB should not have any effect.</p>
 <h4 id="max_xmlpipe2_field">max_xmlpipe2_field</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">max_xmlpipe2_field</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8M</span>
 </code></pre></div>
@@ -2218,7 +2218,7 @@ SQL
 </code></pre></div>
 
 <p>How to handle IO errors in file fields. Optional, default is <code>ignore_field</code>.<br />
-When there is a problem indexing a file referenced by a file field (<a href="../../12-data_creation_and_modification.html#sql_file_field">sql_file_field</a>), <code>indexer</code> can either process the document, assuming empty content in this particular field, or skip the document, or fail indexing entirely. <code>on_file_field_error</code> directive controls that behavior. The values it takes are:</p>
+When there is a problem indexing a file referenced by a file field (<a href="12-data_creation_and_modification.html#sql_file_field">sql_file_field</a>), <code>indexer</code> can either process the document, assuming empty content in this particular field, or skip the document, or fail indexing entirely. <code>on_file_field_error</code> directive controls that behavior. The values it takes are:</p>
 <ul>
 <li><code>ignore_field</code>, process the current document without field;</li>
 <li><code>skip_document</code>, skip the current document but continue indexing;</li>
@@ -2230,7 +2230,7 @@ When there is a problem indexing a file referenced by a file field (<a href="../
 <div class="codehilite"><pre><span></span><code><span class="na">write_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4M</span>
 </code></pre></div>
 
-<p>Write buffer size, bytes. Optional, default is 1MB. Write buffers are used to write both temporary and final table files when indexing. Larger buffers reduce the number of required disk writes. Memory for the buffers is allocated in addition to <a href="../../12-data_creation_and_modification.html#mem_limit">mem_limit</a>. Note that several (currently up to 4) buffers for different files will be allocated, proportionally increasing the RAM usage.</p>
+<p>Write buffer size, bytes. Optional, default is 1MB. Write buffers are used to write both temporary and final table files when indexing. Larger buffers reduce the number of required disk writes. Memory for the buffers is allocated in addition to <a href="12-data_creation_and_modification.html#mem_limit">mem_limit</a>. Note that several (currently up to 4) buffers for different files will be allocated, proportionally increasing the RAM usage.</p>
 <h4 id="ignore_non_plain">ignore_non_plain</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">ignore_non_plain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
 </code></pre></div>
@@ -2427,7 +2427,7 @@ For instance, you can specify 2080 (2048+32) to use both compression and SSL, or
 </code></pre></div>
 
 <h2 id="sql_query">sql_query</h2>
-<p>This is the query used to retrieve documents from a SQL server. There can be only one sql_query declared, and it's mandatory to have one. See also <a href="../../../12-data_creation_and_modification.html#processing-fetched-data">Processing fetched data</a></p>
+<p>This is the query used to retrieve documents from a SQL server. There can be only one sql_query declared, and it's mandatory to have one. See also <a href="../12-data_creation_and_modification.html#processing-fetched-data">Processing fetched data</a></p>
 <h2 id="sql_query_pre">sql_query_pre</h2>
 <p>Pre-fetch query or pre-query. This is a multi-value, optional setting, with the default being an empty list of queries. The pre-queries are executed before the sql_query in the order they appear in the configuration file. The results of the pre-queries are ignored.</p>
 <p>Pre-queries are useful in many ways. They can be used to set up encoding, mark records that are going to be indexed, update internal counters, set various per-connection SQL server options and variables, and so on.</p>
@@ -2519,7 +2519,7 @@ That could be achieved with:</p>
 </code></pre></div>
 
 <h3 id="sql_field_string">sql_field_string</h3>
-<p>Declares a combo string attribute/text field. The values will be indexed as a full-text field, but also stored in a string attribute with the same name. Note, it should only be used when you are sure you want the field to be searchable both in a full-text manner and as an attribute (with the ability to sort and group by it). If you just want to be able to fetch the original value of the field, you don't need to do anything for it unless you implicitly removed the field from the stored fields list via <a href="../../../06-creating_a_table.html#stored_fields">stored_fields</a>.</p>
+<p>Declares a combo string attribute/text field. The values will be indexed as a full-text field, but also stored in a string attribute with the same name. Note, it should only be used when you are sure you want the field to be searchable both in a full-text manner and as an attribute (with the ability to sort and group by it). If you just want to be able to fetch the original value of the field, you don't need to do anything for it unless you implicitly removed the field from the stored fields list via <a href="../06-creating_a_table.html#stored_fields">stored_fields</a>.</p>
 <div class="codehilite"><pre><span></span><code><span class="na">sql_field_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">name</span>
 </code></pre></div>
 
@@ -2564,7 +2564,7 @@ That could be achieved with:</p>
 - keyword<br />
 - and integer payload value.</p>
 <p>Document IDs can be duplicate, but they must be in ascending order. Payloads <strong>must</strong> be unsigned integers within the 24-bit range, i.e., from 0 to 16777215.</p>
-<p>The only ranker that accounts for payloads is <code>proximity_bm25</code> (the default <a href="../../13-searching.html#available-built-in-rankers">ranker</a>). On tables with payload fields, it will automatically switch to a variant that matches keywords in those fields, computes a sum of matched payloads multiplied by field weights, and adds that sum to the final rank.</p>
+<p>The only ranker that accounts for payloads is <code>proximity_bm25</code> (the default <a href="13-searching.html#available-built-in-rankers">ranker</a>). On tables with payload fields, it will automatically switch to a variant that matches keywords in those fields, computes a sum of matched payloads multiplied by field weights, and adds that sum to the final rank.</p>
 <p>Please note that the payload field is ignored for full-text queries containing complex operators. It only works for simple bag-of-words queries.</p>
 <!-- intro -->
 
@@ -2908,7 +2908,7 @@ that<span class="w"> </span>in-document<span class="w"> </span>field<span class=
 <p>In such cases, implementing "live" (nearly real-time) table updates can be achieved using a "main+delta" scheme.</p>
 <p>The concept involves setting up two sources and two tables, with one "main" table for data that rarely changes (if ever), and one "delta" table for new documents. In the example, the 1,000,000 archived posts would be stored in the main table, while the 1,000 new daily posts would be placed in the delta table. The delta table can then be rebuilt frequently, making the documents available for searching within seconds or minutes. Determining which documents belong to which table and rebuilding the main table can be fully automated. One approach is to create a counter table that tracks the ID used to split the documents and update it whenever the main table is rebuilt.</p>
 <p>Using a timestamp column as the split variable is more effective than using the ID since timestamps can track not only new documents but also modified ones.</p>
-<p>For datasets that may contain modified or deleted documents, the delta table should provide a list of affected documents, ensuring they are suppressed and excluded from search queries. This is accomplished using a feature called Kill Lists. The document IDs to be killed can be specified in an auxiliary query defined by <a href="../../12-data_creation_and_modification.html#table-kill-list">sql_query_killlist</a>. The delta table must indicate the target tables for which the kill lists will be applied using the <a href="../../12-data_creation_and_modification.html#killlist_target">killlist_target</a> directive. The impact of kill lists is permanent on the target table, meaning that even if a search is performed without the delta table, the suppressed documents will not appear in the search results.</p>
+<p>For datasets that may contain modified or deleted documents, the delta table should provide a list of affected documents, ensuring they are suppressed and excluded from search queries. This is accomplished using a feature called Kill Lists. The document IDs to be killed can be specified in an auxiliary query defined by <a href="12-data_creation_and_modification.html#table-kill-list">sql_query_killlist</a>. The delta table must indicate the target tables for which the kill lists will be applied using the <a href="12-data_creation_and_modification.html#killlist_target">killlist_target</a> directive. The impact of kill lists is permanent on the target table, meaning that even if a search is performed without the delta table, the suppressed documents will not appear in the search results.</p>
 <p>Notice how we're overriding <code>sql_query_pre</code> in the delta source. We must explicitly include this override. If we don't, the <code>REPLACE</code> query would be executed during the delta source's build as well, effectively rendering it useless.</p>
 <!-- request Example -->
 
@@ -3004,13 +3004,13 @@ that<span class="w"> </span>in-document<span class="w"> </span>field<span class=
 </code></pre></div>
 
 <h2 id="removing-documents-in-a-plain-table">Removing documents in a plain table</h2>
-<p>A plain table can contain a directive called <a href="../../../06-creating_a_table.html#killlist_target">killlist_target</a> that will tell the server it can provide a list of document IDs that should be removed from certain existing tables. The table can use either its document IDs as the source for this list or provide a separate <a href="../../../12-data_creation_and_modification.html#table-kill-list">list</a>.</p>
+<p>A plain table can contain a directive called <a href="../06-creating_a_table.html#killlist_target">killlist_target</a> that will tell the server it can provide a list of document IDs that should be removed from certain existing tables. The table can use either its document IDs as the source for this list or provide a separate <a href="../12-data_creation_and_modification.html#table-kill-list">list</a>.</p>
 <h3 id="killlist_target">killlist_target</h3>
 <!-- example killlist_target 1 -->
 <p>Sets the table(s) that the kill-list will be applied to. Optional, default value is empty.</p>
-<p>When you use <a href="../../../06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> you often need to maintain not just a single table, but a set of them to be able to add/update/delete new documents sooner (read about <a href="../../../12-data_creation_and_modification.html#toc-12.02.05-maindelta_schema">delta table updates</a>). n order to suppress matches in the previous (<strong>main</strong>) table that were updated or deleted in the next (<strong>delta</strong>) table, you need to:</p>
+<p>When you use <a href="../06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> you often need to maintain not just a single table, but a set of them to be able to add/update/delete new documents sooner (read about <a href="../12-data_creation_and_modification.html#toc-12.02.05-maindelta_schema">delta table updates</a>). n order to suppress matches in the previous (<strong>main</strong>) table that were updated or deleted in the next (<strong>delta</strong>) table, you need to:</p>
 <ol>
-<li>Create a kill-list in the <strong>delta</strong> table using <a href="../../../12-data_creation_and_modification.html#table-kill-list">sql_query_killlist</a></li>
+<li>Create a kill-list in the <strong>delta</strong> table using <a href="../12-data_creation_and_modification.html#table-kill-list">sql_query_killlist</a></li>
 <li>Specify <strong>main</strong> table as <code>killlist_target</code> in <strong>delta</strong> table settings:</li>
 </ol>
 <!-- intro -->
@@ -3114,7 +3114,7 @@ Attaching table - general syntax
 <p><code>ATTACH TABLE</code> comes with a number of restrictions. Most notably, the target RT table is currently required to be either empty or have the same settings as the source table. In case the source table gets attached to a non-empty RT table, the RT table data collected so far gets stored as a regular disk chunk, and the table being attached becomes the newest disk chunk, with documents having the same IDs getting killed. The complete list of restrictions is as follows:</p>
 <ul>
 <li>The target RT table needs to be either empty or have the same settings as the source table.</li>
-<li>The source table needs to have <a href="../../../06-creating_a_table.html#phrase_boundary_step">phrase_boundary_step</a> set to 0 and <a href="../../../06-creating_a_table.html#stopword_step">stopword_step</a> set to 1.</li>
+<li>The source table needs to have <a href="../06-creating_a_table.html#phrase_boundary_step">phrase_boundary_step</a> set to 0 and <a href="../06-creating_a_table.html#stopword_step">stopword_step</a> set to 1.</li>
 </ul>
 <!-- intro -->
 
@@ -3228,7 +3228,7 @@ After the ATTACH, the plain table is removed and no longer available for searchi
 
         
         <h1 id="importing-table">Importing table</h1>
-<p>If you decide to migrate from <a href="../../../06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a> to <a href="../../../06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a> or in some other cases, real-time and percolate tables built in Plain mode can be imported to Manticore running in RT mode using the <code>IMPORT TABLE</code> statement. The general syntax is as follows:</p>
+<p>If you decide to migrate from <a href="../06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a> to <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a> or in some other cases, real-time and percolate tables built in Plain mode can be imported to Manticore running in RT mode using the <code>IMPORT TABLE</code> statement. The general syntax is as follows:</p>
 <!-- example import -->
 
 <div class="codehilite"><pre><span></span><code><span class="n">IMPORT</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;path&#39;</span>
@@ -3254,12 +3254,12 @@ mysql<span class="w"> </span>-P9306<span class="w"> </span>-h0<span class="w"> <
 
 </div>
 </div>
-<p>Executing this command makes all the table files of the specified table copied to <a href="../../../20-server_settings.html#data_dir">data_dir</a>. All the external table files such as wordforms, exceptions and stopwords are also copied to the same <code>data_dir</code>.<br />
+<p>Executing this command makes all the table files of the specified table copied to <a href="../20-server_settings.html#data_dir">data_dir</a>. All the external table files such as wordforms, exceptions and stopwords are also copied to the same <code>data_dir</code>.<br />
 <code>IMPORT TABLE</code> has the following limitations:</p>
 <ul>
 <li>paths to the external files that were originally specified in the config file must be absolute</li>
 <li>only real-time and percolate tables are supported</li>
-<li>plain tables need to be preliminarily (in the plain mode) converted to real-time tables via <a href="../../../12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">ATTACH TABLE</a></li>
+<li>plain tables need to be preliminarily (in the plain mode) converted to real-time tables via <a href="../12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">ATTACH TABLE</a></li>
 </ul>
 <h2 id="indexer-print-rt">indexer --print-rt</h2>
 <!-- example print_rt -->
@@ -3299,18 +3299,18 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
 <li>for plain tables that are already loaded</li>
 <li>tables added in configuration, but not loaded yet</li>
 </ul>
-<p>In the first case, the indexer cannot put the new version of the table online as the running copy is locked and loaded by <code>searchd</code>. In this case <code>indexer</code> needs to be called with the <a href="../../12-data_creation_and_modification.html#indexer-command-line-arguments">--rotate</a> parameter. If rotate is used, <code>indexer</code> creates new table files with <code>.new.</code> in their names and sends a <em>HUP</em> signal to <code>searchd</code> informing it about the new version. The <code>searchd</code> will perform a lookup and will put the new version of the table in place and discard the old one. In some cases, it might be desired to create the new version of the table but not perform rotate as soon as possible. For example, it might be desired to first check the health of the new table versions. In this case,  <code>indexer</code> can accept the<code>--nohup</code> parameter which will forbid sending the HUP signal to the server.</p>
-<p>New tables can be loaded by rotation; however, the regular handling of the HUP signal is to check for new tables only if the configuration has changed since server startup. If the table was already defined in the configuration, the table should be first created by running <code>indexer</code> without rotation and perform the <a href="../../12-data_creation_and_modification.html#reload-tables">RELOAD TABLES</a> statement instead.</p>
+<p>In the first case, the indexer cannot put the new version of the table online as the running copy is locked and loaded by <code>searchd</code>. In this case <code>indexer</code> needs to be called with the <a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--rotate</a> parameter. If rotate is used, <code>indexer</code> creates new table files with <code>.new.</code> in their names and sends a <em>HUP</em> signal to <code>searchd</code> informing it about the new version. The <code>searchd</code> will perform a lookup and will put the new version of the table in place and discard the old one. In some cases, it might be desired to create the new version of the table but not perform rotate as soon as possible. For example, it might be desired to first check the health of the new table versions. In this case,  <code>indexer</code> can accept the<code>--nohup</code> parameter which will forbid sending the HUP signal to the server.</p>
+<p>New tables can be loaded by rotation; however, the regular handling of the HUP signal is to check for new tables only if the configuration has changed since server startup. If the table was already defined in the configuration, the table should be first created by running <code>indexer</code> without rotation and perform the <a href="12-data_creation_and_modification.html#reload-tables">RELOAD TABLES</a> statement instead.</p>
 <p>There are also two specialized statements that can be used to perform rotations on tables:</p>
 <h2 id="reload-table">RELOAD TABLE</h2>
 <div class="codehilite"><pre><span></span><code><span class="n">RELOAD</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;/path/to/table_files&#39;</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">switchover</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">];</span>
 </code></pre></div>
 
 <p>The <code>RELOAD TABLE</code> command enables table rotation via SQL.</p>
-<p>This command functions in three modes. In the first mode, without specifying a path, the Manticore server checks for new table files in the directory indicated by the <a href="../../06-creating_a_table.html#path">path</a>. New table files must be named as <code>tbl.new.sp?</code>.</p>
-<p>If you specify a path, the server searches for table files in that directory, relocates them to the table <a href="../../06-creating_a_table.html#path">path</a>, renames them from <code>tbl.sp?</code> to <code>tbl.new.sp?</code>, and rotates them.</p>
+<p>This command functions in three modes. In the first mode, without specifying a path, the Manticore server checks for new table files in the directory indicated by the <a href="06-creating_a_table.html#path">path</a>. New table files must be named as <code>tbl.new.sp?</code>.</p>
+<p>If you specify a path, the server searches for table files in that directory, relocates them to the table <a href="06-creating_a_table.html#path">path</a>, renames them from <code>tbl.sp?</code> to <code>tbl.new.sp?</code>, and rotates them.</p>
 <p>The third mode, activated by <code>OPTION switchover=1</code>, switches the index to the new path. Here, the daemon tries to load the table directly from the new path without moving the files. If loading is successful, this new index supersedes the old one.</p>
-<p>Also, the daemon writes a unique link file (<code>tbl.link</code>) in the directory specified by <a href="../../06-creating_a_table.html#path">path</a>, maintaining persistent redirection.</p>
+<p>Also, the daemon writes a unique link file (<code>tbl.link</code>) in the directory specified by <a href="06-creating_a_table.html#path">path</a>, maintaining persistent redirection.</p>
 <p>If you revert a redirected index to the path specified in the configuration, the daemon will detect this and delete the link file.</p>
 <p>Once redirected, the daemon retrieves the table from the newly linked path. When rotating, it looks for new table versions at the newly redirected path. Bear in mind, the daemon checks the configuration for common errors, like duplicate paths across different tables. However, it won't identify if multiple tables point to the same path via redirection. Under normal operations, tables are locked with the <code>.spl</code> file, but disabling the lock may cause problems. If there's an error (e.g., the path is inaccessible for any reason), you should manually correct (or simply delete) the link file.</p>
 <p><code>indextool</code> follows the link file, but other tools (<code>indexer</code>, <code>index_converter</code>, etc.) do not recognize the link file and consistently use the path defined in the configuration file, ignoring any redirection. Thus, you can inspect the index with <code>indextool</code>, and it will read from the new location. However, more complex operations like merging will not acknowledge any link file.</p>
@@ -3324,7 +3324,7 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
 </code></pre></div>
 
 <p>This command functions similarly to the HUP system signal, triggering a rotation of tables. Nevertheless, it doesn't exactly mirror the typical HUP signal (which can come from a <code>kill -HUP</code> command or <code>indexer --rotate</code>). This command actively searches for any tables needing rotation and is capable of re-reading the configuration. Suppose you launch Manticore in plain mode with a config file that points to a nonexistent plain table. If you then attempt to <code>indexer --rotate</code> the table, the new table won't be recognized by the server until you execute <code>RELOAD TABLES</code> or restart the server.</p>
-<p>Depending on the value of the <a href="../../20-server_settings.html#seamless_rotate">seamless_rotate</a> setting, new queries might be shortly stalled, and clients will receive temporary errors.</p>
+<p>Depending on the value of the <a href="20-server_settings.html#seamless_rotate">seamless_rotate</a> setting, new queries might be shortly stalled, and clients will receive temporary errors.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="n">TABLES</span><span class="p">;</span>
 <span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -3372,8 +3372,8 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
         
         <h1 id="replace-vs-update">REPLACE vs UPDATE</h1>
 <p>You can modify existing data in an RT or PQ table by either updating or replacing it.</p>
-<p><a href="../../12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> replaces <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents with new values. Full-text fields and columnar attributes cannot be updated. If you need to change the content of a full-text field or columnar attributes, use <a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
-<p><a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> works similarly to <a href="../../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> except that if an old document has the same ID as the new document, the old document is marked as deleted before the new document is inserted. Note that the old document does not get physically deleted from the table. The deletion can only happen when chunks are merged in a table, e.g., as a result of an <a href="../../16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE</a>.</p>
+<p><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> replaces <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents with new values. Full-text fields and columnar attributes cannot be updated. If you need to change the content of a full-text field or columnar attributes, use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
+<p><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> except that if an old document has the same ID as the new document, the old document is marked as deleted before the new document is inserted. Note that the old document does not get physically deleted from the table. The deletion can only happen when chunks are merged in a table, e.g., as a result of an <a href="16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE</a>.</p>
 <!-- proofread -->
         
     </section>
@@ -3385,8 +3385,8 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
         <h1 id="replace">REPLACE</h1>
 <!-- example replace -->
 
-<p><code>REPLACE</code> works similarly to <a href="../../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a>, but it marks the previous document with the same ID as deleted before inserting a new one.</p>
-<p>If you are looking for in-place updates, please see <a href="../../12-data_creation_and_modification.html#toc-12.03.03-update">this section</a>.</p>
+<p><code>REPLACE</code> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a>, but it marks the previous document with the same ID as deleted before inserting a new one.</p>
+<p>If you are looking for in-place updates, please see <a href="12-data_creation_and_modification.html#toc-12.03.03-update">this section</a>.</p>
 <h2 id="sql-replace">SQL REPLACE</h2>
 <p>The syntax of the SQL <code>REPLACE</code> statement is as follows:</p>
 <p><strong>To replace the whole document:</strong></p>
@@ -3866,11 +3866,11 @@ Go
 </div>
 
 <p><code>REPLACE</code> is available for real-time and percolate tables. You can't replace data in a plain table.</p>
-<p>When you run a <code>REPLACE</code>, the previous document is not removed, but it's marked as deleted, so the table size grows until chunk merging happens. To force a chunk merge, use the <a href="../../16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE statement</a>.</p>
+<p>When you run a <code>REPLACE</code>, the previous document is not removed, but it's marked as deleted, so the table size grows until chunk merging happens. To force a chunk merge, use the <a href="16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE statement</a>.</p>
 <h2 id="bulk-replace">Bulk replace</h2>
 <!-- example bulk_replace -->
 
-<p>You can replace multiple documents at once. Check <a href="../../12-data_creation_and_modification.html#bulk-adding-documents">bulk adding documents</a> for more information.</p>
+<p>You can replace multiple documents at once. Check <a href="12-data_creation_and_modification.html#bulk-adding-documents">bulk adding documents</a> for more information.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -4201,10 +4201,10 @@ indexApi.Bulk(body);
         <h1 id="update">UPDATE</h1>
 <!-- example update -->
 
-<p>UPDATE changes <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents in a specified table with new values. Note that you can't update the contents of a fulltext field or a columnar attribute. If there's such a need, use <a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
-<p>Attribute updates are supported for RT, PQ, and plain tables. All attribute types can be updated as long as they are stored in the <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">traditional row-wise storage</a>.</p>
+<p>UPDATE changes <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents in a specified table with new values. Note that you can't update the contents of a fulltext field or a columnar attribute. If there's such a need, use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
+<p>Attribute updates are supported for RT, PQ, and plain tables. All attribute types can be updated as long as they are stored in the <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">traditional row-wise storage</a>.</p>
 <p>Note that the document ID cannot be updated.</p>
-<p>Note that when you update an attribute, its <a href="../../20-server_settings.html#secondary_indexes">secondary index</a> gets disabled, so consider <a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">replacing</a> the document instead.</p>
+<p>Note that when you update an attribute, its <a href="20-server_settings.html#secondary_indexes">secondary index</a> gets disabled, so consider <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">replacing</a> the document instead.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -5470,7 +5470,7 @@ TypeScript
 
 <!-- example cluster update -->
 
-<p>When using replication, the table name should be prepended with <code>cluster_name:</code> (in SQL) so that updates will be propagated to all nodes in the cluster. For queries via HTTP, you should set a <code>cluster</code> property. See <a href="../../10-creating_a_cluster.html#toc-10.03-setting_up_replication">setting up replication</a> for more information.</p>
+<p>When using replication, the table name should be prepended with <code>cluster_name:</code> (in SQL) so that updates will be propagated to all nodes in the cluster. For queries via HTTP, you should set a <code>cluster</code> property. See <a href="10-creating_a_cluster.html#toc-10.03-setting_up_replication">setting up replication</a> for more information.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;nodes4&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
@@ -5668,7 +5668,7 @@ Go
 <div class="codehilite"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">col1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newval1</span><span class="w"> </span><span class="p">[,</span><span class="w"> </span><span class="p">...]</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">where_condition</span><span class="w"> </span><span class="p">[</span><span class="k">OPTION</span><span class="w"> </span><span class="n">opt_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opt_value</span><span class="w"> </span><span class="p">[,</span><span class="w"> </span><span class="p">...]]</span><span class="w"> </span><span class="p">[</span><span class="k">FORCE</span><span class="o">|</span><span class="k">IGNORE</span><span class="w"> </span><span class="k">INDEX</span><span class="p">(</span><span class="n">id</span><span class="p">)]</span>
 </code></pre></div>
 
-<p><code>where_condition</code> has the same syntax as in the <a href="../../13-searching.html#sql">SELECT</a> statement.</p>
+<p><code>where_condition</code> has the same syntax as in the <a href="13-searching.html#sql">SELECT</a> statement.</p>
 <!-- example MVA empty update -->
 
 <p>Multi-value attribute value sets must be specified as comma-separated lists in parentheses. To remove all values from a multi-value attribute, just assign <code>()</code> to it.</p>
@@ -5948,16 +5948,16 @@ Go
 <div class="codehilite"><pre><span></span><code><span class="k">OPTION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">optionname</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">]</span>
 </code></pre></div>
 
-<p>The options are the same as for the <a href="../../13-searching.html#sql">SELECT</a> statement. Specifically for the <code>UPDATE</code> statement, you can use these options:</p>
+<p>The options are the same as for the <a href="13-searching.html#sql">SELECT</a> statement. Specifically for the <code>UPDATE</code> statement, you can use these options:</p>
 <ul>
 <li>'ignore_nonexistent_columns' - If set to <strong>1</strong>, it indicates that the update will silently ignore any warnings about trying to update a column which does not exist in the current table schema. The default value is <strong>0</strong>.</li>
 <li>'strict' - This option is used in partial JSON attribute updates. By default (strict=1), <code>UPDATE</code> will result in an error if the <code>UPDATE</code> query tries to perform an update on non-numeric properties. With strict=0, if multiple properties are updated and some are not allowed, the <code>UPDATE</code> will not result in an error and will perform the changes only on allowed properties (with the rest being ignored). If none of the <code>SET</code> changes of the <code>UPDATE</code> re permitted, the command will result in an error even with strict=0.</li>
 </ul>
 <h3 id="query-optimizer-hints">Query optimizer hints</h3>
 <p>In rare cases, Manticore's built-in query analyzer may be incorrect in understanding a query and determining whether a table by ID should be used. This can result in poor performance for queries like <code>UPDATE ... WHERE id = 123</code>.<br />
-For information on how to force the optimizer to use a docid index, see <a href="../../13-searching.html#query optimizer hints">Query optimizer hints</a>.</p>
+For information on how to force the optimizer to use a docid index, see <a href="13-searching.html#query optimizer hints">Query optimizer hints</a>.</p>
 <h2 id="updates-via-http-json">Updates via HTTP JSON</h2>
-<p>Updates using HTTP JSON protocol are performed via the <code>/update</code> endpoint. The syntax is similar to the <a href="../../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert endpoint</a>, but this time the <code>doc</code> property is mandatory.</p>
+<p>Updates using HTTP JSON protocol are performed via the <code>/update</code> endpoint. The syntax is similar to the <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert endpoint</a>, but this time the <code>doc</code> property is mandatory.</p>
 <p>The server will respond with a JSON object stating if the operation was successful or not.</p>
 <!-- example JSON update -->
 
@@ -6055,7 +6055,7 @@ JSON
 
 </div>
 
-<p>The query syntax is the same as in the <a href="../../13-searching.html#http-json">/search endpoint</a>. Note that you can't specify <code>id</code> and <code>query</code> at the same time.</p>
+<p>The query syntax is the same as in the <a href="13-searching.html#http-json">/search endpoint</a>. Note that you can't specify <code>id</code> and <code>query</code> at the same time.</p>
 <h2 id="flushing-attributes">Flushing attributes</h2>
 <div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="n">ATTRIBUTES</span>
 </code></pre></div>
@@ -6073,7 +6073,7 @@ JSON
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">19</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
-<p>See also <a href="../../12-data_creation_and_modification.html#attr_flush_period">attr_flush_period</a> setting.</p>
+<p>See also <a href="12-data_creation_and_modification.html#attr_flush_period">attr_flush_period</a> setting.</p>
 <h2 id="bulk-updates">Bulk updates</h2>
 <!-- example bulk update -->
 
@@ -6136,12 +6136,12 @@ JSON
 
 <p>The <code>/bulk</code> endpoint supports inserts, replaces, and deletes. Each statement begins with an action type (in this case, <code>update</code>). Here's a list of the supported actions:</p>
 <ul>
-<li><code>insert</code>: Inserts a document. The syntax is the same as in the <a href="../../04-quick_start_guide.html#add-documents">/insert endpoint</a>.</li>
+<li><code>insert</code>: Inserts a document. The syntax is the same as in the <a href="04-quick_start_guide.html#add-documents">/insert endpoint</a>.</li>
 <li><code>create</code>: a synonym for <code>insert</code></li>
-<li><code>replace</code>: Replaces a document. The syntax is the same as in the <a href="../../12-data_creation_and_modification.html#toc-12.03.02-replace">/replace</a>.</li>
+<li><code>replace</code>: Replaces a document. The syntax is the same as in the <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">/replace</a>.</li>
 <li><code>index</code>: a synonym for <code>replace</code></li>
-<li><code>update</code>: Updates a document. The syntax is the same as in the <a href="../../12-data_creation_and_modification.html#updates-via-http-json">/update</a>.</li>
-<li><code>delete</code>: Deletes a document. The syntax is the same as in the <a href="../../12-data_creation_and_modification.html#toc-12.04-deleting_documents">/delete endpoint</a>.</li>
+<li><code>update</code>: Updates a document. The syntax is the same as in the <a href="12-data_creation_and_modification.html#updates-via-http-json">/update</a>.</li>
+<li><code>delete</code>: Deletes a document. The syntax is the same as in the <a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">/delete endpoint</a>.</li>
 </ul>
 <p>Updates by query and deletes by query are also supported.</p>
 <!-- example bulk by query -->
@@ -6659,7 +6659,7 @@ Go
 
         
         <h1 id="deleting-documents">Deleting documents</h1>
-<p>Deleting documents is only supported in <a href="../../02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a> for the following table types:</p>
+<p>Deleting documents is only supported in <a href="02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a> for the following table types:</p>
 <ul>
 <li><a href="../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-time</a> tables</li>
 <li><a href="../06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate</a> tables</li>

@@ -98,6 +98,7 @@ class Entry(msgspec.Struct, omit_defaults=True):
             source = file.read()
 
             # Fix links. We'll need to fix double anchors when scannign line by line.
+            source = source.replace("../../", "")
             for source_path, dest_path in DESTINATION_FOR_PATH.items():
                 source = source.replace(source_path, dest_path)
 

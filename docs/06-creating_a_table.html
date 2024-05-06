@@ -8942,14 +8942,14 @@ config
         
         <h1 id="real-time-table">Real-time table</h1>
 <p>A <strong>real-time table</strong> is a main type of table in Manticore. It lets you add, update, and delete documents, and you can see these changes right away. You can set up a real-time Table in a configuration file or use commands like <code>CREATE</code>, <code>UPDATE</code>, <code>DELETE</code>, or <code>ALTER</code>.</p>
-<p>Internally a real-time table consists of one or more <a href="../../06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> called <strong>chunks</strong>. There are two kinds of chunks:</p>
+<p>Internally a real-time table consists of one or more <a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> called <strong>chunks</strong>. There are two kinds of chunks:</p>
 <ul>
-<li>multiple <strong>disk chunks</strong> - these are saved on a disk and are structured like a <a href="../../06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a>.</li>
+<li>multiple <strong>disk chunks</strong> - these are saved on a disk and are structured like a <a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a>.</li>
 <li>single <strong>ram chunk</strong> - this is kept in memory and collects all changes.</li>
 </ul>
-<p>The size of the RAM chunk is controlled by the <a href="../../06-creating_a_table.html#rt_mem_limit">rt_mem_limit</a> setting. Once this limit is reached, the RAM chunk is transferred to disk as a disk chunk. If there are too many disk chunks, Manticore <a href="../../16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">combines some of them</a> to improve performance.</p>
+<p>The size of the RAM chunk is controlled by the <a href="06-creating_a_table.html#rt_mem_limit">rt_mem_limit</a> setting. Once this limit is reached, the RAM chunk is transferred to disk as a disk chunk. If there are too many disk chunks, Manticore <a href="16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">combines some of them</a> to improve performance.</p>
 <h3 id="creating-a-real-time-table">Creating a real-time table:</h3>
-<p>You can create a new real-time table in two ways: by using the <code>CREATE TABLE</code> command or through the <a href="../../06-creating_a_table.html#_mapping-api:">_mapping endpoint</a> of the HTTP JSON API.</p>
+<p>You can create a new real-time table in two ways: by using the <code>CREATE TABLE</code> command or through the <a href="06-creating_a_table.html#_mapping-api:">_mapping endpoint</a> of the HTTP JSON API.</p>
 <h4 id="create-table-command">CREATE TABLE command:</h4>
 <!-- example rt -->
 
@@ -9234,19 +9234,19 @@ Creating a real-time table via the _mapping endpoint
 
 <h3 id="what-you-can-do-with-a-real-time-table">👍 What you can do with a real-time table:</h3>
 <ul>
-<li><a href="../../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">Add documents</a>.</li>
-<li>Update attributes and full-text fields using the <a href="../../04-quick_start_guide.html#update">Update</a> process.</li>
-<li><a href="../../04-quick_start_guide.html#delete">Delete documents</a>.</li>
-<li><a href="../../09-emptying_a_table.html#toc-09-emptying_a_table">Empty the table</a>.</li>
-<li>Change the schema online with the <code>ALTER</code> command, as explained in <a href="../../14-updating_table_schema_and_settings.html#updating-table-schema-in-rt-mode">Change schema online</a>.</li>
-<li>Define the table in a configuration file, as detailed in <a href="../../06-creating_a_table.html#toc-06.02.01-realtime_table">Define table</a>.</li>
-<li>Use the <a href="../../12-data_creation_and_modification.html#auto-id">UUID</a> feature for automatic ID provisioning.</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">Add documents</a>.</li>
+<li>Update attributes and full-text fields using the <a href="04-quick_start_guide.html#update">Update</a> process.</li>
+<li><a href="04-quick_start_guide.html#delete">Delete documents</a>.</li>
+<li><a href="09-emptying_a_table.html#toc-09-emptying_a_table">Empty the table</a>.</li>
+<li>Change the schema online with the <code>ALTER</code> command, as explained in <a href="14-updating_table_schema_and_settings.html#updating-table-schema-in-rt-mode">Change schema online</a>.</li>
+<li>Define the table in a configuration file, as detailed in <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Define table</a>.</li>
+<li>Use the <a href="12-data_creation_and_modification.html#auto-id">UUID</a> feature for automatic ID provisioning.</li>
 </ul>
 <h3 id="what-you-cannot-do-with-a-real-time-table">⛔ What you cannot do with a real-time table:</h3>
 <ul>
-<li>Ingest data using the <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a> feature.</li>
-<li>Connect it to <a href="../../12-data_creation_and_modification.html#toc-12.02.02.03-execution_of_fetch_queries">sources</a> for easy indexing from external storage.</li>
-<li>Update the <a href="../../06-creating_a_table.html#killlist_target">killlist_target</a>, as it is automatically managed by the real-time table.</li>
+<li>Ingest data using the <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a> feature.</li>
+<li>Connect it to <a href="12-data_creation_and_modification.html#toc-12.02.02.03-execution_of_fetch_queries">sources</a> for easy indexing from external storage.</li>
+<li>Update the <a href="06-creating_a_table.html#killlist_target">killlist_target</a>, as it is automatically managed by the real-time table.</li>
 </ul>
 <h4 id="real-time-table-files-structure">Real-time table files structure</h4>
 <p>The following table outlines the different file extensions and their respective descriptions in a real-time table:</p>
@@ -9276,7 +9276,7 @@ Creating a real-time table via the _mapping endpoint
 </tr>
 </tbody>
 </table>
-<p>For more information on the structure of disk chunks, refer to the <a href="../../06-creating_a_table.html#plain-table-files-structure">plain table files structure</a>.</p>
+<p>For more information on the structure of disk chunks, refer to the <a href="06-creating_a_table.html#plain-table-files-structure">plain table files structure</a>.</p>
 <!-- proofread -->
         
     </section>
@@ -9286,7 +9286,7 @@ Creating a real-time table via the _mapping endpoint
 
         
         <h1 id="plain-table">Plain table</h1>
-<p><strong>Plain table</strong> is a basic element for non-<a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> searching. It can be defined only in a configuration file using the <a href="../../06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a>, and is not supported in the <a href="../../06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>. It is typically used in conjunction with a <a href="../../06-creating_a_table.html#source">source</a> to process data <a href="../../12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">from the external storage</a> and can later be <a href="../../12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">attached</a> to a <strong>real-time table</strong>.</p>
+<p><strong>Plain table</strong> is a basic element for non-<a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> searching. It can be defined only in a configuration file using the <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a>, and is not supported in the <a href="06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>. It is typically used in conjunction with a <a href="06-creating_a_table.html#source">source</a> to process data <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">from the external storage</a> and can later be <a href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">attached</a> to a <strong>real-time table</strong>.</p>
 <h4 id="creating-a-plain-table">Creating a plain table</h4>
 <p>To create a plain table, you'll need to define it in a configuration file. It's not supported by the  <code>CREATE TABLE</code> command.</p>
 <!-- example plain -->
@@ -9329,23 +9329,23 @@ Creating a real-time table via the _mapping endpoint
 
 <h3 id="what-you-can-do-with-a-plain-table">👍 What you can do with a plain table:</h3>
 <ul>
-<li>Build it from an external storage using a <a href="../../06-creating_a_table.html#source">source</a> and <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a></li>
-<li>Perform an in-place update of <a href="../../06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">integer, float, string and MVA attribute</a></li>
-<li><a href="../../12-data_creation_and_modification.html#killlist_target">Update</a> it's <code>killlist_target</code></li>
+<li>Build it from an external storage using a <a href="06-creating_a_table.html#source">source</a> and <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a></li>
+<li>Perform an in-place update of <a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">integer, float, string and MVA attribute</a></li>
+<li><a href="12-data_creation_and_modification.html#killlist_target">Update</a> it's <code>killlist_target</code></li>
 </ul>
 <h3 id="what-you-cannot-do-with-a-plain-table">⛔ What you cannot do with a plain table:</h3>
 <ul>
 <li>Insert additional data into the table once it has been built</li>
 <li>Delete data from the table</li>
 <li>Create, delete, or alter the table schema online</li>
-<li>Use <a href="../../12-data_creation_and_modification.html#auto-id">UUID</a> for automatic ID generation (data from external storage must include a unique identifier)</li>
+<li>Use <a href="12-data_creation_and_modification.html#auto-id">UUID</a> for automatic ID generation (data from external storage must include a unique identifier)</li>
 </ul>
-<p>Numeric attributes, including <a href="../../06-creating_a_table.html#multi-value-integer-%28mva%29">MVAs</a>, are the only elements that can be updated in a plain table. All other data in the table is immutable. If updates or new records are required, the table must be rebuilt. During the rebuilding process, the existing table remains available to serve requests, and a process called  <a href="../../12-data_creation_and_modification.html#toc-12.02.07-rotating_a_table">rotation</a> is performed when the new version is ready, bringing it online and discarding the old version.</p>
+<p>Numeric attributes, including <a href="06-creating_a_table.html#multi-value-integer-%28mva%29">MVAs</a>, are the only elements that can be updated in a plain table. All other data in the table is immutable. If updates or new records are required, the table must be rebuilt. During the rebuilding process, the existing table remains available to serve requests, and a process called  <a href="12-data_creation_and_modification.html#toc-12.02.07-rotating_a_table">rotation</a> is performed when the new version is ready, bringing it online and discarding the old version.</p>
 <h4 id="plain-table-building-performance">Plain table building performance</h4>
 <p>The speed at which a plain table is indexed depends on several factors, including:</p>
 <ul>
 <li>Data source retrieval speed</li>
-<li><a href="../../06-creating_a_table.html#toc-06.03.01-data_tokenization">Tokenization settings</a></li>
+<li><a href="06-creating_a_table.html#toc-06.03.01-data_tokenization">Tokenization settings</a></li>
 <li>The hardware specifications (such as CPU, RAM, and disk performance)</li>
 </ul>
 <h4 id="plain-table-building-scenarios">Plain table building scenarios</h4>
@@ -9356,16 +9356,16 @@ Creating a real-time table via the _mapping endpoint
 <li>The time it takes to build the table increases as the data set grows</li>
 </ul>
 <h5 id="maindelta-scenario">Main+delta scenario</h5>
-<p>For larger data sets, a plain table can be used instead of a <a href="../../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a>. The main+delta scenario involves:</p>
+<p>For larger data sets, a plain table can be used instead of a <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a>. The main+delta scenario involves:</p>
 <ul>
 <li>Creating a smaller table for incremental indexing</li>
-<li>Combining the two tables using a <a href="../../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">distributed table</a></li>
+<li>Combining the two tables using a <a href="06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">distributed table</a></li>
 </ul>
 <p>This approach allows for infrequent rebuilding of the larger table and more frequent processing of updates from the source. The smaller table can be rebuilt more often (e.g. every minute or even every few seconds).</p>
 <p>However, as time goes on, the indexing duration for the smaller table will become too long, requiring a rebuild of the larger table and the emptying of the smaller one.</p>
 <p>The main+delta schema is explained in detail in <a href="https://play.manticoresearch.com/maindelta/">this interactive course</a>.</p>
-<p>The mechanism of <strong>kill list</strong> and <a href="../../06-creating_a_table.html#killlist_target">killlist_target</a> directive is used to ensure that documents from the current table take precedence over those from the other table.</p>
-<p>For more information on this topic, see <a href="../../12-data_creation_and_modification.html#toc-12.02.05-maindelta_schema">here</a>.</p>
+<p>The mechanism of <strong>kill list</strong> and <a href="06-creating_a_table.html#killlist_target">killlist_target</a> directive is used to ensure that documents from the current table take precedence over those from the other table.</p>
+<p>For more information on this topic, see <a href="12-data_creation_and_modification.html#toc-12.02.05-maindelta_schema">here</a>.</p>
 <h4 id="plain-table-files-structure">Plain table files structure</h4>
 <p>The following table outlines the various file extensions used in a plain table and their respective descriptions:</p>
 <table>
@@ -9378,15 +9378,15 @@ Creating a real-time table via the _mapping endpoint
 <tbody>
 <tr>
 <td><code>.spa</code></td>
-<td>stores document attributes in <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise mode</a></td>
+<td>stores document attributes in <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise mode</a></td>
 </tr>
 <tr>
 <td><code>.spb</code></td>
-<td>stores blob attributes in <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise mode</a>: strings, MVA, json</td>
+<td>stores blob attributes in <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise mode</a>: strings, MVA, json</td>
 </tr>
 <tr>
 <td><code>.spc</code></td>
-<td>stores document attributes in <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar mode</a></td>
+<td>stores document attributes in <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar mode</a></td>
 </tr>
 <tr>
 <td><code>.spd</code></td>
@@ -9565,9 +9565,9 @@ Example of a real-time table in a configuration file
 
 <p>By default, the original content of full-text fields is indexed and stored when a table is defined in a configuration file. This setting allows you to specify the fields that should have their original values stored.</p>
 <p>Value: A comma-separated list of <strong>full-text</strong> fields that should be stored. An empty value (i.e. <code>stored_fields =</code> ) disables the storage of original values for all fields.</p>
-<p>Note: In the case of a real-time table, the fields listed in <code>stored_fields</code> should also be declared as <a href="../../06-creating_a_table.html#rt_field">rt_field</a>.</p>
+<p>Note: In the case of a real-time table, the fields listed in <code>stored_fields</code> should also be declared as <a href="06-creating_a_table.html#rt_field">rt_field</a>.</p>
 <p>Also, note that you don't need to list attributes in <code>stored_fields</code>, since their original values are stored anyway. <code>stored_fields</code> can only be used for full-text fields.</p>
-<p>See also <a href="../../06-creating_a_table.html#docstore_block_size">docstore_block_size</a>, <a href="../../06-creating_a_table.html#docstore_compression">docstore_compression</a> for document storage compression options.</p>
+<p>See also <a href="06-creating_a_table.html#docstore_block_size">docstore_block_size</a>, <a href="06-creating_a_table.html#docstore_compression">docstore_compression</a> for document storage compression options.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -9705,8 +9705,8 @@ C
 <div class="codehilite"><pre><span></span><code><span class="na">stored_only_fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">title,content</span>
 </code></pre></div>
 
-<p>List of fields that will be stored in the table, but not indexed. This setting works similarly to <a href="../../06-creating_a_table.html#stored_fields">stored_fields</a> except that when a field is specified in <code>stored_only_fields</code> t will only be stored, not indexed, and cannot be searched using full-text queries. It can only be retrieved in search results.</p>
-<p>The value is a comma-separated list of fields that should be stored only, not indexed. By default, this value is empty. If a real-time table is being defined, the fields listed in <code>stored_only_fields</code> must also be declared as <a href="../../06-creating_a_table.html#rt_field">rt_field</a>.</p>
+<p>List of fields that will be stored in the table, but not indexed. This setting works similarly to <a href="06-creating_a_table.html#stored_fields">stored_fields</a> except that when a field is specified in <code>stored_only_fields</code> t will only be stored, not indexed, and cannot be searched using full-text queries. It can only be retrieved in search results.</p>
+<p>The value is a comma-separated list of fields that should be stored only, not indexed. By default, this value is empty. If a real-time table is being defined, the fields listed in <code>stored_only_fields</code> must also be declared as <a href="06-creating_a_table.html#rt_field">rt_field</a>.</p>
 <p>Note also, that you don't need to list attributes in<code>stored_only_fields</code>,since their original values are stored anyway. If to compare <code>stored_only_fields</code>  to string attributes the former (stored field):</p>
 <ul>
 <li>is stored on disk and does not take up memory</li>
@@ -9721,7 +9721,7 @@ C
 </ul>
 <h3 id="real-time-table-settings">Real-time table settings:</h3>
 <h4 id="optimize_cutoff">optimize_cutoff</h4>
-<p>The maximum number of disk chunks for the RT table. Learn more <a href="../../16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">here</a>.</p>
+<p>The maximum number of disk chunks for the RT table. Learn more <a href="16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">here</a>.</p>
 <h4 id="rt_field">rt_field</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">rt_field</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">subject</span>
 </code></pre></div>
@@ -9804,13 +9804,13 @@ C
 <li>After saving a new disk chunk, the <code>rt_mem_limit</code> rate is updated.</li>
 <li>The rate is reset to 50% each time you restart the searchd.</li>
 </ul>
-<p>For instance, if 90MB of data is saved to a disk chunk and an additional 10MB of data arrives while the save is in progress, the rate would be 90%. Next time, the RT table will collect up to 90% of <code>rt_mem_limit</code> before flushing the data. The faster the insertion pace, the lower the <code>rt_mem_limit</code> rate. The rate varies between 33.3% to 95%. You can view the current rate of a table using the <a href="../../19-node_info_and_management.html#toc-19.10.01-show_table_status">SHOW TABLE <tbl> STATUS</a> command.</p>
+<p>For instance, if 90MB of data is saved to a disk chunk and an additional 10MB of data arrives while the save is in progress, the rate would be 90%. Next time, the RT table will collect up to 90% of <code>rt_mem_limit</code> before flushing the data. The faster the insertion pace, the lower the <code>rt_mem_limit</code> rate. The rate varies between 33.3% to 95%. You can view the current rate of a table using the <a href="19-node_info_and_management.html#toc-19.10.01-show_table_status">SHOW TABLE <tbl> STATUS</a> command.</p>
 <h5 id="how-to-change-rt_mem_limit-and-optimize_cutoff">How to change rt_mem_limit and optimize_cutoff</h5>
 <p>In real-time mode, you can adjust the size limit of RAM chunks and the maximum number of disk chunks using the <code>ALTER TABLE</code> statement. To set <code>rt_mem_limit</code> to 1 gigabyte for the table "t," run the following query: <code>ALTER TABLE t rt_mem_limit='1G'</code>. To change the maximum number of disk chunks, run the query: <code>ALTER TABLE t optimize_cutoff='5'</code>.</p>
 <p>In the plain mode, you can change the values of <code>rt_mem_limit</code> and <code>optimize_cutoff</code> by updating the table configuration or running the command <code>ALTER TABLE &lt;index_name&gt; RECONFIGURE</code></p>
 <h5 id="important-notes-about-ram-chunks">Important notes about RAM chunks</h5>
 <ul>
-<li>Real-time tables are similar to <a href="../../06-creating_a_table.html#creating-a-local-distributed-table">distributed</a> consisting of multiple local tables, also known as disk chunks.</li>
+<li>Real-time tables are similar to <a href="06-creating_a_table.html#creating-a-local-distributed-table">distributed</a> consisting of multiple local tables, also known as disk chunks.</li>
 <li>Each RAM chunk is made up of multiple segments, which are special RAM-only tables.</li>
 <li>While disk chunks are stored on disk, RAM chunks are stored in memory.</li>
 <li>Each transaction made to a real-time table generates a new segment, and RAM chunk segments are merged after each transaction commit. It is more efficient to perform bulk INSERTs of hundreds or thousands of documents rather than multiple separate INSERTs with one document to reduce the overhead from merging RAM chunk segments.</li>
@@ -9818,9 +9818,9 @@ C
 <li>Real-time tables always have one RAM chunk (which may be empty) and one or more disk chunks. </li>
 <li>Merging larger segments takes longer, so it's best to avoid having a very large RAM chunk (and therefore <code>rt_mem_limit</code>).</li>
 <li>The number of disk chunks depends on the data in the table and the <code>rt_mem_limit</code> setting.</li>
-<li>Searchd flushes the RAM chunk to disk (as a persisted file, not as a disk chunk) on shutdown and periodically according to the <a href="../../20-server_settings.html#rt_flush_period">rt_flush_period</a> setting. Flushing several gigabytes to disk may take some time.</li>
+<li>Searchd flushes the RAM chunk to disk (as a persisted file, not as a disk chunk) on shutdown and periodically according to the <a href="20-server_settings.html#rt_flush_period">rt_flush_period</a> setting. Flushing several gigabytes to disk may take some time.</li>
 <li>A large RAM chunk puts more pressure on storage, both when flushing to disk into the <code>.ram</code> file and when the RAM chunk is full and dumped to disk as a disk chunk.</li>
-<li>The RAM chunk is backed up by a <a href="../../18-logging.html#toc-18.03-binary_logging">binary log</a> until it is flushed to disk, and a larger <code>rt_mem_limit</code>, setting will increase the time it takes to replay the binary log and recover the RAM chunk.</li>
+<li>The RAM chunk is backed up by a <a href="18-logging.html#toc-18.03-binary_logging">binary log</a> until it is flushed to disk, and a larger <code>rt_mem_limit</code>, setting will increase the time it takes to replay the binary log and recover the RAM chunk.</li>
 <li>The RAM chunk may be slightly slower than a disk chunk.</li>
 <li>Although the RAM chunk itself doesn't take up more memory than <code>rt_mem_limit</code> Manticore may take up more memory in some cases, such as when you start a transaction to insert data and don't commit it for a while. In this case, the data you have already transmitted within the transaction will remain in memory.</li>
 </ul>
@@ -9831,20 +9831,20 @@ C
 <span class="na">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">srcpart3</span>
 </code></pre></div>
 
-<p>The source field specifies the source from which documents will be obtained during indexing of the current table. There must be at least one source. The sources can be of different types (e.g. one could be MySQL, another PostgreSQL). For more information on indexing from external storages, <a href="../../12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">indexing from external storages here</a></p>
+<p>The source field specifies the source from which documents will be obtained during indexing of the current table. There must be at least one source. The sources can be of different types (e.g. one could be MySQL, another PostgreSQL). For more information on indexing from external storages, <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">indexing from external storages here</a></p>
 <p>Value: The name of the source is <strong>mandatory</strong>. Multiple values are allowed.</p>
 <h4 id="killlist_target">killlist_target</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">killlist_target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">main:kl</span>
 </code></pre></div>
 
-<p>This setting determines the table(s) to which the kill-list will be applied. Matches in the targeted table that are updated or deleted in the current table will be suppressed. In <code>:kl</code> mode, the documents to suppress are taken from the <a href="../../12-data_creation_and_modification.html#toc-12.02.06.02-killlists_in_plain_tables">kill-list</a>. In <code>:id</code> mode, all document IDs from the current table are suppressed in the targeted one. If neither is specified, both modes will take effect. <a href="../../12-data_creation_and_modification.html#toc-12.02.06.02-killlists_in_plain_tables">Learn more about kill-lists here</a></p>
+<p>This setting determines the table(s) to which the kill-list will be applied. Matches in the targeted table that are updated or deleted in the current table will be suppressed. In <code>:kl</code> mode, the documents to suppress are taken from the <a href="12-data_creation_and_modification.html#toc-12.02.06.02-killlists_in_plain_tables">kill-list</a>. In <code>:id</code> mode, all document IDs from the current table are suppressed in the targeted one. If neither is specified, both modes will take effect. <a href="12-data_creation_and_modification.html#toc-12.02.06.02-killlists_in_plain_tables">Learn more about kill-lists here</a></p>
 <p>Value: <strong>not specified</strong> (default), target_index_name:kl, target_index_name:id, target_index_name. Multiple values are allowed</p>
 <h4 id="columnar_attrs">columnar_attrs</h4>
 <div class="codehilite"><pre><span></span><code><span class="na">columnar_attrs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">*</span>
 <span class="na">columnar_attrs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">id, attr1, attr2, attr3</span>
 </code></pre></div>
 
-<p>This configuration setting determines which attributes should be stored in <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">the columnar storage</a> instead of the row-wise storage.</p>
+<p>This configuration setting determines which attributes should be stored in <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">the columnar storage</a> instead of the row-wise storage.</p>
 <p>You can set <code>columnar_attrs = *</code> to store all supported data types in the columnar storage.</p>
 <p>Additionally, <code>id</code> is a supported attribute to store in the columnar storage.</p>
 <h4 id="columnar_strings_no_hash">columnar_strings_no_hash</h4>
@@ -9866,7 +9866,7 @@ General syntax of CREATE TABLE
 Data types
 </div>
 
-<p>For more information on data types, see <a href="../../06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">more about data types here</a>.</p>
+<p>For more information on data types, see <a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">more about data types here</a>.</p>
 <table>
 <thead>
 <tr>
@@ -9878,74 +9878,74 @@ Data types
 </thead>
 <tbody>
 <tr>
-<td><a href="../../06-creating_a_table.html#text">text</a></td>
-<td><a href="../../06-creating_a_table.html#rt_field">rt_field</a></td>
+<td><a href="06-creating_a_table.html#text">text</a></td>
+<td><a href="06-creating_a_table.html#rt_field">rt_field</a></td>
 <td>Options: indexed, stored. Default: <strong>both</strong>. To keep text stored, but indexed, specify "stored" only. To keep text indexed only, specify "indexed" only.</td>
 <td>string</td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#integer">integer</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_uint">rt_attr_uint</a></td>
+<td><a href="06-creating_a_table.html#integer">integer</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_uint">rt_attr_uint</a></td>
 <td>integer</td>
 <td>int, uint</td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#big-integer">bigint</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_bigint">rt_attr_bigint</a></td>
+<td><a href="06-creating_a_table.html#big-integer">bigint</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_bigint">rt_attr_bigint</a></td>
 <td>big integer</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#float">float</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_float">rt_attr_float</a></td>
+<td><a href="06-creating_a_table.html#float">float</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_float">rt_attr_float</a></td>
 <td>float</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#float-vector">float_vector</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_float_vector">rt_attr_float_vector</a></td>
+<td><a href="06-creating_a_table.html#float-vector">float_vector</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_float_vector">rt_attr_float_vector</a></td>
 <td>a vector of float values</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#multi-value-integer-%28mva%29">multi</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_multi">rt_attr_multi</a></td>
+<td><a href="06-creating_a_table.html#multi-value-integer-%28mva%29">multi</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_multi">rt_attr_multi</a></td>
 <td>multi-integer</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#multi-value-big-integer">multi64</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_multi_64">rt_attr_multi_64</a></td>
+<td><a href="06-creating_a_table.html#multi-value-big-integer">multi64</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_multi_64">rt_attr_multi_64</a></td>
 <td>multi-bigint</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#boolean">bool</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_bool">rt_attr_bool</a></td>
+<td><a href="06-creating_a_table.html#boolean">bool</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_bool">rt_attr_bool</a></td>
 <td>boolean</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#json">json</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_json">rt_attr_json</a></td>
+<td><a href="06-creating_a_table.html#json">json</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_json">rt_attr_json</a></td>
 <td>JSON</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#string">string</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_string">rt_attr_string</a></td>
+<td><a href="06-creating_a_table.html#string">string</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_string">rt_attr_string</a></td>
 <td>string. Option <code>indexed, attribute</code> will make the value full-text indexed and filterable, sortable and groupable at the same time</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#timestamps">timestamp</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_timestamp">rt_attr_timestamp</a></td>
+<td><a href="06-creating_a_table.html#timestamps">timestamp</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_timestamp">rt_attr_timestamp</a></td>
 <td>timestamp</td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#integer">bit(n)</a></td>
-<td><a href="../../06-creating_a_table.html#rt_attr_uint">rt_attr_uint field_name:N</a></td>
+<td><a href="06-creating_a_table.html#integer">bit(n)</a></td>
+<td><a href="06-creating_a_table.html#rt_attr_uint">rt_attr_uint field_name:N</a></td>
 <td>N is the max number of bits to keep</td>
 <td></td>
 </tr>
@@ -9991,11 +9991,11 @@ This creates the "products" table with three fields:
 <span class="na">create table ... engine</span><span class="o">=</span><span class="s">&#39;rowwise&#39;</span><span class="c1">;</span>
 </code></pre></div>
 
-<p>The engine setting changes the default <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">attribute storage</a> for all attributes in the table. You can also specify <code>engine</code> <a href="../../06-creating_a_table.html#how-to-switch-between-the-storages">separately for each attribute</a>.</p>
-<p>For information on how to enable columnar storage for a plain table, see  <a href="../../06-creating_a_table.html#columnar_attrs">columnar_attrs</a> .</p>
+<p>The engine setting changes the default <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">attribute storage</a> for all attributes in the table. You can also specify <code>engine</code> <a href="06-creating_a_table.html#how-to-switch-between-the-storages">separately for each attribute</a>.</p>
+<p>For information on how to enable columnar storage for a plain table, see  <a href="06-creating_a_table.html#columnar_attrs">columnar_attrs</a> .</p>
 <p>Values:</p>
 <ul>
-<li>columnar - Enables columnar storage for all table attributes, except for <a href="../../06-creating_a_table.html#json">json</a></li>
+<li>columnar - Enables columnar storage for all table attributes, except for <a href="06-creating_a_table.html#json">json</a></li>
 <li><strong>rowwise (default)</strong> - Doesn't change anything and uses the traditional row-wise storage for the table.</li>
 </ul>
 <h2 id="other-settings">Other settings</h2>
@@ -10003,8 +10003,8 @@ This creates the "products" table with three fields:
 <h3 id="performance-related">Performance related</h3>
 <h4 id="accessing-table-files">Accessing table files</h4>
 <p>Manticore supports two access modes for reading table data: seek+read and mmap.</p>
-<p>In seek+read mode, the server uses the <code>pread</code> system call to read document lists and keyword positions, represented by the<code>*.spd</code> and <code>*.spp</code>  files. The server uses internal read buffers to optimize the reading process, and the size of these buffers can be adjusted using the options <a href="../../20-server_settings.html#read_buffer_docs">read_buffer_docs</a> and <a href="../../20-server_settings.html#read_buffer_hits">read_buffer_hits</a>.There is also the option  <a href="../../06-creating_a_table.html#preopen">preopen</a> that controls how Manticore opens files at start.</p>
-<p>In mmap access mode, the search server maps the table's file into memory using the <code>mmap</code> system call, and the OS caches the file contents. The options <a href="../../20-server_settings.html#read_buffer_docs">read_buffer_docs</a> and <a href="../../20-server_settings.html#read_buffer_hits">read_buffer_hits</a> have no effect for corresponding files in this mode. The mmap reader can also lock the table's data in memory using the<code>mlock</code> privileged call, which prevents the OS from swapping the cached data out to disk.</p>
+<p>In seek+read mode, the server uses the <code>pread</code> system call to read document lists and keyword positions, represented by the<code>*.spd</code> and <code>*.spp</code>  files. The server uses internal read buffers to optimize the reading process, and the size of these buffers can be adjusted using the options <a href="20-server_settings.html#read_buffer_docs">read_buffer_docs</a> and <a href="20-server_settings.html#read_buffer_hits">read_buffer_hits</a>.There is also the option  <a href="06-creating_a_table.html#preopen">preopen</a> that controls how Manticore opens files at start.</p>
+<p>In mmap access mode, the search server maps the table's file into memory using the <code>mmap</code> system call, and the OS caches the file contents. The options <a href="20-server_settings.html#read_buffer_docs">read_buffer_docs</a> and <a href="20-server_settings.html#read_buffer_hits">read_buffer_hits</a> have no effect for corresponding files in this mode. The mmap reader can also lock the table's data in memory using the<code>mlock</code> privileged call, which prevents the OS from swapping the cached data out to disk.</p>
 <p>To control which access mode to use, the options <strong>access_plain_attrs</strong>, <strong>access_blob_attrs</strong>, <strong>access_doclists</strong>, <strong>access_hitlists</strong> and <strong>access_dict</strong>  are available, with the following values:</p>
 <table>
 <thead>
@@ -10081,7 +10081,7 @@ This creates the "products" table with three fields:
 </thead>
 <tbody>
 <tr>
-<td>plain attributes in <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> (non-columnar) storage, skip lists, word lists, lookups, killed docs</td>
+<td>plain attributes in <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> (non-columnar) storage, skip lists, word lists, lookups, killed docs</td>
 <td>mmap</td>
 <td>mmap</td>
 <td><strong>mmap_preread</strong> (default)</td>
@@ -10095,7 +10095,7 @@ This creates the "products" table with three fields:
 <td>mlock</td>
 </tr>
 <tr>
-<td><a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar</a> numeric, string and multi-value attributes</td>
+<td><a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar</a> numeric, string and multi-value attributes</td>
 <td>always</td>
 <td>only by means of OS</td>
 <td>no</td>
@@ -10126,10 +10126,10 @@ This creates the "products" table with three fields:
 </table>
 <h5 id="the-recommendations-are">The recommendations are:</h5>
 <ul>
-<li>For the <strong>fastest search response time</strong> and ample memory availability, use <a href="../../06-creating_a_table.html#json">row-wise</a> attributes and lock them in memory using <code>mlock</code>. Additionally, use mlock for doclists/hitlists.</li>
-<li>If you prioritize <strong>can't afford lower performance after start</strong> and are willing to sacrifice longer startup time, use the <a href="../../05-starting_the_server.html#searchd-command-line-options">--force-preread</a>. option. If you desire faster searchd restart, stick to the default  <code>mmap_preread</code> option.</li>
+<li>For the <strong>fastest search response time</strong> and ample memory availability, use <a href="06-creating_a_table.html#json">row-wise</a> attributes and lock them in memory using <code>mlock</code>. Additionally, use mlock for doclists/hitlists.</li>
+<li>If you prioritize <strong>can't afford lower performance after start</strong> and are willing to sacrifice longer startup time, use the <a href="05-starting_the_server.html#searchd-command-line-options">--force-preread</a>. option. If you desire faster searchd restart, stick to the default  <code>mmap_preread</code> option.</li>
 <li>If you are looking to <strong>conserve memory</strong>, while still having enough memory for all attributes, skip the use of <code>mlock</code>. The operating system will determine what should be kept in memory based on frequent disk reads.</li>
-<li>If row-wise attributes  <strong>do not fit into memory</strong>, opt for <a href="../../06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar attributes</a></li>
+<li>If row-wise attributes  <strong>do not fit into memory</strong>, opt for <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">columnar attributes</a></li>
 <li>If full-text search <strong>performance is not a concern</strong>, and you wish to save memory, use <code>access_doclists/access_hitlists=file</code></li>
 </ul>
 <p>The default mode offers a balance of:</p>
@@ -10193,7 +10193,7 @@ This creates the "products" table with three fields:
 <p>Enables in-place table inversion. Optional, default is 0 (uses separate temporary files).</p>
 <p>The <code>inplace_enable</code> option reduces the disk footprint during indexing of plain tables, while slightly slowing down indexing (it uses approximately 2 times less disk, but yields around 90-95% of the original performance).</p>
 <p>Indexing is comprised of two primary phases. During the first phase, documents are collected, processed, and partially sorted by keyword, and the intermediate results are written to temporary files (.tmp*). During the second phase, the documents are fully sorted and the final table files are created. Rebuilding a production table on-the-fly requires approximately 3 times the peak disk footprint: first for the intermediate temporary files, second for the newly constructed copy, and third for the old table that will be serving production queries in the meantime. (Intermediate data is comparable in size to the final table.) This may be too much disk footprint for large data collections, and the <code>inplace_enable</code> option can be used to reduce it. When enabled, it reuses the temporary files, outputs the final data back to them, and renames them upon completion. However, this may require additional temporary data chunk relocation, which is where the performance impact comes from.</p>
-<p>This directive has no effect on <a href="../../05-starting_the_server.html#toc-05.02-manually">searchd</a>, it only affects the <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a>.</p>
+<p>This directive has no effect on <a href="05-starting_the_server.html#toc-05.02-manually">searchd</a>, it only affects the <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -10228,8 +10228,8 @@ CONFIG
 <div class="codehilite"><pre><span></span><code><span class="na">inplace_hit_gap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">size</span>
 </code></pre></div>
 
-<p>The option <a href="../../06-creating_a_table.html#inplace_enable">In-place inversion</a> fine-tuning option. Controls preallocated hitlist gap size. Optional, default is 0.</p>
-<p>This directive only affects the <a href="../../05-starting_the_server.html#toc-05.02-manually">searchd</a> tool, and does not have any impact on the  <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a>.</p>
+<p>The option <a href="06-creating_a_table.html#inplace_enable">In-place inversion</a> fine-tuning option. Controls preallocated hitlist gap size. Optional, default is 0.</p>
+<p>This directive only affects the <a href="05-starting_the_server.html#toc-05.02-manually">searchd</a> tool, and does not have any impact on the  <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -10266,7 +10266,7 @@ CONFIG
 </code></pre></div>
 
 <p>The inplace_reloc_factor setting determines the size of the relocation buffer within the memory arena used during indexing. The default value is 0.1. </p>
-<p>This option is optional and only affects the <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a> tool, not the <a href="../../05-starting_the_server.html#toc-05.02-manually">searchd</a>  server.</p>
+<p>This option is optional and only affects the <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a> tool, not the <a href="05-starting_the_server.html#toc-05.02-manually">searchd</a>  server.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -10303,7 +10303,7 @@ CONFIG
 </code></pre></div>
 
 <p>Controls the size of the buffer used for in-place writing during indexing. Optional, with a default value of 0.1.</p>
-<p>It's important to note that this directive only impacts the <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a> tool and not the <a href="../../05-starting_the_server.html#toc-05.02-manually">searchd</a> server.</p>
+<p>It's important to note that this directive only impacts the <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a> tool and not the <a href="05-starting_the_server.html#toc-05.02-manually">searchd</a> server.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -10334,50 +10334,50 @@ CONFIG
 </div>
 
 <h3 id="natural-language-processing-specific-settings">Natural language processing specific settings</h3>
-<p>The following settings are supported. They are all described in section <a href="../../06-creating_a_table.html#toc-06.03.01-data_tokenization">NLP and tokenization</a>.</p>
+<p>The following settings are supported. They are all described in section <a href="06-creating_a_table.html#toc-06.03.01-data_tokenization">NLP and tokenization</a>.</p>
 <ul>
-<li><a href="../../06-creating_a_table.html#bigram_freq_words">bigram_freq_words</a></li>
-<li><a href="../../06-creating_a_table.html#bigram_index">bigram_index</a></li>
-<li><a href="../../06-creating_a_table.html#blend_chars">blend_chars</a></li>
-<li><a href="../../06-creating_a_table.html#blend_mode">blend_mode</a></li>
-<li><a href="../../06-creating_a_table.html#charset_table">charset_table</a></li>
-<li><a href="../../06-creating_a_table.html#dict">dict</a></li>
-<li><a href="../../06-creating_a_table.html#embedded_limit">embedded_limit</a></li>
-<li><a href="../../06-creating_a_table.html#toc-06.03.08-exceptions">exceptions</a></li>
-<li><a href="../../13-searching.html#expand_keywords">expand_keywords</a></li>
-<li><a href="../../06-creating_a_table.html#global_idf">global_idf</a></li>
-<li><a href="../../06-creating_a_table.html#hitless_words">hitless_words</a></li>
-<li><a href="../../06-creating_a_table.html#html_index_attrs">html_index_attrs</a></li>
-<li><a href="../../06-creating_a_table.html#html_remove_elements">html_remove_elements</a></li>
-<li><a href="../../06-creating_a_table.html#html_strip">html_strip</a></li>
-<li><a href="../../06-creating_a_table.html#ignore_chars">ignore_chars</a></li>
-<li><a href="../../06-creating_a_table.html#index_exact_words">index_exact_words</a></li>
-<li><a href="../../06-creating_a_table.html#index_field_lengths">index_field_lengths</a></li>
-<li><a href="../../06-creating_a_table.html#index_sp">index_sp</a></li>
-<li><a href="../../06-creating_a_table.html#index_token_filter">index_token_filter</a></li>
-<li><a href="../../06-creating_a_table.html#index_zones">index_zones</a></li>
-<li><a href="../../06-creating_a_table.html#infix_fields">infix_fields</a></li>
-<li><a href="../../06-creating_a_table.html#killlist_target">killlist_target</a></li>
-<li><a href="../../06-creating_a_table.html#max_substring_len">max_substring_len</a></li>
-<li><a href="../../06-creating_a_table.html#min_infix_len">min_infix_len</a></li>
-<li><a href="../../06-creating_a_table.html#min_prefix_len">min_prefix_len</a></li>
-<li><a href="../../06-creating_a_table.html#min_stemming_len">min_stemming_len</a></li>
-<li><a href="../../06-creating_a_table.html#min_word_len">min_word_len</a></li>
-<li><a href="../../06-creating_a_table.html#morphology">morphology</a></li>
-<li><a href="../../06-creating_a_table.html#morphology_skip_fields">morphology_skip_fields</a></li>
-<li><a href="../../06-creating_a_table.html#ngram_chars">ngram_chars</a></li>
-<li><a href="../../06-creating_a_table.html#ngram_len">ngram_len</a></li>
-<li><a href="../../06-creating_a_table.html#overshort_step">overshort_step</a></li>
-<li><a href="../../06-creating_a_table.html#phrase_boundary">phrase_boundary</a></li>
-<li><a href="../../06-creating_a_table.html#phrase_boundary_step">phrase_boundary_step</a></li>
-<li><a href="../../06-creating_a_table.html#prefix_fields">prefix_fields</a></li>
-<li><a href="../../06-creating_a_table.html#regexp_filter">regexp_filter</a></li>
-<li><a href="../../06-creating_a_table.html#stopwords">stopwords</a></li>
-<li><a href="../../06-creating_a_table.html#stopword_step">stopword_step</a></li>
-<li><a href="../../06-creating_a_table.html#stopwords_unstemmed">stopwords_unstemmed</a></li>
-<li><a href="../../06-creating_a_table.html#stored_fields">stored_fields</a></li>
-<li><a href="../../06-creating_a_table.html#toc-06.02.03-plain_and_realtime_table_settings">stored_only_fields</a></li>
-<li><a href="../../06-creating_a_table.html#wordforms">wordforms</a></li>
+<li><a href="06-creating_a_table.html#bigram_freq_words">bigram_freq_words</a></li>
+<li><a href="06-creating_a_table.html#bigram_index">bigram_index</a></li>
+<li><a href="06-creating_a_table.html#blend_chars">blend_chars</a></li>
+<li><a href="06-creating_a_table.html#blend_mode">blend_mode</a></li>
+<li><a href="06-creating_a_table.html#charset_table">charset_table</a></li>
+<li><a href="06-creating_a_table.html#dict">dict</a></li>
+<li><a href="06-creating_a_table.html#embedded_limit">embedded_limit</a></li>
+<li><a href="06-creating_a_table.html#toc-06.03.08-exceptions">exceptions</a></li>
+<li><a href="13-searching.html#expand_keywords">expand_keywords</a></li>
+<li><a href="06-creating_a_table.html#global_idf">global_idf</a></li>
+<li><a href="06-creating_a_table.html#hitless_words">hitless_words</a></li>
+<li><a href="06-creating_a_table.html#html_index_attrs">html_index_attrs</a></li>
+<li><a href="06-creating_a_table.html#html_remove_elements">html_remove_elements</a></li>
+<li><a href="06-creating_a_table.html#html_strip">html_strip</a></li>
+<li><a href="06-creating_a_table.html#ignore_chars">ignore_chars</a></li>
+<li><a href="06-creating_a_table.html#index_exact_words">index_exact_words</a></li>
+<li><a href="06-creating_a_table.html#index_field_lengths">index_field_lengths</a></li>
+<li><a href="06-creating_a_table.html#index_sp">index_sp</a></li>
+<li><a href="06-creating_a_table.html#index_token_filter">index_token_filter</a></li>
+<li><a href="06-creating_a_table.html#index_zones">index_zones</a></li>
+<li><a href="06-creating_a_table.html#infix_fields">infix_fields</a></li>
+<li><a href="06-creating_a_table.html#killlist_target">killlist_target</a></li>
+<li><a href="06-creating_a_table.html#max_substring_len">max_substring_len</a></li>
+<li><a href="06-creating_a_table.html#min_infix_len">min_infix_len</a></li>
+<li><a href="06-creating_a_table.html#min_prefix_len">min_prefix_len</a></li>
+<li><a href="06-creating_a_table.html#min_stemming_len">min_stemming_len</a></li>
+<li><a href="06-creating_a_table.html#min_word_len">min_word_len</a></li>
+<li><a href="06-creating_a_table.html#morphology">morphology</a></li>
+<li><a href="06-creating_a_table.html#morphology_skip_fields">morphology_skip_fields</a></li>
+<li><a href="06-creating_a_table.html#ngram_chars">ngram_chars</a></li>
+<li><a href="06-creating_a_table.html#ngram_len">ngram_len</a></li>
+<li><a href="06-creating_a_table.html#overshort_step">overshort_step</a></li>
+<li><a href="06-creating_a_table.html#phrase_boundary">phrase_boundary</a></li>
+<li><a href="06-creating_a_table.html#phrase_boundary_step">phrase_boundary_step</a></li>
+<li><a href="06-creating_a_table.html#prefix_fields">prefix_fields</a></li>
+<li><a href="06-creating_a_table.html#regexp_filter">regexp_filter</a></li>
+<li><a href="06-creating_a_table.html#stopwords">stopwords</a></li>
+<li><a href="06-creating_a_table.html#stopword_step">stopword_step</a></li>
+<li><a href="06-creating_a_table.html#stopwords_unstemmed">stopwords_unstemmed</a></li>
+<li><a href="06-creating_a_table.html#stored_fields">stored_fields</a></li>
+<li><a href="06-creating_a_table.html#toc-06.02.03-plain_and_realtime_table_settings">stored_only_fields</a></li>
+<li><a href="06-creating_a_table.html#wordforms">wordforms</a></li>
 </ul>
 <!-- proofread -->
         
@@ -10391,8 +10391,8 @@ CONFIG
 <!-- example pq -->
 <p>A percolate table is a special table that stores queries rather than documents. It is used for prospective searches, or "search in reverse."</p>
 <ul>
-<li>To learn more about performing a search query against a percolate table, see the section <a href="../../13-searching.html#toc-13.16-percolate_query">Percolate query</a>.</li>
-<li>To learn how to prepare a table for searching, see the section <a href="../../12-data_creation_and_modification.html#toc-12.01.02-adding_rules_to_a_percolate_table">Adding rules to a percolate table</a>.</li>
+<li>To learn more about performing a search query against a percolate table, see the section <a href="13-searching.html#toc-13.16-percolate_query">Percolate query</a>.</li>
+<li>To learn how to prepare a table for searching, see the section <a href="12-data_creation_and_modification.html#toc-12.01.02-adding_rules_to_a_percolate_table">Adding rules to a percolate table</a>.</li>
 </ul>
 <p>The schema of a percolate table is fixed and contains the following fields:</p>
 <table>
@@ -10405,24 +10405,24 @@ CONFIG
 <tbody>
 <tr>
 <td>ID</td>
-<td>An unsigned 64-bit integer with auto-increment functionality. It can be omitted when adding a PQ rule, as described in  <a href="../../12-data_creation_and_modification.html#toc-12.01.02-adding_rules_to_a_percolate_table">add a PQ rule</a></td>
+<td>An unsigned 64-bit integer with auto-increment functionality. It can be omitted when adding a PQ rule, as described in  <a href="12-data_creation_and_modification.html#toc-12.01.02-adding_rules_to_a_percolate_table">add a PQ rule</a></td>
 </tr>
 <tr>
 <td>Query</td>
-<td><a href="../../13-searching.html#toc-13.02.01-basic_usage">Full-text query</a> of the rule, which can be thought of as the value of <a href="../../13-searching.html#toc-13.02.01-basic_usage">MATCH clause</a> or <a href="../../13-searching.html#http-json">JSON /search</a>. If <a href="../../13-searching.html#toc-13.02.02-operators">per field operators</a> are used inside the query, the full-text fields need to be declared in the percolate table configuration. If the stored query is only for attribute filtering (without full-text querying), the query value can be empty or omitted. The value of this field should correspond to the expected document schema, which is specified when creating the percolate table.</td>
+<td><a href="13-searching.html#toc-13.02.01-basic_usage">Full-text query</a> of the rule, which can be thought of as the value of <a href="13-searching.html#toc-13.02.01-basic_usage">MATCH clause</a> or <a href="13-searching.html#http-json">JSON /search</a>. If <a href="13-searching.html#toc-13.02.02-operators">per field operators</a> are used inside the query, the full-text fields need to be declared in the percolate table configuration. If the stored query is only for attribute filtering (without full-text querying), the query value can be empty or omitted. The value of this field should correspond to the expected document schema, which is specified when creating the percolate table.</td>
 </tr>
 <tr>
 <td>Filters</td>
-<td>Optional. Filters are an optional string containing attribute filters and/or expressions, defined the same way as in the <a href="../../13-searching.html#where">WHERE clause</a> or <a href="../../13-searching.html#http-json">JSON filtering</a>. The value of this field should correspond to the expected document schema, which is specified when creating the percolate table.</td>
+<td>Optional. Filters are an optional string containing attribute filters and/or expressions, defined the same way as in the <a href="13-searching.html#where">WHERE clause</a> or <a href="13-searching.html#http-json">JSON filtering</a>. The value of this field should correspond to the expected document schema, which is specified when creating the percolate table.</td>
 </tr>
 <tr>
 <td>Tags</td>
-<td>Optional. Tags represent a list of string labels separated by commas that can be used for filtering/deleting PQ rules. The tags can also be returned along with matching documents when performing a <a href="../../13-searching.html#toc-13.16-percolate_query">Percolate query</a></td>
+<td>Optional. Tags represent a list of string labels separated by commas that can be used for filtering/deleting PQ rules. The tags can also be returned along with matching documents when performing a <a href="13-searching.html#toc-13.16-percolate_query">Percolate query</a></td>
 </tr>
 </tbody>
 </table>
 <p>Note that you do not need to add the above fields when creating a percolate table.</p>
-<p>What you need to keep in mind when creating a new percolate table is to specify the expected schema of a document, which will be checked against the rules you will add later. This is done in the same way as for <a href="../../06-creating_a_table.html#toc-06.02-creating_a_local_table">any other local table</a>.</p>
+<p>What you need to keep in mind when creating a new percolate table is to specify the expected schema of a document, which will be checked against the rules you will add later. This is done in the same way as for <a href="06-creating_a_table.html#toc-06.02-creating_a_local_table">any other local table</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -10661,11 +10661,11 @@ Creating a percolate table via config
         
         <h1 id="template-table">Template table</h1>
 <!-- example template -->
-<p>A Template Table is a special type of table in Manticore that doesn't store any data and doesn't create any files on your disk. Despite this, it can have the same <a href="../../06-creating_a_table.html#natural-language-processing-specific-settings">NLP settings</a> as a plain or real-time table. Template tables can be used for the following purposes:</p>
+<p>A Template Table is a special type of table in Manticore that doesn't store any data and doesn't create any files on your disk. Despite this, it can have the same <a href="06-creating_a_table.html#natural-language-processing-specific-settings">NLP settings</a> as a plain or real-time table. Template tables can be used for the following purposes:</p>
 <ul>
-<li>As a template to inherit settings in the  <a href="../../06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a>, simplifying your Manticore configuration file.</li>
-<li>Keyword generation with the help of the <a href="../../13-searching.html#call-keywords">CALL KEYWORDS</a> command.</li>
-<li>Highlighting an arbitrary string using the <a href="../../13-searching.html#call-snippets">CALL SNIPPETS</a> command.</li>
+<li>As a template to inherit settings in the  <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a>, simplifying your Manticore configuration file.</li>
+<li>Keyword generation with the help of the <a href="13-searching.html#call-keywords">CALL KEYWORDS</a> command.</li>
+<li>Highlighting an arbitrary string using the <a href="13-searching.html#call-snippets">CALL SNIPPETS</a> command.</li>
 </ul>
 <!-- intro -->
 
@@ -10714,12 +10714,12 @@ Creating a template table via a configuration file
         <h1 id="data-tokenization">Data tokenization</h1>
 <p>Manticore doesn't store text as is for performing full-text searching on it. Instead, it extracts words and creates several structures that allow fast full-text searching. From the found words, a dictionary is built, which allows a quick look to discover if the word is present or not in the index. In addition, other structures record the documents and fields in which the word was found (as well as the position of it inside a field). All these are used when a full-text match is performed.</p>
 <p>The process of demarcating and classifying words is called tokenization. The tokenization is applied at both indexing and searching, and it operates at the character and word level.</p>
-<p>On the character level, the engine allows only certain characters to pass. This is defined by the <a href="../../06-creating_a_table.html#charset_table">charset_table</a>. Anything else is replaced with a whitespace (which is considered the default word separator). The charset_table also allows mappings, such as lowercasing or simply replacing one character with another. Besides that, characters can be <a href="../../06-creating_a_table.html#ignore_chars">ignored</a>, <a href="../../06-creating_a_table.html#blend_chars">blended</a>, defined as a <a href="../../06-creating_a_table.html#phrase_boundary">phrase boundary</a>. </p>
-<p>At the word level, the base setting is the <a href="../../06-creating_a_table.html#min_word_len">min_word_len</a> which defines the minimum word length in characters to be accepted in the index. A common request is to match singular with plural forms of words. For this, <a href="../../06-creating_a_table.html#morphology">morphology processors</a> can be used. </p>
-<p>Going further, we might want a word to be matched as another one because they are synonyms. For this, the <a href="../../06-creating_a_table.html#toc-06.03.07-word_forms">word forms</a> feature can be used, which allows one or more words to be mapped to another one.</p>
-<p>Very common words can have some unwanted effects on searching, mostly because of their frequency they require lots of computing to process their doc/hit lists. They can be blacklisted with the <a href="../../06-creating_a_table.html#stopwords">stop words</a> functionality. This helps not only in speeding up queries but also in decreasing the index size.</p>
-<p>A more advanced blacklisting is <a href="../../06-creating_a_table.html#bigram_index">bigrams</a>, which allows creating a special token between a "bigram" (common) word and an uncommon word. This can speed up several times when common words are used in phrase searches.</p>
-<p>In case of indexing HTML content, it's important not to index the HTML tags, as they can introduce a lot of "noise" in the index. <a href="../../06-creating_a_table.html#stripping-html-tags">HTML stripping</a> can be used and can be configured to strip, but index certain tag attributes or completely ignore the content of certain HTML elements.</p>
+<p>On the character level, the engine allows only certain characters to pass. This is defined by the <a href="06-creating_a_table.html#charset_table">charset_table</a>. Anything else is replaced with a whitespace (which is considered the default word separator). The charset_table also allows mappings, such as lowercasing or simply replacing one character with another. Besides that, characters can be <a href="06-creating_a_table.html#ignore_chars">ignored</a>, <a href="06-creating_a_table.html#blend_chars">blended</a>, defined as a <a href="06-creating_a_table.html#phrase_boundary">phrase boundary</a>. </p>
+<p>At the word level, the base setting is the <a href="06-creating_a_table.html#min_word_len">min_word_len</a> which defines the minimum word length in characters to be accepted in the index. A common request is to match singular with plural forms of words. For this, <a href="06-creating_a_table.html#morphology">morphology processors</a> can be used. </p>
+<p>Going further, we might want a word to be matched as another one because they are synonyms. For this, the <a href="06-creating_a_table.html#toc-06.03.07-word_forms">word forms</a> feature can be used, which allows one or more words to be mapped to another one.</p>
+<p>Very common words can have some unwanted effects on searching, mostly because of their frequency they require lots of computing to process their doc/hit lists. They can be blacklisted with the <a href="06-creating_a_table.html#stopwords">stop words</a> functionality. This helps not only in speeding up queries but also in decreasing the index size.</p>
+<p>A more advanced blacklisting is <a href="06-creating_a_table.html#bigram_index">bigrams</a>, which allows creating a special token between a "bigram" (common) word and an uncommon word. This can speed up several times when common words are used in phrase searches.</p>
+<p>In case of indexing HTML content, it's important not to index the HTML tags, as they can introduce a lot of "noise" in the index. <a href="06-creating_a_table.html#stripping-html-tags">HTML stripping</a> can be used and can be configured to strip, but index certain tag attributes or completely ignore the content of certain HTML elements.</p>
 <!-- proofread -->
         
     </section>
@@ -10730,7 +10730,7 @@ Creating a template table via a configuration file
         
         <h1 id="supported-languages">Supported languages</h1>
 <p>Manticore supports a wide range of languages, with basic support enabled for most languages via <code>charset_table = non_cjk</code> (which is the default value).</p>
-<p>For many languages, Manticore provides a <a href="../../06-creating_a_table.html#stopwords">stopwords</a> file that can be used to improve search relevance.</p>
+<p>For many languages, Manticore provides a <a href="06-creating_a_table.html#stopwords">stopwords</a> file that can be used to improve search relevance.</p>
 <p>Additionally, advanced morphology is available for a few languages that can significantly improve search relevance by using dictionary-based lemmatization or stemming algorithms for better segmentation and normalization.</p>
 <p>The table below lists all supported languages and indicates how to enable:</p>
 <ul>
@@ -11237,7 +11237,7 @@ Creating a template table via a configuration file
 <td>charset_table=non_cjk,U+0406-&gt;U+0456,U+0456,U+0407-&gt;U+0457,U+0457,U+0490-&gt;U+0491,U+0491</td>
 <td>-</td>
 <td>morphology=lemmatize_uk_all</td>
-<td>Requires <a href="../../../03-installation.html#ukrainian-lemmatizer">installation</a> of UK lemmatizer</td>
+<td>Requires <a href="../03-installation.html#ukrainian-lemmatizer">installation</a> of UK lemmatizer</td>
 </tr>
 <tr>
 <td>Yoruba</td>
@@ -11407,7 +11407,7 @@ C
 
 <!-- example cjk 2 -->
 <ol start="2">
-<li>Basic support using the N-gram options <a href="../../06-creating_a_table.html#ngram_len">ngram_len</a> and <a href="../../06-creating_a_table.html#ngram_chars">ngram_chars</a><br />
+<li>Basic support using the N-gram options <a href="06-creating_a_table.html#ngram_len">ngram_len</a> and <a href="06-creating_a_table.html#ngram_chars">ngram_chars</a><br />
 For each CJK language, there are separate character set tables (<code>chinese</code>, <code>korean</code>, <code>japanese</code>) that can be used, or you can use the common <code>cjk</code> character set table. </li>
 </ol>
 <!-- intro -->
@@ -11547,7 +11547,7 @@ C
 </div>
 
 <!-- example cjk 3 -->
-<p>Additionally, there is built-in support for Chinese <a href="../../06-creating_a_table.html#stopwords">stopwords</a>  with the alias <code>zh</code>.</p>
+<p>Additionally, there is built-in support for Chinese <a href="06-creating_a_table.html#stopwords">stopwords</a>  with the alias <code>zh</code>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -11707,15 +11707,15 @@ C
 <li>which characters are considered letters and which are not</li>
 <li>which letters should be folded to other letters</li>
 </ul>
-<p>You can configure these settings on a per-table basis using the  <a href="../../06-creating_a_table.html#charset_table">charset_table</a> option. charset_table specifies an array that maps letter characters to their case-folded versions (or any other characters that you prefer). Characters that are not present in the array are considered to be non-letters and will be treated as word separators during indexing or searching in this table.</p>
-<p>The default character set is <code>non_cjk</code>, which includes <a href="../../06-creating_a_table.html#toc-06.03.02-supported_languages">most languages</a>.</p>
+<p>You can configure these settings on a per-table basis using the  <a href="06-creating_a_table.html#charset_table">charset_table</a> option. charset_table specifies an array that maps letter characters to their case-folded versions (or any other characters that you prefer). Characters that are not present in the array are considered to be non-letters and will be treated as word separators during indexing or searching in this table.</p>
+<p>The default character set is <code>non_cjk</code>, which includes <a href="06-creating_a_table.html#toc-06.03.02-supported_languages">most languages</a>.</p>
 <p>You can also define text pattern replacement rules. For example, with the following rules:</p>
 <div class="codehilite"><pre><span></span><code><span class="na">regexp_filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">\**(\d+)\&quot; =&gt; \1 inch</span>
 <span class="na">regexp_filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">(BLUE|RED) =&gt; COLOR</span>
 </code></pre></div>
 
 <p>The text <code>RED TUBE 5" LONG</code> would be indexed as <code>COLOR TUBE 5 INCH LONG</code>, and <code>PLANK 2" x 4"</code> would be indexed as <code>PLANK 2 INCH x 4 INCH</code>. These rules are applied in the specified order. The rules also apply to queries, so a search for <code>BLUE TUBE</code> would actually search for <code>COLOR TUBE</code>.</p>
-<p>You can learn more about <a href="../../06-creating_a_table.html#regexp_filter">regexp_filter here</a>.</p>
+<p>You can learn more about <a href="06-creating_a_table.html#regexp_filter">regexp_filter here</a>.</p>
 <h2 id="index-configuration-options">Index configuration options</h2>
 <h3 id="charset_table">charset_table</h3>
 <div class="codehilite"><pre><span></span><code><span class="c1"># default</span>
@@ -12016,7 +12016,7 @@ C
 <p>All other languages listed in the <a href="http://www.unicode.org/cldr/charts/latest/supplemental/languages_and_scripts.html/">Unicode languages<br />
 list</a> are supported by default.</p>
 <!-- example charset_table 3 -->
-<p>To work with both cjk and non-cjk languages, set the options in your configuration file as shown below (with an <a href="../../06-creating_a_table.html#toc-06.03.03-cjk">exception</a> for Chinese):</p>
+<p>To work with both cjk and non-cjk languages, set the options in your configuration file as shown below (with an <a href="06-creating_a_table.html#toc-06.03.03-cjk">exception</a> for Chinese):</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;non_cjk&#39;</span><span class="w"> </span><span class="n">ngram_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="n">ngram_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;cjk&#39;</span>
@@ -12135,9 +12135,9 @@ C
 
 </div>
 
-<p>If you do not require support for cjk-languages, you can simply exclude the <a href="../../06-creating_a_table.html#ngram_len">ngram_len</a> and <a href="../../06-creating_a_table.html#ngram_chars">ngram_chars</a><br />
+<p>If you do not require support for cjk-languages, you can simply exclude the <a href="06-creating_a_table.html#ngram_len">ngram_len</a> and <a href="06-creating_a_table.html#ngram_chars">ngram_chars</a><br />
 options. For more information on these options, refer to the corresponding documentation sections.</p>
-<p>To map one character to multiple characters or vice versa, you can use <a href="../../06-creating_a_table.html#regexp_filter">regexp_filter</a> can be helpful.</p>
+<p>To map one character to multiple characters or vice versa, you can use <a href="06-creating_a_table.html#regexp_filter">regexp_filter</a> can be helpful.</p>
 <h3 id="blend_chars">blend_chars</h3>
 <div class="codehilite"><pre><span></span><code><span class="na">blend_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">+, &amp;, U+23</span>
 <span class="na">blend_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">+, &amp;-&gt;+</span>
@@ -12150,7 +12150,7 @@ options. For more information on these options, refer to the corresponding docum
 <p>Care should be taken when using blended characters as defining a character as blended means that it is no longer a separator.</p>
 <ul>
 <li>Therefore, if you put a comma to the <code>blend_chars</code> and search for <code>dog,cat</code>, it will treat that as a single token <code>dog,cat</code>. If <code>dog,cat</code> was <strong>not</strong> indexed as <code>dog,cat</code>, but left as <code>dog cat</code> only, then it will not match.</li>
-<li>Hence, this behavior should be controlled with the <a href="../../06-creating_a_table.html#blend_mode">blend_mode</a> setting.</li>
+<li>Hence, this behavior should be controlled with the <a href="06-creating_a_table.html#blend_mode">blend_mode</a> setting.</li>
 </ul>
 <p>Positions for tokens obtained by replacing blended characters with whitespace are assigned as usual, and regular keywords will be indexed as if there were no <code>blend_chars</code> specified at all. An additional token that mixes blended and non-blended characters will be put at the starting position. For instance, if <code>AT&amp;T company</code> occurs in the very beginning of the text field, <code>at</code> will be given position 1, <code>t</code> position 2, <code>company</code> position 3, and <code>AT&amp;T</code> will also be given position 1, blending with the opening regular keyword. As a result, queries for <code>AT&amp;T</code> or just <code>AT</code> will match that document. A phrase query for <code>"AT T"</code> will also match, as well as a phrase query for <code>"AT&amp;T company"</code>.</p>
 <p>Blended characters can overlap with special characters used in query syntax, such as <code>T-Mobile</code> or <code>@twitter</code>. Where possible, the query parser will handle the blended character as blended. For instance, if <code>hello @twitter</code> is within quotes (a phrase operator), the query parser will handle the <code>@</code> symbol as blended. However, if the <code>@</code> symbol was not within quotes, the character would be handled as an operator. Therefore, it is recommended to escape keywords.</p>
@@ -12540,8 +12540,8 @@ C
 
 <!-- example ngram_len -->
 <p>N-gram lengths for N-gram indexing. Optional, default is 0 (disable n-gram indexing). Known values are 0 and 1.</p>
-<p>N-grams provide basic CJK (Chinese, Japanese, Korean) support for unsegmented texts. The issue with CJK searching is that there may be no clear separators between the words. In some cases, you may not want to use dictionary-based segmentation <a href="../../06-creating_a_table.html#toc-06.03.03-cjk">the one available for Chinese</a>. In those cases, n-gram segmentation might work well too.</p>
-<p>When this feature is enabled, streams of CJK (or any other characters defined in <a href="../../06-creating_a_table.html#ngram_chars">ngram_chars</a>) are indexed as N-grams. For example, if the incoming text is "ABCDEF" (where A to F represent some CJK characters) and ngram_len is 1, it will be indexed as if it were "A B C D E F". Only ngram_len=1 is currently supported. Only those characters that are listed in <a href="../../06-creating_a_table.html#ngram_chars">ngram_chars</a> table will be split this way; others will not be affected.</p>
+<p>N-grams provide basic CJK (Chinese, Japanese, Korean) support for unsegmented texts. The issue with CJK searching is that there may be no clear separators between the words. In some cases, you may not want to use dictionary-based segmentation <a href="06-creating_a_table.html#toc-06.03.03-cjk">the one available for Chinese</a>. In those cases, n-gram segmentation might work well too.</p>
+<p>When this feature is enabled, streams of CJK (or any other characters defined in <a href="06-creating_a_table.html#ngram_chars">ngram_chars</a>) are indexed as N-grams. For example, if the incoming text is "ABCDEF" (where A to F represent some CJK characters) and ngram_len is 1, it will be indexed as if it were "A B C D E F". Only ngram_len=1 is currently supported. Only those characters that are listed in <a href="06-creating_a_table.html#ngram_chars">ngram_chars</a> table will be split this way; others will not be affected.</p>
 <p>Note that if the search query is segmented, i.e. there are separators between individual words, then wrapping the words in quotes and using extended mode will result in proper matches being found even if the text was <strong>not</strong> segmented. For instance, assume that the original query is <code>BC DEF</code>. After wrapping in quotes on the application side, it should look like <code>"BC" "DEF"</code> (<em>with</em> quotes). This query will be passed to Manticore and internally split into 1-grams too, resulting in <code>"B C" "D E F"</code> query, still with quotes that are the phrase matching operator. And it will match the text even though there were no separators in the text.</p>
 <p>Even if the search query is not segmented, Manticore should still produce good results, thanks to phrase-based ranking: it will pull closer phrase matches (which in the case of N-gram CJK words can mean closer multi-character word matches) to the top.</p>
 <!-- request SQL -->
@@ -12668,7 +12668,7 @@ C
 
 <!-- example ngram_chars -->
 <p>N-gram characters list. Optional, default is empty.</p>
-<p>To be used in conjunction with in <a href="../../06-creating_a_table.html#ngram_len">ngram_len</a>, this list defines characters, sequences of which are subject to N-gram extraction. Words comprised of other characters will not be affected by N-gram indexing feature. The value format is identical to <a href="../../06-creating_a_table.html#charset_table">charset_table</a>. N-gram characters cannot appear in the <a href="../../06-creating_a_table.html#charset_table">charset_table</a>.</p>
+<p>To be used in conjunction with in <a href="06-creating_a_table.html#ngram_len">ngram_len</a>, this list defines characters, sequences of which are subject to N-gram extraction. Words comprised of other characters will not be affected by N-gram indexing feature. The value format is identical to <a href="06-creating_a_table.html#charset_table">charset_table</a>. N-gram characters cannot appear in the <a href="06-creating_a_table.html#charset_table">charset_table</a>.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">ngram_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;U+3000..U+2FA1F&#39;</span><span class="w"> </span><span class="n">ngram_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span>
@@ -12907,7 +12907,7 @@ C
 <!-- example ignore_chars -->
 <p>Ignored characters list. Optional, default is empty.</p>
 <p>Useful in cases when some characters, such as soft hyphenation mark (U+00AD), should be not just treated as separators but rather fully ignored. For example, if '-' is simply not in the charset_table, "abc-def" text will be indexed as "abc" and "def" keywords. On the contrary, if '-' is added to ignore_chars list, the same text will be indexed as a single "abcdef" keyword.</p>
-<p>The syntax is the same as for <a href="../../06-creating_a_table.html#charset_table">charset_table</a>, but it's only allowed to declare characters, and not allowed to map them. Also, the ignored characters must not be present in charset_table.</p>
+<p>The syntax is the same as for <a href="06-creating_a_table.html#charset_table">charset_table</a>, but it's only allowed to declare characters, and not allowed to map them. Also, the ignored characters must not be present in charset_table.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">ignore_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;U+AD&#39;</span>
@@ -13032,7 +13032,7 @@ C
 <p><code>bigram_index</code> controls the selection of specific word pairs. The known modes are:</p>
 <ul>
 <li><code>all</code>, index every single word pair</li>
-<li><code>first_freq</code>, only index word pairs where the <em>first</em> word is in a list of frequent words (see <a href="../../06-creating_a_table.html#bigram_freq_words">bigram_freq_words</a>). For example, with <code>bigram_freq_words = the, in, i, a</code>, indexing "alone in the dark" text will result in "in the" and "the dark" pairs being stored as bigrams, because they begin with a frequent keyword (either "in" or "the" respectively), but "alone in" would <strong>not</strong> be indexed, because "in" is a <em>second</em> word in that pair.</li>
+<li><code>first_freq</code>, only index word pairs where the <em>first</em> word is in a list of frequent words (see <a href="06-creating_a_table.html#bigram_freq_words">bigram_freq_words</a>). For example, with <code>bigram_freq_words = the, in, i, a</code>, indexing "alone in the dark" text will result in "in the" and "the dark" pairs being stored as bigrams, because they begin with a frequent keyword (either "in" or "the" respectively), but "alone in" would <strong>not</strong> be indexed, because "in" is a <em>second</em> word in that pair.</li>
 <li><code>both_freq</code>, only index word pairs where both words are frequent. Continuing with the same example, in this mode indexing "alone in the dark" would only store "in the" (the very worst of them all from searching perspective) as a bigram, but none of the other word pairs.</li>
 </ul>
 <p>For most use cases, <code>both_freq</code> would be the best mode, but your mileage may vary.</p>
@@ -13158,7 +13158,7 @@ C
 
 <!-- example bigram_freq_words -->
 <p>A list of keywords considered "frequent" when indexing bigrams. Optional, default is empty.</p>
-<p>Some of the bigram indexing modes (see <a href="../../06-creating_a_table.html#bigram_index">bigram_index</a>) require to define a list of frequent keywords. These are <strong>not</strong> to be confused with stop words. Stop words are completely eliminated when both indexing and searching. Frequent keywords are only used by bigrams to determine whether to index a current word pair or not.</p>
+<p>Some of the bigram indexing modes (see <a href="06-creating_a_table.html#bigram_index">bigram_index</a>) require to define a list of frequent keywords. These are <strong>not</strong> to be confused with stop words. Stop words are completely eliminated when both indexing and searching. Frequent keywords are only used by bigrams to determine whether to index a current word pair or not.</p>
 <p><code>bigram_freq_words</code> lets you define a list of such keywords.</p>
 <!-- request SQL -->
 
@@ -13286,11 +13286,11 @@ C
 <p>CRC dictionaries do not store the original keyword text in the index. Instead, they replace keywords with a control sum value (computed using FNV64) during both searching and indexing processes. This value is used internally within the index. This approach has two disadvantages:</p>
 <ul>
 <li>Firstly, there's a risk of control sum collisions between different keywords pairs. This risk grows in proportion to the number of unique keywords in the index. Nonetheless, this concern is minor as the probability of a single FNV64 collision in a dictionary of 1 billion entries is roughly 1 in 16, or 6.25 percent. Most dictionaries will have far fewer than a billion keywords given that a typical spoken human language has between 1 and 10 million word forms.</li>
-<li>Secondly, and more crucially, it's not straightforward to perform substring searches with control sums. Manticore addressed this issue by pre-indexing all possible substrings as separate keywords (see <a href="../../06-creating_a_table.html#min_prefix_len">min_prefix_len</a>, <a href="../../06-creating_a_table.html#min_infix_len">min_infix_len</a> directives). This method even has an added advantage of matching substrings in the fastest way possible. Yet, pre-indexing all substrings significantly increases the index size (often by factors of 3-10x or more) and subsequently affects the indexing time, making substring searches on large indexes rather impractical.</li>
+<li>Secondly, and more crucially, it's not straightforward to perform substring searches with control sums. Manticore addressed this issue by pre-indexing all possible substrings as separate keywords (see <a href="06-creating_a_table.html#min_prefix_len">min_prefix_len</a>, <a href="06-creating_a_table.html#min_infix_len">min_infix_len</a> directives). This method even has an added advantage of matching substrings in the fastest way possible. Yet, pre-indexing all substrings significantly increases the index size (often by factors of 3-10x or more) and subsequently affects the indexing time, making substring searches on large indexes rather impractical.</li>
 </ul>
 <p>The keywords dictionary resolves both of these issues. It stores keywords in the index and performs search-time wildcard expansion. For instance, a search for a <code>test*</code> prefix could internally expand to a 'test|tests|testing' query based on the dictionary's contents. This expansion process is entirely invisible to the application, with the exception that the separate per-keyword statistics for all the matched keywords are now also reported.</p>
-<p>For substring (infix) searches, extended wildcards can be used. Special characters such as <code>?</code> and <code>%</code> are compatible with substring (infix) search (e.g., <code>t?st*</code>, <code>run%</code>, <code>*abc*</code>). Note that the <a href="13-searching.html#wildcard-operators">wildcards operators</a> and the <a href="../../13-searching.html#regex-operator">REGEX</a> only function with <code>dict=keywords</code>.</p>
-<p>Indexing with a keywords dictionary is approximately 1.1x to 1.3x slower than regular, non-substring indexing - yet significantly faster than substring indexing (either prefix or infix). The index size should only be slightly larger than that of the standard non-substring table, with a total difference of 1..10% percent. The time it takes for regular keyword searching should be nearly the same or identical across all three index types discussed (CRC non-substring, CRC substring, keywords). Substring searching time can significantly fluctuate based on how many actual keywords match the given substring (i.e., how many keywords the search term expands into). The maximum number of matched keywords is limited by the <a href="../../20-server_settings.html#expansion_limit">expansion_limit</a> directive.</p>
+<p>For substring (infix) searches, extended wildcards can be used. Special characters such as <code>?</code> and <code>%</code> are compatible with substring (infix) search (e.g., <code>t?st*</code>, <code>run%</code>, <code>*abc*</code>). Note that the <a href="13-searching.html#wildcard-operators">wildcards operators</a> and the <a href="13-searching.html#regex-operator">REGEX</a> only function with <code>dict=keywords</code>.</p>
+<p>Indexing with a keywords dictionary is approximately 1.1x to 1.3x slower than regular, non-substring indexing - yet significantly faster than substring indexing (either prefix or infix). The index size should only be slightly larger than that of the standard non-substring table, with a total difference of 1..10% percent. The time it takes for regular keyword searching should be nearly the same or identical across all three index types discussed (CRC non-substring, CRC substring, keywords). Substring searching time can significantly fluctuate based on how many actual keywords match the given substring (i.e., how many keywords the search term expands into). The maximum number of matched keywords is limited by the <a href="20-server_settings.html#expansion_limit">expansion_limit</a> directive.</p>
 <p>In summary, keywords and CRC dictionaries offer two different trade-off decisions for substring searching. You can opt to either sacrifice indexing time and index size to achieve the fastest worst-case searches (CRC dictionary), or minimally impact indexing time but sacrifice worst-case searching time when the prefix expands into a high number of keywords (keywords dictionary).</p>
 <!-- request SQL -->
 
@@ -13437,9 +13437,9 @@ C
 <!-- example global_idf -->
 <p>The path to a file with global (cluster-wide) keyword IDFs. Optional, default is empty (use local IDFs).</p>
 <p>On a multi-table cluster, per-keyword frequencies are quite likely to differ across different tables. That means that when the ranking function uses TF-IDF based values, such as BM25 family of factors, the results might be ranked slightly differently depending on what cluster node they reside.</p>
-<p>The easiest way to fix that issue is to create and utilize a global frequency dictionary, or a global IDF file for short. This directive lets you specify the location of that file. It is suggested (but not required) to use an .idf extension. When the IDF file is specified for a given table <em>and</em> <a href="../../06-creating_a_table.html#global_idf">OPTION global_idf</a> is set to 1, the engine will use the keyword frequencies and collection documents counts from the global_idf file, rather than just the local table. That way, IDFs and the values that depend on them will stay consistent across the cluster.</p>
+<p>The easiest way to fix that issue is to create and utilize a global frequency dictionary, or a global IDF file for short. This directive lets you specify the location of that file. It is suggested (but not required) to use an .idf extension. When the IDF file is specified for a given table <em>and</em> <a href="06-creating_a_table.html#global_idf">OPTION global_idf</a> is set to 1, the engine will use the keyword frequencies and collection documents counts from the global_idf file, rather than just the local table. That way, IDFs and the values that depend on them will stay consistent across the cluster.</p>
 <p>IDF files can be shared across multiple tables. Only a single copy of an IDF file will be loaded by <code>searchd</code>, even when many tables refer to that file. Should the contents of an IDF file change, the new contents can be loaded with a SIGHUP.</p>
-<p>You can build an .idf file using <a href="../../23-miscellaneous_tools.html#indextool">indextool</a> utility, by dumping dictionaries using <code>--dumpdict dict.txt --stats</code> switch first, then converting those to .idf format using <code>--buildidf</code>, then merging all the .idf files across cluster using <code>--mergeidf</code>.</p>
+<p>You can build an .idf file using <a href="23-miscellaneous_tools.html#indextool">indextool</a> utility, by dumping dictionaries using <code>--dumpdict dict.txt --stats</code> switch first, then converting those to .idf format using <code>--buildidf</code>, then merging all the .idf files across cluster using <code>--mergeidf</code>.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">global_idf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/usr/local/manticore/var/global.idf&#39;</span>
@@ -13690,7 +13690,7 @@ C
 <li>compute a field length (counted in keywords) for every document and store in to a respective attribute</li>
 <li>compute the per-index averages. The lengths attributes will have a special TOKENCOUNT type, but their values are in fact regular 32-bit integers, and their values are generally accessible.</li>
 </ul>
-<p><a href="../../15-functions.html#bm25a%28%29">BM25A()</a> and <a href="../../15-functions.html#bm25f%28%29">BM25F()</a> functions in the expression ranker are based on these lengths and require <code>index_field_lengths</code> to be enabled. Historically, Manticore used a simplified, stripped-down variant of BM25 that, unlike the complete function, did <strong>not</strong> account for document length. There's also support for both a complete variant of BM25, and its extension towards multiple fields, called BM25F. They require per-document length and per-field lengths, respectively. Hence the additional directive.</p>
+<p><a href="15-functions.html#bm25a%28%29">BM25A()</a> and <a href="15-functions.html#bm25f%28%29">BM25F()</a> functions in the expression ranker are based on these lengths and require <code>index_field_lengths</code> to be enabled. Historically, Manticore used a simplified, stripped-down variant of BM25 that, unlike the complete function, did <strong>not</strong> account for document length. There's also support for both a complete variant of BM25, and its extension towards multiple fields, called BM25F. They require per-document length and per-field lengths, respectively. Hence the additional directive.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">index_field_lengths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span>
@@ -13929,7 +13929,7 @@ C
 </code></pre></div>
 
 <!-- example overshort_step -->
-<p>Position increment on overshort (less than <a href="../../06-creating_a_table.html#min_word_len">min_word_len</a>) keywords. Optional, allowed values are 0 and 1, default is 1.</p>
+<p>Position increment on overshort (less than <a href="06-creating_a_table.html#min_word_len">min_word_len</a>) keywords. Optional, allowed values are 0 and 1, default is 1.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">overshort_step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span>
@@ -14050,8 +14050,8 @@ C
 
 <!-- example phrase_boundary -->
 <p>Phrase boundary characters list. Optional, default is empty.</p>
-<p>This list controls what characters will be treated as phrase boundaries, in order to adjust word positions and enable phrase-level search emulation through proximity search. The syntax is similar to <a href="../../06-creating_a_table.html#charset_table">charset_table</a>, but mappings are not allowed and the boundary characters must not overlap with anything else.</p>
-<p>On phrase boundary, additional word position increment (specified by <a href="../../06-creating_a_table.html#phrase_boundary_step">phrase_boundary_step</a>) will be added to current word position. This enables phrase-level searching through proximity queries: words in different phrases will be guaranteed to be more than phrase_boundary_step distance away from each other; so proximity search within that distance will be equivalent to phrase-level search.</p>
+<p>This list controls what characters will be treated as phrase boundaries, in order to adjust word positions and enable phrase-level search emulation through proximity search. The syntax is similar to <a href="06-creating_a_table.html#charset_table">charset_table</a>, but mappings are not allowed and the boundary characters must not overlap with anything else.</p>
+<p>On phrase boundary, additional word position increment (specified by <a href="06-creating_a_table.html#phrase_boundary_step">phrase_boundary_step</a>) will be added to current word position. This enables phrase-level searching through proximity queries: words in different phrases will be guaranteed to be more than phrase_boundary_step distance away from each other; so proximity search within that distance will be equivalent to phrase-level search.</p>
 <p>Phrase boundary condition will be raised if and only if such character is followed by a separator; this is to avoid abbreviations such as S.T.A.L.K.E.R or URLs being treated as several phrases.</p>
 <!-- request SQL -->
 
@@ -14302,7 +14302,7 @@ C
 <p>Regular expressions (regexps) used to filter the fields and queries. This directive is optional, multi-valued, and its default is an empty list of regular expressions. The regular expressions engine used by Manticore Search is Google's RE2, which is known for its speed and safety. For detailed information on the syntax supported by RE2, you can visit the <a href="https://github.com/google/re2/wiki/Syntax">RE2 syntax guide</a>.</p>
 <p>In certain applications such as product search, there can be many ways to refer to a product, model, or property. For example, <code>iPhone 3gs</code> and <code>iPhone 3 gs</code> (or even <code>iPhone3 gs</code>) are very likely to refer to the same product. Another example could be different ways to express a laptop screen size, such as <code>13-inch</code>, <code>13 inch</code>, <code>13"</code>, or <code>13in</code>.</p>
 <p>Regexps provide a mechanism to specify rules tailored to handle such cases. In the first example, you could possibly use a wordforms file to handle a handful of iPhone models, but in the second example, it's better to specify rules that would normalize "13-inch" and "13in" to something identical.</p>
-<p>Regular expressions listed in <code>regexp_filter</code> are applied in the order they are listed, at the earliest stage possible, before any other processing (including <a href="../../06-creating_a_table.html#exceptions">exceptions</a>), even before tokenization. That is, regexps are applied to the raw source fields when indexing, and to the raw search query text when searching.</p>
+<p>Regular expressions listed in <code>regexp_filter</code> are applied in the order they are listed, at the earliest stage possible, before any other processing (including <a href="06-creating_a_table.html#exceptions">exceptions</a>), even before tokenization. That is, regexps are applied to the raw source fields when indexing, and to the raw search query text when searching.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">regexp_filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;(blue|red) =&gt; color&#39;</span>
@@ -14429,7 +14429,7 @@ C
 
         
         <h1 id="wildcard-searching-settings">Wildcard searching settings</h1>
-<p>Wildcard searching is a common text search type. In Manticore, it is performed at the dictionary level. By default, both plain and RT tables use a dictionary type called <a href="../../06-creating_a_table.html#dict">dict</a>. In this mode, words are stored as they are, so enabling wildcarding does not affect the size of the table. When a wildcard search is performed, the dictionary is searched to find all possible expansions of the wildcarded word. This expansion can be problematic in terms of computation at query time when the expanded word provides many expansions or expansions that have huge hitlists, especially in the case of infixes where the wildcard is added at the start and end of the word. To avoid such problems, the  <a href="../../20-server_settings.html#expansion_limit">expansion_limit</a> can be used.</p>
+<p>Wildcard searching is a common text search type. In Manticore, it is performed at the dictionary level. By default, both plain and RT tables use a dictionary type called <a href="06-creating_a_table.html#dict">dict</a>. In this mode, words are stored as they are, so enabling wildcarding does not affect the size of the table. When a wildcard search is performed, the dictionary is searched to find all possible expansions of the wildcarded word. This expansion can be problematic in terms of computation at query time when the expanded word provides many expansions or expansions that have huge hitlists, especially in the case of infixes where the wildcard is added at the start and end of the word. To avoid such problems, the  <a href="20-server_settings.html#expansion_limit">expansion_limit</a> can be used.</p>
 <h2 id="min_prefix_len">min_prefix_len</h2>
 <!-- example min_prefix_len -->
 
@@ -14439,15 +14439,15 @@ C
 <p>This setting determines the minimum word prefix length to index and search. By default, it is set to 0, meaning prefixes are not allowed.</p>
 <p>Prefixes allow for wildcard searching by <code>wordstart*</code> wildcards.</p>
 <p>For example, if the word "example" is indexed with min_prefix_len=3, it can be found by searching for "exa", "exam", "examp", "exampl", as well as the full word.</p>
-<p>Note that with <a href="../../06-creating_a_table.html#dict">dict</a>=crc min_prefix_len will affect the size of the full-text index since each word expansion will be stored additionally.</p>
+<p>Note that with <a href="06-creating_a_table.html#dict">dict</a>=crc min_prefix_len will affect the size of the full-text index since each word expansion will be stored additionally.</p>
 <p>Manticore can differentiate perfect word matches from prefix matches and rank the former higher if the following conditions are met:</p>
 <ul>
-<li><a href="../../06-creating_a_table.html#dict">dict</a>=keywords (on by default)</li>
-<li><a href="../../06-creating_a_table.html#index_exact_words">index_exact_words</a>=1 (off by default),</li>
-<li><a href="../../13-searching.html#expand_keywords">expand_keywords</a>=1 (also off by default)</li>
+<li><a href="06-creating_a_table.html#dict">dict</a>=keywords (on by default)</li>
+<li><a href="06-creating_a_table.html#index_exact_words">index_exact_words</a>=1 (off by default),</li>
+<li><a href="13-searching.html#expand_keywords">expand_keywords</a>=1 (also off by default)</li>
 </ul>
-<p>Note that with either  <a href="../../06-creating_a_table.html#dict">dict</a>=crc mode or any of the above options disabled, it is not possible to differentiate between prefixes and full words, and perfect word matches cannot be ranked higher.</p>
-<p>When the <a href="../../06-creating_a_table.html#min_infix_len">minimum infix length</a> is set to a positive number, the minimum prefix length is always considered 1.</p>
+<p>Note that with either  <a href="06-creating_a_table.html#dict">dict</a>=crc mode or any of the above options disabled, it is not possible to differentiate between prefixes and full words, and perfect word matches cannot be ranked higher.</p>
+<p>When the <a href="06-creating_a_table.html#min_infix_len">minimum infix length</a> is set to a positive number, the minimum prefix length is always considered 1.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -14586,14 +14586,14 @@ C
 <p>When enabled, infixes allow for wildcard searching with term patterns like <code>start*</code>, <code>*end</code>, <code>*middle*</code>, , and so on. It also allows you to disable too short wildcards if they are too expensive to search for.</p>
 <p>If the following conditions are met, Manticore can differentiate perfect word matches from infix matches and rank the former higher:</p>
 <ul>
-<li><a href="../../06-creating_a_table.html#dict">dict</a>=keywords (on by default)</li>
-<li><a href="../../06-creating_a_table.html#dict">index_exact_words</a>=1 (off by default),</li>
-<li><a href="../../13-searching.html#expand_keywords">expand_keywords</a>=1 (also off by default)</li>
+<li><a href="06-creating_a_table.html#dict">dict</a>=keywords (on by default)</li>
+<li><a href="06-creating_a_table.html#dict">index_exact_words</a>=1 (off by default),</li>
+<li><a href="13-searching.html#expand_keywords">expand_keywords</a>=1 (also off by default)</li>
 </ul>
-<p>Note that with the <a href="../../06-creating_a_table.html#dict">dict</a>=crc mode or any of the above options disabled, there is no way to differentiate between infixes and full words, and thus perfect word matches cannot be ranked higher.</p>
+<p>Note that with the <a href="06-creating_a_table.html#dict">dict</a>=crc mode or any of the above options disabled, there is no way to differentiate between infixes and full words, and thus perfect word matches cannot be ranked higher.</p>
 <p>Infix wildcard search query time can vary greatly, depending on how many keywords the substring will actually expand to. Short and frequent syllables like <code>*in*</code> or <code>*ti*</code> might expand to way too many keywords, all of which would need to be matched and processed. Therefore, to generally enable substring searches, you would set min_infix_len to 2. To limit the impact from wildcard searches with too short wildcards, you might set it higher.</p>
 <p>Infixes must be at least 2 characters long, and wildcards like <code>*a*</code> are not allowed for performance reasons.</p>
-<p>When min_infix_len is set to a positive number, the <a href="../../06-creating_a_table.html#min_prefix_len">minimum prefix length</a> is considered 1. For <a href="../../06-creating_a_table.html#dict">dict</a> word infixing and prefixing cannot be both enabled at the same time. For <a href="../../06-creating_a_table.html#dict">dict</a> and other fields to have prefixes declared with <a href="../../06-creating_a_table.html#prefix_fields">prefix_fields</a>, it is forbidden to declare the same field in both lists.</p>
+<p>When min_infix_len is set to a positive number, the <a href="06-creating_a_table.html#min_prefix_len">minimum prefix length</a> is considered 1. For <a href="06-creating_a_table.html#dict">dict</a> word infixing and prefixing cannot be both enabled at the same time. For <a href="06-creating_a_table.html#dict">dict</a> and other fields to have prefixes declared with <a href="06-creating_a_table.html#prefix_fields">prefix_fields</a>, it is forbidden to declare the same field in both lists.</p>
 <p>If dict=keywords, besides the wildcard <code>*</code> two other wildcard characters can be used:</p>
 <ul>
 <li><code>?</code> can match any (one) character:  <code>t?st</code> will match <code>test</code>, but not <code>teast</code></li>
@@ -14733,7 +14733,7 @@ C
 <div class="codehilite"><pre><span></span><code><span class="na">prefix_fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">field1[, field2, ...]</span>
 </code></pre></div>
 
-<p>The prefix_fields setting is used to limit prefix indexing to specific full-text fields in <a href="../../06-creating_a_table.html#dict">dict=crc</a> mode. By default, all fields are indexed in prefix mode, but because prefix indexing can affect both indexing and searching performance, it may be desired to limit it to certain fields.</p>
+<p>The prefix_fields setting is used to limit prefix indexing to specific full-text fields in <a href="06-creating_a_table.html#dict">dict=crc</a> mode. By default, all fields are indexed in prefix mode, but because prefix indexing can affect both indexing and searching performance, it may be desired to limit it to certain fields.</p>
 <p>To limit prefix indexing to specific fields, use the prefix_fields setting followed by a comma-separated list of field names. If prefix_fields is not set, then all fields will be indexed in prefix mode.</p>
 <!-- intro -->
 
@@ -14767,8 +14767,8 @@ CONFIG
 <div class="codehilite"><pre><span></span><code><span class="na">infix_fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">field1[, field2, ...]</span>
 </code></pre></div>
 
-<p>The infix_fields setting allows you to specify a list of full-text fields to limit infix indexing to. This applies to <a href="../../06-creating_a_table.html#dict">dict=crc</a> only and is optional, with the default being to index all fields in infix mode.<br />
-This setting is similar to <a href="../../06-creating_a_table.html#dict">prefix_fields</a>, but instead allows you to limit infix indexing to specific fields.</p>
+<p>The infix_fields setting allows you to specify a list of full-text fields to limit infix indexing to. This applies to <a href="06-creating_a_table.html#dict">dict=crc</a> only and is optional, with the default being to index all fields in infix mode.<br />
+This setting is similar to <a href="06-creating_a_table.html#dict">prefix_fields</a>, but instead allows you to limit infix indexing to specific fields.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -14801,8 +14801,8 @@ CONFIG
 <div class="codehilite"><pre><span></span><code><span class="na">max_substring_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">length</span>
 </code></pre></div>
 
-<p>The max_substring_len directive sets the maximum substring length to be indexed for either prefix or infix searches. This setting is optional, and its default value is 0 (which means that all possible substrings are indexed). It only applies to <a href="../../06-creating_a_table.html#dict">dict</a>.</p>
-<p>By default, substring indexing in <a href="../../06-creating_a_table.html#dict">dict</a> indexes  <strong>all</strong> possible substrings as separate keywords, which can result in an overly large full-text index. Therefore, the max_substring_len directive allows you to skip too-long substrings that will probably never be searched for.</p>
+<p>The max_substring_len directive sets the maximum substring length to be indexed for either prefix or infix searches. This setting is optional, and its default value is 0 (which means that all possible substrings are indexed). It only applies to <a href="06-creating_a_table.html#dict">dict</a>.</p>
+<p>By default, substring indexing in <a href="06-creating_a_table.html#dict">dict</a> indexes  <strong>all</strong> possible substrings as separate keywords, which can result in an overly large full-text index. Therefore, the max_substring_len directive allows you to skip too-long substrings that will probably never be searched for.</p>
 <p>For example, a test table of 10,000 blog posts takes up a different amount of disk space depending on the settings:</p>
 <ul>
 <li>6.4 MB baseline (no substrings)</li>
@@ -14854,7 +14854,7 @@ CONFIG
 <li><code>star</code> - augment the keyword by adding <code>*</code> around it. For instance, <code>running</code> will become <code>(running | *running*)</code><br />
 This setting is optional, and the default value is 0 (keywords are not expanded).</li>
 </ul>
-<p>Queries against tables with <code>expand_keywords</code> feature enabled are internally expanded as follows: if the table was built with prefix or infix indexing enabled, every keyword gets internally replaced with a disjunction of the keyword itself and a respective prefix or infix (keyword with stars). If the table was built with both stemming and <a href="../../06-creating_a_table.html#index_exact_words">index_exact_words</a> enabled, exact form is also added.</p>
+<p>Queries against tables with <code>expand_keywords</code> feature enabled are internally expanded as follows: if the table was built with prefix or infix indexing enabled, every keyword gets internally replaced with a disjunction of the keyword itself and a respective prefix or infix (keyword with stars). If the table was built with both stemming and <a href="06-creating_a_table.html#index_exact_words">index_exact_words</a> enabled, exact form is also added.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -15089,12 +15089,12 @@ expand_keywords is disabled
 
 </div>
 
-<p>This directive does not affect <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a> in any way, it only affects <a href="../../05-starting_the_server.html#toc-05.02-manually">searchd</a>.</p>
+<p>This directive does not affect <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a> in any way, it only affects <a href="05-starting_the_server.html#toc-05.02-manually">searchd</a>.</p>
 <h2 id="expansion_limit">expansion_limit</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">expansion_limit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">number</span>
 </code></pre></div>
 
-<p>Maximum number of expanded keywords for a single wildcard. Details are <a href="../../20-server_settings.html#expansion_limit">here</a>.</p>
+<p>Maximum number of expanded keywords for a single wildcard. Details are <a href="20-server_settings.html#expansion_limit">here</a>.</p>
 <!-- proofread -->
         
     </section>
@@ -15105,17 +15105,17 @@ expand_keywords is disabled
         
         <h1 id="ignoring-stop-words">Ignoring stop words</h1>
 <p>Stop words are words that are ignored during indexing and searching, typically due to their high frequency and low value to search results. </p>
-<p>Manticore Search applies <a href="../../06-creating_a_table.html#toc-06.03.09-morphology">stemming</a> to stop words by default, which can lead to undesired results, but this can be turned off using the <a href="../../06-creating_a_table.html#stopwords_unstemmed">stopwords_unstemmed</a>.</p>
-<p>Small stop word files are stored in the table header, and there is a limit to the size of files that can be embedded, as defined by the <a href="../../06-creating_a_table.html#embedded_limit">embedded_limit</a> option.</p>
-<p>Stop words are not indexed, but they do affect keyword positions. For example, if "the" is a stop word, and document 1 contains the phrase "in office" while document 2 contains the phrase "in the office," searching for "in office" as an exact phrase will only return the first document, even though "the" is skipped as a stop word in the second document. This behavior can be modified using the <a href="../../06-creating_a_table.html#stopword_step">stopword_step</a> directive.</p>
+<p>Manticore Search applies <a href="06-creating_a_table.html#toc-06.03.09-morphology">stemming</a> to stop words by default, which can lead to undesired results, but this can be turned off using the <a href="06-creating_a_table.html#stopwords_unstemmed">stopwords_unstemmed</a>.</p>
+<p>Small stop word files are stored in the table header, and there is a limit to the size of files that can be embedded, as defined by the <a href="06-creating_a_table.html#embedded_limit">embedded_limit</a> option.</p>
+<p>Stop words are not indexed, but they do affect keyword positions. For example, if "the" is a stop word, and document 1 contains the phrase "in office" while document 2 contains the phrase "in the office," searching for "in office" as an exact phrase will only return the first document, even though "the" is skipped as a stop word in the second document. This behavior can be modified using the <a href="06-creating_a_table.html#stopword_step">stopword_step</a> directive.</p>
 <h2 id="stopwords">stopwords</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">stopwords</span><span class="o">=</span><span class="s">path/to/stopwords/file[ path/to/another/file ...]</span>
 </code></pre></div>
 
 <!-- example stopwords -->
 <p>The stopwords setting is optional and by default empty. It allows you to specify the path to one or more stop word files, separated by spaces. All the files will be loaded. In the real-time mode, only absolute paths are allowed.</p>
-<p>The stop word file format is simple plain text with UTF-8 encoding. The file data will be tokenized with respect to the <a href="../../06-creating_a_table.html#charset_table">charset_table</a> settings, so you can use the same separators as in the indexed data.</p>
-<p>Stop word files can be created manually or semi-automatically. The <a href="../../12-data_creation_and_modification.html#indexer-tool">indexer</a> provides a mode that creates a frequency dictionary of the table, sorted by the keyword frequency. Top keywords from that dictionary can usually be used as stop words. See <a href="../../12-data_creation_and_modification.html#indexer-command-line-arguments">--buildstops</a> and <a href="../../12-data_creation_and_modification.html#indexer-command-line-arguments">--buildfreqs</a> switch for details. Top keywords from that dictionary can usually be used as stop words.</p>
+<p>The stop word file format is simple plain text with UTF-8 encoding. The file data will be tokenized with respect to the <a href="06-creating_a_table.html#charset_table">charset_table</a> settings, so you can use the same separators as in the indexed data.</p>
+<p>Stop word files can be created manually or semi-automatically. The <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a> provides a mode that creates a frequency dictionary of the table, sorted by the keyword frequency. Top keywords from that dictionary can usually be used as stop words. See <a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--buildstops</a> and <a href="12-data_creation_and_modification.html#indexer-command-line-arguments">--buildfreqs</a> switch for details. Top keywords from that dictionary can usually be used as stop words.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -15563,7 +15563,7 @@ C
 </code></pre></div>
 
 <!-- example stopword_step -->
-<p>The position_increment setting on <a href="../../06-creating_a_table.html#stopwords">stopwords</a> is optional, and the allowed values are 0 and 1, with the default being 1.</p>
+<p>The position_increment setting on <a href="06-creating_a_table.html#stopwords">stopwords</a> is optional, and the allowed values are 0 and 1, with the default being 1.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -15840,7 +15840,7 @@ C
 
         
         <h1 id="word-forms">Word forms</h1>
-<p>Word forms are applied after tokenizing incoming text by <a href="../../06-creating_a_table.html#charset_table">charset_table</a> rules. They essentially let you replace one word with another. Normally, that would be used to bring different word forms to a single normal form (e.g. to normalize all the variants such as "walks", "walked", "walking" to the normal form "walk"). It can also be used to implement <a href="../../06-creating_a_table.html#toc-06.03.09-morphology">stemming</a> exceptions, because stemming is not applied to words found in the forms list.</p>
+<p>Word forms are applied after tokenizing incoming text by <a href="06-creating_a_table.html#charset_table">charset_table</a> rules. They essentially let you replace one word with another. Normally, that would be used to bring different word forms to a single normal form (e.g. to normalize all the variants such as "walks", "walked", "walking" to the normal form "walk"). It can also be used to implement <a href="06-creating_a_table.html#toc-06.03.09-morphology">stemming</a> exceptions, because stemming is not applied to words found in the forms list.</p>
 <h2 id="wordforms">wordforms</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">wordforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">path/to/wordforms.txt</span>
 <span class="na">wordforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">path/to/alternateforms.txt</span>
@@ -15849,15 +15849,15 @@ C
 
 <!-- example wordforms -->
 <p>Word forms dictionary. Optional, default is empty.</p>
-<p>The dictionaries are used to normalize incoming words both during indexing and searching. Therefore, when it comes to a <a href="../../06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a>, it's required to rotate the table in order to pick up changes in the word forms file.</p>
+<p>The dictionaries are used to normalize incoming words both during indexing and searching. Therefore, when it comes to a <a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a>, it's required to rotate the table in order to pick up changes in the word forms file.</p>
 <p>Word forms support in Manticore is designed to handle large dictionaries well. They moderately affect indexing speed; for example, a dictionary with 1 million entries slows down indexing by about 1.5 times. Searching speed is not affected at all. The additional RAM impact is roughly equal to the dictionary file size, and dictionaries are shared across tables. For instance, if the very same 50 MB word forms file is specified for 10 different tables, the additional <code>searchd</code> RAM usage will be about 50 MB.</p>
-<p>The dictionary file should be in a simple plain text format. Each line should contain source and destination word forms, in UTF-8 encoding, separated by a "greater than" sign. Rules from the <a href="../../06-creating_a_table.html#charset_table">charset_table</a> will be applied when the file is loaded, so if you are using built-in <code>charset_table</code> options, it is typically case-insensitive, just like your other full-text indexed data. Here is a sample file contents:</p>
+<p>The dictionary file should be in a simple plain text format. Each line should contain source and destination word forms, in UTF-8 encoding, separated by a "greater than" sign. Rules from the <a href="06-creating_a_table.html#charset_table">charset_table</a> will be applied when the file is loaded, so if you are using built-in <code>charset_table</code> options, it is typically case-insensitive, just like your other full-text indexed data. Here is a sample file contents:</p>
 <div class="codehilite"><pre><span></span><code><span class="na">walks &gt; walk</span>
 <span class="na">walked &gt; walk</span>
 <span class="na">walking &gt; walk</span>
 </code></pre></div>
 
-<p>There is a bundled utility called <a href="../../23-miscellaneous_tools.html#spelldump">Spelldump</a> that helps you create a dictionary file in a format that Manticore can read. The utility can read from source <code>.dict</code> and <code>.aff</code> dictionary files in the <code>ispell</code> or <code>MySpell</code> format, as bundled with OpenOffice.</p>
+<p>There is a bundled utility called <a href="23-miscellaneous_tools.html#spelldump">Spelldump</a> that helps you create a dictionary file in a format that Manticore can read. The utility can read from source <code>.dict</code> and <code>.aff</code> dictionary files in the <code>ispell</code> or <code>MySpell</code> format, as bundled with OpenOffice.</p>
 <p>You can map several source words to a single destination word. The process happens on tokens, not the source text, so differences in whitespace and markup are ignored.</p>
 <p>You can use the <code>=&gt;</code> symbol instead of <code>&gt;</code>. Comments (starting with <code>#</code>) are also allowed. Finally, if a line starts with a tilde (<code>~</code>), the wordform will be applied after morphology, instead of before (note that only a single source and destination word are supported in this case).</p>
 <div class="codehilite"><pre><span></span><code><span class="na">core 2 duo &gt; c2d</span>
@@ -16017,8 +16017,8 @@ C
 
         
         <h1 id="exceptions">Exceptions</h1>
-<p>Exceptions (also known as synonyms) allow mapping one or more tokens (including tokens with characters that would normally be excluded) to a single keyword. They are similar to <a href="../../06-creating_a_table.html#wordforms">wordforms</a> in that they also perform mapping but have a number of important differences.</p>
-<p>A short summary of the differences from <a href="../../06-creating_a_table.html#wordforms">wordforms</a> is as follows:</p>
+<p>Exceptions (also known as synonyms) allow mapping one or more tokens (including tokens with characters that would normally be excluded) to a single keyword. They are similar to <a href="06-creating_a_table.html#wordforms">wordforms</a> in that they also perform mapping but have a number of important differences.</p>
+<p>A short summary of the differences from <a href="06-creating_a_table.html#wordforms">wordforms</a> is as follows:</p>
 <table>
 <thead>
 <tr>
@@ -16032,8 +16032,8 @@ C
 <td>Case insensitive</td>
 </tr>
 <tr>
-<td>Can use special characters that are not in <a href="../../06-creating_a_table.html#charset_table">charset_table</a></td>
-<td>Fully obey <a href="../../06-creating_a_table.html#charset_table">charset_table</a></td>
+<td>Can use special characters that are not in <a href="06-creating_a_table.html#charset_table">charset_table</a></td>
+<td>Fully obey <a href="06-creating_a_table.html#charset_table">charset_table</a></td>
 </tr>
 <tr>
 <td>Underperform on huge dictionaries</td>
@@ -16064,7 +16064,7 @@ In the RT mode, only absolute paths are allowed.</p>
 <span class="na">C plus plus</span><span class="w"> </span><span class="o">=</span><span class="s">&gt; cplusplus</span>
 </code></pre></div>
 
-<p>All tokens here are case sensitive and will <strong>not</strong> be processed by <a href="../../06-creating_a_table.html#charset_table">charset_table</a> rules. Thus, with the example exceptions file above, the "at&amp;t" text will be tokenized as two keywords "at" and "t" due to lowercase letters. On the other hand, "AT&amp;T" will match exactly and produce a single "AT&amp;T" keyword.</p>
+<p>All tokens here are case sensitive and will <strong>not</strong> be processed by <a href="06-creating_a_table.html#charset_table">charset_table</a> rules. Thus, with the example exceptions file above, the "at&amp;t" text will be tokenized as two keywords "at" and "t" due to lowercase letters. On the other hand, "AT&amp;T" will match exactly and produce a single "AT&amp;T" keyword.</p>
 <p>Note that this map-to keyword:</p>
 <ul>
 <li>is always interpreted as a <em>single</em> word</li>
@@ -16073,7 +16073,7 @@ In the RT mode, only absolute paths are allowed.</p>
 <p>In our sample, "ms windows" query will <em>not</em> match the document with "MS Windows" text. The query will be interpreted as a query for two keywords, "ms" and "windows". The mapping for "MS Windows" is a single keyword "ms windows", with a space in the middle. On the other hand, "standartenfuhrer" will retrieve documents with "Standarten Fuhrer" or "Standarten Fuehrer" contents (capitalized exactly like this), or any capitalization variant of the keyword itself, e.g., "staNdarTenfUhreR". (It won't catch "standarten fuhrer", however: this text does not match any of the listed exceptions because of case sensitivity and gets indexed as two separate keywords.)</p>
 <p>The whitespace in the map-from tokens list matters, but its amount does not. Any amount of whitespace in the map-form list will match any other amount of whitespace in the indexed document or query. For instance, the "AT &amp; T" map-from token will match "AT &amp; T" text, whatever the amount of space in both map-from part and the indexed text. Such text will, therefore, be indexed as a special "AT&amp;T" keyword, thanks to the very first entry from the sample.</p>
 <p>Exceptions also allow capturing special characters (that are exceptions from general charset_table rules; hence the name). Assume that you generally do not want to treat '+' as a valid character, but still want to be able to search for some exceptions from this rule such as 'C++'. The sample above will do just that, totally independent of what characters are in the table and what are not.</p>
-<p>Therefore, when it comes to a <a href="../../06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a>, it's required to rotate the table in order to pick up changes in the exceptions file.</p>
+<p>Therefore, when it comes to a <a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a>, it's required to rotate the table in order to pick up changes in the exceptions file.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">exceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/usr/local/manticore/data/exceptions.txt&#39;</span>
@@ -16212,17 +16212,17 @@ C
 <li>English, Russian, Arabic, and Czech stemmers</li>
 <li>SoundEx and MetaPhone phonetic algorithms</li>
 <li>Chinese word breaking algorithm</li>
-<li>Snowball (libstemmer) stemmers for more than <a href="../../06-creating_a_table.html#toc-06.03.02-supported_languages">15 other languages</a> are also available.</li>
+<li>Snowball (libstemmer) stemmers for more than <a href="06-creating_a_table.html#toc-06.03.02-supported_languages">15 other languages</a> are also available.</li>
 </ul>
-<p>Lemmatizers require dictionary <code>.pak</code> files that can be <a href="https://manticoresearch.com/install/#other-downloads">downloaded from the Manticore website</a>. The dictionaries need to be put in the directory specified by <a href="../../20-server_settings.html#lemmatizer_base">lemmatizer_base</a>. Additionally, the <a href="../../12-data_creation_and_modification.html#lemmatizer_cache">lemmatizer_cache</a> setting can be used to speed up lemmatizing by spending more RAM for an uncompressed dictionary cache.</p>
-<p>The Chinese language segmentation can be performed using <a href="http://site.icu-project.org/">ICU</a>. It provides more precise segmentation compared to n-grams but is slightly slower. The <a href="../../06-creating_a_table.html#charset_table">charset_table</a> must include all Chinese characters, which can be done by using the "cjk" alias. When "morphology=icu_chinese" is specified, the documents are first pre-processed by ICU. Then, the result is processed by the tokenizer according to the charset_table, and finally, other morphology processors specified in the "morphology" option are applied. Only those parts of texts that contain Chinese are passed to ICU for segmentation, while others can be modified by different means such as different morphologies or charset_table.</p>
+<p>Lemmatizers require dictionary <code>.pak</code> files that can be <a href="https://manticoresearch.com/install/#other-downloads">downloaded from the Manticore website</a>. The dictionaries need to be put in the directory specified by <a href="20-server_settings.html#lemmatizer_base">lemmatizer_base</a>. Additionally, the <a href="12-data_creation_and_modification.html#lemmatizer_cache">lemmatizer_cache</a> setting can be used to speed up lemmatizing by spending more RAM for an uncompressed dictionary cache.</p>
+<p>The Chinese language segmentation can be performed using <a href="http://site.icu-project.org/">ICU</a>. It provides more precise segmentation compared to n-grams but is slightly slower. The <a href="06-creating_a_table.html#charset_table">charset_table</a> must include all Chinese characters, which can be done by using the "cjk" alias. When "morphology=icu_chinese" is specified, the documents are first pre-processed by ICU. Then, the result is processed by the tokenizer according to the charset_table, and finally, other morphology processors specified in the "morphology" option are applied. Only those parts of texts that contain Chinese are passed to ICU for segmentation, while others can be modified by different means such as different morphologies or charset_table.</p>
 <p>Built-in English and Russian stemmers are faster than their libstemmer counterparts but may produce slightly different results</p>
 <p>Soundex implementation matches that of MySQL. Metaphone implementation is based on Double Metaphone algorithm and indexes the primary code.</p>
 <p>To use the <code>morphology</code> option, specify one or multiple of the built-in options, including:</p>
 <ul>
 <li>none: do not perform any morphology processing</li>
 <li>lemmatize_ru - apply Russian lemmatizer and pick a single root form</li>
-<li>lemmatize_uk - apply Ukrainian lemmatizer and pick a single root form (install it first in <a href="../../03-installation.html#ukrainian-lemmatizer">Centos</a> or <a href="../../03-installation.html#ukrainian-lemmatizer">Ubuntu/Debian</a>). For correct work of the lemmatizer make sure specific Ukrainian characters are preserved in your <code>charset_table</code> since by default they are not. For that override them, like this: <code>charset_table='non_cjk,U+0406-&gt;U+0456,U+0456,U+0407-&gt;U+0457,U+0457,U+0490-&gt;U+0491,U+0491'</code>. <a href="https://play.manticoresearch.com/ua-lemmatizer/">Here</a> is an interactive course about how to install and use the urkainian lemmatizer.</li>
+<li>lemmatize_uk - apply Ukrainian lemmatizer and pick a single root form (install it first in <a href="03-installation.html#ukrainian-lemmatizer">Centos</a> or <a href="03-installation.html#ukrainian-lemmatizer">Ubuntu/Debian</a>). For correct work of the lemmatizer make sure specific Ukrainian characters are preserved in your <code>charset_table</code> since by default they are not. For that override them, like this: <code>charset_table='non_cjk,U+0406-&gt;U+0456,U+0456,U+0407-&gt;U+0457,U+0457,U+0490-&gt;U+0491,U+0491'</code>. <a href="https://play.manticoresearch.com/ua-lemmatizer/">Here</a> is an interactive course about how to install and use the urkainian lemmatizer.</li>
 <li>lemmatize_en - apply English lemmatizer and pick a single root form</li>
 <li>lemmatize_de - apply German lemmatizer and pick a single root form</li>
 <li>lemmatize_ru_all - apply Russian lemmatizer and index all possible root forms</li>
@@ -16237,9 +16237,9 @@ C
 <li>soundex - replace keywords with their SOUNDEX code</li>
 <li>metaphone - replace keywords with their METAPHONE code</li>
 <li>icu_chinese - apply Chinese text segmentation using ICU</li>
-<li>libstemmer_* . Refer to the <a href="../../06-creating_a_table.html#toc-06.03.02-supported_languages">list of supported languages</a> for details</li>
+<li>libstemmer_* . Refer to the <a href="06-creating_a_table.html#toc-06.03.02-supported_languages">list of supported languages</a> for details</li>
 </ul>
-<p>Multiple stemmers can be specified, separated by commas. They will be applied to incoming words in the order they are listed, and the processing will stop once one of the stemmers modifies the word. Additionally, when <a href="../../06-creating_a_table.html#wordforms">wordforms</a> feature is enabled, the word will be looked up in the word forms dictionary first. If there is a matching entry in the dictionary, stemmers will not be applied at all.  <a href="../../06-creating_a_table.html#wordforms">wordforms</a> сan be used to implement stemming exceptions.</p>
+<p>Multiple stemmers can be specified, separated by commas. They will be applied to incoming words in the order they are listed, and the processing will stop once one of the stemmers modifies the word. Additionally, when <a href="06-creating_a_table.html#wordforms">wordforms</a> feature is enabled, the word will be looked up in the word forms dictionary first. If there is a matching entry in the dictionary, stemmers will not be applied at all.  <a href="06-creating_a_table.html#wordforms">wordforms</a> сan be used to implement stemming exceptions.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;stem_en, libstemmer_sv&#39;</span>
@@ -16476,7 +16476,7 @@ C
 </code></pre></div>
 
 <p>Minimum word length at which to enable stemming. Optional, default is 1 (stem everything).</p>
-<p>Stemmers are not perfect, and might sometimes produce undesired results. For instance, running "gps" keyword through Porter stemmer for English results in "gp", which is not really the intent. <code>min_stemming_len</code> feature lets you suppress stemming based on the source word length, ie. to avoid stemming too short words. Keywords that are shorter than the given threshold will not be stemmed. Note that keywords that are exactly as long as specified <strong>will</strong> be stemmed. So in order to avoid stemming 3-character keywords, you should specify 4 for the value. For more finely grained control, refer to <a href="../../06-creating_a_table.html#wordforms">wordforms</a> feature.</p>
+<p>Stemmers are not perfect, and might sometimes produce undesired results. For instance, running "gps" keyword through Porter stemmer for English results in "gp", which is not really the intent. <code>min_stemming_len</code> feature lets you suppress stemming based on the source word length, ie. to avoid stemming too short words. Keywords that are shorter than the given threshold will not be stemmed. Note that keywords that are exactly as long as specified <strong>will</strong> be stemmed. So in order to avoid stemming 3-character keywords, you should specify 4 for the value. For more finely grained control, refer to <a href="06-creating_a_table.html#wordforms">wordforms</a> feature.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">min_stemming_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;4&#39;</span><span class="w"> </span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;stem_en&#39;</span>
@@ -16595,8 +16595,8 @@ C
 <div class="codehilite"><pre><span></span><code><span class="na">index_exact_words</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{0|1}</span>
 </code></pre></div>
 
-<p>This option allows for the indexing of original keywords along with their morphologically modified versions. However, original keywords that are remapped by the <a href="../../06-creating_a_table.html#wordforms">wordforms</a> and <a href="../../06-creating_a_table.html#toc-06.03.08-exceptions">exceptions</a> cannot be indexed. The default value is 0, indicating that this feature is disabled by default.</p>
-<p>This allows the use of the <a href="../../13-searching.html#exact-form-modifier">exact form operator</a> in the query language. Enabling this feature will increase the full-text index size and indexing time, but will not impact search performance.</p>
+<p>This option allows for the indexing of original keywords along with their morphologically modified versions. However, original keywords that are remapped by the <a href="06-creating_a_table.html#wordforms">wordforms</a> and <a href="06-creating_a_table.html#toc-06.03.08-exceptions">exceptions</a> cannot be indexed. The default value is 0, indicating that this feature is disabled by default.</p>
+<p>This allows the use of the <a href="13-searching.html#exact-form-modifier">exact form operator</a> in the query language. Enabling this feature will increase the full-text index size and indexing time, but will not impact search performance.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">index_exact_words</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;stem_en&#39;</span>
@@ -16729,7 +16729,7 @@ C
 <p>HTML tags are removed, while the contents between them (e.g. everything between <code>&lt;p&gt;</code> and <code>&lt;/p&gt;</code>) are left intact. You can choose to keep and index tag attributes (e.g. HREF attribute in an A tag or ALT in an IMG tag). Some well-known inline tags, such as A, B, I, S, U, BASEFONT, BIG, EM, FONT, IMG, LABEL, SMALL, SPAN, STRIKE, STRONG, SUB, SUP, and TT, are completely removed. All other tags are treated as block level and are replaced with whitespace. For example, the text <code>te&lt;b&gt;st&lt;/b&gt;</code> will be indexed as a single keyword 'test', while <code>te&lt;p&gt;st&lt;/p&gt;</code> will be indexed as two keywords 'te' and 'st'.</p>
 <p>HTML entities are decoded and replaced with their corresponding UTF-8 characters. The stripper supports both numeric forms (e.g. <code>&amp;#239;</code>) and text forms (e.g. <code>&amp;oacute;</code> or <code>&amp;nbsp;</code>) of entities, and supports all entities specified by the HTML4 standard.</p>
 <p>The stripper is designed to work with properly formed HTML and XHTML, but may produce unexpected results on malformed input (such as HTML with stray <code>&lt;'s</code> or unclosed <code>&gt;'s</code>).</p>
-<p>Please note that only the tags themselves, as well as HTML comments, are stripped. To strip the contents of the tags, including embedded scripts, see the <a href="../../06-creating_a_table.html#html_remove_elements">html_remove_elements</a> option. There are no restrictions on tag names, meaning that everything that looks like a valid tag start, end, or comment will be stripped.</p>
+<p>Please note that only the tags themselves, as well as HTML comments, are stripped. To strip the contents of the tags, including embedded scripts, see the <a href="06-creating_a_table.html#html_remove_elements">html_remove_elements</a> option. There are no restrictions on tag names, meaning that everything that looks like a valid tag start, end, or comment will be stripped.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -17143,7 +17143,7 @@ C
 </code></pre></div>
 
 <p>Controls detection and indexing of sentence and paragraph boundaries. Optional, default is 0 (no detection or indexing).</p>
-<p>This directive enables the detection and indexing of sentence and paragraph boundaries, making it possible for the <a href="../../13-searching.html#sentence-and-paragraph-operators">SENTENCE</a>  and <a href="../../13-searching.html#sentence-and-paragraph-operators">PARAGRAPH</a>  operators to work. Sentence boundary detection is based on plain text analysis, and only requires setting <code>index_sp = 1</code> to enable it. Paragraph detection, however, relies on HTML markup and occurs during the [HTML stripping process](../../06-creating_a_table.html#toc-06.03.10-advanced_html_tokenization#html_strip. As such, to index paragraph boundaries, both the index_sp directive and the html_strip directive must be set to 1.</p>
+<p>This directive enables the detection and indexing of sentence and paragraph boundaries, making it possible for the <a href="13-searching.html#sentence-and-paragraph-operators">SENTENCE</a>  and <a href="13-searching.html#sentence-and-paragraph-operators">PARAGRAPH</a>  operators to work. Sentence boundary detection is based on plain text analysis, and only requires setting <code>index_sp = 1</code> to enable it. Paragraph detection, however, relies on HTML markup and occurs during the [HTML stripping process](06-creating_a_table.html#toc-06.03.10-advanced_html_tokenization#html_strip. As such, to index paragraph boundaries, both the index_sp directive and the html_strip directive must be set to 1.</p>
 <p>The following rules are used to determine sentence boundaries:</p>
 <ul>
 <li>Question marks (?) and exclamation marks (!) always indicate a sentence boundary. </li>
@@ -17295,8 +17295,8 @@ C
 
 <p>A list of HTML/XML zones within a field to be indexed. The default is an empty string (no zones will be indexed).</p>
 <p>A "zone" is defined as everything between an opening and a matching closing tag, and all spans sharing the same tag name are referred to as a "zone." For example, everything between <code>&lt;H1&gt;</code> and <code>&lt;/H1&gt;</code> in a document field belongs to the H1 zone.</p>
-<p>The <code>index_zones</code> directive enables zone indexing, but the HTML <a href="../../06-creating_a_table.html#html_strip">stripper</a> must also be enabled (by setting <code>html_strip = 1</code>). The value of <code>index_zones</code> should be a comma-separated list of tag names and wildcards (ending with a star) to be indexed as zones.</p>
-<p>Zones can be nested and overlap, as long as every opening tag has a matching tag. Zones can also be used for matching with the ZONE operator, as described in the <a href="../../13-searching.html#zone-limit-operator">extended_query_syntax</a>.</p>
+<p>The <code>index_zones</code> directive enables zone indexing, but the HTML <a href="06-creating_a_table.html#html_strip">stripper</a> must also be enabled (by setting <code>html_strip = 1</code>). The value of <code>index_zones</code> should be a comma-separated list of tag names and wildcards (ending with a star) to be indexed as zones.</p>
+<p>Zones can be nested and overlap, as long as every opening tag has a matching tag. Zones can also be used for matching with the ZONE operator, as described in the <a href="13-searching.html#zone-limit-operator">extended_query_syntax</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -17439,10 +17439,10 @@ C
 <p>From the client's perspective, it appears as if they are querying a single table.</p>
 <p>Distributed tables can be composed of any combination of tables, including:</p>
 <ul>
-<li>Local storage tables (<a href="../../06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a> and <a href="../../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a>)</li>
-<li><a href="../../06-creating_a_table.html#toc-06.04.02-remote_tables">Remote tables</a></li>
+<li>Local storage tables (<a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a> and <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a>)</li>
+<li><a href="06-creating_a_table.html#toc-06.04.02-remote_tables">Remote tables</a></li>
 <li>A combination of local and remote tables</li>
-<li><a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate tables</a> (local, remote, or a combination)</li>
+<li><a href="06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate tables</a> (local, remote, or a combination)</li>
 <li>Single local and multiple remote tables, or any other combination</li>
 </ul>
 <p>Mixing percolate and template tables with plain and real-time tables is not recommended.</p>
@@ -17467,10 +17467,10 @@ C
 <p>The essence of a distributed table lies in its list of child tables, to which it points. There are two types of child tables in a distributed table:</p>
 <ol>
 <li>
-<p><a href="../../06-creating_a_table.html#creating-a-local-distributed-table">Local tables</a>: These are tables that are served within the same server as the distributed table. To enumerate local tables, you use the syntax <code>local =</code>. You can list several local tables using multiple <code>local =</code> lines, or combine them into one list separated by commas.</p>
+<p><a href="06-creating_a_table.html#creating-a-local-distributed-table">Local tables</a>: These are tables that are served within the same server as the distributed table. To enumerate local tables, you use the syntax <code>local =</code>. You can list several local tables using multiple <code>local =</code> lines, or combine them into one list separated by commas.</p>
 </li>
 <li>
-<p><a href="../../06-creating_a_table.html#agent">Remote tables</a>: These are tables that are served anywhere outside the server. To enumerate remote tables, you use the syntax <code>agent =</code>. Each line represents one endpoint or agent. Each agent can have multiple external locations and options for how it should work. More details <a href="../../06-creating_a_table.html#agent">here</a>. It is important to note that the server does not have any information about the type of table it is working with. This may lead to errors if, for example, you issue a <code>CALL PQ</code> to a remote table 'foo' that is not a percolate table.</p>
+<p><a href="06-creating_a_table.html#agent">Remote tables</a>: These are tables that are served anywhere outside the server. To enumerate remote tables, you use the syntax <code>agent =</code>. Each line represents one endpoint or agent. Each agent can have multiple external locations and options for how it should work. More details <a href="06-creating_a_table.html#agent">here</a>. It is important to note that the server does not have any information about the type of table it is working with. This may lead to errors if, for example, you issue a <code>CALL PQ</code> to a remote table 'foo' that is not a percolate table.</p>
 </li>
 </ol>
 <!-- proofread -->
@@ -17616,7 +17616,7 @@ C
 
         
         <h1 id="remote-tables">Remote tables</h1>
-<p>A remote table in Manticore Search is represented by the <a href="../../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">agent</a> prefix in the definition of a distributed table. A distributed table can include a combination of local and remote tables. If there are no local tables provided, the distributed table will be purely remote and serve as a proxy only. For example, you might have a Manticore instance that listens on multiple ports and serves different protocols, and then redirects queries to backend servers that only accept connections via Manticore's internal binary protocol, using persistent connections to reduce the overhead of establishing connections.<br />
+<p>A remote table in Manticore Search is represented by the <a href="06-creating_a_table.html#toc-06.04-creating_a_distributed_table">agent</a> prefix in the definition of a distributed table. A distributed table can include a combination of local and remote tables. If there are no local tables provided, the distributed table will be purely remote and serve as a proxy only. For example, you might have a Manticore instance that listens on multiple ports and serves different protocols, and then redirects queries to backend servers that only accept connections via Manticore's internal binary protocol, using persistent connections to reduce the overhead of establishing connections.<br />
 Even though a purely remote distributed table doesn't serve local tables itself, it still consumes machine resources, as it still needs to perform final calculations, such as merging results and calculating final aggregated values.</p>
 <h2 id="agent">agent</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">address1 [ | address2 [...] ][:table-list]</span>
@@ -17638,7 +17638,7 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 <li>Sharding over multiple agent servers mirrored for high availability and load balancing purposes</li>
 <li>Sharding within localhost to utilize multiple cores (however, it is simpler just to use multiple local tables)</li>
 </ul>
-<p>All agents are searched in parallel. The index list is passed verbatim to the remote agent. The exact way that list is searched within the agent (i.e. sequentially or in parallel) depends solely on the agent's configuration (see the <a href="../../20-server_settings.html#threads">threads</a> setting). The master has no remote control over this.</p>
+<p>All agents are searched in parallel. The index list is passed verbatim to the remote agent. The exact way that list is searched within the agent (i.e. sequentially or in parallel) depends solely on the agent's configuration (see the <a href="20-server_settings.html#threads">threads</a> setting). The master has no remote control over this.</p>
 <p>It is important to note that the <code>LIMIT</code>, option is ignored in agent queries. This is because each agent can contain different tables, so it is the responsibility of the client to apply the limit to the final result set. This is why the query to a physical table is different from the query to a distributed table when viewed in the query logs. The query cannot be a simple copy of the original query, as this would not produce the correct results.</p>
 <p>For example, if a client makes a query SELECT ... LIMIT 10, 10, and there are two agents, with the second agent having only 10 documents, broadcasting the original <code>LIMIT 10, 10</code> query would result in receiving 0 documents from the second agent. However, <code>LIMIT 10,10</code> should return documents 10-20 from the resulting set. To resolve this, the query must be sent to the agents with a broader limit, such as the default max_matches value of 1000.</p>
 <p>For instance, if there is a distributed table dist that refers to the remote table user, a client query <code>SELECT * FROM dist LIMIT 10,10</code> would be converted to <code>SELECT * FROM user LIMIT 0,1000</code> and sent to the remote table user. Once the distributed table receives the result, it will apply the LIMIT 10,10 and return the requested 10 documents.</p>
@@ -17651,10 +17651,10 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 
 <p>Additionally, the value can specify options for each individual agent, such as:</p>
 <ul>
-<li><a href="../../10-creating_a_cluster.html#ha_strategy">ha_strategy</a> - <code>random</code>, <code>roundrobin</code>, <code>nodeads</code>, <code>noerrors</code> (overrides the global <code>ha_strategy</code> setting for the particular agent)</li>
+<li><a href="10-creating_a_cluster.html#ha_strategy">ha_strategy</a> - <code>random</code>, <code>roundrobin</code>, <code>nodeads</code>, <code>noerrors</code> (overrides the global <code>ha_strategy</code> setting for the particular agent)</li>
 <li><code>conn</code> - <code>pconn</code>, persistent (equivalent to setting <code>agent_persistent</code> at the table level)</li>
-<li><code>blackhole</code> <code>0</code>,<code>1</code> (identical to the <a href="../../06-creating_a_table.html#agent_blackhole">agent_blackhole</a> setting for the agent)</li>
-<li><code>retry_count</code> an integer value (corresponding to <a href="../../06-creating_a_table.html#agent_retry_count">agent_retry_count</a> , but the provided value will not be multiplied by the number of mirrors)</li>
+<li><code>blackhole</code> <code>0</code>,<code>1</code> (identical to the <a href="06-creating_a_table.html#agent_blackhole">agent_blackhole</a> setting for the agent)</li>
+<li><code>retry_count</code> an integer value (corresponding to <a href="06-creating_a_table.html#agent_retry_count">agent_retry_count</a> , but the provided value will not be multiplied by the number of mirrors)</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">address1:table-list[[ha_strategy=value, conn=value, blackhole=value]]</span>
 </code></pre></div>
@@ -17697,8 +17697,8 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 <div class="codehilite"><pre><span></span><code><span class="na">agent_persistent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">remotebox:9312:index2</span>
 </code></pre></div>
 
-<p>The <code>agent_persistent</code> option allows you to persistently connect to an agent, meaning the connection will not be dropped after a query is executed. The syntax for this directive is the same as the <code>agent</code> directive. However, instead of opening a new connection to the agent for each query and then closing it, the master will keep a connection open and reuse it for subsequent queries. The maximum number of persistent connections per agent host is defined by the <a href="../../20-server_settings.html#persistent_connections_limit">persistent_connections_limit</a> option in the searchd section.</p>
-<p>It's important to note that the <a href="../../20-server_settings.html#persistent_connections_limit">persistent_connections_limit</a> must be set to a value greater than 0 in order to use persistent agent connections. If it's not defined, it defaults to 0, and the <code>agent_persistent</code> directive will act the same as the <code>agent</code>directive.</p>
+<p>The <code>agent_persistent</code> option allows you to persistently connect to an agent, meaning the connection will not be dropped after a query is executed. The syntax for this directive is the same as the <code>agent</code> directive. However, instead of opening a new connection to the agent for each query and then closing it, the master will keep a connection open and reuse it for subsequent queries. The maximum number of persistent connections per agent host is defined by the <a href="20-server_settings.html#persistent_connections_limit">persistent_connections_limit</a> option in the searchd section.</p>
+<p>It's important to note that the <a href="20-server_settings.html#persistent_connections_limit">persistent_connections_limit</a> must be set to a value greater than 0 in order to use persistent agent connections. If it's not defined, it defaults to 0, and the <code>agent_persistent</code> directive will act the same as the <code>agent</code>directive.</p>
 <p>Using persistent master-agent connections reduces TCP port pressure and saves time on connection handshakes, making it more efficient.</p>
 <h2 id="agent_blackhole">agent_blackhole</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">agent_blackhole</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">testbox:9312:testindex1,testindex2</span>
@@ -17712,7 +17712,7 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 <span class="na">agent_connect_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">300</span>
 <span class="na">````</span>
 
-<span class="na">The `agent_connect_timeout` directive defines the timeout for connecting to remote agents. By default, the value is assumed to be in milliseconds, but can have [another suffix](../../20-server_settings.html#toc-20.03-special_suffixes)). The default value is 1000 (1 second).</span>
+<span class="na">The `agent_connect_timeout` directive defines the timeout for connecting to remote agents. By default, the value is assumed to be in milliseconds, but can have [another suffix](20-server_settings.html#toc-20.03-special_suffixes)). The default value is 1000 (1 second).</span>
 
 <span class="na">When connecting to remote agents, `searchd` will wait for this amount of time at most to complete the connection successfully. If the timeout is reached but the connection has not been established, and `retries` are enabled, a retry will be initiated.</span>
 
@@ -17724,7 +17724,7 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 
 <p>The <code>agent_query_timeout</code> sets the amount of time that searchd will wait for a remote agent to complete a query. The default value is 3000 milliseconds (3 seconds), but can be <code>suffixed</code> to indicate a different unit of time.</p>
 <p>After establishing a connection, <code>searchd</code> will wait for a maximum of agent_query_timeout for remote queries to complete. Note that this timeout is separate from the <code>agent_connection_timeout</code> and the total possible delay caused by a remote agent will be the sum of both values. If the agent_query_timeout is reached, the query will <strong>not</strong> be retried, instead, a warning will be produced.</p>
-<p>Note that behavior is also affected by <a href="../../20-server_settings.html#reset_network_timeout_on_packet">reset_network_timeout_on_packet</a></p>
+<p>Note that behavior is also affected by <a href="20-server_settings.html#reset_network_timeout_on_packet">reset_network_timeout_on_packet</a></p>
 <h2 id="agent_retry_count">agent_retry_count</h2>
 <p>The <code>agent_retry_count</code> is an integer that specifies how many times Manticore will attempt to connect and query remote agents in a distributed table before reporting a fatal query error. It works similarly to <code>agent_retry_count</code> defined in the "searchd" section of the configuration file but applies specifically to the table.</p>
 <h2 id="mirror_retry_count">mirror_retry_count</h2>
@@ -17736,9 +17736,9 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 <li><code>agent_query_timeout</code> - default value for the <code>agent_query_timeout</code> parameter. This can also be overridden on a per-query basis using the same setting name in a distributed (network) table.</li>
 <li><code>agent_retry_count</code> is an integer that specifies the number of times Manticore will attempt to connect and query remote agents in a distributed table before reporting a fatal query error. The default value is 0 (i.e. no retries). This value can also be specified on a per-query basis using the 'OPTION retry_count=XXX' clause. If a per-query option is provided, it will take precedence over the value specified in the config.</li>
 </ul>
-<p>Note, that if you use <strong>agent mirrors</strong> in the definition of your distributed table, the server will select a different mirror before each connection attempt according to the specified <a href="../../10-creating_a_cluster.html#ha_strategy">ha_strategy</a> specified. In this case the <a href="../../06-creating_a_table.html#agent_retry_count">agent_retry_count</a> will be aggregated for all mirrors in the set.</p>
+<p>Note, that if you use <strong>agent mirrors</strong> in the definition of your distributed table, the server will select a different mirror before each connection attempt according to the specified <a href="10-creating_a_cluster.html#ha_strategy">ha_strategy</a> specified. In this case the <a href="06-creating_a_table.html#agent_retry_count">agent_retry_count</a> will be aggregated for all mirrors in the set.</p>
 <p>For example, if you have 10 mirrors and set <code>agent_retry_count=5</code>, he server will attempt up to 50 retries (assuming an average of 5 tries per every 10 mirrors). In case of the option <code>ha_strategy = roundrobin</code>, it will actually be exactly 5 tries per mirror.</p>
-<p>At the same time, the value provided as the <a href="../../13-searching.html#retry_count">retry_count</a> option in the <code>agent</code> definition serves as an absolute limit. In other words, the <code>[retry_count=2]</code> option in the agent definition means there will be a maximum of 2 tries, regardless of whether there is 1 or 10 mirrors in the line.</p>
+<p>At the same time, the value provided as the <a href="13-searching.html#retry_count">retry_count</a> option in the <code>agent</code> definition serves as an absolute limit. In other words, the <code>[retry_count=2]</code> option in the agent definition means there will be a maximum of 2 tries, regardless of whether there is 1 or 10 mirrors in the line.</p>
 <h3 id="agent_retry_delay">agent_retry_delay</h3>
 <p>The <code>agent_retry_delay</code> is an integer value that determines the amount of time, in milliseconds, that Manticore Search will wait before retrying to query a remote agent in case of a failure. This value can be specified either globally in the searchd configuration or on a per-query basis using the <code>OPTION retry_delay=XXX</code> clause. If both options are provided, the per-query option will take precedence over the global one. The default value is 500 milliseconds (0.5 seconds). This option is only relevant if agent_retry_count or the per-query <code>OPTION retry_count</code> are non-zero.</p>
 <h3 id="client_timeout">client_timeout</h3>
@@ -17760,20 +17760,20 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 </code></pre></div>
 
 <p>The <code>persistent_connections_limit</code> option defines the maximum number of simultaneous persistent connections to remote persistent agents. This is an instance-wide setting and must be defined in the searchd configuration section. Each time a connection to an agent defined under <code>agent_persistent</code> is made, we attempt to reuse an existing connection (if one exists) or create a new connection and save it for future use. However, in some cases it may be necessary to limit the number of persistent connections. This directive defines the limit and affects the number of connections to each agent's host across all distributed tables.</p>
-<p>It is recommended to set this value equal to or less than the <a href="../../20-server_settings.html#max_connections">max_connections</a> option in the agent's configuration.</p>
+<p>It is recommended to set this value equal to or less than the <a href="20-server_settings.html#max_connections">max_connections</a> option in the agent's configuration.</p>
 <h2 id="distributed-snippets-creation">Distributed snippets creation</h2>
-<p>A special case of a distributed table is a single local and multiple remotes, which is used exclusively for  <a href="../../06-creating_a_table.html#distributed-snippets-creation">distributed snippets creation</a>, when snippets are sourced from files. In this case, the local table may act as a "template" table, providing settings for tokenization when building snippets.</p>
+<p>A special case of a distributed table is a single local and multiple remotes, which is used exclusively for  <a href="06-creating_a_table.html#distributed-snippets-creation">distributed snippets creation</a>, when snippets are sourced from files. In this case, the local table may act as a "template" table, providing settings for tokenization when building snippets.</p>
 <h3 id="snippets_file_prefix">snippets_file_prefix</h3>
 <div class="codehilite"><pre><span></span><code><span class="na">snippets_file_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/mnt/common/server1/</span>
 </code></pre></div>
 
 <p>The <code>snippets_file_prefix</code> is an optional prefix that can be added to the local file names when generating snippets. The default value is the current working folder.</p>
-<p>To learn more about distributed snippets creation, see  <a href="../../13-searching.html#toc-13.07-highlighting">CALL SNIPPETS</a>.</p>
+<p>To learn more about distributed snippets creation, see  <a href="13-searching.html#toc-13.07-highlighting">CALL SNIPPETS</a>.</p>
 <h2 id="distributed-percolate-tables-dpq-tables">Distributed percolate tables (DPQ tables)</h2>
-<p>You can create a distributed table from multiple <a href="../../06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> tables. The syntax for constructing this type of table is the same as for other distributed tables, and can include multiple<code>local</code> tables as well as <code>agents</code>.</p>
-<p>For DPQ, the operations of listing stored queries and searching through them (using <a href="../../13-searching.html#performing-a-percolate-query-with-call-pq">CALL PQ</a>) are transparent and work as if all the tables were one single local table. However, data manipulation statements such as <code>insert</code>, <code>replace</code>, <code>truncate</code> are not available.</p>
+<p>You can create a distributed table from multiple <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> tables. The syntax for constructing this type of table is the same as for other distributed tables, and can include multiple<code>local</code> tables as well as <code>agents</code>.</p>
+<p>For DPQ, the operations of listing stored queries and searching through them (using <a href="13-searching.html#performing-a-percolate-query-with-call-pq">CALL PQ</a>) are transparent and work as if all the tables were one single local table. However, data manipulation statements such as <code>insert</code>, <code>replace</code>, <code>truncate</code> are not available.</p>
 <p>If you include a non-percolate table in the list of agents, the behavior will be undefined. If the incorrect agent has the same schema as the outer schema of the PQ table (id, query, tags, filters), it will not trigger an error when listing stored PQ rules, and may pollute the list of actual PQ rules stored in PQ tables with its own non-PQ strings. As a result, be cautious and aware of the confusion that this may cause. A<code>CALL PQ</code> to such an incorrect agent will trigger an error.</p>
-<p>For more information on making queries to a distributed percolate table, see <a href="../../13-searching.html#performing-a-percolate-query-with-call-pq">making queries to a distribute percolate table</a>.</p>
+<p>For more information on making queries to a distributed percolate table, see <a href="13-searching.html#performing-a-percolate-query-with-call-pq">making queries to a distribute percolate table</a>.</p>
 <!-- proofread -->
         
     </section>

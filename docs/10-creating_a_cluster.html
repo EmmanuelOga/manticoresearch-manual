@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-10-creating_a_cluster">
-        <a class="chapter-link" href="#toc-10-creating_a_cluster"> ¶ 10</a>
+        <header>
+            <a class="chapter-link" href="#toc-10-creating_a_cluster"> ¶ 10</a>
+
+            
+            <h1 id="manticore-cluster">Manticore cluster</h1>
+            
+        </header>
 
         
-        <h1 id="manticore-cluster">Manticore cluster</h1>
+        
 <p>Manticore Search is a highly distributed system that provides all the necessary components to create a highly available and scalable database for search. This includes:</p>
 <ul>
 <li><a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a> for sharding</li>
@@ -32,20 +38,32 @@
     </section>
     
     <section class="chapter-section" id="toc-10.01-adding_a_new_node">
-        <a class="chapter-link" href="#toc-10.01-adding_a_new_node"> ¶ 10.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.01-adding_a_new_node"> ¶ 10.1</a>
+
+            
+            <h1 id="adding-a-new-node">Adding a new node</h1>
+            
+        </header>
 
         
-        <h1 id="adding-a-new-node">Adding a new node</h1>
+        
 <p>To add a new node to a cluster, simply start another instance of Manticore and ensure that it is accessible by the other nodes in the cluster. Connect the new node to the rest of the cluster using a <a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a> and ensure data safety with <a href="../10-creating_a_cluster.html#toc-10.03-setting_up_replication">replication</a>.</p>
 <!-- proofread -->
         
     </section>
     
     <section class="chapter-section" id="toc-10.02-remote_nodes">
-        <a class="chapter-link" href="#toc-10.02-remote_nodes"> ¶ 10.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.02-remote_nodes"> ¶ 10.2</a>
+
+            
+            <h1 id="adding-a-distributed-table-with-remote-agents">Adding a distributed table with remote agents</h1>
+            
+        </header>
 
         
-        <h1 id="adding-a-distributed-table-with-remote-agents">Adding a distributed table with remote agents</h1>
+        
 <p>To understand how to add a distributed table with remote agents, it is important to first have a basic understanding of  <a href="../06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed tables</a> In this article, we will focus on how to use a distributed table as the basis for creating a cluster of Manticore instances.</p>
 <!-- example conf dist 1 -->
 <p>Here is an example of how to split data over 4 servers, each serving one of the shards:</p>
@@ -114,10 +132,16 @@ ini
     </section>
     
     <section class="chapter-section" id="toc-10.02.01-mirroring">
-        <a class="chapter-link" href="#toc-10.02.01-mirroring"> ¶ 10.2.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.02.01-mirroring"> ¶ 10.2.1</a>
+
+            
+            <h1 id="mirroring">Mirroring</h1>
+            
+        </header>
 
         
-        <h1 id="mirroring">Mirroring</h1>
+        
 <p><a href="06-creating_a_table.html#agent">Agent</a> mirrors can be used interchangeably when processing a search query. The Manticore instance(s) hosting the distributed table where the mirrored agents are defined keeps track of mirror status (alive or dead) and response times, and performs automatic failover and load balancing based on this information.</p>
 <h2 id="agent-mirrors">Agent mirrors</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">node1|node2|node3:9312:shard2</span>
@@ -150,10 +174,16 @@ ini
     </section>
     
     <section class="chapter-section" id="toc-10.02.02-load_balancing">
-        <a class="chapter-link" href="#toc-10.02.02-load_balancing"> ¶ 10.2.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.02.02-load_balancing"> ¶ 10.2.2</a>
+
+            
+            <h1 id="load-balancing">Load balancing</h1>
+            
+        </header>
 
         
-        <h1 id="load-balancing">Load balancing</h1>
+        
 <p>Load balancing is turned on by default for any <a href="06-creating_a_table.html#toc-06.04-creating_a_distributed_table">distributed table</a> that uses <a href="10-creating_a_cluster.html#toc-10.02.01-mirroring">mirroring</a>. By default, queries are distributed randomly among the mirrors. You can change this behavior by using the <a href="10-creating_a_cluster.html#toc-10.02.02-load_balancing">ha_strategy</a>.</p>
 <h2 id="ha_strategy">ha_strategy</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{random|nodeads|noerrors|roundrobin}</span>
@@ -301,10 +331,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-10.03-setting_up_replication">
-        <a class="chapter-link" href="#toc-10.03-setting_up_replication"> ¶ 10.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03-setting_up_replication"> ¶ 10.3</a>
+
+            
+            <h1 id="setting-up-replication">Setting up replication</h1>
+            
+        </header>
 
         
-        <h1 id="setting-up-replication">Setting up replication</h1>
+        
 <p>With Manticore, write transactions (such as <code>INSERT</code>, <code>REPLACE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, <code>UPDATE</code>, <code>COMMIT</code>) can be replicated to other cluster nodes before the transaction is fully applied on the current node. Currently, replication is supported for <code>percolate</code>, <code>rt</code> and <code>distributed</code> tables in Linux and macOS. However, Manticore Search packages for Windows do not provide replication support.</p>
 <p>Manticore's replication is powered by the <a href="https://github.com/codership/galera">Galera library</a> and boasts several impressive features:</p>
 <ul>
@@ -1154,10 +1190,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.01-creating_a_replication_cluster">
-        <a class="chapter-link" href="#toc-10.03.01-creating_a_replication_cluster"> ¶ 10.3.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.01-creating_a_replication_cluster"> ¶ 10.3.1</a>
+
+            
+            <h1 id="creating-a-replication-cluster">Creating a replication cluster</h1>
+            
+        </header>
 
         
-        <h1 id="creating-a-replication-cluster">Creating a replication cluster</h1>
+        
 <!-- example creating a replication cluster 1 -->
 <p>To create a replication cluster, you must set its <a href="10-creating_a_cluster.html#name">name</a> at a minimum.</p>
 <p>If you are creating a single cluster or the first cluster, you may omit the <a href="10-creating_a_cluster.html#path">path</a> option. In this case, the <a href="20-server_settings.html#data_dir">data_dir</a> option will be used as the cluster path. However, for all subsequent clusters, you must specify the <a href="10-creating_a_cluster.html#path">path</a> and the path must be available. The <a href="10-creating_a_cluster.html#nodes">nodes</a> option may also be set to list all nodes in the cluster.</p>
@@ -1316,10 +1358,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.02-joining_a_replication_cluster">
-        <a class="chapter-link" href="#toc-10.03.02-joining_a_replication_cluster"> ¶ 10.3.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.02-joining_a_replication_cluster"> ¶ 10.3.2</a>
+
+            
+            <h1 id="joining-a-replication-cluster">Joining a replication cluster</h1>
+            
+        </header>
 
         
-        <h1 id="joining-a-replication-cluster">Joining a replication cluster</h1>
+        
 <!-- example joining a replication cluster 1 -->
 <p>To join an existing cluster, you must specify at least:</p>
 <ul>
@@ -1615,10 +1663,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.03-deleting_a_replication_cluster">
-        <a class="chapter-link" href="#toc-10.03.03-deleting_a_replication_cluster"> ¶ 10.3.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.03-deleting_a_replication_cluster"> ¶ 10.3.3</a>
+
+            
+            <h1 id="deleting-a-replication-cluster">Deleting a replication cluster</h1>
+            
+        </header>
 
         
-        <h1 id="deleting-a-replication-cluster">Deleting a replication cluster</h1>
+        
 <!-- example deleting a replication cluster  1 -->
 <p>The <code>DELETE CLUSTER</code> statement removes the specified cluster with its  <a href="10-creating_a_cluster.html#name">name</a>. Once the cluster is deleted, it is removed from all nodes, but its tables remain intact and become active local non-replicated tables.</p>
 <!-- intro -->
@@ -1752,10 +1806,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.04-adding_and_removing_a_table_from_a_replication_cluster">
-        <a class="chapter-link" href="#toc-10.03.04-adding_and_removing_a_table_from_a_replication_cluster"> ¶ 10.3.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.04-adding_and_removing_a_table_from_a_replication_cluster"> ¶ 10.3.4</a>
+
+            
+            <h1 id="adding-and-removing-a-table-from-a-replication-cluster">Adding and removing a table from a replication cluster</h1>
+            
+        </header>
 
         
-        <h1 id="adding-and-removing-a-table-from-a-replication-cluster">Adding and removing a table from a replication cluster</h1>
+        
 <!-- example adding and removing a table from a replication cluster 1 -->
 <p><code>ALTER CLUSTER &lt;cluster_name&gt; ADD &lt;table_name&gt;</code> adds an existing local table to the cluster. The node that receives the ALTER query sends the table to the other nodes in the cluster. All the local tables with the same name on the other nodes of the cluster are replaced with the new table.</p>
 <p>Once the table is replicated, write statements can be performed on any node, but the table name must be prefixed with the cluster name, like <code>INSERT INTO &lt;clusterName&gt;:&lt;table_name&gt;</code>.</p>
@@ -2036,10 +2096,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.05-managing_replication_nodes">
-        <a class="chapter-link" href="#toc-10.03.05-managing_replication_nodes"> ¶ 10.3.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.05-managing_replication_nodes"> ¶ 10.3.5</a>
+
+            
+            <h1 id="managing-replication-nodes">Managing replication nodes</h1>
+            
+        </header>
 
         
-        <h1 id="managing-replication-nodes">Managing replication nodes</h1>
+        
 <!-- example managing replication nodes 1 -->
 <p>The <code>ALTER CLUSTER &lt;cluster_name&gt; UPDATE nodes</code>  statement updates the node lists on each node within the specified cluster to include all active nodes in the cluster. For more information on node lists, see <a href="10-creating_a_cluster.html#toc-10.03.02-joining_a_replication_cluster">Joining a cluster</a>.</p>
 <!-- intro -->
@@ -2188,10 +2254,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.06-replication_cluster_status">
-        <a class="chapter-link" href="#toc-10.03.06-replication_cluster_status"> ¶ 10.3.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.06-replication_cluster_status"> ¶ 10.3.6</a>
+
+            
+            <h1 id="replication-cluster-status">Replication cluster status</h1>
+            
+        </header>
 
         
-        <h1 id="replication-cluster-status">Replication cluster status</h1>
+        
 <!-- example Example -->
 
 <p>You can view the cluster status information by checking the node status. This can be done using the <a href="19-node_info_and_management.html#toc-19.01-node_status">Node status</a> command, which displays various information about the node, including the cluster status variables.</p>
@@ -2482,10 +2554,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.07-restarting_a_cluster">
-        <a class="chapter-link" href="#toc-10.03.07-restarting_a_cluster"> ¶ 10.3.7</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.07-restarting_a_cluster"> ¶ 10.3.7</a>
+
+            
+            <h1 id="restarting-a-cluster">Restarting a cluster</h1>
+            
+        </header>
 
         
-        <h1 id="restarting-a-cluster">Restarting a cluster</h1>
+        
 <p>In a multi-master replication cluster, a reference point must be established before other nodes can join and form the cluster. This is called cluster bootstrapping and involves starting a single node as the <code>primary component</code>. Restarting a single node or reconnecting after a shutdown can be done normally.</p>
 <p>In case of a full cluster shutdown, the server that was stopped last should be started first with the <code>--new-cluster</code> command line option or by running <code>manticore_new_cluster</code>   through systemd. To ensure that the server is capable of being the reference point, the <code>grastate.dat</code> file located at the cluster <a href="10-creating_a_cluster.html#replication-cluster">path</a> should be updated with a value of 1 for the <code>safe_to_bootstrap</code> option. Both conditions, <code>--new-cluster</code> and <code>safe_to_bootstrap=1</code>, must be met. If any other node is started without these options set, an error will occur. The <code>--new-cluster-force</code> command line option can be used to override this protection and start the cluster from another server forcibly. Alternatively, you can run <code>manticore_new_cluster --force</code> to use systemd.</p>
 <p>In the event of a hard crash or an unclean shutdown of all servers in the cluster, the most advanced node with the largest <code>seqno</code> in the <code>grastate.dat</code> file located at the cluster <a href="10-creating_a_cluster.html#replication-cluster">path</a> must be identified and started with the <code>--new-cluster-force</code> command line key.</p>
@@ -2494,10 +2572,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-10.03.08-cluster_recovery">
-        <a class="chapter-link" href="#toc-10.03.08-cluster_recovery"> ¶ 10.3.8</a>
+        <header>
+            <a class="chapter-link" href="#toc-10.03.08-cluster_recovery"> ¶ 10.3.8</a>
+
+            
+            <h1 id="cluster-recovery">Cluster recovery</h1>
+            
+        </header>
 
         
-        <h1 id="cluster-recovery">Cluster recovery</h1>
+        
 <p>In the event that the Manticore search daemon stops with no remaining nodes in the cluster to serve requests, recovery is necessary. Due to the multi-master nature of the Galera library used for replication, Manticore replication cluster is a single logical entity that maintains the consistency of its nodes and data, and the status of the entire cluster. This allows for safe writes on multiple nodes simultaneously and ensures the integrity of the cluster.</p>
 <p>However, this also poses challenges. Let's examine several scenarios, using a cluster of nodes A, B, and C, to see what needs to be done when some or all nodes become unavailable.</p>
 <h3 id="case-1">Case 1</h3>
@@ -2636,7 +2720,7 @@ SQL
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -2650,7 +2734,7 @@ SQL
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

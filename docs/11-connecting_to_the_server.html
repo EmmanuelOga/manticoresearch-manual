@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-11-connecting_to_the_server">
-        <a class="chapter-link" href="#toc-11-connecting_to_the_server"> ¶ 11</a>
+        <header>
+            <a class="chapter-link" href="#toc-11-connecting_to_the_server"> ¶ 11</a>
+
+            
+            <h1 id="connecting-to-the-server">Connecting to the server</h1>
+            
+        </header>
 
         
-        <h1 id="connecting-to-the-server">Connecting to the server</h1>
+        
 <!-- example connect -->
 <p>With default configuration, Manticore is waiting for your connections on:</p>
 <ul>
@@ -202,10 +208,16 @@ Run Manticore container and use built-in MySQL client to connect to the node.
     </section>
     
     <section class="chapter-section" id="toc-11.01-mysql_protocol">
-        <a class="chapter-link" href="#toc-11.01-mysql_protocol"> ¶ 11.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-11.01-mysql_protocol"> ¶ 11.1</a>
+
+            
+            <h1 id="mysql-protocol">MySQL protocol</h1>
+            
+        </header>
 
         
-        <h1 id="mysql-protocol">MySQL protocol</h1>
+        
 <p>Manticore Search implements an SQL interface using the MySQL protocol, allowing any MySQL library or connector and many MySQL clients to be used to connect to Manticore Search and work with it as if it were a MySQL server, not Manticore.</p>
 <p>However, the SQL dialect is different and implements only a subset of the SQL commands or functions available in MySQL. Additionally, there are clauses and functions that are specific to Manticore Search, such as the <code>MATCH()</code> clause for full-text search.</p>
 <p>Manticore Search does not support server-side prepared statements, but client-side prepared statements can be used. It is important to note that Manticore implements the multi-value (MVA) data type, which has no equivalent in MySQL or libraries implementing prepared statements. In these cases, the MVA values must be crafted in the raw query.</p>
@@ -275,10 +287,16 @@ Run Manticore container and use built-in MySQL client to connect to the node.
     </section>
     
     <section class="chapter-section" id="toc-11.02-http">
-        <a class="chapter-link" href="#toc-11.02-http"> ¶ 11.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-11.02-http"> ¶ 11.2</a>
+
+            
+            <h1 id="http">HTTP</h1>
+            
+        </header>
 
         
-        <h1 id="http">HTTP</h1>
+        
 <p>You can connect to Manticore Search through HTTP/HTTPS.</p>
 <h2 id="configuration">Configuration</h2>
 <!-- example HTTP -->
@@ -522,10 +540,16 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
     </section>
     
     <section class="chapter-section" id="toc-11.03-sql_over_http">
-        <a class="chapter-link" href="#toc-11.03-sql_over_http"> ¶ 11.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-11.03-sql_over_http"> ¶ 11.3</a>
+
+            
+            <h1 id="http">HTTP</h1>
+            
+        </header>
 
         
-        <h1 id="http">HTTP</h1>
+        
 <p>You can connect to Manticore Search through HTTP/HTTPS.</p>
 <h2 id="configuration">Configuration</h2>
 <!-- example HTTP -->
@@ -806,7 +830,7 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -820,7 +844,7 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

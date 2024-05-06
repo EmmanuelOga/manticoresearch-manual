@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-07-listing_tables">
-        <a class="chapter-link" href="#toc-07-listing_tables"> ¶ 7</a>
+        <header>
+            <a class="chapter-link" href="#toc-07-listing_tables"> ¶ 7</a>
+
+            
+            <h1 id="listing-tables">Listing tables</h1>
+            
+        </header>
 
         
-        <h1 id="listing-tables">Listing tables</h1>
+        
 <p>Manticore Search has a single level of hierarchy for tables.</p>
 <p>Unlike other DBMS, there is no concept of grouping tables into databases in Manticore. However, for interoperability with SQL dialects, Manticore accepts <code>SHOW DATABASES</code> statements for interoperability with SQL dialect, statements, but the statement does not return any results.</p>
 <!-- example listing -->
@@ -534,7 +540,7 @@ SQL
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -548,7 +554,7 @@ SQL
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

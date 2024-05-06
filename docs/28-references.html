@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-28-references">
-        <a class="chapter-link" href="#toc-28-references"> ¶ 28</a>
+        <header>
+            <a class="chapter-link" href="#toc-28-references"> ¶ 28</a>
+
+            
+            <h1 id="references">References</h1>
+            
+        </header>
 
         
-        <h1 id="references">References</h1>
+        
 <h3 id="sql-commands">SQL commands</h3>
 <h5 id="schema-management">Schema management</h5>
 <ul>
@@ -670,10 +676,16 @@
     </section>
     
     <section class="chapter-section" id="toc-28.01-previous_versions">
-        <a class="chapter-link" href="#toc-28.01-previous_versions"> ¶ 28.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-28.01-previous_versions"> ¶ 28.1</a>
+
+            
+            <h1 id="references">References</h1>
+            
+        </header>
 
         
-        <h1 id="references">References</h1>
+        
 <h3 id="sql-commands">SQL commands</h3>
 <h5 id="schema-management">Schema management</h5>
 <ul>
@@ -1362,7 +1374,7 @@
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -1376,7 +1388,7 @@
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

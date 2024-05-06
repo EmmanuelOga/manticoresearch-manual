@@ -15,20 +15,32 @@
 <body>
     
     <section class="chapter-section" id="toc-05-starting_the_server">
-        <a class="chapter-link" href="#toc-05-starting_the_server"> ¶ 5</a>
+        <header>
+            <a class="chapter-link" href="#toc-05-starting_the_server"> ¶ 5</a>
+
+            
+            <h1 id="starting-the-server">Starting the server</h1>
+            
+        </header>
 
         
-        <h1 id="starting-the-server">Starting the server</h1>
+        
 <p>Manticore Search server can be started using different methods, depending on the installation type.</p>
 <!-- proofread -->
         
     </section>
     
     <section class="chapter-section" id="toc-05.01-in_linux">
-        <a class="chapter-link" href="#toc-05.01-in_linux"> ¶ 5.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-05.01-in_linux"> ¶ 5.1</a>
+
+            
+            <h1 id="starting-manticore-in-linux">Starting Manticore in Linux</h1>
+            
+        </header>
 
         
-        <h1 id="starting-manticore-in-linux">Starting Manticore in Linux</h1>
+        
 <h3 id="starting-and-stopping-using-systemd">Starting and stopping using systemd</h3>
 <p>After the installation the Manticore Search service is not started automatically. To start Manticore run the following command:</p>
 <div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>manticore
@@ -87,10 +99,16 @@ sudo<span class="w"> </span>service<span class="w"> </span>manticore<span class=
     </section>
     
     <section class="chapter-section" id="toc-05.02-manually">
-        <a class="chapter-link" href="#toc-05.02-manually"> ¶ 5.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-05.02-manually"> ¶ 5.2</a>
+
+            
+            <h1 id="starting-manticore-manually">Starting Manticore manually</h1>
+            
+        </header>
 
         
-        <h1 id="starting-manticore-manually">Starting Manticore manually</h1>
+        
 <p>You can also start Manticore Search by calling <code>searchd</code> (Manticore Search server binary) directly:</p>
 <div class="codehilite"><pre><span></span><code>searchd<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
@@ -249,10 +267,16 @@ $ searchd --replay-flags=accept-desc-timestamp</code></p>
     </section>
     
     <section class="chapter-section" id="toc-05.03-in_docker">
-        <a class="chapter-link" href="#toc-05.03-in_docker"> ¶ 5.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-05.03-in_docker"> ¶ 5.3</a>
+
+            
+            <h1 id="starting-and-using-manticore-in-docker">Starting and using Manticore in Docker</h1>
+            
+        </header>
 
         
-        <h1 id="starting-and-using-manticore-in-docker">Starting and using Manticore in Docker</h1>
+        
 <p>The image is based on <a href="https://manticoresearch.com/install/">current release of Manticore package</a>.</p>
 <p>The default configuration includes a sample Real-Time table and listens on the default ports:</p>
 <ul>
@@ -515,10 +539,16 @@ accepting<span class="w"> </span>connections
     </section>
     
     <section class="chapter-section" id="toc-05.04-in_windows">
-        <a class="chapter-link" href="#toc-05.04-in_windows"> ¶ 5.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-05.04-in_windows"> ¶ 5.4</a>
+
+            
+            <h1 id="starting-manticore-in-windows">Starting Manticore in Windows</h1>
+            
+        </header>
 
         
-        <h1 id="starting-manticore-in-windows">Starting Manticore in Windows</h1>
+        
 <p>On Windows, if you want Manticore to start at boot, you can install it as a Windows Service. You can follow the instructions in the <a href="../03-installation.html#toc-03.05-windows">Manticore as Windows Service</a> guide to install Manticore as a service.</p>
 <p>Once Manticore is installed as a service, you can start and stop it from the Control Panel or from the command line using the sc.exe command.</p>
 <div class="codehilite"><pre><span></span><code>sc.exe<span class="w"> </span>start<span class="w"> </span>Manticore
@@ -537,10 +567,16 @@ accepting<span class="w"> </span>connections
     </section>
     
     <section class="chapter-section" id="toc-05.05-in_macos">
-        <a class="chapter-link" href="#toc-05.05-in_macos"> ¶ 5.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-05.05-in_macos"> ¶ 5.5</a>
+
+            
+            <h1 id="starting-manticore-in-macos">Starting Manticore in MacOS</h1>
+            
+        </header>
 
         
-        <h1 id="starting-manticore-in-macos">Starting Manticore in MacOS</h1>
+        
 <h2 id="starting-manticore-via-homebrew-package-manager">Starting Manticore via HomeBrew package manager</h2>
 <p>If Manticore is installed using HomeBrew, you can run it as a Brew service.</p>
 <p>To start Manticore, run the following command:</p>
@@ -593,7 +629,7 @@ accepting<span class="w"> </span>connections
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -607,7 +643,7 @@ accepting<span class="w"> </span>connections
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

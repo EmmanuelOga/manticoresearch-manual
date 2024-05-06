@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-23-miscellaneous_tools">
-        <a class="chapter-link" href="#toc-23-miscellaneous_tools"> ¶ 23</a>
+        <header>
+            <a class="chapter-link" href="#toc-23-miscellaneous_tools"> ¶ 23</a>
+
+            
+            <h1 id="miscellaneous-tools">Miscellaneous tools</h1>
+            
+        </header>
 
         
-        <h1 id="miscellaneous-tools">Miscellaneous tools</h1>
+        
 <h2 id="indextool">indextool</h2>
 <p><code>indextool</code> is a helpful utility that extracts various information about a physical table, excluding <code>template</code> or <code>distributed</code> tables. Here's the general syntax for utilizing <code>indextool</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">indextool</span><span class="w"> </span><span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="k">options</span><span class="p">]</span>
@@ -139,7 +145,7 @@ man<span class="w"> </span>of<span class="w"> </span>steel
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -153,7 +159,7 @@ man<span class="w"> </span>of<span class="w"> </span>steel
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

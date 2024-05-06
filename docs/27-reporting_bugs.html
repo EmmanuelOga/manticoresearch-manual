@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-27-reporting_bugs">
-        <a class="chapter-link" href="#toc-27-reporting_bugs"> ¶ 27</a>
+        <header>
+            <a class="chapter-link" href="#toc-27-reporting_bugs"> ¶ 27</a>
+
+            
+            <h1 id="reporting-bugs">Reporting bugs</h1>
+            
+        </header>
 
         
-        <h1 id="reporting-bugs">Reporting bugs</h1>
+        
 <p>Unfortunately, Manticore is not yet 100% bug-free, although the development team is working hard towards that goal. You may encounter some issues from time to time. <br />
 It is crucial to report as much information as possible about each bug to fix it effectively.<br />
 To fix a bug, either it needs to be reproduced and fixed or its cause needs to be deduced based on the information you provide. To help with this, please follow the instructions below.</p>
@@ -281,7 +287,7 @@ For example on 64-bit Linux:</p>
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -295,7 +301,7 @@ For example on 64-bit Linux:</p>
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

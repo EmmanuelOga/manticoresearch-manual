@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-26-changelog">
-        <a class="chapter-link" href="#toc-26-changelog"> ¶ 26</a>
+        <header>
+            <a class="chapter-link" href="#toc-26-changelog"> ¶ 26</a>
+
+            
+            <h1 id="changelog">Changelog</h1>
+            
+        </header>
 
         
-        <h1 id="changelog">Changelog</h1>
+        
 <h1 id="version-630-preparing-for-release">Version 6.3.0 (preparing for release)</h1>
 <p>While 6.3.0 is being prepared for release, use the dev version which includes all the below changes - https://mnt.cr/dev/nightly</p>
 <h3 id="major-changes">Major changes</h3>
@@ -2207,7 +2213,7 @@ development libraries.</p>
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -2221,7 +2227,7 @@ development libraries.</p>
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

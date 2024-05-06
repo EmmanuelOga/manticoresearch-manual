@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-08-deleting_a_table">
-        <a class="chapter-link" href="#toc-08-deleting_a_table"> ¶ 8</a>
+        <header>
+            <a class="chapter-link" href="#toc-08-deleting_a_table"> ¶ 8</a>
+
+            
+            <h1 id="deleting-a-table">Deleting a table</h1>
+            
+        </header>
 
         
-        <h1 id="deleting-a-table">Deleting a table</h1>
+        
 <!-- example drop -->
 
 <p>Deleting a table is performed in 2 steps internally:<br />
@@ -424,7 +430,7 @@ C
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -438,7 +444,7 @@ C
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

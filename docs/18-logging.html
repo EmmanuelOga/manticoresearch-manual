@@ -15,18 +15,28 @@
 <body>
     
     <section class="chapter-section" id="toc-18-logging">
-        <a class="chapter-link" href="#toc-18-logging"> ¶ 18</a>
+        <header>
+            <a class="chapter-link" href="#toc-18-logging"> ¶ 18</a>
 
-        
-        <h1>Logging</h1>
+            
+            <h1>Logging</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-18.01-query_logging">
-        <a class="chapter-link" href="#toc-18.01-query_logging"> ¶ 18.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-18.01-query_logging"> ¶ 18.1</a>
+
+            
+            <h1 id="query-logging">Query logging</h1>
+            
+        </header>
 
         
-        <h1 id="query-logging">Query logging</h1>
+        
 <!-- example query_logging -->
 <p>Query logging can be enabled by setting the <a href="../20-server_settings.html#query_log">query_log</a> directive in the searchd section of the configuration file.</p>
 <p>Queries can also be sent to syslog by setting <code>syslog</code> instead of a file path. In this case, all search queries will be sent to the syslog daemon with <code>LOG_INFO</code> priority, prefixed with <code>[query]</code> instead of a timestamp. Only the <code>plain</code> log format is supported for syslog.</p>
@@ -255,10 +265,16 @@ Query log example:
     </section>
     
     <section class="chapter-section" id="toc-18.02-server_logging">
-        <a class="chapter-link" href="#toc-18.02-server_logging"> ¶ 18.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-18.02-server_logging"> ¶ 18.2</a>
+
+            
+            <h1 id="server-logging">Server logging</h1>
+            
+        </header>
 
         
-        <h1 id="server-logging">Server logging</h1>
+        
 <p>By default, Manticore search daemon logs all runtime events in a <code>searchd.log</code> file in the directory where searchd was started. In Linux by default, you can find the log at <code>/var/log/manticore/searchd.log</code>.</p>
 <p>The log file path/name can be overridden by setting <code>log</code> in the <code>searchd</code> section of the configuration file.</p>
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
@@ -277,10 +293,16 @@ Query log example:
     </section>
     
     <section class="chapter-section" id="toc-18.03-binary_logging">
-        <a class="chapter-link" href="#toc-18.03-binary_logging"> ¶ 18.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-18.03-binary_logging"> ¶ 18.3</a>
+
+            
+            <h1 id="binary-logging">Binary logging</h1>
+            
+        </header>
 
         
-        <h1 id="binary-logging">Binary logging</h1>
+        
 <p>Binary logging serves as a recovery mechanism for <a href="../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a> table data, as well as attribute updates for plain tables that would otherwise only be stored in RAM until a flush occurs. When binary logs are enabled, <code>searchd</code> records each transaction to the binlog file and utilizes it for recovery following an unclean shutdown. During a clean shutdown, RAM chunks are saved to disk, and all binlog files are subsequently unlinked.</p>
 <h2 id="disabling-binary-logging">Disabling binary logging</h2>
 <p>By default, binary logging is enabled. On Linux systems, the default location for <code>binlog.*</code> files is <code>/var/lib/manticore/data/</code>.<br />
@@ -340,10 +362,16 @@ In <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">
     </section>
     
     <section class="chapter-section" id="toc-18.04-docker_logging">
-        <a class="chapter-link" href="#toc-18.04-docker_logging"> ¶ 18.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-18.04-docker_logging"> ¶ 18.4</a>
+
+            
+            <h1 id="docker-logging">Docker logging</h1>
+            
+        </header>
 
         
-        <h1 id="docker-logging">Docker logging</h1>
+        
 <p>When you use the <a href="https://hub.docker.com/r/manticoresearch/manticore/">official Manticore docker image</a>, the server log is sent to <code>/dev/stdout</code> which can be viewed from host with:</p>
 <div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>manticore
 </code></pre></div>
@@ -355,10 +383,16 @@ In <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">
     </section>
     
     <section class="chapter-section" id="toc-18.05-rotating_query_and_server_logs">
-        <a class="chapter-link" href="#toc-18.05-rotating_query_and_server_logs"> ¶ 18.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-18.05-rotating_query_and_server_logs"> ¶ 18.5</a>
+
+            
+            <h1 id="rotating-query-and-server-logs">Rotating query and server logs</h1>
+            
+        </header>
 
         
-        <h1 id="rotating-query-and-server-logs">Rotating query and server logs</h1>
+        
 <p>Manticore Search accepts the USR1 signal for reopening server and query log files.</p>
 <p>The official <a href="https://manticoresearch.com/install/">DEB and RPM packages</a> install a Logrotate configuration file for all files in the default log folder.</p>
 <p>A simple logrotate configuration for log files looks like:</p>
@@ -421,7 +455,7 @@ In <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -435,7 +469,7 @@ In <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

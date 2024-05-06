@@ -15,19 +15,31 @@
 <body>
     
     <section class="chapter-section" id="toc-15-functions">
-        <a class="chapter-link" href="#toc-15-functions"> ¶ 15</a>
+        <header>
+            <a class="chapter-link" href="#toc-15-functions"> ¶ 15</a>
+
+            
+            <h1 id="functions">Functions</h1>
+            
+        </header>
 
         
-        <h1 id="functions">Functions</h1>
+        
 <!-- proofread -->
         
     </section>
     
     <section class="chapter-section" id="toc-15.01-mathematical_functions">
-        <a class="chapter-link" href="#toc-15.01-mathematical_functions"> ¶ 15.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.01-mathematical_functions"> ¶ 15.1</a>
+
+            
+            <h1 id="mathematical-functions">Mathematical functions</h1>
+            
+        </header>
 
         
-        <h1 id="mathematical-functions">Mathematical functions</h1>
+        
 <h3 id="abs">ABS()</h3>
 <p>Returns the absolute value of the argument.</p>
 <h3 id="atan2">ATAN2()</h3>
@@ -76,10 +88,16 @@
     </section>
     
     <section class="chapter-section" id="toc-15.02-searching_and_ranking_functions">
-        <a class="chapter-link" href="#toc-15.02-searching_and_ranking_functions"> ¶ 15.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.02-searching_and_ranking_functions"> ¶ 15.2</a>
+
+            
+            <h1 id="searching-and-ranking-functions">Searching and ranking functions</h1>
+            
+        </header>
 
         
-        <h1 id="searching-and-ranking-functions">Searching and ranking functions</h1>
+        
 <h3 id="bm25a">BM25A()</h3>
 <p><code>BM25A(k1,b)</code> returns the exact <code>BM25A()</code> value. Requires the <code>expr</code> ranker and enabled <code>index_field_lengths</code>. Parameters <code>k1</code> and <code>b</code> must be floats.</p>
 <h3 id="bm25f">BM25F()</h3>
@@ -242,10 +260,16 @@
     </section>
     
     <section class="chapter-section" id="toc-15.03-type_casting_functions">
-        <a class="chapter-link" href="#toc-15.03-type_casting_functions"> ¶ 15.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.03-type_casting_functions"> ¶ 15.3</a>
+
+            
+            <h1 id="type-casting-functions">Type Casting Functions</h1>
+            
+        </header>
 
         
-        <h1 id="type-casting-functions">Type Casting Functions</h1>
+        
 <p>Type casting comprises three principal actions: conversion, reinterpretation, and promotion.</p>
 <ul>
 <li><strong>Conversion</strong>. This refers to the process of changing the data type of a value to another data type. This involves additional computations and is exclusively performed by the <code>TO_STRING()</code> function.</li>
@@ -271,10 +295,16 @@
     </section>
     
     <section class="chapter-section" id="toc-15.04-functions_to_handle_arrays_and_conditions">
-        <a class="chapter-link" href="#toc-15.04-functions_to_handle_arrays_and_conditions"> ¶ 15.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.04-functions_to_handle_arrays_and_conditions"> ¶ 15.4</a>
+
+            
+            <h1 id="arrays-and-conditions-functions">Arrays and conditions functions</h1>
+            
+        </header>
 
         
-        <h1 id="arrays-and-conditions-functions">Arrays and conditions functions</h1>
+        
 <h3 id="all">ALL()</h3>
 <!-- example all_json -->
 <p><code>ALL(cond FOR var IN json.array)</code> applies to JSON arrays and returns 1 if the condition is true for all elements in the array and 0 otherwise. <code>cond</code> is a general expression that can also use <code>var</code> as the current value of an array element within itself.</p>
@@ -693,10 +723,16 @@ Example:
     </section>
     
     <section class="chapter-section" id="toc-15.05-date_and_time_functions">
-        <a class="chapter-link" href="#toc-15.05-date_and_time_functions"> ¶ 15.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.05-date_and_time_functions"> ¶ 15.5</a>
+
+            
+            <h1 id="date-and-time-functions">Date and time functions</h1>
+            
+        </header>
 
         
-        <h1 id="date-and-time-functions">Date and time functions</h1>
+        
 <p>Note, that <code>CURTIME()</code>, <code>UTC_TIME()</code>, <code>UTC_TIMESTAMP()</code>, and <code>TIMEDIFF()</code> can be promoted to numeric types using arbitrary conversion functions such as <code>BIGINT()</code>, <code>DOUBLE()</code>, etc.</p>
 <h3 id="now">NOW()</h3>
 <!-- example NOW -->
@@ -1280,10 +1316,16 @@ Date math
     </section>
     
     <section class="chapter-section" id="toc-15.06-geospatial_functions">
-        <a class="chapter-link" href="#toc-15.06-geospatial_functions"> ¶ 15.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.06-geospatial_functions"> ¶ 15.6</a>
+
+            
+            <h1 id="geo-spatial-functions">Geo spatial functions</h1>
+            
+        </header>
 
         
-        <h1 id="geo-spatial-functions">Geo spatial functions</h1>
+        
 <h3 id="geodist">GEODIST()</h3>
 <p><code>GEODIST(lat1, lon1, lat2, lon2, [...])</code> function calculates the geosphere distance between two points specified by their coordinates. Note that by default, both latitudes and longitudes must be in <strong>radians</strong>, and the result will be in <strong>meters</strong>. You can use arbitrary expressions for any of the four coordinates. An optimized path will be chosen when one pair of arguments directly refers to a pair of attributes, and the other one is constant.</p>
 <p><code>GEODIST()</code> also accepts an optional 5th argument, allowing you to easily convert between input and output units and select the specific geodistance formula to use. The complete syntax and a few examples are as follows:</p>
@@ -1310,10 +1352,16 @@ Date math
     </section>
     
     <section class="chapter-section" id="toc-15.07-string_functions">
-        <a class="chapter-link" href="#toc-15.07-string_functions"> ¶ 15.7</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.07-string_functions"> ¶ 15.7</a>
+
+            
+            <h1 id="string-functions">String functions</h1>
+            
+        </header>
 
         
-        <h1 id="string-functions">String functions</h1>
+        
 <h3 id="concat">CONCAT()</h3>
 <p>Concatenates two or more strings into one. Non-string arguments must be explicitly converted to string using the <code>TO_STRING()</code> function.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">CONCAT</span><span class="p">(</span><span class="n">TO_STRING</span><span class="p">(</span><span class="n">float_attr</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">TO_STRING</span><span class="p">(</span><span class="n">int_attr</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="p">)</span>
@@ -1394,10 +1442,16 @@ Date math
     </section>
     
     <section class="chapter-section" id="toc-15.08-other_functions">
-        <a class="chapter-link" href="#toc-15.08-other_functions"> ¶ 15.8</a>
+        <header>
+            <a class="chapter-link" href="#toc-15.08-other_functions"> ¶ 15.8</a>
+
+            
+            <h1 id="other-functions">Other functions</h1>
+            
+        </header>
 
         
-        <h1 id="other-functions">Other functions</h1>
+        
 <h3 id="last_insert_id">LAST_INSERT_ID()</h3>
 <p>Returns the IDs of documents that were inserted or replaced by the last statement in the current session.</p>
 <p>The same value can also be obtained via the <code>@@session.last_insert_id</code> variable.</p>
@@ -1482,7 +1536,7 @@ Date math
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -1496,7 +1550,7 @@ Date math
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

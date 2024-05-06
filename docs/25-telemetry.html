@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-25-telemetry">
-        <a class="chapter-link" href="#toc-25-telemetry"> ¶ 25</a>
+        <header>
+            <a class="chapter-link" href="#toc-25-telemetry"> ¶ 25</a>
+
+            
+            <h1 id="telemetry">Telemetry</h1>
+            
+        </header>
 
         
-        <h1 id="telemetry">Telemetry</h1>
+        
 <p>At Manticore, we gather various anonymized metrics to enhance the quality of our products, including Manticore Search. By analyzing this data, we can not only improve the overall performance of our product but also identify which features would be most beneficial to prioritize in order to provide even more value to our users. The telemetry system operates on a separate thread in a non-blocking mode, taking snapshots and sending them once every few minutes.</p>
 <p>We take your privacy seriously, and you can rest assured that all metrics are completely anonymous and no sensitive information is transmitted. However, if you still wish to disable telemetry, you have the option to do so by:</p>
 <ul>
@@ -280,7 +286,7 @@
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -294,7 +300,7 @@
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

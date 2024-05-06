@@ -15,19 +15,31 @@
 <body>
     
     <section class="chapter-section" id="toc-06-creating_a_table">
-        <a class="chapter-link" href="#toc-06-creating_a_table"> ¶ 6</a>
+        <header>
+            <a class="chapter-link" href="#toc-06-creating_a_table"> ¶ 6</a>
+
+            
+            <h1 id="creating-a-table">Creating a table</h1>
+            
+        </header>
 
         
-        <h1 id="creating-a-table">Creating a table</h1>
+        
 <!-- proofread -->
         
     </section>
     
     <section class="chapter-section" id="toc-06.01-data_types">
-        <a class="chapter-link" href="#toc-06.01-data_types"> ¶ 6.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.01-data_types"> ¶ 6.1</a>
+
+            
+            <h1 id="data-types">Data types</h1>
+            
+        </header>
 
         
-        <h1 id="data-types">Data types</h1>
+        
 <h2 id="full-text-fields-and-attributes">Full-text fields and attributes</h2>
 <p>Manticore's data types can be split into two categories: full-text fields and attributes.</p>
 <h3 id="full-text-fields">Full-text fields</h3>
@@ -4452,10 +4464,16 @@ config
     </section>
     
     <section class="chapter-section" id="toc-06.01.01-rowwise_and_columnar_attribute_storages">
-        <a class="chapter-link" href="#toc-06.01.01-rowwise_and_columnar_attribute_storages"> ¶ 6.1.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.01.01-rowwise_and_columnar_attribute_storages"> ¶ 6.1.1</a>
+
+            
+            <h1 id="data-types">Data types</h1>
+            
+        </header>
 
         
-        <h1 id="data-types">Data types</h1>
+        
 <h2 id="full-text-fields-and-attributes">Full-text fields and attributes</h2>
 <p>Manticore's data types can be split into two categories: full-text fields and attributes.</p>
 <h3 id="full-text-fields">Full-text fields</h3>
@@ -8880,10 +8898,16 @@ config
     </section>
     
     <section class="chapter-section" id="toc-06.02-creating_a_local_table">
-        <a class="chapter-link" href="#toc-06.02-creating_a_local_table"> ¶ 6.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.02-creating_a_local_table"> ¶ 6.2</a>
+
+            
+            <h1 id="creating-a-local-table">Creating a local table</h1>
+            
+        </header>
 
         
-        <h1 id="creating-a-local-table">Creating a local table</h1>
+        
 <p>In Manticore Search, there are two ways to manage tables:</p>
 <h2 id="online-schema-management-rt-mode">Online schema management (RT mode)</h2>
 <p>Real-time mode requires no table definition in the configuration file. However, the <a href="../20-server_settings.html#data_dir">data_dir</a> directive in the <code>searchd</code> section is mandatory. Index files are stored inside the <code>data_dir</code>.</p>
@@ -8937,10 +8961,16 @@ config
     </section>
     
     <section class="chapter-section" id="toc-06.02.01-realtime_table">
-        <a class="chapter-link" href="#toc-06.02.01-realtime_table"> ¶ 6.2.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.02.01-realtime_table"> ¶ 6.2.1</a>
+
+            
+            <h1 id="real-time-table">Real-time table</h1>
+            
+        </header>
 
         
-        <h1 id="real-time-table">Real-time table</h1>
+        
 <p>A <strong>real-time table</strong> is a main type of table in Manticore. It lets you add, update, and delete documents, and you can see these changes right away. You can set up a real-time Table in a configuration file or use commands like <code>CREATE</code>, <code>UPDATE</code>, <code>DELETE</code>, or <code>ALTER</code>.</p>
 <p>Internally a real-time table consists of one or more <a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> called <strong>chunks</strong>. There are two kinds of chunks:</p>
 <ul>
@@ -9282,10 +9312,16 @@ Creating a real-time table via the _mapping endpoint
     </section>
     
     <section class="chapter-section" id="toc-06.02.02-plain_table">
-        <a class="chapter-link" href="#toc-06.02.02-plain_table"> ¶ 6.2.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.02.02-plain_table"> ¶ 6.2.2</a>
+
+            
+            <h1 id="plain-table">Plain table</h1>
+            
+        </header>
 
         
-        <h1 id="plain-table">Plain table</h1>
+        
 <p><strong>Plain table</strong> is a basic element for non-<a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> searching. It can be defined only in a configuration file using the <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a>, and is not supported in the <a href="06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>. It is typically used in conjunction with a <a href="06-creating_a_table.html#source">source</a> to process data <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">from the external storage</a> and can later be <a href="12-data_creation_and_modification.html#toc-12.02.06.03-attaching_a_plain_table_to_rt_table">attached</a> to a <strong>real-time table</strong>.</p>
 <h4 id="creating-a-plain-table">Creating a plain table</h4>
 <p>To create a plain table, you'll need to define it in a configuration file. It's not supported by the  <code>CREATE TABLE</code> command.</p>
@@ -9455,10 +9491,16 @@ Creating a real-time table via the _mapping endpoint
     </section>
     
     <section class="chapter-section" id="toc-06.02.03-plain_and_realtime_table_settings">
-        <a class="chapter-link" href="#toc-06.02.03-plain_and_realtime_table_settings"> ¶ 6.2.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.02.03-plain_and_realtime_table_settings"> ¶ 6.2.3</a>
+
+            
+            <h1 id="plain-and-real-time-table-settings">Plain and real-time table settings</h1>
+            
+        </header>
 
         
-        <h1 id="plain-and-real-time-table-settings">Plain and real-time table settings</h1>
+        
 <!-- example config -->
 <h2 id="defining-table-schema-in-a-configuration-file">Defining table schema in a configuration file</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">table &lt;index_name&gt;[</span><span class="o">:</span><span class="s">&lt;parent table name&gt;] {</span>
@@ -10384,10 +10426,16 @@ CONFIG
     </section>
     
     <section class="chapter-section" id="toc-06.02.04-percolate_table">
-        <a class="chapter-link" href="#toc-06.02.04-percolate_table"> ¶ 6.2.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.02.04-percolate_table"> ¶ 6.2.4</a>
+
+            
+            <h1 id="percolate-table">Percolate table</h1>
+            
+        </header>
 
         
-        <h1 id="percolate-table">Percolate table</h1>
+        
 <!-- example pq -->
 <p>A percolate table is a special table that stores queries rather than documents. It is used for prospective searches, or "search in reverse."</p>
 <ul>
@@ -10656,10 +10704,16 @@ Creating a percolate table via config
     </section>
     
     <section class="chapter-section" id="toc-06.02.05-template_table">
-        <a class="chapter-link" href="#toc-06.02.05-template_table"> ¶ 6.2.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.02.05-template_table"> ¶ 6.2.5</a>
+
+            
+            <h1 id="template-table">Template table</h1>
+            
+        </header>
 
         
-        <h1 id="template-table">Template table</h1>
+        
 <!-- example template -->
 <p>A Template Table is a special type of table in Manticore that doesn't store any data and doesn't create any files on your disk. Despite this, it can have the same <a href="06-creating_a_table.html#natural-language-processing-specific-settings">NLP settings</a> as a plain or real-time table. Template tables can be used for the following purposes:</p>
 <ul>
@@ -10700,18 +10754,28 @@ Creating a template table via a configuration file
     </section>
     
     <section class="chapter-section" id="toc-06.03-nlp_and_tokenization">
-        <a class="chapter-link" href="#toc-06.03-nlp_and_tokenization"> ¶ 6.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03-nlp_and_tokenization"> ¶ 6.3</a>
 
-        
-        <h1>NLP and tokenization</h1>
+            
+            <h1>NLP and tokenization</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-06.03.01-data_tokenization">
-        <a class="chapter-link" href="#toc-06.03.01-data_tokenization"> ¶ 6.3.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.01-data_tokenization"> ¶ 6.3.1</a>
+
+            
+            <h1 id="data-tokenization">Data tokenization</h1>
+            
+        </header>
 
         
-        <h1 id="data-tokenization">Data tokenization</h1>
+        
 <p>Manticore doesn't store text as is for performing full-text searching on it. Instead, it extracts words and creates several structures that allow fast full-text searching. From the found words, a dictionary is built, which allows a quick look to discover if the word is present or not in the index. In addition, other structures record the documents and fields in which the word was found (as well as the position of it inside a field). All these are used when a full-text match is performed.</p>
 <p>The process of demarcating and classifying words is called tokenization. The tokenization is applied at both indexing and searching, and it operates at the character and word level.</p>
 <p>On the character level, the engine allows only certain characters to pass. This is defined by the <a href="06-creating_a_table.html#charset_table">charset_table</a>. Anything else is replaced with a whitespace (which is considered the default word separator). The charset_table also allows mappings, such as lowercasing or simply replacing one character with another. Besides that, characters can be <a href="06-creating_a_table.html#ignore_chars">ignored</a>, <a href="06-creating_a_table.html#blend_chars">blended</a>, defined as a <a href="06-creating_a_table.html#phrase_boundary">phrase boundary</a>. </p>
@@ -10725,10 +10789,16 @@ Creating a template table via a configuration file
     </section>
     
     <section class="chapter-section" id="toc-06.03.02-supported_languages">
-        <a class="chapter-link" href="#toc-06.03.02-supported_languages"> ¶ 6.3.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.02-supported_languages"> ¶ 6.3.2</a>
+
+            
+            <h1 id="supported-languages">Supported languages</h1>
+            
+        </header>
 
         
-        <h1 id="supported-languages">Supported languages</h1>
+        
 <p>Manticore supports a wide range of languages, with basic support enabled for most languages via <code>charset_table = non_cjk</code> (which is the default value).</p>
 <p>For many languages, Manticore provides a <a href="06-creating_a_table.html#stopwords">stopwords</a> file that can be used to improve search relevance.</p>
 <p>Additionally, advanced morphology is available for a few languages that can significantly improve search relevance by using dictionary-based lemmatization or stemming algorithms for better segmentation and normalization.</p>
@@ -11260,10 +11330,16 @@ Creating a template table via a configuration file
     </section>
     
     <section class="chapter-section" id="toc-06.03.03-cjk">
-        <a class="chapter-link" href="#toc-06.03.03-cjk"> ¶ 6.3.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.03-cjk"> ¶ 6.3.3</a>
+
+            
+            <h1 id="chinese-japanese-and-korean-cjk-languages">Chinese, Japanese and Korean (CJK) languages</h1>
+            
+        </header>
 
         
-        <h1 id="chinese-japanese-and-korean-cjk-languages">Chinese, Japanese and Korean (CJK) languages</h1>
+        
 <p>Manticore provides built-in support for indexing CJK texts, allowing you to process CJK texts in two different ways:</p>
 <!-- example cjk 1 -->
 <ol>
@@ -11696,10 +11772,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.03.04-lowlevel_tokenization">
-        <a class="chapter-link" href="#toc-06.03.04-lowlevel_tokenization"> ¶ 6.3.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.04-lowlevel_tokenization"> ¶ 6.3.4</a>
+
+            
+            <h1 id="low-level-tokenization">Low-level tokenization</h1>
+            
+        </header>
 
         
-        <h1 id="low-level-tokenization">Low-level tokenization</h1>
+        
 <p>When text is indexed in Manticore, it is split into words and case folding is done so that words like "Abc", "ABC", and "abc" are treated as the same word.</p>
 <p>To perform these operations correctly, Manticore must know:</p>
 <ul>
@@ -14425,10 +14507,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.03.05-wildcard_searching_settings">
-        <a class="chapter-link" href="#toc-06.03.05-wildcard_searching_settings"> ¶ 6.3.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.05-wildcard_searching_settings"> ¶ 6.3.5</a>
+
+            
+            <h1 id="wildcard-searching-settings">Wildcard searching settings</h1>
+            
+        </header>
 
         
-        <h1 id="wildcard-searching-settings">Wildcard searching settings</h1>
+        
 <p>Wildcard searching is a common text search type. In Manticore, it is performed at the dictionary level. By default, both plain and RT tables use a dictionary type called <a href="06-creating_a_table.html#dict">dict</a>. In this mode, words are stored as they are, so enabling wildcarding does not affect the size of the table. When a wildcard search is performed, the dictionary is searched to find all possible expansions of the wildcarded word. This expansion can be problematic in terms of computation at query time when the expanded word provides many expansions or expansions that have huge hitlists, especially in the case of infixes where the wildcard is added at the start and end of the word. To avoid such problems, the  <a href="20-server_settings.html#expansion_limit">expansion_limit</a> can be used.</p>
 <h2 id="min_prefix_len">min_prefix_len</h2>
 <!-- example min_prefix_len -->
@@ -15100,10 +15188,16 @@ expand_keywords is disabled
     </section>
     
     <section class="chapter-section" id="toc-06.03.06-ignoring_stop_words">
-        <a class="chapter-link" href="#toc-06.03.06-ignoring_stop_words"> ¶ 6.3.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.06-ignoring_stop_words"> ¶ 6.3.6</a>
+
+            
+            <h1 id="ignoring-stop-words">Ignoring stop words</h1>
+            
+        </header>
 
         
-        <h1 id="ignoring-stop-words">Ignoring stop words</h1>
+        
 <p>Stop words are words that are ignored during indexing and searching, typically due to their high frequency and low value to search results. </p>
 <p>Manticore Search applies <a href="06-creating_a_table.html#toc-06.03.09-morphology">stemming</a> to stop words by default, which can lead to undesired results, but this can be turned off using the <a href="06-creating_a_table.html#stopwords_unstemmed">stopwords_unstemmed</a>.</p>
 <p>Small stop word files are stored in the table header, and there is a limit to the size of files that can be embedded, as defined by the <a href="06-creating_a_table.html#embedded_limit">embedded_limit</a> option.</p>
@@ -15836,10 +15930,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.03.07-word_forms">
-        <a class="chapter-link" href="#toc-06.03.07-word_forms"> ¶ 6.3.7</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.07-word_forms"> ¶ 6.3.7</a>
+
+            
+            <h1 id="word-forms">Word forms</h1>
+            
+        </header>
 
         
-        <h1 id="word-forms">Word forms</h1>
+        
 <p>Word forms are applied after tokenizing incoming text by <a href="06-creating_a_table.html#charset_table">charset_table</a> rules. They essentially let you replace one word with another. Normally, that would be used to bring different word forms to a single normal form (e.g. to normalize all the variants such as "walks", "walked", "walking" to the normal form "walk"). It can also be used to implement <a href="06-creating_a_table.html#toc-06.03.09-morphology">stemming</a> exceptions, because stemming is not applied to words found in the forms list.</p>
 <h2 id="wordforms">wordforms</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">wordforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">path/to/wordforms.txt</span>
@@ -16013,10 +16113,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.03.08-exceptions">
-        <a class="chapter-link" href="#toc-06.03.08-exceptions"> ¶ 6.3.8</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.08-exceptions"> ¶ 6.3.8</a>
+
+            
+            <h1 id="exceptions">Exceptions</h1>
+            
+        </header>
 
         
-        <h1 id="exceptions">Exceptions</h1>
+        
 <p>Exceptions (also known as synonyms) allow mapping one or more tokens (including tokens with characters that would normally be excluded) to a single keyword. They are similar to <a href="06-creating_a_table.html#wordforms">wordforms</a> in that they also perform mapping but have a number of important differences.</p>
 <p>A short summary of the differences from <a href="06-creating_a_table.html#wordforms">wordforms</a> is as follows:</p>
 <table>
@@ -16188,10 +16294,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.03.09-morphology">
-        <a class="chapter-link" href="#toc-06.03.09-morphology"> ¶ 6.3.9</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.09-morphology"> ¶ 6.3.9</a>
+
+            
+            <h1 id="advanced-morphology">Advanced morphology</h1>
+            
+        </header>
 
         
-        <h1 id="advanced-morphology">Advanced morphology</h1>
+        
 <p>Morphology preprocessors can be applied to words during indexing to normalize different forms of the same word and improve segmentation. For example, an English stemmer can normalize "dogs" and "dog" to "dog", resulting in identical search results for both keywords.</p>
 <p>Manticore has four built-in morphology preprocessors:</p>
 <ul>
@@ -16713,10 +16825,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.03.10-advanced_html_tokenization">
-        <a class="chapter-link" href="#toc-06.03.10-advanced_html_tokenization"> ¶ 6.3.10</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.03.10-advanced_html_tokenization"> ¶ 6.3.10</a>
+
+            
+            <h1 id="advanced-html-tokenization">Advanced HTML tokenization</h1>
+            
+        </header>
 
         
-        <h1 id="advanced-html-tokenization">Advanced HTML tokenization</h1>
+        
 <h2 id="stripping-html-tags">Stripping HTML tags</h2>
 <h3 id="html_strip">html_strip</h3>
 <!-- example html_strip -->
@@ -17431,10 +17549,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.04-creating_a_distributed_table">
-        <a class="chapter-link" href="#toc-06.04-creating_a_distributed_table"> ¶ 6.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.04-creating_a_distributed_table"> ¶ 6.4</a>
+
+            
+            <h1 id="creating-a-distributed-table">Creating a distributed table</h1>
+            
+        </header>
 
         
-        <h1 id="creating-a-distributed-table">Creating a distributed table</h1>
+        
 <p>Manticore allows for the creation of <strong>distributed tables</strong>, which act like regular plain or real-time tables, but are actually a collection of child tables used for searching. When a query is sent to a distributed table, it is distributed among all tables in the collection. The server then collects and processes the responses to sort and recalculate values of aggregates, if necessary.</p>
 <p>From the client's perspective, it appears as if they are querying a single table.</p>
 <p>Distributed tables can be composed of any combination of tables, including:</p>
@@ -17478,10 +17602,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.04.01-creating_a_local_distributed_table">
-        <a class="chapter-link" href="#toc-06.04.01-creating_a_local_distributed_table"> ¶ 6.4.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.04.01-creating_a_local_distributed_table"> ¶ 6.4.1</a>
+
+            
+            <h1 id="creating-a-local-distributed-table">Creating a local distributed table</h1>
+            
+        </header>
 
         
-        <h1 id="creating-a-local-distributed-table">Creating a local distributed table</h1>
+        
 <!-- example local_dist -->
 
 <p>A distributed table in Manticore Search acts as a "master node" that proxies the demanded query to other tables and provides merged results from the responses it receives. The table doesn't hold any data on its own. It can connect to both local tables and tables located on other servers. Here's an example of a simple distributed table:</p>
@@ -17612,10 +17742,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-06.04.02-remote_tables">
-        <a class="chapter-link" href="#toc-06.04.02-remote_tables"> ¶ 6.4.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-06.04.02-remote_tables"> ¶ 6.4.2</a>
+
+            
+            <h1 id="remote-tables">Remote tables</h1>
+            
+        </header>
 
         
-        <h1 id="remote-tables">Remote tables</h1>
+        
 <p>A remote table in Manticore Search is represented by the <a href="06-creating_a_table.html#toc-06.04-creating_a_distributed_table">agent</a> prefix in the definition of a distributed table. A distributed table can include a combination of local and remote tables. If there are no local tables provided, the distributed table will be purely remote and serve as a proxy only. For example, you might have a Manticore instance that listens on multiple ports and serves different protocols, and then redirects queries to backend servers that only accept connections via Manticore's internal binary protocol, using persistent connections to reduce the overhead of establishing connections.<br />
 Even though a purely remote distributed table doesn't serve local tables itself, it still consumes machine resources, as it still needs to perform final calculations, such as merging results and calculating final aggregated values.</p>
 <h2 id="agent">agent</h2>
@@ -17816,7 +17952,7 @@ Even though a purely remote distributed table doesn't serve local tables itself,
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -17830,7 +17966,7 @@ Even though a purely remote distributed table doesn't serve local tables itself,
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

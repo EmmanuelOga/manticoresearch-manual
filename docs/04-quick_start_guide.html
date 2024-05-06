@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-04-quick_start_guide">
-        <a class="chapter-link" href="#toc-04-quick_start_guide"> ¶ 4</a>
+        <header>
+            <a class="chapter-link" href="#toc-04-quick_start_guide"> ¶ 4</a>
+
+            
+            <h1 id="quick-start-guide">Quick start guide</h1>
+            
+        </header>
 
         
-        <h1 id="quick-start-guide">Quick start guide</h1>
+        
 <!-- example install -->
 <h2 id="install-and-start-manticore">Install and start Manticore</h2>
 <p>You can install and start Manticore easily on various operating systems, including Ubuntu, Centos, Debian, Windows, and MacOS. Additionally, you can also use Manticore as a Docker container.</p>
@@ -1720,7 +1726,7 @@ Go
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -1734,7 +1740,7 @@ Go
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

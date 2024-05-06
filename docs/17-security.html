@@ -15,18 +15,28 @@
 <body>
     
     <section class="chapter-section" id="toc-17-security">
-        <a class="chapter-link" href="#toc-17-security"> ¶ 17</a>
+        <header>
+            <a class="chapter-link" href="#toc-17-security"> ¶ 17</a>
 
-        
-        <h1>Security</h1>
+            
+            <h1>Security</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-17.01-ssl">
-        <a class="chapter-link" href="#toc-17.01-ssl"> ¶ 17.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-17.01-ssl"> ¶ 17.1</a>
+
+            
+            <h1 id="ssl">SSL</h1>
+            
+        </header>
 
         
-        <h1 id="ssl">SSL</h1>
+        
 <p>In many cases, you might want to encrypt traffic between your client and the server. To do that, you can specify that the server should use the <a href="../20-server_settings.html#listen">HTTPS protocol</a> rather than HTTP.</p>
 <!-- example CA 1 -->
 
@@ -122,10 +132,16 @@ openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> 
     </section>
     
     <section class="chapter-section" id="toc-17.02-readonly">
-        <a class="chapter-link" href="#toc-17.02-readonly"> ¶ 17.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-17.02-readonly"> ¶ 17.2</a>
+
+            
+            <h1 id="read-only-mode">Read-only mode</h1>
+            
+        </header>
 
         
-        <h1 id="read-only-mode">Read-only mode</h1>
+        
 <p>Read-only mode for a connection disables any table or global modifications. Therefore, queries like <code>create</code>, <code>drop</code>, various types of <code>alter</code>, <code>attach</code>, <code>optimize</code>, and data modification queries such as <code>insert</code>, <code>replace</code>, <code>delete</code>, <code>update</code>, and others will all be rejected. Changing daemon-wide settings using <code>SET GLOBAL</code> is also not possible in this mode.</p>
 <p>However, you can still perform all search operations, generate snippets, and run <code>CALL PQ</code> queries. Additionally, you can modify local (connection-wide) settings.</p>
 <p>To check if your current connection is read-only or not, execute the <code>show variables like 'session_read_only'</code> statement. A value of <code>1</code> indicates read-only, while <code>0</code> means not read-only (usual).</p>
@@ -176,7 +192,7 @@ openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> 
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -190,7 +206,7 @@ openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> 
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

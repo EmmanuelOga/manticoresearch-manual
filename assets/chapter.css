@@ -92,48 +92,45 @@ blockquote span {
 
 /* Chapter headers */
 
-a.chapter-link {
-    color: black;
-    float: right;
-    font-size: 1.5em;
-    padding: 0 .25em;
-    text-decoration: none;
-}
-
-.chapter-section>h1:first-of-type {
-    font-size: 1.5em;
-    font-weight: bold;
-    text-transform: capitalize;
-    background-color: rgb(240, 243, 243);
-    border-bottom: 0.25rem solid rgb(220, 223, 223);
-}
-
-.chapter-section:target>h1:first-of-type,
-.chapter-section:target>a.chapter-link,
-.chapter-section:target>a.chapter-link,
-h1:target,
-h2:target,
-h3:target,
-h4:target,
-h5:target,
-h6:target {
-    color: white;
-    background: #1c87c9;
-}
-
 .chapter-section {
     margin-bottom: 1rem;
-    padding: 0 1.5rem;
-}
+    padding-left: 1rem;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    padding: 0 1rem;
-    margin-left: -1rem;
+    header {
+        margin-left: -1rem;
+
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.9);
+
+        min-height: 2.5rem;
+
+        h1 {
+            margin: 0;
+            background-color: rgb(240, 243, 243);
+            border-bottom: 0.25rem solid rgb(220, 223, 223);
+        }
+
+        a.chapter-link {
+            color: black;
+            float: right;
+            font-size: 1.5em;
+            padding: 0 .25em;
+            text-decoration: none;
+        }
+    }
+
+    &:target header {
+        h1 {
+            color: white;
+            background: #1c87c9;
+        }
+
+        header a.chapter-link {
+            color: white;
+        }
+    }
 }
 
 table {

@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-09-emptying_a_table">
-        <a class="chapter-link" href="#toc-09-emptying_a_table"> ¶ 9</a>
+        <header>
+            <a class="chapter-link" href="#toc-09-emptying_a_table"> ¶ 9</a>
+
+            
+            <h1 id="emptying-a-table">Emptying a table</h1>
+            
+        </header>
 
         
-        <h1 id="emptying-a-table">Emptying a table</h1>
+        
 <p>The table can be emptied with a <code>TRUNCATE TABLE</code> SQL statement or with a <code>truncate()</code> PHP client function.</p>
 <p>Here is the syntax for the SQL statement:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="p">[</span><span class="k">WITH</span><span class="w"> </span><span class="n">RECONFIGURE</span><span class="p">]</span>
@@ -447,7 +453,7 @@ C
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -461,7 +467,7 @@ C
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

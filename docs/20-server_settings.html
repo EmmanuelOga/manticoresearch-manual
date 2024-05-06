@@ -15,18 +15,28 @@
 <body>
     
     <section class="chapter-section" id="toc-20-server_settings">
-        <a class="chapter-link" href="#toc-20-server_settings"> ¶ 20</a>
+        <header>
+            <a class="chapter-link" href="#toc-20-server_settings"> ¶ 20</a>
 
-        
-        <h1>Server settings</h1>
+            
+            <h1>Server settings</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-20.01-searchd">
-        <a class="chapter-link" href="#toc-20.01-searchd"> ¶ 20.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.01-searchd"> ¶ 20.1</a>
+
+            
+            <h1 id="section-searchd-in-configuration">Section "Searchd" in configuration</h1>
+            
+        </header>
 
         
-        <h1 id="section-searchd-in-configuration">Section "Searchd" in configuration</h1>
+        
 <p>The below settings are to be used in the <code>searchd</code> section of the Manticore Search configuration file to control the server's behavior. Below is a summary of each setting:</p>
 <h3 id="access_plain_attrs">access_plain_attrs</h3>
 <p>This setting sets instance-wide defaults for <a href="../06-creating_a_table.html#accessing-table-files">access_plain_attrs</a>. It is optional, with a default value of <code>mmap_preread</code>.</p>
@@ -2043,10 +2053,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-20.02-common">
-        <a class="chapter-link" href="#toc-20.02-common"> ¶ 20.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.02-common"> ¶ 20.2</a>
+
+            
+            <h1 id="section-common-in-configuration">Section "Common" in configuration</h1>
+            
+        </header>
 
         
-        <h1 id="section-common-in-configuration">Section "Common" in configuration</h1>
+        
 <h2 id="lemmatizer_base">lemmatizer_base</h2>
 <p>The <code>lemmatizer_base</code> is an optional configuration directive that specifies the base path for lemmatizer dictionaries. The default path is <code>/usr/share/manticore</code></p>
 <p>The lemmatizer implementation in Manticore Search (see <a href="../06-creating_a_table.html#toc-06.03.09-morphology">Morphology</a> to learn what lemmatizers are) is dictionary-driven and requires specific dictionary files for different languages. These files can be downloaded from the Manticore website (<a href="https://manticoresearch.com/install/#other-downloads">https://manticoresearch.com/install/#other-downloads</a>).</p>
@@ -2089,10 +2105,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-20.03-special_suffixes">
-        <a class="chapter-link" href="#toc-20.03-special_suffixes"> ¶ 20.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.03-special_suffixes"> ¶ 20.3</a>
+
+            
+            <h1 id="special-suffixes">Special suffixes</h1>
+            
+        </header>
 
         
-        <h1 id="special-suffixes">Special suffixes</h1>
+        
 <p>Manticore Search supports the use of special suffixes to simplify numeric values with specific meanings. These suffixes are categorized into size suffixes and time suffixes. The common format for suffixes is an <code>integer</code> followed by a <code>literal</code>, such as <code>10k</code> or <code>100d</code>. Literals are case-insensitive, so <code>10W</code> and <code>10w</code> are considered the same.</p>
 <ul>
 <li>Size suffixes: These suffixes can be used in settings that define the size of something, such as memory buffer, disk file size, or RAM limit. If no suffix is specified, the value is considered in bytes by default. The available size suffixes are:</li>
@@ -2118,10 +2140,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-20.04-scripted_configuration">
-        <a class="chapter-link" href="#toc-20.04-scripted_configuration"> ¶ 20.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.04-scripted_configuration"> ¶ 20.4</a>
+
+            
+            <h1 id="scripted-configuration">Scripted configuration</h1>
+            
+        </header>
 
         
-        <h1 id="scripted-configuration">Scripted configuration</h1>
+        
 <p>Manticore configuration supports shebang syntax, allowing the configuration to be written in a programming language and interpreted at loading. This enables dynamic settings, such as generating tables by querying a database table, modifying settings based on external factors, or including external files containing table and source declarations.</p>
 <p>The configuration file is parsed by the declared interpreter, and the output is used as the actual configuration. This occurs each time the configuration is read, not only at searchd startup.</p>
 <p>Note: This feature is not available on the Windows platform.</p>
@@ -2159,10 +2187,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-20.05-comments">
-        <a class="chapter-link" href="#toc-20.05-comments"> ¶ 20.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.05-comments"> ¶ 20.5</a>
+
+            
+            <h1 id="comments">Comments</h1>
+            
+        </header>
 
         
-        <h1 id="comments">Comments</h1>
+        
 <p>Manticore Search's configuration file supports comments, which help provide explanations or notes within the configuration file. The <code>#</code> character is used to start a comment section. You can place the comment character either at the beginning of a line or inline within a line.</p>
 <p>When using comments, be cautious when incorporating the <code>#</code> character in character tokenization settings, as everything following it will be ignored. To prevent this, use the <code>#</code> UTF-8 code, which is U+23.</p>
 <p>If you need to use the <code>#</code> character within your configuration file, such as within database credentials in source declarations, you can escape it using a backslash <code>\</code>. This allows you to include the <code>#</code> character in your settings without it being interpreted as the start of a comment.</p>
@@ -2171,10 +2205,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-20.06-inheritance_of_table_and_source_declarations">
-        <a class="chapter-link" href="#toc-20.06-inheritance_of_table_and_source_declarations"> ¶ 20.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.06-inheritance_of_table_and_source_declarations"> ¶ 20.6</a>
+
+            
+            <h1 id="inheritance-of-index-and-source-declarations">Inheritance of index and source declarations</h1>
+            
+        </header>
 
         
-        <h1 id="inheritance-of-index-and-source-declarations">Inheritance of index and source declarations</h1>
+        
 <p>Inheritance in <code>index</code> and <code>source</code> declarations enables better organization of tables with similar settings or structures and reduces the configuration size. Both parent and child tables or sources can utilize inheritance.</p>
 <p>No specific configurations are needed for a parent table or source.</p>
 <p>In the child table or source declaration, specify the table or source name followed by a colon (:) and the parent name:</p>
@@ -2197,10 +2237,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-20.07-setting_variables_online">
-        <a class="chapter-link" href="#toc-20.07-setting_variables_online"> ¶ 20.7</a>
+        <header>
+            <a class="chapter-link" href="#toc-20.07-setting_variables_online"> ¶ 20.7</a>
+
+            
+            <h1 id="setting-variables-online">Setting variables online</h1>
+            
+        </header>
 
         
-        <h1 id="setting-variables-online">Setting variables online</h1>
+        
 <h2 id="set">SET</h2>
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="p">[</span><span class="k">GLOBAL</span><span class="p">]</span><span class="w"> </span><span class="n">server_variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span>
 <span class="k">SET</span><span class="w"> </span><span class="p">[</span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="p">]</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="o">@</span><span class="n">user_variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">int_val1</span><span class="w"> </span><span class="p">[,</span><span class="w"> </span><span class="n">int_val2</span><span class="p">,</span><span class="w"> </span><span class="p">...])</span>
@@ -2385,7 +2431,7 @@ Example
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -2399,7 +2445,7 @@ Example
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

@@ -15,18 +15,28 @@
 <body>
     
     <section class="chapter-section" id="toc-21-integration">
-        <a class="chapter-link" href="#toc-21-integration"> ¶ 21</a>
+        <header>
+            <a class="chapter-link" href="#toc-21-integration"> ¶ 21</a>
 
-        
-        <h1>Integration</h1>
+            
+            <h1>Integration</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-21.01-logstash">
-        <a class="chapter-link" href="#toc-21.01-logstash"> ¶ 21.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-21.01-logstash"> ¶ 21.1</a>
+
+            
+            <h1 id="integration-with-logstash">Integration with Logstash</h1>
+            
+        </header>
 
         
-        <h1 id="integration-with-logstash">Integration with Logstash</h1>
+        
 <p><a href="https://www.elastic.co/logstash">Logstash</a> is a log management tool that collects data from a variety of sources, transforms it on the fly, and sends it to your desired destination. It is often used as a data pipeline for Elasticsearch, an open-source analytics and search engine.</p>
 <p>Now, Manticore supports the use of Logstash as a processing pipeline. This allows the collected and transformed data to be sent to Manticore just like to Elasticsearch. Currently, all the versions &gt;= 7.6  are supported.  </p>
 <p>Let’s examine a simple example of a Logstash config file used for indexing <code>dpkg.log</code>, a standard log file of the Debian package manager. The log itself has a simple structure, as shown below:</p>
@@ -92,10 +102,16 @@
     </section>
     
     <section class="chapter-section" id="toc-21.02-filebeat">
-        <a class="chapter-link" href="#toc-21.02-filebeat"> ¶ 21.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-21.02-filebeat"> ¶ 21.2</a>
+
+            
+            <h1 id="integration-with-filebeat">Integration with Filebeat</h1>
+            
+        </header>
 
         
-        <h1 id="integration-with-filebeat">Integration with Filebeat</h1>
+        
 <p><a href="https://www.elastic.co/beats/filebeat">Filebeat</a> is a lightweight shipper for forwarding and centralizing log data. Once installed as an agent, it monitors the log files or locations you specify, collects log events, and forwards them for indexing, usually to Elasticsearch or Logstash.</p>
 <p>Now, Manticore also supports the use of Filebeat as processing pipelines. This allows the collected and transformed data to be sent to Manticore just like to Elasticsearch. Currently, all the versions &gt;= 7.10  are supported.</p>
 <h2 id="filebeat-configuration">Filebeat configuration</h2>
@@ -211,7 +227,7 @@
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -225,7 +241,7 @@
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

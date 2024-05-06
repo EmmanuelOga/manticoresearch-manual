@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-14-updating_table_schema_and_settings">
-        <a class="chapter-link" href="#toc-14-updating_table_schema_and_settings"> ¶ 14</a>
+        <header>
+            <a class="chapter-link" href="#toc-14-updating_table_schema_and_settings"> ¶ 14</a>
+
+            
+            <h1 id="updating-table-schema">Updating table schema</h1>
+            
+        </header>
 
         
-        <h1 id="updating-table-schema">Updating table schema</h1>
+        
 <h2 id="updating-table-schema-in-rt-mode">Updating table schema in RT mode</h2>
 <!-- example ALTER -->
 
@@ -341,7 +347,7 @@ Example:</p>
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -355,7 +361,7 @@ Example:</p>
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

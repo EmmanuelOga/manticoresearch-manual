@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-02-read_this_first">
-        <a class="chapter-link" href="#toc-02-read_this_first"> ¶ 2</a>
+        <header>
+            <a class="chapter-link" href="#toc-02-read_this_first"> ¶ 2</a>
+
+            
+            <h1 id="read-this-first">Read this first</h1>
+            
+        </header>
 
         
-        <h1 id="read-this-first">Read this first</h1>
+        
 <h2 id="about-this-manual">About this manual</h2>
 <p>The manual is arranged to reflect the most likely way you would use Manticore:</p>
 <ul>
@@ -107,7 +113,7 @@
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -121,7 +127,7 @@
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

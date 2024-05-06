@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-12-data_creation_and_modification">
-        <a class="chapter-link" href="#toc-12-data_creation_and_modification"> ¶ 12</a>
+        <header>
+            <a class="chapter-link" href="#toc-12-data_creation_and_modification"> ¶ 12</a>
+
+            
+            <h1 id="data-creation-and-modification">Data creation and modification</h1>
+            
+        </header>
 
         
-        <h1 id="data-creation-and-modification">Data creation and modification</h1>
+        
 <p>You can add, update, replace, and delete your indexed data using different ways provided by Manticore. Manticore supports working with external storages such as databases, XML, CSV, and TSV documents. For insert and delete operations, a <a href="../12-data_creation_and_modification.html#toc-12.05-transactions">transaction mechanism</a> is supported.</p>
 <p>Also, for insert and replace queries, Manticore supports Elasticsearch-like query format along with its own format. For details, see the corresponding examples in the <a href="../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">Adding documents to a real-time table</a> and <a href="../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> sections.</p>
 <!-- proofread -->
@@ -26,18 +32,28 @@
     </section>
     
     <section class="chapter-section" id="toc-12.01-adding_documents_to_a_table">
-        <a class="chapter-link" href="#toc-12.01-adding_documents_to_a_table"> ¶ 12.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.01-adding_documents_to_a_table"> ¶ 12.1</a>
 
-        
-        <h1>Adding documents to a table</h1>
+            
+            <h1>Adding documents to a table</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-12.01.01-adding_documents_to_a_realtime_table">
-        <a class="chapter-link" href="#toc-12.01.01-adding_documents_to_a_realtime_table"> ¶ 12.1.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.01.01-adding_documents_to_a_realtime_table"> ¶ 12.1.1</a>
+
+            
+            <h1 id="adding-documents-to-a-real-time-table">Adding documents to a real-time table</h1>
+            
+        </header>
 
         
-        <h1 id="adding-documents-to-a-real-time-table">Adding documents to a real-time table</h1>
+        
 <blockquote>
 <p>If you're looking for information on adding documents to a plain table, please refer to the section on <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">adding data from external storages</a>.</p>
 </blockquote>
@@ -1427,10 +1443,16 @@ C
     </section>
     
     <section class="chapter-section" id="toc-12.01.02-adding_rules_to_a_percolate_table">
-        <a class="chapter-link" href="#toc-12.01.02-adding_rules_to_a_percolate_table"> ¶ 12.1.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.01.02-adding_rules_to_a_percolate_table"> ¶ 12.1.2</a>
+
+            
+            <h1 id="adding-rules-to-a-percolate-table">Adding rules to a percolate table</h1>
+            
+        </header>
 
         
-        <h1 id="adding-rules-to-a-percolate-table">Adding rules to a percolate table</h1>
+        
 <!-- example -->
 <p>In a <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate table</a> documents that are percolate query rules are stored and must follow the exact schema of four fields:</p>
 <table>
@@ -2030,18 +2052,28 @@ SQL
     </section>
     
     <section class="chapter-section" id="toc-12.02-adding_data_from_external_storages">
-        <a class="chapter-link" href="#toc-12.02-adding_data_from_external_storages"> ¶ 12.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02-adding_data_from_external_storages"> ¶ 12.2</a>
 
-        
-        <h1>Adding data from external storages</h1>
+            
+            <h1>Adding data from external storages</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-12.02.01-plain_tables_creation">
-        <a class="chapter-link" href="#toc-12.02.01-plain_tables_creation"> ¶ 12.2.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.01-plain_tables_creation"> ¶ 12.2.1</a>
+
+            
+            <h1 id="plain-tables-creation">Plain tables creation</h1>
+            
+        </header>
 
         
-        <h1 id="plain-tables-creation">Plain tables creation</h1>
+        
 <p>Plain tables are tables that are created one-time by fetching data at creation from one or several sources. A plain table is immutable as documents cannot be added or deleted during its lifespan. It is only possible to update values of numeric attributes (including MVA). Refreshing the data is only possible by recreating the whole table.</p>
 <p>Plain tables are available only in the <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a> and their definition is made up of a table declaration and one or several source declarations. The data gathering and table creation are not made by the <code>searchd</code> server but by the auxiliary tool <code>indexer</code>.</p>
 <p><strong>Indexer</strong> is a command-line tool that can be called directly from the command line or from shell scripts.</p>
@@ -2276,18 +2308,28 @@ When there is a problem indexing a file referenced by a file field (<a href="12-
     </section>
     
     <section class="chapter-section" id="toc-12.02.02-fetching_from_databases">
-        <a class="chapter-link" href="#toc-12.02.02-fetching_from_databases"> ¶ 12.2.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.02-fetching_from_databases"> ¶ 12.2.2</a>
 
-        
-        <h1>Fetching from databases</h1>
+            
+            <h1>Fetching from databases</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-12.02.02.01-introduction">
-        <a class="chapter-link" href="#toc-12.02.02.01-introduction"> ¶ 12.2.2.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.02.01-introduction"> ¶ 12.2.2.1</a>
+
+            
+            <h1 id="introduction">Introduction</h1>
+            
+        </header>
 
         
-        <h1 id="introduction">Introduction</h1>
+        
 <p>Manticore Search allows fetching data from databases using specialized drivers or ODBC. Current drivers include:</p>
 <ul>
 <li><code>mysql</code> - for MySQL/MariaDB/Percona MySQL databases</li>
@@ -2301,10 +2343,16 @@ When there is a problem indexing a file referenced by a file field (<a href="12-
     </section>
     
     <section class="chapter-section" id="toc-12.02.02.02-database_connection">
-        <a class="chapter-link" href="#toc-12.02.02.02-database_connection"> ¶ 12.2.2.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.02.02-database_connection"> ¶ 12.2.2.2</a>
+
+            
+            <h1 id="database-connection">Database connection</h1>
+            
+        </header>
 
         
-        <h1 id="database-connection">Database connection</h1>
+        
 <p>The source definition must contain the settings of the connection, this includes the host, port, user credentials, or specific settings of a driver.</p>
 <h2 id="sql_host">sql_host</h2>
 <p>The database server host to connect to. Note that the MySQL client library chooses whether to connect over TCP/IP or over UNIX socket based on the host name. Specifically, "localhost" will force it to use UNIX socket (this is the default and generally recommended mode) and "127.0.0.1" will force TCP/IP usage.</p>
@@ -2377,10 +2425,16 @@ For instance, you can specify 2080 (2048+32) to use both compression and SSL, or
     </section>
     
     <section class="chapter-section" id="toc-12.02.02.03-execution_of_fetch_queries">
-        <a class="chapter-link" href="#toc-12.02.02.03-execution_of_fetch_queries"> ¶ 12.2.2.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.02.03-execution_of_fetch_queries"> ¶ 12.2.2.3</a>
+
+            
+            <h1 id="execution-of-fetch-queries">Execution of fetch queries</h1>
+            
+        </header>
 
         
-        <h1 id="execution-of-fetch-queries">Execution of fetch queries</h1>
+        
 <p>With all the SQL drivers, building a plain table generally works as follows.</p>
 <ul>
 <li>A connection to the database is established.</li>
@@ -2458,10 +2512,16 @@ That could be achieved with:</p>
     </section>
     
     <section class="chapter-section" id="toc-12.02.02.04-processing_fetched_data">
-        <a class="chapter-link" href="#toc-12.02.02.04-processing_fetched_data"> ¶ 12.2.2.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.02.04-processing_fetched_data"> ¶ 12.2.2.4</a>
+
+            
+            <h1 id="processing-fetched-data">Processing fetched data</h1>
+            
+        </header>
 
         
-        <h1 id="processing-fetched-data">Processing fetched data</h1>
+        
 <p>By default, the first column from the result set of <code>sql_query</code> is indexed as the document id.</p>
 <p>Document ID <em>MUST</em> be the very first field, and it <strong>MUST BE</strong> UNIQUE SIGNED (NON-ZERO) INTEGER NUMBER from -9223372036854775808 to 9223372036854775807.</p>
 <p>You can specify up to 256 full-text fields and an arbitrary amount of attributes. All the columns that are neither document ID (the first one) nor attributes will be indexed as full-text fields.</p>
@@ -2669,10 +2729,16 @@ Note that the special payload field is ignored for full-text queries containing 
     </section>
     
     <section class="chapter-section" id="toc-12.02.02.05-ranged_queries">
-        <a class="chapter-link" href="#toc-12.02.02.05-ranged_queries"> ¶ 12.2.2.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.02.05-ranged_queries"> ¶ 12.2.2.5</a>
+
+            
+            <h1 id="ranged-queries">Ranged queries</h1>
+            
+        </header>
 
         
-        <h1 id="ranged-queries">Ranged queries</h1>
+        
 <p>Main query, which needs to fetch all the documents, can impose a read lock on the whole table and stall the concurrent queries (e.g. INSERTs to MyISAM table), waste a lot of memory for result set, etc. To avoid this, Manticore supports so-called <em>ranged queries</em>. With ranged queries, Manticore first fetches min and max document IDs from the table, and then substitutes different ID intervals into main query text and runs the modified query to fetch another chunk of documents. Here's an example.</p>
 <p>Ranged query usage example:</p>
 <div class="codehilite"><pre><span></span><code><span class="na">sql_query_range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">SELECT MIN(id),MAX(id) FROM documents</span>
@@ -2702,10 +2768,16 @@ Note that the special payload field is ignored for full-text queries containing 
     </section>
     
     <section class="chapter-section" id="toc-12.02.03-fetching_from_xml_stream">
-        <a class="chapter-link" href="#toc-12.02.03-fetching_from_xml_stream"> ¶ 12.2.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.03-fetching_from_xml_stream"> ¶ 12.2.3</a>
+
+            
+            <h1 id="fetching-from-xml-streams">Fetching from XML streams</h1>
+            
+        </header>
 
         
-        <h1 id="fetching-from-xml-streams">Fetching from XML streams</h1>
+        
 <p>The <code>xmlpipe2</code> source type allows for passing custom full-text and attribute data to Manticore in a custom XML format, with the schema (i.e., set of fields and attributes) specified in either the XML stream itself or in the source settings.</p>
 <h2 id="declaration-of-xml-stream">Declaration of XML stream</h2>
 <p>To declare the XML stream, the <code>xmlpipe_command</code> directive is mandatory and contains the shell command that produces the XML stream to be indexed. This can be a file, but it can also be a program that generates XML content on-the-fly.</p>
@@ -2817,10 +2889,16 @@ that<span class="w"> </span>in-document<span class="w"> </span>field<span class=
     </section>
     
     <section class="chapter-section" id="toc-12.02.04-fetching_from_csvtsv">
-        <a class="chapter-link" href="#toc-12.02.04-fetching_from_csvtsv"> ¶ 12.2.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.04-fetching_from_csvtsv"> ¶ 12.2.4</a>
+
+            
+            <h1 id="fetching-from-tsvcsv">Fetching from TSV,CSV</h1>
+            
+        </header>
 
         
-        <h1 id="fetching-from-tsvcsv">Fetching from TSV,CSV</h1>
+        
 <p>TSV/CSV is the simplest way to pass data to the Manticore indexer. This method was created due to the limitations of xmlpipe2. In xmlpipe2, the indexer must map each attribute and field tag in the XML file to a corresponding schema element. This mapping requires time, and it increases with the number of fields and attributes in the schema. TSV/CSV has no such issue, as each field and attribute corresponds to a particular column in the TSV/CSV file. In some cases, TSV/CSV could work slightly faster than xmlpipe2.</p>
 <h2 id="file-format">File format</h2>
 <p>The first column in TSV/CSV file must be a document ID. The rest columns must mirror the declaration of fields and attributes in the schema definition. Note that you don't need to declare the document ID in the schema, since it's always considered to be present, should be in the 1st column and needs to be a unique-signed positive non-zero 64-bit integer.</p>
@@ -2899,10 +2977,16 @@ that<span class="w"> </span>in-document<span class="w"> </span>field<span class=
     </section>
     
     <section class="chapter-section" id="toc-12.02.05-maindelta_schema">
-        <a class="chapter-link" href="#toc-12.02.05-maindelta_schema"> ¶ 12.2.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.05-maindelta_schema"> ¶ 12.2.5</a>
+
+            
+            <h1 id="maindelta-schema">Main+delta schema</h1>
+            
+        </header>
 
         
-        <h1 id="maindelta-schema">Main+delta schema</h1>
+        
 <!-- example maindelta -->
 <p>In many situations, the total dataset is too large to be frequently rebuilt from scratch, while the number of new records remains relatively small. For example, a forum may have 1,000,000 archived posts but only receive 1,000 new posts per day.</p>
 <p>In such cases, implementing "live" (nearly real-time) table updates can be achieved using a "main+delta" scheme.</p>
@@ -2957,18 +3041,28 @@ that<span class="w"> </span>in-document<span class="w"> </span>field<span class=
     </section>
     
     <section class="chapter-section" id="toc-12.02.06-adding_data_from_tables">
-        <a class="chapter-link" href="#toc-12.02.06-adding_data_from_tables"> ¶ 12.2.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.06-adding_data_from_tables"> ¶ 12.2.6</a>
 
-        
-        <h1>Adding data from tables</h1>
+            
+            <h1>Adding data from tables</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-12.02.06.01-merging_tables">
-        <a class="chapter-link" href="#toc-12.02.06.01-merging_tables"> ¶ 12.2.6.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.06.01-merging_tables"> ¶ 12.2.6.1</a>
+
+            
+            <h1 id="merging-tables">Merging tables</h1>
+            
+        </header>
 
         
-        <h1 id="merging-tables">Merging tables</h1>
+        
 <p>Merging two existing <strong>plain</strong> tables can be more efficient than indexing the data from scratch and might be desired in some cases (such as merging 'main' and 'delta' tables instead of simply rebuilding 'main' in the 'main+delta' partitioning scheme). Thus,<code>indexer</code> provides an option to do that. Merging tables is typically faster than rebuilding, but still <strong>not</strong> instant for huge tables. Essentially, it needs to read the contents of both tables once and write the result once. Merging a 100 GB and 1 GB table, for example, will result in 202 GB of I/O (but that's still likely less than indexing from scratch requires).</p>
 <p>The basic command syntax is as follows:</p>
 <div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>-u<span class="w"> </span>manticore<span class="w"> </span>indexer<span class="w"> </span>--merge<span class="w"> </span>DSTINDEX<span class="w"> </span>SRCINDEX<span class="w"> </span><span class="o">[</span>--rotate<span class="o">]</span><span class="w"> </span><span class="o">[</span>--drop-src<span class="o">]</span>
@@ -2987,10 +3081,16 @@ that<span class="w"> </span>in-document<span class="w"> </span>field<span class=
     </section>
     
     <section class="chapter-section" id="toc-12.02.06.02-killlists_in_plain_tables">
-        <a class="chapter-link" href="#toc-12.02.06.02-killlists_in_plain_tables"> ¶ 12.2.6.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.06.02-killlists_in_plain_tables"> ¶ 12.2.6.2</a>
+
+            
+            <h1 id="killlist-in-plain-tables">Killlist in plain tables</h1>
+            
+        </header>
 
         
-        <h1 id="killlist-in-plain-tables">Killlist in plain tables</h1>
+        
 <p>When using plain tables, there's a challenge arising from the need to have the data in the table as fresh as possible.</p>
 <p>In this case, one or more secondary (also known as delta) tables are used to capture the modified data between the time the main table was created and the current time. The modified data can include new, updated, or deleted documents. The search becomes a search over the <strong>main table and the delta table</strong>. This works seamlessly when you just add <strong>new</strong> documents to the delta table, but when it comes to updated or deleted documents, there remains the following issue.</p>
 <p>If a document is present in both the main and delta tables, it can cause issues during searching, as the engine will see two versions of a document and won't know how to pick the right one. So, the delta needs to somehow inform the search that there are deleted documents in the main table that should be disregarded. <strong>This is where kill lists come in</strong>.</p>
@@ -3091,10 +3191,16 @@ SQL
     </section>
     
     <section class="chapter-section" id="toc-12.02.06.03-attaching_a_plain_table_to_rt_table">
-        <a class="chapter-link" href="#toc-12.02.06.03-attaching_a_plain_table_to_rt_table"> ¶ 12.2.6.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.06.03-attaching_a_plain_table_to_rt_table"> ¶ 12.2.6.3</a>
+
+            
+            <h1 id="attaching-a-plain-table-to-a-real-time-table">Attaching a plain table to a real-time table</h1>
+            
+        </header>
 
         
-        <h1 id="attaching-a-plain-table-to-a-real-time-table">Attaching a plain table to a real-time table</h1>
+        
 <!-- example Example_1 -->
 
 <p>A plain table can be converted into a real-time table or added to an existing real-time table.</p>
@@ -3224,10 +3330,16 @@ After the ATTACH, the plain table is removed and no longer available for searchi
     </section>
     
     <section class="chapter-section" id="toc-12.02.06.04-importing_rt_table">
-        <a class="chapter-link" href="#toc-12.02.06.04-importing_rt_table"> ¶ 12.2.6.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.06.04-importing_rt_table"> ¶ 12.2.6.4</a>
+
+            
+            <h1 id="importing-table">Importing table</h1>
+            
+        </header>
 
         
-        <h1 id="importing-table">Importing table</h1>
+        
 <p>If you decide to migrate from <a href="../06-creating_a_table.html#defining-table-schema-in-config-%28plain mode%29">Plain mode</a> to <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a> or in some other cases, real-time and percolate tables built in Plain mode can be imported to Manticore running in RT mode using the <code>IMPORT TABLE</code> statement. The general syntax is as follows:</p>
 <!-- example import -->
 
@@ -3289,10 +3401,16 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
     </section>
     
     <section class="chapter-section" id="toc-12.02.07-rotating_a_table">
-        <a class="chapter-link" href="#toc-12.02.07-rotating_a_table"> ¶ 12.2.7</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.02.07-rotating_a_table"> ¶ 12.2.7</a>
+
+            
+            <h1 id="rotating-a-table">Rotating a table</h1>
+            
+        </header>
 
         
-        <h1 id="rotating-a-table">Rotating a table</h1>
+        
 <p>Table rotation is a procedure in which the searchd server looks for new versions of defined tables in the configuration. Rotation is supported only in Plain mode of operation.</p>
 <p>There can be two cases:</p>
 <ul>
@@ -3359,18 +3477,28 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
     </section>
     
     <section class="chapter-section" id="toc-12.03-updating_documents">
-        <a class="chapter-link" href="#toc-12.03-updating_documents"> ¶ 12.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.03-updating_documents"> ¶ 12.3</a>
 
-        
-        <h1>Updating documents</h1>
+            
+            <h1>Updating documents</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-12.03.01-replace_vs_update">
-        <a class="chapter-link" href="#toc-12.03.01-replace_vs_update"> ¶ 12.3.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.03.01-replace_vs_update"> ¶ 12.3.1</a>
+
+            
+            <h1 id="replace-vs-update">REPLACE vs UPDATE</h1>
+            
+        </header>
 
         
-        <h1 id="replace-vs-update">REPLACE vs UPDATE</h1>
+        
 <p>You can modify existing data in an RT or PQ table by either updating or replacing it.</p>
 <p><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> replaces <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents with new values. Full-text fields and columnar attributes cannot be updated. If you need to change the content of a full-text field or columnar attributes, use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
 <p><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> except that if an old document has the same ID as the new document, the old document is marked as deleted before the new document is inserted. Note that the old document does not get physically deleted from the table. The deletion can only happen when chunks are merged in a table, e.g., as a result of an <a href="16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE</a>.</p>
@@ -3379,10 +3507,16 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
     </section>
     
     <section class="chapter-section" id="toc-12.03.02-replace">
-        <a class="chapter-link" href="#toc-12.03.02-replace"> ¶ 12.3.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.03.02-replace"> ¶ 12.3.2</a>
+
+            
+            <h1 id="replace">REPLACE</h1>
+            
+        </header>
 
         
-        <h1 id="replace">REPLACE</h1>
+        
 <!-- example replace -->
 
 <p><code>REPLACE</code> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a>, but it marks the previous document with the same ID as deleted before inserting a new one.</p>
@@ -4195,10 +4329,16 @@ indexApi.Bulk(body);
     </section>
     
     <section class="chapter-section" id="toc-12.03.03-update">
-        <a class="chapter-link" href="#toc-12.03.03-update"> ¶ 12.3.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.03.03-update"> ¶ 12.3.3</a>
+
+            
+            <h1 id="update">UPDATE</h1>
+            
+        </header>
 
         
-        <h1 id="update">UPDATE</h1>
+        
 <!-- example update -->
 
 <p>UPDATE changes <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents in a specified table with new values. Note that you can't update the contents of a fulltext field or a columnar attribute. If there's such a need, use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
@@ -6655,10 +6795,16 @@ Go
     </section>
     
     <section class="chapter-section" id="toc-12.04-deleting_documents">
-        <a class="chapter-link" href="#toc-12.04-deleting_documents"> ¶ 12.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.04-deleting_documents"> ¶ 12.4</a>
+
+            
+            <h1 id="deleting-documents">Deleting documents</h1>
+            
+        </header>
 
         
-        <h1 id="deleting-documents">Deleting documents</h1>
+        
 <p>Deleting documents is only supported in <a href="02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a> for the following table types:</p>
 <ul>
 <li><a href="../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-time</a> tables</li>
@@ -7875,10 +8021,16 @@ Go
     </section>
     
     <section class="chapter-section" id="toc-12.05-transactions">
-        <a class="chapter-link" href="#toc-12.05-transactions"> ¶ 12.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-12.05-transactions"> ¶ 12.5</a>
+
+            
+            <h1 id="transactions">Transactions</h1>
+            
+        </header>
 
         
-        <h1 id="transactions">Transactions</h1>
+        
 <p>Manticore supports basic transactions for deleting and inserting data into real-time and percolate tables, except when attempting to write to a distributed table which includes a real-time or percolate table. Each change to a table is first saved in an internal changeset and then actually committed to the table. By default, each command is wrapped in an individual automatic transaction, making it transparent: you simply 'insert' something and can see the inserted result after it completes, without worrying about transactions. However, this behavior can be explicitly managed by starting and committing transactions manually.</p>
 <p>Transactions are supported for the following commands:</p>
 <ul>
@@ -8033,7 +8185,7 @@ Go
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -8047,7 +8199,7 @@ Go
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

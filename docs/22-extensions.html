@@ -15,18 +15,28 @@
 <body>
     
     <section class="chapter-section" id="toc-22-extensions">
-        <a class="chapter-link" href="#toc-22-extensions"> ¶ 22</a>
+        <header>
+            <a class="chapter-link" href="#toc-22-extensions"> ¶ 22</a>
 
-        
-        <h1>Extensions</h1>
+            
+            <h1>Extensions</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-22.01-sphinxse">
-        <a class="chapter-link" href="#toc-22.01-sphinxse"> ¶ 22.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.01-sphinxse"> ¶ 22.1</a>
+
+            
+            <h1 id="sphinxse">SphinxSE</h1>
+            
+        </header>
 
         
-        <h1 id="sphinxse">SphinxSE</h1>
+        
 <p>SphinxSE is a MySQL storage engine that can be compiled into MySQL/MariaDB servers using their pluggable architecture.</p>
 <p>Despite its name, SphinxSE does <em>not</em> actually store any data itself. Instead, it serves as a built-in client that enables the MySQL server to communicate with <code>searchd</code>, execute search queries, and retrieve search results. All indexing and searching take place outside MySQL.</p>
 <p>Some common SphinxSE applications include:</p>
@@ -436,10 +446,16 @@ $<span class="w"> </span>make<span class="w"> </span>install
     </section>
     
     <section class="chapter-section" id="toc-22.02-federated">
-        <a class="chapter-link" href="#toc-22.02-federated"> ¶ 22.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.02-federated"> ¶ 22.2</a>
+
+            
+            <h1 id="federated">FEDERATED</h1>
+            
+        </header>
 
         
-        <h1 id="federated">FEDERATED</h1>
+        
 <p>With the MySQL FEDERATED engine, you can connect to a local or remote Manticore instance from MySQL/MariaDB and perform search queries.</p>
 <h2 id="using-federated">Using FEDERATED</h2>
 <p>An actual Manticore query can't be used directly with the FEDERATED engine and must be "proxied" (sent as a string in a column) due to the FEDERATED engine's limitations and the fact that Manticore implements custom syntax like the <a href="../13-searching.html#toc-13.02.01-basic_usage">MATCH</a> clause.</p>
@@ -581,10 +597,16 @@ Query to JOIN MySQL based table with FEDERATED table served by Manticore
     </section>
     
     <section class="chapter-section" id="toc-22.03-udfs_and_plugins">
-        <a class="chapter-link" href="#toc-22.03-udfs_and_plugins"> ¶ 22.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03-udfs_and_plugins"> ¶ 22.3</a>
+
+            
+            <h1 id="udfs-and-plugins">UDFs and Plugins</h1>
+            
+        </header>
 
         
-        <h1 id="udfs-and-plugins">UDFs and Plugins</h1>
+        
 <p>Manticore can be extended with user-defined functions, or UDFs for short, like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">attr1</span><span class="p">,</span><span class="w"> </span><span class="n">myudf</span><span class="w"> </span><span class="p">(</span><span class="n">attr2</span><span class="p">,</span><span class="w"> </span><span class="n">attr3</span><span class="o">+</span><span class="n">attr4</span><span class="p">)</span><span class="w"> </span><span class="p">...</span>
 </code></pre></div>
@@ -651,10 +673,16 @@ Query to JOIN MySQL based table with FEDERATED table served by Manticore
     </section>
     
     <section class="chapter-section" id="toc-22.03.01-listing_plugins">
-        <a class="chapter-link" href="#toc-22.03.01-listing_plugins"> ¶ 22.3.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.01-listing_plugins"> ¶ 22.3.1</a>
+
+            
+            <h1 id="listing-plugins">Listing plugins</h1>
+            
+        </header>
 
         
-        <h1 id="listing-plugins">Listing plugins</h1>
+        
 <h2 id="show-plugins">SHOW PLUGINS</h2>
 <!-- example Example -->
 
@@ -743,10 +771,16 @@ To remove a plugin, make sure to use the name listed in the Package column.</p>
     </section>
     
     <section class="chapter-section" id="toc-22.03.02-udf">
-        <a class="chapter-link" href="#toc-22.03.02-udf"> ¶ 22.3.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.02-udf"> ¶ 22.3.2</a>
+
+            
+            <h1 id="udf">UDF</h1>
+            
+        </header>
 
         
-        <h1 id="udf">UDF</h1>
+        
 <p>UDFs are stored in external dynamic libraries (.so files on UNIX and .dll on Windows systems). Library files must be placed in a trusted folder specified by the <a href="20-server_settings.html#plugin_dir">plugin_dir</a> directive for security reasons: it's easier to secure a single folder than to allow anyone to install arbitrary code into <code>searchd</code>. You can dynamically load and unload UDFs into searchd using <a href="22-extensions.html#toc-22.03.02.01-creating_a_function">CREATE FUNCTION</a> and <a href="22-extensions.html#toc-22.03.02.02-deleting_a_function">DROP FUNCTION</a> SQL statements, respectively. Additionally, you can seamlessly reload UDFs (and other plugins) with the <a href="22-extensions.html#toc-22.03.03.04-reloading_plugins">RELOAD PLUGINS</a> statement. Manticore keeps track of currently loaded functions; every time you create or drop a UDF, <code>searchd</code> updates its state in the <a href="20-server_settings.html#sphinxql_state">sphinxql_state</a> file as a plain SQL script.</p>
 <p>UDFs are local. To use them on a cluster, you must place the same library on all nodes and run CREATE statements on each node as well. This process may change in future versions.</p>
 <p>Once you successfully load a UDF, you can use it in your SELECT or other statements just like any built-in function:</p>
@@ -839,10 +873,16 @@ This argument serves one more purpose. Since a single query can be executed on m
     </section>
     
     <section class="chapter-section" id="toc-22.03.02.01-creating_a_function">
-        <a class="chapter-link" href="#toc-22.03.02.01-creating_a_function"> ¶ 22.3.2.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.02.01-creating_a_function"> ¶ 22.3.2.1</a>
+
+            
+            <h1 id="create-function">CREATE FUNCTION</h1>
+            
+        </header>
 
         
-        <h1 id="create-function">CREATE FUNCTION</h1>
+        
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">udf_name</span>
 <span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="err">{</span><span class="nb">INT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">FLOAT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">STRING</span><span class="err">}</span>
 <span class="w">    </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;udf_lib_file&#39;</span>
@@ -868,10 +908,16 @@ This argument serves one more purpose. Since a single query can be executed on m
     </section>
     
     <section class="chapter-section" id="toc-22.03.02.02-deleting_a_function">
-        <a class="chapter-link" href="#toc-22.03.02.02-deleting_a_function"> ¶ 22.3.2.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.02.02-deleting_a_function"> ¶ 22.3.2.2</a>
+
+            
+            <h1 id="drop-function">DROP FUNCTION</h1>
+            
+        </header>
 
         
-        <h1 id="drop-function">DROP FUNCTION</h1>
+        
 <div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">udf_name</span>
 </code></pre></div>
 
@@ -885,18 +931,28 @@ This argument serves one more purpose. Since a single query can be executed on m
     </section>
     
     <section class="chapter-section" id="toc-22.03.03-plugins">
-        <a class="chapter-link" href="#toc-22.03.03-plugins"> ¶ 22.3.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03-plugins"> ¶ 22.3.3</a>
 
-        
-        <h1>Plugins</h1>
+            
+            <h1>Plugins</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-22.03.03.01-creating_a_plugin">
-        <a class="chapter-link" href="#toc-22.03.03.01-creating_a_plugin"> ¶ 22.3.3.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03.01-creating_a_plugin"> ¶ 22.3.3.1</a>
+
+            
+            <h1 id="system-plugins">System plugins</h1>
+            
+        </header>
 
         
-        <h1 id="system-plugins">System plugins</h1>
+        
 <h2 id="create-plugin">CREATE PLUGIN</h2>
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">plugin_name</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;plugin_type&#39;</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;plugin_library&#39;</span>
 </code></pre></div>
@@ -951,10 +1007,16 @@ This argument serves one more purpose. Since a single query can be executed on m
     </section>
     
     <section class="chapter-section" id="toc-22.03.03.02-deleting_a_plugin">
-        <a class="chapter-link" href="#toc-22.03.03.02-deleting_a_plugin"> ¶ 22.3.3.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03.02-deleting_a_plugin"> ¶ 22.3.3.2</a>
+
+            
+            <h1 id="delete-plugin">DELETE PLUGIN</h1>
+            
+        </header>
 
         
-        <h1 id="delete-plugin">DELETE PLUGIN</h1>
+        
 <div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">plugin_name</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;plugin_type&#39;</span>
 </code></pre></div>
 
@@ -994,10 +1056,16 @@ This argument serves one more purpose. Since a single query can be executed on m
     </section>
     
     <section class="chapter-section" id="toc-22.03.03.03-enabling_and_disabling_buddy_plugins">
-        <a class="chapter-link" href="#toc-22.03.03.03-enabling_and_disabling_buddy_plugins"> ¶ 22.3.3.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03.03-enabling_and_disabling_buddy_plugins"> ¶ 22.3.3.3</a>
+
+            
+            <h1 id="enabling-and-disabling-buddy-plugins">Enabling and disabling Buddy plugins</h1>
+            
+        </header>
 
         
-        <h1 id="enabling-and-disabling-buddy-plugins">Enabling and disabling Buddy plugins</h1>
+        
 <p>To simplify the control of Buddy plugins, especially when developing a new one or modifying an existing one, the enable and disable Buddy plugin commands are provided. These commands act temporarily during runtime and will reset to their defaults after restarting the daemon or performing a Buddy reset. To permanently disable a plugin, it must be removed.</p>
 <p>You need the fully qualified package name of the plugin to enable or disable it. To find it, you can run the <code>SHOW BUDDY PLUGINS</code> query and look for the full qualified name in the <code>package</code> field. For example, the <code>SHOW</code> plugin has the fully qualified name <code>manticoresoftware/buddy-plugin-show</code>.</p>
 <!-- example enable_buddy_plugin -->
@@ -1055,10 +1123,16 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
     </section>
     
     <section class="chapter-section" id="toc-22.03.03.04-reloading_plugins">
-        <a class="chapter-link" href="#toc-22.03.03.04-reloading_plugins"> ¶ 22.3.3.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03.04-reloading_plugins"> ¶ 22.3.3.4</a>
+
+            
+            <h1 id="reloading-plugins">RELOADING PLUGINS</h1>
+            
+        </header>
 
         
-        <h1 id="reloading-plugins">RELOADING PLUGINS</h1>
+        
 <div class="codehilite"><pre><span></span><code><span class="n">RELOAD</span><span class="w"> </span><span class="n">PLUGINS</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">SONAME</span><span class="w"> </span><span class="s1">&#39;plugin_library&#39;</span>
 </code></pre></div>
 
@@ -1078,10 +1152,16 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
     </section>
     
     <section class="chapter-section" id="toc-22.03.03.05-ranker_plugins">
-        <a class="chapter-link" href="#toc-22.03.03.05-ranker_plugins"> ¶ 22.3.3.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03.05-ranker_plugins"> ¶ 22.3.3.5</a>
+
+            
+            <h1 id="ranker-plugins">Ranker plugins</h1>
+            
+        </header>
 
         
-        <h1 id="ranker-plugins">Ranker plugins</h1>
+        
 <p>Ranker plugins let you implement a custom ranker that receives all the occurrences of the keywords matched in the document, and computes a  <code>WEIGHT()</code> value. They can be called as follows:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">attr1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">myranker</span><span class="p">(</span><span class="s1">&#39;option1=1&#39;</span><span class="p">);</span>
 </code></pre></div>
@@ -1098,10 +1178,16 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
     </section>
     
     <section class="chapter-section" id="toc-22.03.03.06-token_filter_plugins">
-        <a class="chapter-link" href="#toc-22.03.03.06-token_filter_plugins"> ¶ 22.3.3.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-22.03.03.06-token_filter_plugins"> ¶ 22.3.3.6</a>
+
+            
+            <h1 id="token-filter-plugins">Token filter plugins</h1>
+            
+        </header>
 
         
-        <h1 id="token-filter-plugins">Token filter plugins</h1>
+        
 <p>Token filter plugins allow you to implement a custom tokenizer that creates tokens according to custom rules. There are two types:</p>
 <ul>
 <li>Index-time tokenizer declared by <a href="../06-creating_a_table.html#index_token_filter">index_token_filter</a> in table settings</li>
@@ -1184,7 +1270,7 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -1198,7 +1284,7 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

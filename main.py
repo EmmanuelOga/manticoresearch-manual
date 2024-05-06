@@ -2,6 +2,7 @@
 Scans Manticore Search manual files and compile into a single big file.
 """
 
+from functools import cache
 import re
 from collections.abc import Iterator
 from pathlib import Path
@@ -79,6 +80,23 @@ class Entry(msgspec.Struct, omit_defaults=True):
         p = self.source_path()
         return (p or False) and p.exists() and p.is_file()
 
+
+    def __hash__(self):
+        """Since we are only using this to cache to_html, we can use the path as a hash."""
+        return hash(self.path)
+
+    @cache
+    def html_header_and_content(self):
+        """Returns a tuple with the header and the content of the HTML file."""
+        html = self.to_html()
+        parts = html.split("</h1>", maxsplit=1)
+
+        if len(parts) == 1:
+            return "", html 
+        else:
+            return (parts[0] + "</h1>"), parts[1]
+
+    @cache
     def to_html(self) -> str:
         if not self.source_exists():
             return ""

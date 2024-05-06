@@ -15,18 +15,28 @@
 <body>
     
     <section class="chapter-section" id="toc-13-searching">
-        <a class="chapter-link" href="#toc-13-searching"> ¶ 13</a>
+        <header>
+            <a class="chapter-link" href="#toc-13-searching"> ¶ 13</a>
 
-        
-        <h1>Searching</h1>
+            
+            <h1>Searching</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-13.01-intro">
-        <a class="chapter-link" href="#toc-13.01-intro"> ¶ 13.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.01-intro"> ¶ 13.1</a>
+
+            
+            <h1 id="introduction-into-searching-with-manticore-search">Introduction into searching with Manticore Search</h1>
+            
+        </header>
 
         
-        <h1 id="introduction-into-searching-with-manticore-search">Introduction into searching with Manticore Search</h1>
+        
 <p>Searching is a core feature of Manticore Search. You can:</p>
 <ul>
 <li>Perform <a href="../13-searching.html#match">full-text search</a> and implement search result <a href="../13-searching.html#toc-13.07-highlighting">highlighting</a></li>
@@ -59,18 +69,28 @@
     </section>
     
     <section class="chapter-section" id="toc-13.02-fulltext_matching">
-        <a class="chapter-link" href="#toc-13.02-fulltext_matching"> ¶ 13.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.02-fulltext_matching"> ¶ 13.2</a>
 
-        
-        <h1>Fulltext matching</h1>
+            
+            <h1>Fulltext matching</h1>
+            
+        </header>
+
         
     </section>
     
     <section class="chapter-section" id="toc-13.02.01-basic_usage">
-        <a class="chapter-link" href="#toc-13.02.01-basic_usage"> ¶ 13.2.1</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.02.01-basic_usage"> ¶ 13.2.1</a>
+
+            
+            <h1 id="match">MATCH</h1>
+            
+        </header>
 
         
-        <h1 id="match">MATCH</h1>
+        
 <p>The <code>MATCH</code> clause allows for full-text searches in text fields. The input query string is <a href="06-creating_a_table.html#toc-06.03.01-data_tokenization">tokenized</a> using the same settings applied to the text during indexing. In addition to the tokenization of input text, the query string supports a number of <a href="13-searching.html#toc-13.02.02-operators">full-text operators</a> that enforce various rules on how keywords should provide a valid match.</p>
 <p>Full-text match clauses can be combined with attribute <a href="13-searching.html#toc-13.04-filters">filters</a> as an AND boolean. <strong>OR relations between full-text matches and attribute filters are not supported</strong>.</p>
 <p>The match query is always executed first in the filtering process, followed by the <a href="13-searching.html#toc-13.04-filters">attribute filters</a>. The attribute filters are applied to the result set of the match query. A query without a match clause is called a fullscan.</p>
@@ -586,10 +606,16 @@ Go
     </section>
     
     <section class="chapter-section" id="toc-13.02.02-operators">
-        <a class="chapter-link" href="#toc-13.02.02-operators"> ¶ 13.2.2</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.02.02-operators"> ¶ 13.2.2</a>
+
+            
+            <h1 id="full-text-operators">Full text operators</h1>
+            
+        </header>
 
         
-        <h1 id="full-text-operators">Full text operators</h1>
+        
 <p>The query string can include specific operators that define the conditions for how the words from the query string should be matched.</p>
 <h3 id="boolean-operators">Boolean operators</h3>
 <h4 id="and-operator">AND operator</h4>
@@ -761,10 +787,16 @@ Please note that the terms stored in the dictionary undergo <code>charset_table<
     </section>
     
     <section class="chapter-section" id="toc-13.02.03-escaping">
-        <a class="chapter-link" href="#toc-13.02.03-escaping"> ¶ 13.2.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.02.03-escaping"> ¶ 13.2.3</a>
+
+            
+            <h1 id="escaping-characters-in-query-string">Escaping characters in query string</h1>
+            
+        </header>
 
         
-        <h1 id="escaping-characters-in-query-string">Escaping characters in query string</h1>
+        
 <p>Since certain characters function as operators in the query string, they must be escaped to prevent query errors or unintended matching conditions.</p>
 <p>The following characters should be escaped using a backslash (<code>\</code>):</p>
 <div class="codehilite"><pre><span></span><code>!    &quot;    $    &#39;    (    )    -    /    &lt;    @    \    ^    |    ~
@@ -837,10 +869,16 @@ Because these functions will escape the backslash for you, you only need to add 
     </section>
     
     <section class="chapter-section" id="toc-13.02.04-search_profiling">
-        <a class="chapter-link" href="#toc-13.02.04-search_profiling"> ¶ 13.2.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.02.04-search_profiling"> ¶ 13.2.4</a>
+
+            
+            <h1 id="search-profiling">Search profiling</h1>
+            
+        </header>
 
         
-        <h1 id="search-profiling">Search profiling</h1>
+        
 <h2 id="how-a-query-is-interpreted">How a query is interpreted</h2>
 <p>Consider this complex query example:</p>
 <div class="codehilite"><pre><span></span><code><span class="ss">&quot;hello world&quot;</span><span class="w"> </span><span class="o">@</span><span class="n">title</span><span class="w"> </span><span class="ss">&quot;example program&quot;</span><span class="o">~</span><span class="mi">5</span><span class="w"> </span><span class="o">@</span><span class="n">body</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="o">-</span><span class="p">(</span><span class="n">php</span><span class="o">|</span><span class="n">perl</span><span class="p">)</span><span class="w"> </span><span class="o">@*</span><span class="w"> </span><span class="n">code</span>
@@ -2124,10 +2162,16 @@ Example:
     </section>
     
     <section class="chapter-section" id="toc-13.02.05-boolean_optimization">
-        <a class="chapter-link" href="#toc-13.02.05-boolean_optimization"> ¶ 13.2.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.02.05-boolean_optimization"> ¶ 13.2.5</a>
+
+            
+            <h1 id="boolean-optimization">Boolean optimization</h1>
+            
+        </header>
 
         
-        <h1 id="boolean-optimization">Boolean optimization</h1>
+        
 <p>Queries can be automatically optimized if <code>OPTION boolean_simplify=1</code> is specified. Some transformations performed by this optimization include:</p>
 <ul>
 <li>Excess brackets: <code>((A | B) | C)</code> becomes <code>(A | B | C)</code>; <code>((A B) C)</code> becomes <code>(A B C)</code></li>
@@ -2147,10 +2191,16 @@ Note that optimizing queries consumes CPU time, so for simple queries or hand-op
     </section>
     
     <section class="chapter-section" id="toc-13.03-search_results">
-        <a class="chapter-link" href="#toc-13.03-search_results"> ¶ 13.3</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.03-search_results"> ¶ 13.3</a>
+
+            
+            <h1 id="search-results">Search results</h1>
+            
+        </header>
 
         
-        <h1 id="search-results">Search results</h1>
+        
 <h2 id="sql">SQL</h2>
 <!-- example sql1 -->
 <p>When you run a query via SQL over the MySQL protocol, you receive the requested columns as a result or an empty result set if nothing is found.</p>
@@ -2343,10 +2393,16 @@ Note that optimizing queries consumes CPU time, so for simple queries or hand-op
     </section>
     
     <section class="chapter-section" id="toc-13.04-filters">
-        <a class="chapter-link" href="#toc-13.04-filters"> ¶ 13.4</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.04-filters"> ¶ 13.4</a>
+
+            
+            <h1 id="filters">Filters</h1>
+            
+        </header>
 
         
-        <h1 id="filters">Filters</h1>
+        
 <h2 id="where">WHERE</h2>
 <p><code>WHERE</code> is an SQL clause that works for both full-text matching and additional filtering. The following operators are available:</p>
 <ul>
@@ -2823,10 +2879,16 @@ distance
     </section>
     
     <section class="chapter-section" id="toc-13.05-expressions">
-        <a class="chapter-link" href="#toc-13.05-expressions"> ¶ 13.5</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.05-expressions"> ¶ 13.5</a>
+
+            
+            <h1 id="expressions-in-search">Expressions in search</h1>
+            
+        </header>
 
         
-        <h1 id="expressions-in-search">Expressions in search</h1>
+        
 <p>Manticore enables the use of arbitrary arithmetic expressions through both SQL and HTTP, incorporating attribute values, internal attributes (document ID and relevance weight), arithmetic operations, several built-in functions, and user-defined functions. Below is the complete reference list for quick access.</p>
 <h2 id="arithmetic-operators">Arithmetic operators</h2>
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="o">/</span><span class="p">,</span><span class="w"> </span><span class="o">%</span><span class="p">,</span><span class="w"> </span><span class="n">DIV</span><span class="p">,</span><span class="w"> </span><span class="k">MOD</span>
@@ -3046,10 +3108,16 @@ script_fields
     </section>
     
     <section class="chapter-section" id="toc-13.06-search_options">
-        <a class="chapter-link" href="#toc-13.06-search_options"> ¶ 13.6</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.06-search_options"> ¶ 13.6</a>
+
+            
+            <h1 id="search-options">Search options</h1>
+            
+        </header>
 
         
-        <h1 id="search-options">Search options</h1>
+        
 <p>The SQL <a href="../13-searching.html#sql">SELECT</a> clause and the HTTP <a href="../13-searching.html#http-json">/search</a> endpoint support a number of options that can be used to fine-tune search behavior.</p>
 <h2 id="option">OPTION</h2>
 <h3 id="general-syntax">General syntax</h3>
@@ -3330,10 +3398,16 @@ For a batch of queries, the option must be attached to the very first query in t
     </section>
     
     <section class="chapter-section" id="toc-13.07-highlighting">
-        <a class="chapter-link" href="#toc-13.07-highlighting"> ¶ 13.7</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.07-highlighting"> ¶ 13.7</a>
+
+            
+            <h1 id="highlighting">Highlighting</h1>
+            
+        </header>
 
         
-        <h1 id="highlighting">Highlighting</h1>
+        
 <!-- example highlighting -->
 
 <p>Highlighting enables you to obtain highlighted text fragments (referred to as snippets) from documents containing matching keywords.</p>
@@ -7286,10 +7360,16 @@ SQL
     </section>
     
     <section class="chapter-section" id="toc-13.08-sorting_and_ranking">
-        <a class="chapter-link" href="#toc-13.08-sorting_and_ranking"> ¶ 13.8</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.08-sorting_and_ranking"> ¶ 13.8</a>
+
+            
+            <h1 id="sorting-and-ranking">Sorting and ranking</h1>
+            
+        </header>
 
         
-        <h1 id="sorting-and-ranking">Sorting and ranking</h1>
+        
 <p>Query results can be sorted by full-text ranking weight, one or more attributes or expressions.</p>
 <p><strong>Full-text</strong> queries return matches sorted by default. If nothing is specified, they are sorted by relevance, which is equivalent to <code>ORDER BY weight() DESC</code> in SQL format.</p>
 <p><strong>Non-full-text</strong> queries do not perform any sorting by default.</p>
@@ -8717,10 +8797,16 @@ Go
     </section>
     
     <section class="chapter-section" id="toc-13.09-pagination">
-        <a class="chapter-link" href="#toc-13.09-pagination"> ¶ 13.9</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.09-pagination"> ¶ 13.9</a>
+
+            
+            <h1 id="pagination-of-search-results">Pagination of search results</h1>
+            
+        </header>
 
         
-        <h1 id="pagination-of-search-results">Pagination of search results</h1>
+        
 <!-- example general -->
 
 <p>Manticore Search returns the top 20 matched documents in the result set by default.</p>
@@ -8819,10 +8905,16 @@ Go
     </section>
     
     <section class="chapter-section" id="toc-13.10-distributed_searching">
-        <a class="chapter-link" href="#toc-13.10-distributed_searching"> ¶ 13.10</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.10-distributed_searching"> ¶ 13.10</a>
+
+            
+            <h1 id="distributed-searching">Distributed searching</h1>
+            
+        </header>
 
         
-        <h1 id="distributed-searching">Distributed searching</h1>
+        
 <p>Manticore is designed to scale effectively through its distributed searching capabilities. Distributed searching is beneficial for improving query latency (i.e., search time) and throughput (i.e., max queries/sec) in multi-server, multi-CPU, or multi-core environments. This is crucial for applications that need to search through vast amounts of data (i.e., billions of records and terabytes of text).</p>
 <p>The primary concept is to horizontally partition the searched data across search nodes and process it in parallel.</p>
 <p>Partitioning is done manually. To set it up, you should:</p>
@@ -8849,10 +8941,16 @@ Go
     </section>
     
     <section class="chapter-section" id="toc-13.11-multiqueries">
-        <a class="chapter-link" href="#toc-13.11-multiqueries"> ¶ 13.11</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.11-multiqueries"> ¶ 13.11</a>
+
+            
+            <h1 id="multi-queries">Multi-queries</h1>
+            
+        </header>
 
         
-        <h1 id="multi-queries">Multi-queries</h1>
+        
 <p>Multi-queries, or query batches, allow you to send multiple search queries to Manticore in a single network request.</p>
 <p>👍 Why use multi-queries?</p>
 <p>The primary reason is performance. By sending requests to Manticore in a batch instead of one by one, you save time by reducing network round-trips. Additionally, sending queries in a batch allows Manticore to perform certain internal optimizations. If no batch optimizations can be applied, queries will be processed individually.</p>
@@ -8954,10 +9052,16 @@ log
     </section>
     
     <section class="chapter-section" id="toc-13.12-subselects">
-        <a class="chapter-link" href="#toc-13.12-subselects"> ¶ 13.12</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.12-subselects"> ¶ 13.12</a>
+
+            
+            <h1 id="sub-selects">Sub-selects</h1>
+            
+        </header>
 
         
-        <h1 id="sub-selects">Sub-selects</h1>
+        
 <p>Manticore supports SELECT subqueries via SQL in the following format:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cond1</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="n">X</span><span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cond2</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="n">Y</span>
 </code></pre></div>
@@ -8997,10 +9101,16 @@ SELECT * FROM
     </section>
     
     <section class="chapter-section" id="toc-13.13-grouping">
-        <a class="chapter-link" href="#toc-13.13-grouping"> ¶ 13.13</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.13-grouping"> ¶ 13.13</a>
+
+            
+            <h1 id="grouping-search-results">Grouping search results</h1>
+            
+        </header>
 
         
-        <h1 id="grouping-search-results">Grouping search results</h1>
+        
 <!-- example general -->
 <p>Grouping search results is often helpful for obtaining per-group match counts or other aggregations. For example, it's useful for creating a graph illustrating the number of matching blog posts per month or grouping web search results by site or forum posts by author, etc.</p>
 <p>Manticore supports the grouping of search results by single or multiple columns and computed expressions. The results can:</p>
@@ -10809,10 +10919,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-13.14-faceted_search">
-        <a class="chapter-link" href="#toc-13.14-faceted_search"> ¶ 13.14</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.14-faceted_search"> ¶ 13.14</a>
+
+            
+            <h1 id="faceted-search">Faceted search</h1>
+            
+        </header>
 
         
-        <h1 id="faceted-search">Faceted search</h1>
+        
 <p>Faceted search is as crucial to a modern search application as <a href="../13-searching.html#toc-13.17-autocomplete">autocomplete</a>, <a href="../13-searching.html#toc-13.18-spell_correction">spell correction</a>, and search keywords <a href="../13-searching.html#toc-13.07-highlighting">highlighting</a>, especially in e-commerce products.</p>
 <p><img alt="Faceted search" src="faceted.png" /></p>
 <p>Faceted search comes in handy when dealing with large quantities of data and various interconnected properties, such as size, color, manufacturer, or other factors. When querying vast amounts of data, search results frequently include numerous entries that don't match the user's expectations. Faceted search enables the end user to explicitly define the criteria they want their search results to satisfy.</p>
@@ -13411,10 +13527,16 @@ SQL
     </section>
     
     <section class="chapter-section" id="toc-13.15-geo_search">
-        <a class="chapter-link" href="#toc-13.15-geo_search"> ¶ 13.15</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.15-geo_search"> ¶ 13.15</a>
+
+            
+            <h1 id="geo-search">Geo search</h1>
+            
+        </header>
 
         
-        <h1 id="geo-search">Geo search</h1>
+        
 <p>One of the greatest features of Manticore Search is the ability to combine full-text searching with geo-location. For example, a retailer can offer a search where a user looks for a product, and the result set can indicate the closest shop that has the product in stock, so the user can go in-store and pick it up. A travel site can provide results based on a search limited to a certain area and have the results sorted by the distance from a point (for example, 'search museums near a hotel'). </p>
 <p>To perform geo-searching, a document needs to contain pairs of latitude/longitude coordinates. The coordinates can be stored as float attributes. If the document has multiple locations, it may be convenient to use a JSON attribute to store coordinate pairs.</p>
 <div class="codehilite"><pre><span></span><code><span class="na">table myrt</span>
@@ -13456,10 +13578,16 @@ SQL
     </section>
     
     <section class="chapter-section" id="toc-13.16-percolate_query">
-        <a class="chapter-link" href="#toc-13.16-percolate_query"> ¶ 13.16</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.16-percolate_query"> ¶ 13.16</a>
+
+            
+            <h1 id="percolate-query">Percolate Query</h1>
+            
+        </header>
 
         
-        <h1 id="percolate-query">Percolate Query</h1>
+        
 <p>Percolate queries are also known as Persistent queries, Prospective search, document routing, search in reverse, and inverse search.</p>
 <p>The traditional way of conducting searches involves storing documents and performing search queries against them. However, there are cases where we want to apply a query to a newly incoming document to signal a match. Some scenarios where this is desired include monitoring systems that collect data and notify users about specific events, such as reaching a certain threshold for a metric or a particular value appearing in the monitored data. Another example is news aggregation, where users may want to be notified only about certain categories or topics, or even specific "keywords."</p>
 <p>In these situations, traditional search is not the best fit, as it assumes the desired search is performed over the entire collection. This process gets multiplied by the number of users, resulting in many queries running over the entire collection, which can cause significant additional load. The alternative approach described in this section involves storing the queries instead and testing them against an incoming new document or a batch of documents.</p>
@@ -16984,10 +17112,16 @@ How can I learn more about performance?
     </section>
     
     <section class="chapter-section" id="toc-13.17-autocomplete">
-        <a class="chapter-link" href="#toc-13.17-autocomplete"> ¶ 13.17</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.17-autocomplete"> ¶ 13.17</a>
+
+            
+            <h1 id="autocomplete">Autocomplete</h1>
+            
+        </header>
 
         
-        <h1 id="autocomplete">Autocomplete</h1>
+        
 <p>Autocomplete (or word completion) is a feature in which an application predicts the rest of a word a user is typing. On websites, it's used in search boxes, where a user starts to type a word, and a dropdown with suggestions pops up so the user can select the ending from the list.</p>
 <p><img alt="Autocomplete" src="autocomplete.png" /></p>
 <p>There are a few ways you can do autocomplete in Manticore:</p>
@@ -17207,10 +17341,16 @@ Examples
     </section>
     
     <section class="chapter-section" id="toc-13.18-spell_correction">
-        <a class="chapter-link" href="#toc-13.18-spell_correction"> ¶ 13.18</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.18-spell_correction"> ¶ 13.18</a>
+
+            
+            <h1 id="spell-correction">Spell correction</h1>
+            
+        </header>
 
         
-        <h1 id="spell-correction">Spell correction</h1>
+        
 <p>Spell correction, also known as:</p>
 <ul>
 <li>Auto correction</li>
@@ -17481,10 +17621,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-13.19-query_cache">
-        <a class="chapter-link" href="#toc-13.19-query_cache"> ¶ 13.19</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.19-query_cache"> ¶ 13.19</a>
+
+            
+            <h1 id="query-cache">Query cache</h1>
+            
+        </header>
 
         
-        <h1 id="query-cache">Query cache</h1>
+        
 <p>Query cache stores compressed result sets in memory and reuses them for subsequent queries when possible. You can configure it using the following directives:</p>
 <ul>
 <li><a href="../20-server_settings.html#qcache_max_bytes">qcache_max_bytes</a>, a limit on the RAM usage for cached query storage. Defaults to 16 MB. Setting <code>qcache_max_bytes</code> to 0 completely disables the query cache.</li>
@@ -17525,10 +17671,16 @@ Example
     </section>
     
     <section class="chapter-section" id="toc-13.20-collations">
-        <a class="chapter-link" href="#toc-13.20-collations"> ¶ 13.20</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.20-collations"> ¶ 13.20</a>
+
+            
+            <h1 id="collations">Collations</h1>
+            
+        </header>
 
         
-        <h1 id="collations">Collations</h1>
+        
 <p>Collations primarily impact string attribute comparisons. They define both the character set encoding and the strategy Manticore employs for comparing strings when performing <code>ORDER BY</code> or <code>GROUP BY</code> with a string attribute involved.</p>
 <p>String attributes are stored as-is during indexing, and no character set or language information is attached to them. This is fine as long as Manticore only needs to store and return the strings to the calling application verbatim. However, when you ask Manticore to sort by a string value, the request immediately becomes ambiguous.</p>
 <p>First, single-byte (ASCII, ISO-8859-1, or Windows-1251) strings need to be processed differently than UTF-8 strings, which may encode each character with a variable number of bytes. Thus, we need to know the character set type to properly interpret the raw bytes as meaningful characters.</p>
@@ -17576,10 +17728,16 @@ ru_UA.utf8
     </section>
     
     <section class="chapter-section" id="toc-13.21-costbased_optimizer">
-        <a class="chapter-link" href="#toc-13.21-costbased_optimizer"> ¶ 13.21</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.21-costbased_optimizer"> ¶ 13.21</a>
+
+            
+            <h1 id="cost-based-optimizer">Cost-based optimizer</h1>
+            
+        </header>
 
         
-        <h1 id="cost-based-optimizer">Cost-based optimizer</h1>
+        
 <p>When Manticore executes a fullscan query, it can either use a plain scan to check every document against the filters or employ additional data and/or algorithms to speed up query execution. Manticore uses a cost-based optimizer (CBO), also known as a "query optimizer" to determine which approach to take.</p>
 <p>The CBO can also enhance the performance of full-text queries. See below for more details.</p>
 <p>The CBO may decide to replace one or more query filters with one of the following entities if it determines that doing so will improve performance:</p>
@@ -17608,10 +17766,16 @@ ru_UA.utf8
     </section>
     
     <section class="chapter-section" id="toc-13.22-knearest_neighbor_vector_search">
-        <a class="chapter-link" href="#toc-13.22-knearest_neighbor_vector_search"> ¶ 13.22</a>
+        <header>
+            <a class="chapter-link" href="#toc-13.22-knearest_neighbor_vector_search"> ¶ 13.22</a>
+
+            
+            <h1 id="k-nearest-neighbor-vector-search">K-nearest neighbor vector search</h1>
+            
+        </header>
 
         
-        <h1 id="k-nearest-neighbor-vector-search">K-nearest neighbor vector search</h1>
+        
 <p>Manticore Search supports the ability to add embeddings generated by your Machine Learning models to each document, and then doing a nearest-neighbor search on them. This lets you build features like similarity search, recommendations, semantic search, and relevance ranking based on NLP algorithms, among others, including image, video, and sound searches.</p>
 <h2 id="what-is-an-embedding">What is an embedding?</h2>
 <p>An embedding is a method of representing data—such as text, images, or sound—as vectors in a high-dimensional space. These vectors are crafted to ensure that the distance between them reflects the similarity of the data they represent. This process typically employs algorithms like word embeddings (e.g., Word2Vec, BERT) for text or neural networks for images. The high-dimensional nature of the vector space, with many components per vector, allows for the representation of complex and nuanced relationships between items. Their similarity is gauged by the distance between these vectors, often measured using methods like Euclidean distance or cosine similarity.</p>
@@ -18085,7 +18249,7 @@ JSON
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -18099,7 +18263,7 @@ JSON
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

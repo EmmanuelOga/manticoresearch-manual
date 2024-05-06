@@ -15,12 +15,18 @@
 <body>
     {%for entry in entries%}
     <section class="chapter-section" id="{{entry.cssid()}}">
-        <a class="chapter-link" href="#{{entry.cssid()}}"> ¶ {{entry.clean_breadcrumb()}}</a>
+        <header>
+            <a class="chapter-link" href="#{{entry.cssid()}}"> ¶ {{entry.clean_breadcrumb()}}</a>
+
+            {% if entry.source_exists() %}
+            {{entry.html_header_and_content()[0]}}
+            {% else %}
+            <h1>{{entry.title}}</h1>
+            {% endif %}
+        </header>
 
         {% if entry.source_exists() %}
-        {{entry.to_html() }}
-        {% else %}
-        <h1>{{entry.title}}</h1>
+        {{entry.html_header_and_content()[1] }}
         {% endif %}
     </section>
     {%endfor%}
@@ -62,7 +68,7 @@
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -76,7 +82,7 @@
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

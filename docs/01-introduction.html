@@ -15,10 +15,16 @@
 <body>
     
     <section class="chapter-section" id="toc-01-introduction">
-        <a class="chapter-link" href="#toc-01-introduction"> ¶ 1</a>
+        <header>
+            <a class="chapter-link" href="#toc-01-introduction"> ¶ 1</a>
+
+            
+            <h1 id="introduction">Introduction</h1>
+            
+        </header>
 
         
-        <h1 id="introduction">Introduction</h1>
+        
 <p>Manticore Search is a multi-storage database specifically designed for search, with robust full-text search capabilities.</p>
 <p>As an open-source database (available on <a href="https://github.com/manticoresoftware/manticoresearch/">GitHub</a>), Manticore Search was created in 2017 as a continuation of <a href="https://sphinxsearch.com/">Sphinx Search</a> engine. Our development team took all the best features of Sphinx and significantly improved its functionality, fixing hundreds of bugs along the way (as detailed in our <a href="https://manual.manticoresearch.com/Changelog">Changelog</a>). With nearly complete code rewrites, Manticore Search is now a modern, fast, and light-weight database with full features and exceptional full-text search capabilities.</p>
 <h2 id="manticores-key-features-are">Manticore's key features are:</h2>
@@ -136,7 +142,7 @@
                 let sel = lang.querySelector('.item-select');
                 let code = lang.querySelector('.codehilite');
 
-                if (!sel || !code){
+                if (!sel || !code) {
                     continue
                 }
 
@@ -150,7 +156,7 @@
                     sel.classList.add('selected');
                 } else {
                     hide(code);
-                } 
+                }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();

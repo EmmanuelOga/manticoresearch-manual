@@ -1047,7 +1047,7 @@ res, _, _ := apiClient.SearchAPI.Search(context.Background()).SearchRequest(*sea
 
 ## Profiling without running a query
 
-<!-- Example Explain_query -->
+<!-- example Explain_query -->
 The SQL statement `EXPLAIN QUERY` enables the display of the execution tree for a given full-text query without performing an actual search query on the table.
 
 
@@ -1074,7 +1074,7 @@ Variable: transformed_tree
 ```
 <!-- end -->
 
-<!-- Example Explain_query_dot -->
+<!-- example Explain_query_dot -->
 `EXPLAIN QUERY ... option format=dot` allows displaying the execution tree of a provided full-text query in a hierarchical format suitable for visualization by existing tools, such as https://dreampuf.github.io/GraphvizOnline:
 
 ![EXPLAIN QUERY graphviz example](graphviz.png)

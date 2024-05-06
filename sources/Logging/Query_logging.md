@@ -153,7 +153,7 @@ searchd {
 
 ## Log file permission mode
 
-<!-- Example query_log_mode -->
+<!-- example query_log_mode -->
 By default, the searchd and query log files are created with permission `600`, so only the user under which Manticore is running and `root` can read the log files. The `query_log_mode` option allows setting a different permission. This can be helpful for allowing other users to read the log files (for example, monitoring solutions running on non-root users).
 
 <!-- intro -->

@@ -245,10 +245,14 @@ Query log example:
 </div>
 
 <h2 id="log-file-permission-mode">Log file permission mode</h2>
-<!-- Example query_log_mode -->
+<!-- example query_log_mode -->
 <p>By default, the searchd and query log files are created with permission <code>600</code>, so only the user under which Manticore is running and <code>root</code> can read the log files. The <code>query_log_mode</code> option allows setting a different permission. This can be helpful for allowing other users to read the log files (for example, monitoring solutions running on non-root users).</p>
 <!-- intro -->
-<p><code>query_log_mode</code> example:</p>
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+`query_log_mode` example:
 <!-- request Config -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
@@ -259,7 +263,12 @@ Query log example:
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
+
+</div>
+
+</div>
 <!-- proofread -->
         
     </section>

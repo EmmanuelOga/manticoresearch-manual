@@ -6,6 +6,16 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+
+    scrollbar-color: #1c87c9 white;
+}
+
 body {
     font-family: 'Pt Sans', 'sans-serif';
     background-color: #fff;
@@ -14,14 +24,6 @@ body {
 
 h1 {
     margin: 0;
-}
-
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    position: relative;
 }
 
 .wrapper {

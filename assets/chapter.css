@@ -1,16 +1,22 @@
-body {
-    font-family: "PT Sans", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
 }
 
 html,
 body {
     margin: 0;
     padding: 0;
+
+    scrollbar-color: #1c87c9 white;
 }
 
 body {
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
     padding-right: .5rem;
 }
 
@@ -182,16 +188,17 @@ img {
 }
 
 a[href*="//"]::before {
-   content: "👋 "
+    content: "👋 "
 }
 
 a[href*="//manticoresearch.com/"]::before {
-   content: "🌐 "
+    content: "🌐 "
 }
+
 a[href*="//play"]::before {
-   content: "▶️ "
+    content: "▶️ "
 }
 
 a[href*="//github"]::before {
-   content: "⚙️ "
+    content: "⚙️ "
 }

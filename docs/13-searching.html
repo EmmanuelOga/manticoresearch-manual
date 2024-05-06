@@ -18070,14 +18070,27 @@ JSON
 <li><code>k</code>: This represents the number of documents to return and is a key parameter for Hierarchical Navigable Small World (HNSW) indexes. It specifies the quantity of documents that a single HNSW index should return. However, the actual number of documents included in the final results may vary. For instance, if the system is dealing with real-time tables divided into disk chunks, each chunk could return <code>k</code> documents, leading to a total that exceeds the specified <code>k</code> (as the cumulative count would be <code>num_chunks * k</code>). On the other hand, the final document count might be less than <code>k</code> if, after requesting <code>k</code> documents, some are filtered out based on specific attributes. It's important to note that the parameter <code>k</code> does not apply to ramchunks. In the context of ramchunks, the retrieval process operates differently, and thus, the <code>k</code> parameter's effect on the number of documents returned is not applicable.</li>
 <li><code>document id</code>: Document ID for KNN similarity search.</li>
 </ul>
+<!-- example k-nearest -->
+
 <!-- intro -->
-<h5 id="sql">SQL:</h5>
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">knn</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">image_vector</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">);</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
@@ -18087,9 +18100,20 @@ JSON
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- intro -->
-<h5 id="json">JSON:</h5>
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
 <span class="p">{</span>
@@ -18103,7 +18127,10 @@ JSON
 <span class="p">}</span>
 </code></pre></div>
 
+
+
 <!-- response JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
@@ -18129,14 +18156,20 @@ JSON
 <span class="p">}</span>
 </code></pre></div>
 
+
+
 <!-- end -->
+
+</div>
+
+</div>
 
 <!-- Example knn_filtering -->
 
 <h3 id="filtering-knn-vector-search-results">Filtering KNN vector search results</h3>
 <p>Manticore also supports additional filtering of documents returned by the KNN search, either by full-text matching, attribute filters, or both.</p>
 <!-- intro -->
-<h5 id="sql_1">SQL:</h5>
+<h5 id="sql">SQL:</h5>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">knn</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">image_vector</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">286569</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">031816</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">066684</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">032926</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
@@ -18153,7 +18186,7 @@ JSON
 </code></pre></div>
 
 <!-- intro -->
-<h5 id="json_1">JSON:</h5>
+<h5 id="json">JSON:</h5>
 <!-- request JSON -->
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>

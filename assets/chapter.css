@@ -10,6 +10,10 @@ body {
     padding: 0;
 }
 
+body {
+    padding-right: .5rem;
+}
+
 /* Code */
 
 code {

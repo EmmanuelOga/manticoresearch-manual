@@ -2361,7 +2361,7 @@ SQL
 <h2 id="show-meta-and-query-optimizer">SHOW META and query optimizer</h2>
 <!-- example of show meta vs query optimizer -->
 
-<p>When the <a href="../13-searching.html#toc-13.21-costbased_optimizer">cost-based query optimizer</a> chooses to use <code>DocidIndex</code>, <code>ColumnarScan</code>, or <code>SecondaryIndex</code> instead of a plain filter, this is reflected in the <code>SHOW META</code> command.</p>
+<p>When the <a href="../13-searching.html#toc-13.21-cost-based_optimizer">cost-based query optimizer</a> chooses to use <code>DocidIndex</code>, <code>ColumnarScan</code>, or <code>SecondaryIndex</code> instead of a plain filter, this is reflected in the <code>SHOW META</code> command.</p>
 <p>The <code>index</code> variable displays the names and types of secondary indexes used during query execution. The percentage indicates how many disk chunks (in the case of an RT table) or pseudo shards (in the case of a plain table) utilized the secondary index.</p>
 <!-- intro -->
 

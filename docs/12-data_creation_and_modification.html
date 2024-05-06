@@ -26,7 +26,7 @@
         
         
 <p>You can add, update, replace, and delete your indexed data using different ways provided by Manticore. Manticore supports working with external storages such as databases, XML, CSV, and TSV documents. For insert and delete operations, a <a href="../12-data_creation_and_modification.html#toc-12.05-transactions">transaction mechanism</a> is supported.</p>
-<p>Also, for insert and replace queries, Manticore supports Elasticsearch-like query format along with its own format. For details, see the corresponding examples in the <a href="../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">Adding documents to a real-time table</a> and <a href="../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> sections.</p>
+<p>Also, for insert and replace queries, Manticore supports Elasticsearch-like query format along with its own format. For details, see the corresponding examples in the <a href="../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">Adding documents to a real-time table</a> and <a href="../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> sections.</p>
 <!-- proofread -->
         
     </section>
@@ -43,9 +43,9 @@
         
     </section>
     
-    <section class="chapter-section" id="toc-12.01.01-adding_documents_to_a_realtime_table">
+    <section class="chapter-section" id="toc-12.01.01-adding_documents_to_a_real-time_table">
         <header>
-            <a class="chapter-link" href="#toc-12.01.01-adding_documents_to_a_realtime_table"> ¶ 12.1.1</a>
+            <a class="chapter-link" href="#toc-12.01.01-adding_documents_to_a_real-time_table"> ¶ 12.1.1</a>
 
             
             <h1 id="adding-documents-to-a-real-time-table">Adding documents to a real-time table</h1>
@@ -58,7 +58,7 @@
 <p>If you're looking for information on adding documents to a plain table, please refer to the section on <a href="12-data_creation_and_modification.html#toc-12.02.01-plain_tables_creation">adding data from external storages</a>.</p>
 </blockquote>
 <!-- example insert -->
-<p>Adding documents in real-time is supported only for <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a> and <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> tables. The corresponding SQL command, HTTP endpoint, or client functions insert new rows (documents) into a table with the provided field values. It's not necessary for a table to exist before adding documents to it. If the table doesn't exist, Manticore will attempt to create it automatically. For more information, see <a href="12-data_creation_and_modification.html#auto-schema">Auto schema</a>.</p>
+<p>Adding documents in real-time is supported only for <a href="06-creating_a_table.html#toc-06.02.01-real-time_table">Real-Time</a> and <a href="06-creating_a_table.html#toc-06.02.04-percolate_table">percolate</a> tables. The corresponding SQL command, HTTP endpoint, or client functions insert new rows (documents) into a table with the provided field values. It's not necessary for a table to exist before adding documents to it. If the table doesn't exist, Manticore will attempt to create it automatically. For more information, see <a href="12-data_creation_and_modification.html#auto-schema">Auto schema</a>.</p>
 <p>You can insert a single or <a href="12-data_creation_and_modification.html#bulk-adding-documents">multiple documents</a> with values for all fields of the table or just a portion of them. In this case, the other fields will be filled with their default values (0 for scalar types, an empty string for text types).</p>
 <p>Expressions are not currently supported in <code>INSERT</code>, so values must be explicitly specified.</p>
 <p>The ID field/value can be omitted, as RT and PQ tables support <a href="12-data_creation_and_modification.html#auto-id">auto-id</a> functionality. You can also use <code>0</code> as the id value to force automatic ID generation. Rows with duplicate IDs will not be overwritten by <code>INSERT</code>. Instead, you can use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> for that purpose.</p>
@@ -3501,7 +3501,7 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
         
 <p>You can modify existing data in an RT or PQ table by either updating or replacing it.</p>
 <p><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> replaces <a href="06-creating_a_table.html#row-wise-and-columnar-attribute-storages">row-wise</a> attribute values of existing documents with new values. Full-text fields and columnar attributes cannot be updated. If you need to change the content of a full-text field or columnar attributes, use <a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a>.</p>
-<p><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> except that if an old document has the same ID as the new document, the old document is marked as deleted before the new document is inserted. Note that the old document does not get physically deleted from the table. The deletion can only happen when chunks are merged in a table, e.g., as a result of an <a href="16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE</a>.</p>
+<p><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">INSERT</a> except that if an old document has the same ID as the new document, the old document is marked as deleted before the new document is inserted. Note that the old document does not get physically deleted from the table. The deletion can only happen when chunks are merged in a table, e.g., as a result of an <a href="16-securing_and_compacting_a_table.html#toc-16.05-compacting_a_table">OPTIMIZE</a>.</p>
 <!-- proofread -->
         
     </section>
@@ -3519,7 +3519,7 @@ rm<span class="w"> </span>/tmp/dump_regular.sql
         
 <!-- example replace -->
 
-<p><code>REPLACE</code> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a>, but it marks the previous document with the same ID as deleted before inserting a new one.</p>
+<p><code>REPLACE</code> works similarly to <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">INSERT</a>, but it marks the previous document with the same ID as deleted before inserting a new one.</p>
 <p>If you are looking for in-place updates, please see <a href="12-data_creation_and_modification.html#toc-12.03.03-update">this section</a>.</p>
 <h2 id="sql-replace">SQL REPLACE</h2>
 <p>The syntax of the SQL <code>REPLACE</code> statement is as follows:</p>
@@ -6097,7 +6097,7 @@ Go
 <p>In rare cases, Manticore's built-in query analyzer may be incorrect in understanding a query and determining whether a table by ID should be used. This can result in poor performance for queries like <code>UPDATE ... WHERE id = 123</code>.<br />
 For information on how to force the optimizer to use a docid index, see <a href="13-searching.html#query optimizer hints">Query optimizer hints</a>.</p>
 <h2 id="updates-via-http-json">Updates via HTTP JSON</h2>
-<p>Updates using HTTP JSON protocol are performed via the <code>/update</code> endpoint. The syntax is similar to the <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert endpoint</a>, but this time the <code>doc</code> property is mandatory.</p>
+<p>Updates using HTTP JSON protocol are performed via the <code>/update</code> endpoint. The syntax is similar to the <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">/insert endpoint</a>, but this time the <code>doc</code> property is mandatory.</p>
 <p>The server will respond with a JSON object stating if the operation was successful or not.</p>
 <!-- example JSON update -->
 
@@ -6807,7 +6807,7 @@ Go
         
 <p>Deleting documents is only supported in <a href="02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a> for the following table types:</p>
 <ul>
-<li><a href="../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-time</a> tables</li>
+<li><a href="../06-creating_a_table.html#toc-06.02.01-real-time_table">Real-time</a> tables</li>
 <li><a href="../06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate</a> tables</li>
 <li>Distributed tables that only contain RT tables as local or remote agents.</li>
 </ul>
@@ -8034,7 +8034,7 @@ Go
 <p>Manticore supports basic transactions for deleting and inserting data into real-time and percolate tables, except when attempting to write to a distributed table which includes a real-time or percolate table. Each change to a table is first saved in an internal changeset and then actually committed to the table. By default, each command is wrapped in an individual automatic transaction, making it transparent: you simply 'insert' something and can see the inserted result after it completes, without worrying about transactions. However, this behavior can be explicitly managed by starting and committing transactions manually.</p>
 <p>Transactions are supported for the following commands:</p>
 <ul>
-<li><a href="../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a></li>
+<li><a href="../12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">INSERT</a></li>
 <li><a href="../12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a></li>
 <li><a href="../12-data_creation_and_modification.html#toc-12.04-deleting_documents">DELETE</a></li>
 </ul>

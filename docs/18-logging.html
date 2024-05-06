@@ -312,7 +312,7 @@ Query log example:
 
         
         
-<p>Binary logging serves as a recovery mechanism for <a href="../06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a> table data, as well as attribute updates for plain tables that would otherwise only be stored in RAM until a flush occurs. When binary logs are enabled, <code>searchd</code> records each transaction to the binlog file and utilizes it for recovery following an unclean shutdown. During a clean shutdown, RAM chunks are saved to disk, and all binlog files are subsequently unlinked.</p>
+<p>Binary logging serves as a recovery mechanism for <a href="../06-creating_a_table.html#toc-06.02.01-real-time_table">Real-Time</a> table data, as well as attribute updates for plain tables that would otherwise only be stored in RAM until a flush occurs. When binary logs are enabled, <code>searchd</code> records each transaction to the binlog file and utilizes it for recovery following an unclean shutdown. During a clean shutdown, RAM chunks are saved to disk, and all binlog files are subsequently unlinked.</p>
 <h2 id="disabling-binary-logging">Disabling binary logging</h2>
 <p>By default, binary logging is enabled. On Linux systems, the default location for <code>binlog.*</code> files is <code>/var/lib/manticore/data/</code>.<br />
 In <a href="../06-creating_a_table.html#online-schema-management-%28rt-mode%29">RT mode</a>, binary logs are stored in the <code>data_dir</code> folder, unless specified otherwise.</p>

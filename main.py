@@ -199,7 +199,7 @@ def parse_entries() -> Entry:
             href = href.strip()[1:-1]
             indent = 1 + len(indent) // 4  # Indents will go from 1 to 4.
 
-            title = re.sub(r"[^A-Za-z0-9 ]+", "", title).strip()
+            title = re.sub(r"[^A-Za-z0-9 _\-]+", "", title).strip()
             title = re.sub(r"^\d+\s*", r"", title).strip()
 
             entry = Entry(title=title)

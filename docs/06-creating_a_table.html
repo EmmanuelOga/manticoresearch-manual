@@ -3239,7 +3239,7 @@ C
 <!-- example for creating float_vector -->
 
 <p>Float vector attributes allow storing variable-length lists of floats. It's important to note that this concept differs from multi-valued attributes. Multi-valued attributes (MVAs) are essentially sets; they do not preserve value order, and duplicate values are not retained. In contrast, float vectors perform no additional processing on values during insertion.</p>
-<p>Float vector attributes can be used in k-nearest neighbor searches; see <a href="../13-searching.html#toc-13.22-knearest_neighbor_vector_search">KNN search</a>.</p>
+<p>Float vector attributes can be used in k-nearest neighbor searches; see <a href="../13-searching.html#toc-13.22-k-nearest_neighbor_vector_search">KNN search</a>.</p>
 <p>** Currently, <code>float_vector</code> fields can only be utilized in KNN search within real-time tables and the data type is not supported in any other functions or expressions, nor is it supported in plain tables. **</p>
 <!-- intro -->
 
@@ -4463,9 +4463,9 @@ config
         
     </section>
     
-    <section class="chapter-section" id="toc-06.01.01-rowwise_and_columnar_attribute_storages">
+    <section class="chapter-section" id="toc-06.01.01-row-wise_and_columnar_attribute_storages">
         <header>
-            <a class="chapter-link" href="#toc-06.01.01-rowwise_and_columnar_attribute_storages"> ¶ 6.1.1</a>
+            <a class="chapter-link" href="#toc-06.01.01-row-wise_and_columnar_attribute_storages"> ¶ 6.1.1</a>
 
             
             <h1 id="data-types">Data types</h1>
@@ -7673,7 +7673,7 @@ C
 <!-- example for creating float_vector -->
 
 <p>Float vector attributes allow storing variable-length lists of floats. It's important to note that this concept differs from multi-valued attributes. Multi-valued attributes (MVAs) are essentially sets; they do not preserve value order, and duplicate values are not retained. In contrast, float vectors perform no additional processing on values during insertion.</p>
-<p>Float vector attributes can be used in k-nearest neighbor searches; see <a href="../13-searching.html#toc-13.22-knearest_neighbor_vector_search">KNN search</a>.</p>
+<p>Float vector attributes can be used in k-nearest neighbor searches; see <a href="../13-searching.html#toc-13.22-k-nearest_neighbor_vector_search">KNN search</a>.</p>
 <p>** Currently, <code>float_vector</code> fields can only be utilized in KNN search within real-time tables and the data type is not supported in any other functions or expressions, nor is it supported in plain tables. **</p>
 <!-- intro -->
 
@@ -8960,9 +8960,9 @@ config
         
     </section>
     
-    <section class="chapter-section" id="toc-06.02.01-realtime_table">
+    <section class="chapter-section" id="toc-06.02.01-real-time_table">
         <header>
-            <a class="chapter-link" href="#toc-06.02.01-realtime_table"> ¶ 6.2.1</a>
+            <a class="chapter-link" href="#toc-06.02.01-real-time_table"> ¶ 6.2.1</a>
 
             
             <h1 id="real-time-table">Real-time table</h1>
@@ -9264,12 +9264,12 @@ Creating a real-time table via the _mapping endpoint
 
 <h3 id="what-you-can-do-with-a-real-time-table">👍 What you can do with a real-time table:</h3>
 <ul>
-<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">Add documents</a>.</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">Add documents</a>.</li>
 <li>Update attributes and full-text fields using the <a href="04-quick_start_guide.html#update">Update</a> process.</li>
 <li><a href="04-quick_start_guide.html#delete">Delete documents</a>.</li>
 <li><a href="09-emptying_a_table.html#toc-09-emptying_a_table">Empty the table</a>.</li>
 <li>Change the schema online with the <code>ALTER</code> command, as explained in <a href="14-updating_table_schema_and_settings.html#updating-table-schema-in-rt-mode">Change schema online</a>.</li>
-<li>Define the table in a configuration file, as detailed in <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Define table</a>.</li>
+<li>Define the table in a configuration file, as detailed in <a href="06-creating_a_table.html#toc-06.02.01-real-time_table">Define table</a>.</li>
 <li>Use the <a href="12-data_creation_and_modification.html#auto-id">UUID</a> feature for automatic ID provisioning.</li>
 </ul>
 <h3 id="what-you-cannot-do-with-a-real-time-table">⛔ What you cannot do with a real-time table:</h3>
@@ -9366,7 +9366,7 @@ Creating a real-time table via the _mapping endpoint
 <h3 id="what-you-can-do-with-a-plain-table">👍 What you can do with a plain table:</h3>
 <ul>
 <li>Build it from an external storage using a <a href="06-creating_a_table.html#source">source</a> and <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a></li>
-<li>Perform an in-place update of <a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">integer, float, string and MVA attribute</a></li>
+<li>Perform an in-place update of <a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">integer, float, string and MVA attribute</a></li>
 <li><a href="12-data_creation_and_modification.html#killlist_target">Update</a> it's <code>killlist_target</code></li>
 </ul>
 <h3 id="what-you-cannot-do-with-a-plain-table">⛔ What you cannot do with a plain table:</h3>
@@ -9392,7 +9392,7 @@ Creating a real-time table via the _mapping endpoint
 <li>The time it takes to build the table increases as the data set grows</li>
 </ul>
 <h5 id="maindelta-scenario">Main+delta scenario</h5>
-<p>For larger data sets, a plain table can be used instead of a <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a>. The main+delta scenario involves:</p>
+<p>For larger data sets, a plain table can be used instead of a <a href="06-creating_a_table.html#toc-06.02.01-real-time_table">Real-Time</a>. The main+delta scenario involves:</p>
 <ul>
 <li>Creating a smaller table for incremental indexing</li>
 <li>Combining the two tables using a <a href="06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">distributed table</a></li>
@@ -9490,9 +9490,9 @@ Creating a real-time table via the _mapping endpoint
         
     </section>
     
-    <section class="chapter-section" id="toc-06.02.03-plain_and_realtime_table_settings">
+    <section class="chapter-section" id="toc-06.02.03-plain_and_real-time_table_settings">
         <header>
-            <a class="chapter-link" href="#toc-06.02.03-plain_and_realtime_table_settings"> ¶ 6.2.3</a>
+            <a class="chapter-link" href="#toc-06.02.03-plain_and_real-time_table_settings"> ¶ 6.2.3</a>
 
             
             <h1 id="plain-and-real-time-table-settings">Plain and real-time table settings</h1>
@@ -9908,7 +9908,7 @@ General syntax of CREATE TABLE
 Data types
 </div>
 
-<p>For more information on data types, see <a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">more about data types here</a>.</p>
+<p>For more information on data types, see <a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">more about data types here</a>.</p>
 <table>
 <thead>
 <tr>
@@ -10418,7 +10418,7 @@ CONFIG
 <li><a href="06-creating_a_table.html#stopword_step">stopword_step</a></li>
 <li><a href="06-creating_a_table.html#stopwords_unstemmed">stopwords_unstemmed</a></li>
 <li><a href="06-creating_a_table.html#stored_fields">stored_fields</a></li>
-<li><a href="06-creating_a_table.html#toc-06.02.03-plain_and_realtime_table_settings">stored_only_fields</a></li>
+<li><a href="06-creating_a_table.html#toc-06.02.03-plain_and_real-time_table_settings">stored_only_fields</a></li>
 <li><a href="06-creating_a_table.html#wordforms">wordforms</a></li>
 </ul>
 <!-- proofread -->
@@ -11771,9 +11771,9 @@ C
         
     </section>
     
-    <section class="chapter-section" id="toc-06.03.04-lowlevel_tokenization">
+    <section class="chapter-section" id="toc-06.03.04-low-level_tokenization">
         <header>
-            <a class="chapter-link" href="#toc-06.03.04-lowlevel_tokenization"> ¶ 6.3.4</a>
+            <a class="chapter-link" href="#toc-06.03.04-low-level_tokenization"> ¶ 6.3.4</a>
 
             
             <h1 id="low-level-tokenization">Low-level tokenization</h1>
@@ -17563,7 +17563,7 @@ C
 <p>From the client's perspective, it appears as if they are querying a single table.</p>
 <p>Distributed tables can be composed of any combination of tables, including:</p>
 <ul>
-<li>Local storage tables (<a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a> and <a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-Time</a>)</li>
+<li>Local storage tables (<a href="06-creating_a_table.html#toc-06.02.02-plain_table">plain table</a> and <a href="06-creating_a_table.html#toc-06.02.01-real-time_table">Real-Time</a>)</li>
 <li><a href="06-creating_a_table.html#toc-06.04.02-remote_tables">Remote tables</a></li>
 <li>A combination of local and remote tables</li>
 <li><a href="06-creating_a_table.html#toc-06.02.04-percolate_table">Percolate tables</a> (local, remote, or a combination)</li>

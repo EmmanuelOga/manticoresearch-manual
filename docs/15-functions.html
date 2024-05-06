@@ -254,7 +254,7 @@
 <p>The <code>ZONESPANLIST()</code> function returns pairs of matched zone spans. Each pair contains the matched zone span identifier, a colon, and the order number of the matched zone span. For example, if a document reads <code>&lt;emphasis role="bold"&gt;&lt;i&gt;text&lt;/i&gt; the &lt;i&gt;text&lt;/i&gt;&lt;/emphasis&gt;</code>, and you query for <code>'ZONESPAN:(i,b) text'</code>, then <code>ZONESPANLIST()</code> will return the string <code>"1:1 1:2 2:1"</code>, meaning that the first zone span matched "text" in spans 1 and 2, and the second zone span in span 1 only.</p>
 <h3 id="query">QUERY()</h3>
 <p><code>QUERY()</code> returns the current search query. <code>QUERY()</code> is a postlimit expression and is intended to be used with <a href="../15-functions.html#snippet%28%29">SNIPPET()</a>.</p>
-<p>Table functions are a mechanism for post-query result set processing. Table functions take an arbitrary result set as input and return a new, processed set as output. The first argument should be the input result set, but a table function can optionally take and handle more arguments. Table functions can completely change the result set, including the schema. Currently, only built-in table functions are supported. Table functions work for both outer <code>SELECT</code> and <a href="../13-searching.html#toc-13.12-subselects">nested SELECT</a>.</p>
+<p>Table functions are a mechanism for post-query result set processing. Table functions take an arbitrary result set as input and return a new, processed set as output. The first argument should be the input result set, but a table function can optionally take and handle more arguments. Table functions can completely change the result set, including the schema. Currently, only built-in table functions are supported. Table functions work for both outer <code>SELECT</code> and <a href="../13-searching.html#toc-13.12-sub-selects">nested SELECT</a>.</p>
 <!-- proofread -->
         
     </section>
@@ -1315,9 +1315,9 @@ Date math
         
     </section>
     
-    <section class="chapter-section" id="toc-15.06-geospatial_functions">
+    <section class="chapter-section" id="toc-15.06-geo-spatial_functions">
         <header>
-            <a class="chapter-link" href="#toc-15.06-geospatial_functions"> ¶ 15.6</a>
+            <a class="chapter-link" href="#toc-15.06-geo-spatial_functions"> ¶ 15.6</a>
 
             
             <h1 id="geo-spatial-functions">Geo spatial functions</h1>
@@ -1484,7 +1484,7 @@ Date math
 </code></pre></div>
 
 <h3 id="knn_dist">KNN_DIST()</h3>
-<p>Returns <a href="../13-searching.html#toc-13.22-knearest_neighbor_vector_search">KNN vector search</a> distance.</p>
+<p>Returns <a href="../13-searching.html#toc-13.22-k-nearest_neighbor_vector_search">KNN vector search</a> distance.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">knn</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">image_vector</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">286569</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">031816</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">066684</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">032926</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------+------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">knn_dist</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>

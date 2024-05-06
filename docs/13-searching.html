@@ -40,11 +40,11 @@
 <p>Searching is a core feature of Manticore Search. You can:</p>
 <ul>
 <li>Perform <a href="../13-searching.html#match">full-text search</a> and implement search result <a href="../13-searching.html#toc-13.07-highlighting">highlighting</a></li>
-<li>Perform <a href="../13-searching.html#toc-13.22-knearest_neighbor_vector_search">k-nearest neighbor search</a></li>
+<li>Perform <a href="../13-searching.html#toc-13.22-k-nearest_neighbor_vector_search">k-nearest neighbor search</a></li>
 <li>Apply <a href="../13-searching.html#toc-13.04-filters">non-full-text filtering</a></li>
 <li>Use <a href="../13-searching.html#toc-13.05-expressions">expressions</a> for filtering</li>
 <li>Utilize various <a href="../13-searching.html#toc-13.06-search_options">search options</a></li>
-<li>Employ <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a> and <a href="../13-searching.html#toc-13.12-subselects">sub-selects</a></li>
+<li>Employ <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a> and <a href="../13-searching.html#toc-13.12-sub-selects">sub-selects</a></li>
 <li>Conduct <a href="../13-searching.html#toc-13.13-grouping">aggregations</a> and <a href="../13-searching.html#toc-13.14-faceted_search">faceting</a> of search results</li>
 <li>And much more</li>
 </ul>
@@ -68,12 +68,12 @@
         
     </section>
     
-    <section class="chapter-section" id="toc-13.02-fulltext_matching">
+    <section class="chapter-section" id="toc-13.02-full-text_matching">
         <header>
-            <a class="chapter-link" href="#toc-13.02-fulltext_matching"> ¶ 13.2</a>
+            <a class="chapter-link" href="#toc-13.02-full-text_matching"> ¶ 13.2</a>
 
             
-            <h1>Fulltext matching</h1>
+            <h1>Full-text matching</h1>
             
         </header>
 
@@ -3404,7 +3404,7 @@ For a batch of queries, the option must be attached to the very first query in t
 <li><code>/*+ ColumnarScan(&lt;attr_name1&gt;[, &lt;attr_nameN&gt;]) */</code>  to force the use of a columnar scan (if the attribute is columnar), <code>/*+ NO_ColumnarScan(id) */</code> to tell the optimizer to ignore it</li>
 </ul>
 <p>Note that when executing a full-text query with filters, the query optimizer decides between intersecting the results of the full-text tree with the filter results or using a standard match-then-filter approach. Specifying <em>any</em> hint will force the daemon to use the code path that performs the intersection of the full-text tree results with the filter results.</p>
-<p>For more information on how the query optimizer works, refer to the <a href="../13-searching.html#toc-13.21-costbased_optimizer">Cost based optimizer</a> page.</p>
+<p>For more information on how the query optimizer works, refer to the <a href="../13-searching.html#toc-13.21-cost-based_optimizer">Cost based optimizer</a> page.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">students</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">21</span><span class="w"> </span><span class="cm">/*+ SecondaryIndex(age) */</span>
@@ -8972,9 +8972,9 @@ Go
         
     </section>
     
-    <section class="chapter-section" id="toc-13.11-multiqueries">
+    <section class="chapter-section" id="toc-13.11-multi-queries">
         <header>
-            <a class="chapter-link" href="#toc-13.11-multiqueries"> ¶ 13.11</a>
+            <a class="chapter-link" href="#toc-13.11-multi-queries"> ¶ 13.11</a>
 
             
             <h1 id="multi-queries">Multi-queries</h1>
@@ -9083,9 +9083,9 @@ log
         
     </section>
     
-    <section class="chapter-section" id="toc-13.12-subselects">
+    <section class="chapter-section" id="toc-13.12-sub-selects">
         <header>
-            <a class="chapter-link" href="#toc-13.12-subselects"> ¶ 13.12</a>
+            <a class="chapter-link" href="#toc-13.12-sub-selects"> ¶ 13.12</a>
 
             
             <h1 id="sub-selects">Sub-selects</h1>
@@ -17759,9 +17759,9 @@ ru_UA.utf8
         
     </section>
     
-    <section class="chapter-section" id="toc-13.21-costbased_optimizer">
+    <section class="chapter-section" id="toc-13.21-cost-based_optimizer">
         <header>
-            <a class="chapter-link" href="#toc-13.21-costbased_optimizer"> ¶ 13.21</a>
+            <a class="chapter-link" href="#toc-13.21-cost-based_optimizer"> ¶ 13.21</a>
 
             
             <h1 id="cost-based-optimizer">Cost-based optimizer</h1>
@@ -17797,9 +17797,9 @@ ru_UA.utf8
         
     </section>
     
-    <section class="chapter-section" id="toc-13.22-knearest_neighbor_vector_search">
+    <section class="chapter-section" id="toc-13.22-k-nearest_neighbor_vector_search">
         <header>
-            <a class="chapter-link" href="#toc-13.22-knearest_neighbor_vector_search"> ¶ 13.22</a>
+            <a class="chapter-link" href="#toc-13.22-k-nearest_neighbor_vector_search"> ¶ 13.22</a>
 
             
             <h1 id="k-nearest-neighbor-vector-search">K-nearest neighbor vector search</h1>

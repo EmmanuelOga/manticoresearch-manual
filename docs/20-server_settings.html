@@ -661,7 +661,7 @@ Example
 <li><code>sphinx</code> - legacy binary protocol. Used to serve connections from remote <a href="../22-extensions.html#toc-22.01-sphinxse">SphinxSE</a> clients. Some Sphinx API clients implementations (an example is the Java one) require the explicit declaration of the listener.</li>
 </ul>
 <p>Adding suffix <code>_vip</code> to client protocols (that is, all except <code>replication</code>, for instance <code>mysql_vip</code> or <code>http_vip</code> or just <code>_vip</code>) forces creating a dedicated thread for the connection to bypass different limitations. That's useful for node maintenance in case of severe overload when the server would either stall or not let you connect via a regular port otherwise.</p>
-<p>Suffix <code>_readonly</code> sets <a href="../17-security.html#toc-17.02-readonly">read-only mode</a> for the listener and limits it to accept only read queries.</p>
+<p>Suffix <code>_readonly</code> sets <a href="../17-security.html#toc-17.02-read-only">read-only mode</a> for the listener and limits it to accept only read queries.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -764,7 +764,7 @@ Example
 <h3 id="max_batch_queries">max_batch_queries</h3>
 <!-- example conf max_batch_queries -->
 <p>Limits the amount of queries per batch. Optional, default is 32.</p>
-<p>Makes searchd perform a sanity check of the amount of queries submitted in a single batch when using <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a>. Set it to 0 to skip the check.</p>
+<p>Makes searchd perform a sanity check of the amount of queries submitted in a single batch when using <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a>. Set it to 0 to skip the check.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -1909,7 +1909,7 @@ Example
 <h3 id="subtree_docs_cache">subtree_docs_cache</h3>
 <!-- example conf subtree_docs_cache -->
 <p>Max common subtree document cache size, per-query. Optional, default is 0 (disabled).</p>
-<p>This setting limits the RAM usage of a common subtree optimizer (see  <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a>). At most, this much RAM will be spent to cache document entries for each query. Setting the limit to 0 disables the optimizer.</p>
+<p>This setting limits the RAM usage of a common subtree optimizer (see  <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a>). At most, this much RAM will be spent to cache document entries for each query. Setting the limit to 0 disables the optimizer.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -1936,7 +1936,7 @@ Example
 <h3 id="subtree_hits_cache">subtree_hits_cache</h3>
 <!-- example conf subtree_hits_cache -->
 <p>Max common subtree hit cache size, per-query. Optional, default is 0 (disabled).</p>
-<p>This setting limits the RAM usage of a common subtree optimizer (see <a href="../13-searching.html#toc-13.11-multiqueries">multi-queries</a>). At most, this much RAM will be spent to cache keyword occurrences (hits) for each query. Setting the limit to 0 disables the optimizer.</p>
+<p>This setting limits the RAM usage of a common subtree optimizer (see <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a>). At most, this much RAM will be spent to cache keyword occurrences (hits) for each query. Setting the limit to 0 disables the optimizer.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>

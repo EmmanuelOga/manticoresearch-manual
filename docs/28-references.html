@@ -41,7 +41,7 @@
 </ul>
 <h5 id="data-management">Data management</h5>
 <ul>
-<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> - Adds new documents</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">INSERT</a> - Adds new documents</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> - Replaces existing documents with new ones</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> - Does in-place update in documents</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">DELETE</a> - Deletes documents</li>
@@ -60,7 +60,7 @@
 <li><a href="13-searching.html#toc-13.13-grouping">GROUP BY HAVING</a> - Filters groups</li>
 <li><a href="13-searching.html#option">OPTION</a> - Query Options</li>
 <li><a href="13-searching.html#toc-13.14-faceted_search">FACET</a> - Faceted search</li>
-<li><a href="13-searching.html#toc-13.12-subselects">SUB-SELECTS</a> - About using SELECT sub-queries</li>
+<li><a href="13-searching.html#toc-13.12-sub-selects">SUB-SELECTS</a> - About using SELECT sub-queries</li>
 <li><a href="13-searching.html#profiling-without-running-a-query">EXPLAIN QUERY</a> - Shows query execution plan without running the query itself</li>
 <li><a href="19-node_info_and_management.html#toc-19.02-show_meta">SHOW META</a> - Shows extended information about executed query</li>
 <li><a href="19-node_info_and_management.html#toc-19.09.01-query_profiling">SHOW PROFILE</a> - Shows profiling information about executed query</li>
@@ -132,22 +132,22 @@
 <ul>
 <li><a href="11-connecting_to_the_server.html#sql-over-http">/sql</a> - Execute an SQL statement over HTTP JSON</li>
 <li><a href="11-connecting_to_the_server.html#/cli">/cli</a> - Provides an HTTP command line interface</li>
-<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert</a> - Inserts a document into a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">/insert</a> - Inserts a document into a real-time table</li>
 <li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc</a> - Adds a PQ rule to a percolate table</li>
 <li><a href="12-data_creation_and_modification.html#updates-via-http-json">/update</a> - Updates a document in a real-time table</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">/replace</a> - Replaces an existing document in a real-time table or inserts it if it doesn't exist</li>
 <li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc/N?refresh=1</a> - Replaces a PQ rule in a percolate table</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">/delete</a> - Removes a document from a table</li>
-<li><a href="12-data_creation_and_modification.html#bulk-updates">/bulk</a> - Executes multiple insert, update, or delete operations in a single call. Learn more about bulk inserts <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">here</a>.</li>
+<li><a href="12-data_creation_and_modification.html#bulk-updates">/bulk</a> - Executes multiple insert, update, or delete operations in a single call. Learn more about bulk inserts <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">here</a>.</li>
 <li><a href="13-searching.html#http-json">/search</a> - Performs a search</li>
-<li><a href="13-searching.html#toc-13.22-knearest_neighbor_vector_search">/search -&gt; knn</a> - Performs a KNN vector search</li>
+<li><a href="13-searching.html#toc-13.22-k-nearest_neighbor_vector_search">/search -&gt; knn</a> - Performs a KNN vector search</li>
 <li><a href="13-searching.html#toc-13.16-percolate_query">/pq/tbl_name/search</a> - Performs a reverse search in a percolate table</li>
 <li><a href="06-creating_a_table.html#_mapping-api:">/tbl_name/_mapping</a> - Creates a table schema in the Elasticsearch style</li>
 </ul>
 <h3 id="common-things">Common things</h3>
 <ul>
-<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">data types</a></li>
-<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">engine</a></li>
+<li><a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">data types</a></li>
+<li><a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">engine</a></li>
 <li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">plain mode</a></li>
 <li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">real-time mode</a></li>
 </ul>
@@ -702,7 +702,7 @@
 </ul>
 <h5 id="data-management">Data management</h5>
 <ul>
-<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">INSERT</a> - Adds new documents</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">INSERT</a> - Adds new documents</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">REPLACE</a> - Replaces existing documents with new ones</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.03.03-update">UPDATE</a> - Does in-place update in documents</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">DELETE</a> - Deletes documents</li>
@@ -721,7 +721,7 @@
 <li><a href="13-searching.html#toc-13.13-grouping">GROUP BY HAVING</a> - Filters groups</li>
 <li><a href="13-searching.html#option">OPTION</a> - Query Options</li>
 <li><a href="13-searching.html#toc-13.14-faceted_search">FACET</a> - Faceted search</li>
-<li><a href="13-searching.html#toc-13.12-subselects">SUB-SELECTS</a> - About using SELECT sub-queries</li>
+<li><a href="13-searching.html#toc-13.12-sub-selects">SUB-SELECTS</a> - About using SELECT sub-queries</li>
 <li><a href="13-searching.html#profiling-without-running-a-query">EXPLAIN QUERY</a> - Shows query execution plan without running the query itself</li>
 <li><a href="19-node_info_and_management.html#toc-19.02-show_meta">SHOW META</a> - Shows extended information about executed query</li>
 <li><a href="19-node_info_and_management.html#toc-19.09.01-query_profiling">SHOW PROFILE</a> - Shows profiling information about executed query</li>
@@ -793,22 +793,22 @@
 <ul>
 <li><a href="11-connecting_to_the_server.html#sql-over-http">/sql</a> - Execute an SQL statement over HTTP JSON</li>
 <li><a href="11-connecting_to_the_server.html#/cli">/cli</a> - Provides an HTTP command line interface</li>
-<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">/insert</a> - Inserts a document into a real-time table</li>
+<li><a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">/insert</a> - Inserts a document into a real-time table</li>
 <li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc</a> - Adds a PQ rule to a percolate table</li>
 <li><a href="12-data_creation_and_modification.html#updates-via-http-json">/update</a> - Updates a document in a real-time table</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.03.02-replace">/replace</a> - Replaces an existing document in a real-time table or inserts it if it doesn't exist</li>
 <li><a href="12-data_creation_and_modification.html#adding-rules-to-a-percolate-table">/pq/tbl_name/doc/N?refresh=1</a> - Replaces a PQ rule in a percolate table</li>
 <li><a href="12-data_creation_and_modification.html#toc-12.04-deleting_documents">/delete</a> - Removes a document from a table</li>
-<li><a href="12-data_creation_and_modification.html#bulk-updates">/bulk</a> - Executes multiple insert, update, or delete operations in a single call. Learn more about bulk inserts <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_realtime_table">here</a>.</li>
+<li><a href="12-data_creation_and_modification.html#bulk-updates">/bulk</a> - Executes multiple insert, update, or delete operations in a single call. Learn more about bulk inserts <a href="12-data_creation_and_modification.html#toc-12.01.01-adding_documents_to_a_real-time_table">here</a>.</li>
 <li><a href="13-searching.html#http-json">/search</a> - Performs a search</li>
-<li><a href="13-searching.html#toc-13.22-knearest_neighbor_vector_search">/search -&gt; knn</a> - Performs a KNN vector search</li>
+<li><a href="13-searching.html#toc-13.22-k-nearest_neighbor_vector_search">/search -&gt; knn</a> - Performs a KNN vector search</li>
 <li><a href="13-searching.html#toc-13.16-percolate_query">/pq/tbl_name/search</a> - Performs a reverse search in a percolate table</li>
 <li><a href="06-creating_a_table.html#_mapping-api:">/tbl_name/_mapping</a> - Creates a table schema in the Elasticsearch style</li>
 </ul>
 <h3 id="common-things">Common things</h3>
 <ul>
-<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">data types</a></li>
-<li><a href="06-creating_a_table.html#toc-06.01.01-rowwise_and_columnar_attribute_storages">engine</a></li>
+<li><a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">data types</a></li>
+<li><a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">engine</a></li>
 <li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">plain mode</a></li>
 <li><a href="02-read_this_first.html#real-time-mode-vs-plain-mode">real-time mode</a></li>
 </ul>

@@ -47,7 +47,7 @@
 <p>There are few things you need to understand about Manticore Search that can help you follow the best practices of using it.</p>
 <h4 id="real-time-table-vs-plain-table">Real-time table vs plain table</h4>
 <ul>
-<li><strong><a href="06-creating_a_table.html#toc-06.02.01-realtime_table">Real-time table</a></strong> allows adding, updating and deleting documents with immediate availability of the changes.</li>
+<li><strong><a href="06-creating_a_table.html#toc-06.02.01-real-time_table">Real-time table</a></strong> allows adding, updating and deleting documents with immediate availability of the changes.</li>
 <li><strong><a href="06-creating_a_table.html#toc-06.02.02-plain_table">Plain table</a></strong> is a mostly immutable data structure and a basic element used by real-time tables. Plain table stores a set of documents, their common dictionary and indexation settings. One real-time table can consist of multiple plain tables (chunks), but <strong>besides that Manticore provides direct access to building plain tables</strong> using tool <a href="12-data_creation_and_modification.html#indexer-tool">indexer</a>. It makes sense when your data is mostly immutable, therefore you don't need a real-time table for that.</li>
 </ul>
 <h4 id="real-time-mode-vs-plain-mode">Real-time mode vs plain mode</h4>

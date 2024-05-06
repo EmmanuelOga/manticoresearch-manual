@@ -29,7 +29,7 @@ DOUBLE_ANCHOR_PATTERN = r"\([^\)#]+#([^\)#]+)#([^\)#]+)\)"
 MD_BULET = r"^\s*\*"
 
 # Store destination paths for each source path, used to fix links.
-DESTINATION_FOR_PATH : dict[str, str] = {}
+DESTINATION_FOR_PATH: dict[str, str] = {}
 
 
 class Entry(msgspec.Struct, omit_defaults=True):
@@ -80,7 +80,6 @@ class Entry(msgspec.Struct, omit_defaults=True):
         p = self.source_path()
         return (p or False) and p.exists() and p.is_file()
 
-
     def __hash__(self):
         """Since we are only using this to cache to_html, we can use the path as a hash."""
         return hash(self.path)
@@ -92,7 +91,7 @@ class Entry(msgspec.Struct, omit_defaults=True):
         parts = html.split("</h1>", maxsplit=1)
 
         if len(parts) == 1:
-            return "", html 
+            return "", html
         else:
             return (parts[0] + "</h1>"), parts[1]
 
@@ -138,7 +137,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
                 matches = re.findall(DOUBLE_ANCHOR_PATTERN, line, re.UNICODE)
                 if matches:
                     for match in matches:
-                        line = line.replace(f"#{match[0]}#{match[1]}", f"#{match[1].lower()}")
+                        line = line.replace(
+                            f"#{match[0]}#{match[1]}", f"#{match[1].lower()}"
+                        )
 
                 if in_code_block and line.find("#####") >= 0:
                     open_div("item-select")
@@ -277,9 +278,15 @@ def write_output(root: Entry):
 
     DST_ROOT.mkdir(parents=True, exist_ok=True)
 
+    # Copy assets.
     copy(ASSETS_ROOT / "toc.css", DST_ROOT)
     copy(ASSETS_ROOT / "chapter.css", DST_ROOT)
     copy(ASSETS_ROOT / "pygments.css", DST_ROOT)
+
+    img_ext: set[str] = set([".png", ".jpg", ".jpeg", ".gif", ".svg"])
+    for path in SRC_ROOT.rglob("*"):
+        if path.suffix in img_ext:
+            copy(path, DST_ROOT)
 
     # Prepare the ToC.
     toc_entries: list[Entry] = []
@@ -299,7 +306,9 @@ def write_output(root: Entry):
 
             source_path = chapter_item.source_path()
             if source_path:
-                DESTINATION_FOR_PATH[source_path.relative_to(SRC_ROOT).as_posix()] = chapter_item.toc_path
+                DESTINATION_FOR_PATH[source_path.relative_to(SRC_ROOT).as_posix()] = (
+                    chapter_item.toc_path
+                )
 
     toc = DST_ROOT / "index.html"
     print(f"* Writing {toc}...")
@@ -315,7 +324,7 @@ def write_output(root: Entry):
     chapter_template = Template(open(ASSETS_ROOT / "chapter.html.j2", "r").read())
 
     for top_entry in root.children:
-        chap = (DST_ROOT / top_entry.filename())
+        chap = DST_ROOT / top_entry.filename()
         print(f"* Writing {chap}...")
         with chap.open("w") as dst:
             result = chapter_template.render(

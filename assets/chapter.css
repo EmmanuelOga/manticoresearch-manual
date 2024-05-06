@@ -25,6 +25,10 @@ code {
 }
 
 .xcodeblock {
+    .item-select:only-of-type {
+        display: none;
+    }
+
     .item-select {
         cursor: hand;
         float: left;
@@ -137,6 +141,8 @@ blockquote span {
     }
 }
 
+/* Tables. */
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -162,4 +168,11 @@ table th {
     text-align: left;
     background-color: #04AA6D;
     color: white;
+}
+
+/* Images */
+
+img {
+    max-width: 80%;
+    margin-left: 2rem;
 }

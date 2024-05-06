@@ -170,9 +170,24 @@ table th {
     color: white;
 }
 
-/* Images */
+/* Images, Misc... */
 
 img {
     max-width: 80%;
     margin-left: 2rem;
+}
+
+a[href*="//"]::before {
+   content: "👋 "
+}
+
+a[href*="//manticoresearch.com/"]::before {
+   content: "🌐 "
+}
+a[href*="//play"]::before {
+   content: "▶️ "
+}
+
+a[href*="//github"]::before {
+   content: "⚙️ "
 }

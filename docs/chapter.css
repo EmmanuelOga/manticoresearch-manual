@@ -52,6 +52,10 @@ code {
     .item-select.selected {
         background-color: #78C0A8;
     }
+
+    .codes {
+        clear: both;
+    }
 }
 
 /* BLockquotes */

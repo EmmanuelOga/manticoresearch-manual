@@ -1,3 +1,7 @@
+:root {
+    --main-fg-color: #78C0A8;
+}
+
 /* Grid Layout: https://gridbyexample.com/patterns/header-twocol-footer/ */
 
 *,
@@ -13,13 +17,11 @@ body {
     padding: 0;
     position: relative;
 
-    scrollbar-color: #1c87c9 white;
+    scrollbar-color: var(--main-fg-color) white;
 }
 
 body {
     font-family: 'Pt Sans', 'sans-serif';
-    background-color: #fff;
-    color: #444;
 }
 
 h1 {
@@ -71,7 +73,7 @@ h1 {
 
 .header {
     color: white;
-    background: #1c87c9;
+    background: var(--main-fg-color);
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -112,7 +114,7 @@ iframe {
 
 li:has(a:focus) {
     color: white;
-    background: #1c87c9;
+    background: var(--main-fg-color);
 }
 
 /* Table of contents with leading dots. https://stackoverflow.com/a/28097029/855105 */

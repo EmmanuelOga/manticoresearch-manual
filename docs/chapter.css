@@ -1,3 +1,7 @@
+:root {
+    --main-fg-color: #78C0A8;
+}
+
 *,
 *:before,
 *:after {
@@ -9,7 +13,7 @@ body {
     margin: 0;
     padding: 0;
 
-    scrollbar-color: #1c87c9 white;
+    scrollbar-color: var(--main-fg-color) white;
 }
 
 body {
@@ -47,7 +51,7 @@ code {
         margin-bottom: .3rem;
         margin-right: .3rem;
         background-color: #f8fae5;
-        border: .1rem solid #78C0A8;
+        border: .1rem solid var(--main-fg-color);
         border-radius: .25rem;
         box-shadow: 2px 2px 2px #65a28d;
         min-width: 3rem;
@@ -64,7 +68,7 @@ code {
     }
 
     .item-select.selected {
-        background-color: #78C0A8;
+        background-color: var(--main-fg-color);
     }
 
     .codes {
@@ -76,7 +80,7 @@ code {
 
 blockquote {
     background: #f8fae5;
-    border-left: 8px solid #78C0A8;
+    border-left: 8px solid var(--main-fg-color);
     color: #555555;
     font-size: 1.25em;
     font-style: italic;
@@ -88,7 +92,7 @@ blockquote {
 }
 
 blockquote::before {
-    color: #78C0A8;
+    color: var(--main-fg-color);
     content: "\201C";
     font-size: 4em;
     left: 0;
@@ -143,7 +147,7 @@ blockquote span {
     &:target header {
         h1 {
             color: white;
-            background: #1c87c9;
+            background: var(--main-fg-color);
         }
 
         a.chapter-link {
@@ -177,7 +181,7 @@ table th {
     padding-top: .75rem;
     padding-bottom: .75rem;
     text-align: left;
-    background-color: #04AA6D;
+    background-color: var(--main-fg-color);
     color: white;
 }
 

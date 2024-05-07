@@ -25,6 +25,7 @@ body {
     padding: 0;
     position: relative;
 
+    scroll-behavior: smooth;
     scrollbar-color: var(--main-fg-color) white;
 
     font-family: "PT Sans", sans-serif;

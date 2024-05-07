@@ -123,16 +123,18 @@ blockquote span {
         }
     }
 
-    &:target header {
-        h1 {
-            color: white;
-            background: var(--main-fg-color);
-        }
-
-        a.chapter-link {
-            color: white;
-        }
+    &:target header h1,
+    &:target header a.chapter-link {
+        color: white;
+        background: var(--main-fg-color);
     }
+}
+
+h1:target,
+h2:target,
+h3:target {
+    color: white;
+    background: var(--main-fg-color);
 }
 
 /* Tables. */

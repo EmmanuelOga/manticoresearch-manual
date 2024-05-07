@@ -72,11 +72,18 @@ charset_table = non_cjk,U+00E4,U+00C4->U+00E4
 
 for case insensitive search.
 
+<!-- example charset_table 1 -->
+<!-- intro -->
+##### SQL:
+
 <!-- request SQL -->
 
 ```sql
 CREATE TABLE products(title text, price float) charset_table = '0..9, A..Z->a..z, _, a..z, U+410..U+42F->U+430..U+44F, U+430..U+44F, U+401->U+451, U+451'
 ```
+
+<!-- intro -->
+##### JSON:
 
 <!-- request JSON -->
 
@@ -84,6 +91,9 @@ CREATE TABLE products(title text, price float) charset_table = '0..9, A..Z->a..z
 POST /cli -d "
 CREATE TABLE products(title text, price float) charset_table = '0..9, A..Z->a..z, _, a..z, U+410..U+42F->U+430..U+44F, U+430..U+44F, U+401->U+451, U+451'"
 ```
+
+<!-- intro -->
+##### PHP:
 
 <!-- request PHP -->
 
@@ -131,6 +141,9 @@ utilsApi.sql("CREATE TABLE products(title text, price float) charset_table = '0.
 utilsApi.Sql("CREATE TABLE products(title text, price float) charset_table = '0..9, A..Z->a..z, _, a..z, U+410..U+42F->U+430..U+44F, U+430..U+44F, U+401->U+451, U+451'");
 ```
 
+<!-- intro -->
+##### CONFIG:
+
 <!-- request CONFIG -->
 
 ```ini
@@ -153,11 +166,17 @@ Besides definitions of characters and mappings, there are several built-in alias
 * `non_cjk`
 * `cjk`
 
+<!-- intro -->
+##### SQL:
+
 <!-- request SQL -->
 
 ```sql
 CREATE TABLE products(title text, price float) charset_table = '0..9, english, _'
 ```
+
+<!-- intro -->
+##### JSON:
 
 <!-- request JSON -->
 
@@ -165,6 +184,9 @@ CREATE TABLE products(title text, price float) charset_table = '0..9, english, _
 POST /cli -d "
 CREATE TABLE products(title text, price float) charset_table = '0..9, english, _'"
 ```
+
+<!-- intro -->
+##### PHP:
 
 <!-- request PHP -->
 
@@ -213,6 +235,9 @@ utilsApi.sql("CREATE TABLE products(title text, price float) charset_table = '0.
 utilsApi.Sql("CREATE TABLE products(title text, price float) charset_table = '0..9, english, _'");
 ```
 
+<!-- intro -->
+##### CONFIG:
+
 <!-- request CONFIG -->
 
 ```ini
@@ -256,11 +281,17 @@ list](http://www.unicode.org/cldr/charts/latest/supplemental/languages_and_scrip
 <!-- example charset_table 3 -->
 To work with both cjk and non-cjk languages, set the options in your configuration file as shown below (with an [exception](../../Creating_a_table/NLP_and_tokenization/CJK.md) for Chinese):
 
+<!-- intro -->
+##### SQL:
+
 <!-- request SQL -->
 
 ```sql
 CREATE TABLE products(title text, price float) charset_table = 'non_cjk' ngram_len = '1' ngram_chars = 'cjk'
 ```
+
+<!-- intro -->
+##### JSON:
 
 <!-- request JSON -->
 
@@ -268,6 +299,9 @@ CREATE TABLE products(title text, price float) charset_table = 'non_cjk' ngram_l
 POST /cli -d "
 CREATE TABLE products(title text, price float) charset_table = 'non_cjk' ngram_len = '1' ngram_chars = 'cjk'"
 ```
+
+<!-- intro -->
+##### PHP:
 
 <!-- request PHP -->
 
@@ -317,6 +351,8 @@ utilsApi.sql("CREATE TABLE products(title text, price float) charset_table = 'no
 ```clike
 utilsApi.Sql("CREATE TABLE products(title text, price float) charset_table = 'non_cjk' ngram_len = '1' ngram_chars = 'cjk'");
 ```
+<!-- intro -->
+##### CONFIG:
 
 <!-- request CONFIG -->
 
@@ -363,11 +399,17 @@ Blended characters can overlap with special characters used in query syntax, suc
 
 Blended characters can be remapped so that multiple different blended characters can be normalized into one base form. This is useful when indexing multiple alternative Unicode codepoints with equivalent glyphs.
 
+<!-- intro -->
+##### SQL:
+
 <!-- request SQL -->
 
 ```sql
 CREATE TABLE products(title text, price float) blend_chars = '+, &, U+23, @->_'
 ```
+
+<!-- intro -->
+##### JSON:
 
 <!-- request JSON -->
 
@@ -375,6 +417,9 @@ CREATE TABLE products(title text, price float) blend_chars = '+, &, U+23, @->_'
 POST /cli -d "
 CREATE TABLE products(title text, price float) blend_chars = '+, &, U+23, @->_'"
 ```
+
+<!-- intro -->
+##### PHP:
 
 <!-- request PHP -->
 
@@ -423,6 +468,9 @@ utilsApi.sql("CREATE TABLE products(title text, price float) blend_chars = '+, &
 ```clike
 utilsApi.Sql("CREATE TABLE products(title text, price float) blend_chars = '+, &, U+23, @->_'");
 ```
+
+<!-- intro -->
+##### CONFIG:
 
 <!-- request CONFIG -->
 
@@ -473,11 +521,17 @@ Be aware that using blend modes limits your search, even with the default mode `
 
 Using more modes increases the chance your keyword will match something.
 
+<!-- intro -->
+##### SQL:
+
 <!-- request SQL -->
 
 ```sql
 CREATE TABLE products(title text, price float) blend_mode = 'trim_tail, skip_pure' blend_chars = '+, &'
 ```
+
+<!-- intro -->
+##### JSON:
 
 <!-- request JSON -->
 
@@ -485,6 +539,9 @@ CREATE TABLE products(title text, price float) blend_mode = 'trim_tail, skip_pur
 POST /cli -d "
 CREATE TABLE products(title text, price float) blend_mode = 'trim_tail, skip_pure' blend_chars = '+, &'"
 ```
+
+<!-- intro -->
+##### PHP:
 
 <!-- request PHP -->
 
@@ -533,6 +590,9 @@ utilsApi.sql("CREATE TABLE products(title text, price float) blend_mode = 'trim_
 utilsApi.Sql("CREATE TABLE products(title text, price float) blend_mode = 'trim_tail, skip_pure' blend_chars = '+, &'");
 ```
 
+<!-- intro -->
+##### CONFIG:
+
 <!-- request CONFIG -->
 
 ```ini
@@ -560,11 +620,17 @@ min_word_len is an optional index configuration option in Manticore that specifi
 
 Only those words that are not shorter than this minimum will be indexed. For example, if min_word_len is 4, then 'the' won't be indexed, but 'they' will be.
 
+<!-- intro -->
+##### SQL:
+
 <!-- request SQL -->
 
 ```sql
 CREATE TABLE products(title text, price float) min_word_len = '4'
 ```
+
+<!-- intro -->
+##### JSON:
 
 <!-- request JSON -->
 
@@ -572,6 +638,9 @@ CREATE TABLE products(title text, price float) min_word_len = '4'
 POST /cli -d "
 CREATE TABLE products(title text, price float) min_word_len = '4'"
 ```
+
+<!-- intro -->
+##### PHP:
 
 <!-- request PHP -->
 
@@ -619,6 +688,9 @@ utilsApi.sql("CREATE TABLE products(title text, price float) min_word_len = '4'"
 ```clike
 utilsApi.Sql("CREATE TABLE products(title text, price float) min_word_len = '4'");
 ```
+
+<!-- intro -->
+##### CONFIG:
 
 <!-- request CONFIG -->
 
@@ -1985,6 +2057,9 @@ utilsApi.sql("CREATE TABLE products(title text, price float) regexp_filter = '(b
 ```clike
 utilsApi.Sql("CREATE TABLE products(title text, price float) regexp_filter = '(blue|red) => color'");
 ```
+
+<!-- intro -->
+##### CONFIG:
 
 <!-- request CONFIG -->
 

@@ -11840,18 +11840,56 @@ C
 </code></pre></div>
 
 <p>for case insensitive search.</p>
+<!-- example charset_table 1 -->
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0..9, A..Z-&gt;a..z, _, a..z, U+410..U+42F-&gt;U+430..U+44F, U+430..U+44F, U+401-&gt;U+451, U+451&#39;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">CREATE TABLE products(title text, price float) charset_table = &#39;0..9, A..Z-&gt;a..z, _, a..z, U+410..U+42F-&gt;U+430..U+44F, U+430..U+44F, U+401-&gt;U+451, U+451&#39;&quot;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 <!-- request PHP -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
 <span class="x">$index-&gt;setName(&#39;products&#39;);</span>
@@ -11863,9 +11901,10 @@ C
 <span class="x">        ]);</span>
 </code></pre></div>
 
+
 <!-- intro -->
 
-<div class='xcodeblock'>
+</div>
 
 <div class='xcodeblock-item'>
 
@@ -11933,6 +11972,16 @@ C
 
 
 
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
+
 <!-- request CONFIG -->
 
 
@@ -11962,18 +12011,55 @@ C
 <li><code>non_cjk</code></li>
 <li><code>cjk</code></li>
 </ul>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0..9, english, _&#39;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">CREATE TABLE products(title text, price float) charset_table = &#39;0..9, english, _&#39;&quot;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 <!-- request PHP -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
 <span class="x">$index-&gt;setName(&#39;products&#39;);</span>
@@ -11985,9 +12071,10 @@ C
 <span class="x">        ]);</span>
 </code></pre></div>
 
+
 <!-- intro -->
 
-<div class='xcodeblock'>
+</div>
 
 <div class='xcodeblock-item'>
 
@@ -12056,6 +12143,16 @@ C
 
 
 
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
+
 <!-- request CONFIG -->
 
 
@@ -12103,18 +12200,55 @@ C
 list</a> are supported by default.</p>
 <!-- example charset_table 3 -->
 <p>To work with both cjk and non-cjk languages, set the options in your configuration file as shown below (with an <a href="06-creating_a_table.html#toc-06.03.03-cjk">exception</a> for Chinese):</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;non_cjk&#39;</span><span class="w"> </span><span class="n">ngram_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="n">ngram_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;cjk&#39;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">CREATE TABLE products(title text, price float) charset_table = &#39;non_cjk&#39; ngram_len = &#39;1&#39; ngram_chars = &#39;cjk&#39;&quot;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 <!-- request PHP -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
 <span class="x">$index-&gt;setName(&#39;products&#39;);</span>
@@ -12128,9 +12262,10 @@ list</a> are supported by default.</p>
 <span class="x">        ]);</span>
 </code></pre></div>
 
+
 <!-- intro -->
 
-<div class='xcodeblock'>
+</div>
 
 <div class='xcodeblock-item'>
 
@@ -12198,6 +12333,15 @@ C
 </code></pre></div>
 
 
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
 
 <!-- request CONFIG -->
 
@@ -12241,18 +12385,55 @@ options. For more information on these options, refer to the corresponding docum
 <p>Positions for tokens obtained by replacing blended characters with whitespace are assigned as usual, and regular keywords will be indexed as if there were no <code>blend_chars</code> specified at all. An additional token that mixes blended and non-blended characters will be put at the starting position. For instance, if <code>AT&amp;T company</code> occurs in the very beginning of the text field, <code>at</code> will be given position 1, <code>t</code> position 2, <code>company</code> position 3, and <code>AT&amp;T</code> will also be given position 1, blending with the opening regular keyword. As a result, queries for <code>AT&amp;T</code> or just <code>AT</code> will match that document. A phrase query for <code>"AT T"</code> will also match, as well as a phrase query for <code>"AT&amp;T company"</code>.</p>
 <p>Blended characters can overlap with special characters used in query syntax, such as <code>T-Mobile</code> or <code>@twitter</code>. Where possible, the query parser will handle the blended character as blended. For instance, if <code>hello @twitter</code> is within quotes (a phrase operator), the query parser will handle the <code>@</code> symbol as blended. However, if the <code>@</code> symbol was not within quotes, the character would be handled as an operator. Therefore, it is recommended to escape keywords.</p>
 <p>Blended characters can be remapped so that multiple different blended characters can be normalized into one base form. This is useful when indexing multiple alternative Unicode codepoints with equivalent glyphs.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">blend_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;+, &amp;, U+23, @-&gt;_&#39;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">CREATE TABLE products(title text, price float) blend_chars = &#39;+, &amp;, U+23, @-&gt;_&#39;&quot;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 <!-- request PHP -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
 <span class="x">$index-&gt;setName(&#39;products&#39;);</span>
@@ -12264,9 +12445,10 @@ options. For more information on these options, refer to the corresponding docum
 <span class="x">        ]);</span>
 </code></pre></div>
 
+
 <!-- intro -->
 
-<div class='xcodeblock'>
+</div>
 
 <div class='xcodeblock-item'>
 
@@ -12336,6 +12518,16 @@ C
 
 
 
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
+
 <!-- request CONFIG -->
 
 
@@ -12383,18 +12575,55 @@ C
 <li>and you won't be able to find it by <code>dog.</code>.</li>
 </ul>
 <p>Using more modes increases the chance your keyword will match something.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">blend_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;trim_tail, skip_pure&#39;</span><span class="w"> </span><span class="n">blend_chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;+, &amp;&#39;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">CREATE TABLE products(title text, price float) blend_mode = &#39;trim_tail, skip_pure&#39; blend_chars = &#39;+, &amp;&#39;&quot;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 <!-- request PHP -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
 <span class="x">$index-&gt;setName(&#39;products&#39;);</span>
@@ -12407,9 +12636,10 @@ C
 <span class="x">        ]);</span>
 </code></pre></div>
 
+
 <!-- intro -->
 
-<div class='xcodeblock'>
+</div>
 
 <div class='xcodeblock-item'>
 
@@ -12477,6 +12707,16 @@ C
 
 
 
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
+
 <!-- request CONFIG -->
 
 
@@ -12506,18 +12746,55 @@ C
 
 <p>min_word_len is an optional index configuration option in Manticore that specifies the minimum indexed word length. The default value is 1, which means that everything is indexed.</p>
 <p>Only those words that are not shorter than this minimum will be indexed. For example, if min_word_len is 4, then 'the' won't be indexed, but 'they' will be.</p>
+<!-- intro -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <!-- request SQL -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">min_word_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;4&#39;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 <!-- request JSON -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">CREATE TABLE products(title text, price float) min_word_len = &#39;4&#39;&quot;</span>
 </code></pre></div>
 
+
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 <!-- request PHP -->
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index = new \Manticoresearch\Index($client);</span>
 <span class="x">$index-&gt;setName(&#39;products&#39;);</span>
@@ -12529,9 +12806,10 @@ C
 <span class="x">        ]);</span>
 </code></pre></div>
 
+
 <!-- intro -->
 
-<div class='xcodeblock'>
+</div>
 
 <div class='xcodeblock-item'>
 
@@ -12599,6 +12877,16 @@ C
 </code></pre></div>
 
 
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
 
 <!-- request CONFIG -->
 
@@ -14482,6 +14770,16 @@ C
 </code></pre></div>
 
 
+
+<!-- intro -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+CONFIG
+</div>
 
 <!-- request CONFIG -->
 

@@ -31,6 +31,7 @@ MD_BULET = r"^(\s*)\*"
 # Store destination paths for each source path, used to fix links.
 DESTINATION_FOR_PATH: dict[str, str] = {}
 
+WARNINGS : list[str] = []
 
 class Entry(msgspec.Struct, omit_defaults=True):
     title: str
@@ -124,6 +125,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
 
             last_line = ""
 
+            num_intros = 0
+            num_requests = 0
+            example_name = ""
             in_code_block = False
             insert_code_block = False
 
@@ -159,8 +163,13 @@ class Entry(msgspec.Struct, omit_defaults=True):
                 if line.startswith("<!-- example"):
                     in_code_block = True
                     insert_code_block = True
-
-                if line.startswith("<!-- intro"):
+                    num_intros = 0
+                    num_requests = 0
+                    example_name = line.strip()
+                elif line.startswith("<!-- request"):
+                    num_requests += 1
+                elif line.startswith("<!-- intro"):
+                    num_intros += 1
                     if in_code_block:
                         if insert_code_block:
                             open_div("xcodeblock")
@@ -169,8 +178,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
                         else:
                             close_div("xcodeblock-item")
                             open_div("xcodeblock-item")
-
-                if line.startswith("<!-- end"):
+                elif line.startswith("<!-- end"):
+                    if num_intros != num_requests:
+                        WARNINGS.append(f"{self.path}: {example_name} has {num_intros} intros and {num_requests} requests")
                     if in_code_block:
                         close_div("xcodeblock-item")
                         close_div("xcodeblock")
@@ -349,3 +359,8 @@ sanity_checks(root)
 write_output(root)
 
 print("\nDone!\n")
+
+if WARNINGS:
+    for warning in WARNINGS:
+        print(warning)
+    print(f"{len(WARNINGS)} warnings.")

@@ -2152,7 +2152,7 @@ SQL
 
 <h2 id="viewing-the-match-factors-values">Viewing the match factors values</h2>
 <!-- example factors -->
-<p>When using an expression ranker, it's possible to reveal the values of the calculated factors with the <a href="15-functions.html#packedfactors%28%29">PACKEDFACTORS()</a> function.</p>
+<p>When using an expression ranker, it's possible to reveal the values of the calculated factors with the <a href="15-functions.html#packedfactors">PACKEDFACTORS()</a> function.</p>
 <p>The function returns:</p>
 <ul>
 <li>The values of document-level factors (such as bm25, field_mask, doc_word_count)</li>
@@ -2936,13 +2936,13 @@ distance
 <li>using signed 32-bit integers,</li>
 <li>using 64-bit signed integers.</li>
 </ol>
-<p>The expression parser automatically switches to integer mode if no operations result in a floating point value. Otherwise, it uses the default floating point mode. For example, a+b will be computed using 32-bit integers if both arguments are 32-bit integers; or using 64-bit integers if both arguments are integers but one of them is 64-bit; or in floats otherwise. However, <code>a/b</code> or <code>sqrt(a)</code> will always be computed in floats, as these operations return a non-integer result. To avoid this, you can use <code>IDIV(a,b)</code> or a <code>DIV b</code> form. Additionally, <code>a*b</code> will not automatically promote to 64-bit when arguments are 32-bit. To enforce 64-bit results, use <a href="../15-functions.html#bigint%28%29">BIGINT()</a>, but note that if non-integer operations are present, BIGINT() will simply be ignored.</p>
+<p>The expression parser automatically switches to integer mode if no operations result in a floating point value. Otherwise, it uses the default floating point mode. For example, a+b will be computed using 32-bit integers if both arguments are 32-bit integers; or using 64-bit integers if both arguments are integers but one of them is 64-bit; or in floats otherwise. However, <code>a/b</code> or <code>sqrt(a)</code> will always be computed in floats, as these operations return a non-integer result. To avoid this, you can use <code>IDIV(a,b)</code> or a <code>DIV b</code> form. Additionally, <code>a*b</code> will not automatically promote to 64-bit when arguments are 32-bit. To enforce 64-bit results, use <a href="../15-functions.html#bigint">BIGINT()</a>, but note that if non-integer operations are present, BIGINT() will simply be ignored.</p>
 <h2 id="comparison-operators">Comparison operators</h2>
 <div class="codehilite"><pre><span></span><code><span class="o">&lt;</span><span class="p">,</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;=</span><span class="p">,</span><span class="w"> </span><span class="o">&gt;=</span><span class="p">,</span><span class="w"> </span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;&gt;</span>
 </code></pre></div>
 
 <p>The comparison operators return 1.0 when the condition is true and 0.0 otherwise. For example, <code>(a=b)+3</code> evaluates to 4 when attribute <code>a</code> is equal to attribute <code>b</code>, and to 3 when <code>a</code> is not. Unlike MySQL, the equality comparisons (i.e., <code>=</code> and <code>&lt;&gt;</code> operators) include a small equality threshold (1e-6 by default). If the difference between the compared values is within the threshold, they are considered equal.</p>
-<p>The <code>BETWEEN</code> and <code>IN</code> operators, in the case of multi-value attributes, return true if at least one value matches the condition (similar to <a href="../15-functions.html#any%28%29">ANY()</a>). The <code>IN</code> operator does not support JSON attributes. The <code>IS (NOT) NULL</code> operator is supported only for JSON attributes.</p>
+<p>The <code>BETWEEN</code> and <code>IN</code> operators, in the case of multi-value attributes, return true if at least one value matches the condition (similar to <a href="../15-functions.html#any">ANY()</a>). The <code>IN</code> operator does not support JSON attributes. The <code>IS (NOT) NULL</code> operator is supported only for JSON attributes.</p>
 <h2 id="boolean-operators">Boolean operators</h2>
 <div class="codehilite"><pre><span></span><code><span class="k">AND</span><span class="p">,</span><span class="w"> </span><span class="k">OR</span><span class="p">,</span><span class="w"> </span><span class="k">NOT</span>
 </code></pre></div>
@@ -2955,67 +2955,67 @@ distance
 <p>These operators perform bitwise AND and OR respectively. The operands must be of integer types.</p>
 <h2 id="functions">Functions:</h2>
 <ul>
-<li><a href="../15-functions.html#abs%28%29">ABS()</a></li>
-<li><a href="../15-functions.html#all%28%29">ALL()</a></li>
-<li><a href="../15-functions.html#any%28%29">ANY()</a></li>
-<li><a href="../15-functions.html#atan2%28%29">ATAN2()</a></li>
-<li><a href="../15-functions.html#bigint%28%29">BIGINT()</a></li>
-<li><a href="../15-functions.html#bitdot%28%29">BITDOT()</a></li>
-<li><a href="../15-functions.html#bm25f%28%29">BM25F()</a></li>
-<li><a href="../15-functions.html#ceil%28%29">CEIL()</a></li>
-<li><a href="../15-functions.html#concat%28%29">CONCAT()</a></li>
-<li><a href="../15-functions.html#contains%28%29">CONTAINS()</a></li>
-<li><a href="../15-functions.html#cos%28%29">COS()</a></li>
-<li><a href="../15-functions.html#crc32%28%29">CRC32()</a></li>
-<li><a href="../15-functions.html#date_histogram%28%29">DATE_HISTOGRAM()</a></li>
-<li><a href="../15-functions.html#date_range%28%29">DATE_RANGE()</a></li>
-<li><a href="../15-functions.html#day%28%29">DAY()</a></li>
-<li><a href="../15-functions.html#double%28%29">DOUBLE()</a></li>
-<li><a href="../15-functions.html#exp%28%29">EXP()</a></li>
-<li><a href="../15-functions.html#fibonacci%28%29">FIBONACCI()</a></li>
-<li><a href="../15-functions.html#floor%28%29">FLOOR()</a></li>
-<li><a href="../15-functions.html#geodist%28%29">GEODIST()</a></li>
-<li><a href="../15-functions.html#geopoly2d%28%29">GEOPOLY2D()</a></li>
-<li><a href="../15-functions.html#greatest%28%29">GREATEST()</a></li>
-<li><a href="../15-functions.html#hour%28%29">HOUR()</a></li>
-<li><a href="../15-functions.html#histogram%28%29">HISTOGRAM()</a></li>
-<li><a href="../15-functions.html#idiv%28%29">IDIV()</a></li>
-<li><a href="../15-functions.html#if%28%29">IF()</a></li>
-<li><a href="../15-functions.html#in%28%29">IN()</a></li>
-<li><a href="../15-functions.html#indexof%28%29">INDEXOF()</a></li>
-<li><a href="../15-functions.html#integer%28%29">INTEGER()</a></li>
-<li><a href="../15-functions.html#interval%28%29">INTERVAL()</a></li>
-<li><a href="../15-functions.html#last_insert_id%28%29">LAST_INSERT_ID()</a></li>
-<li><a href="../15-functions.html#least%28%29">LEAST()</a></li>
-<li><a href="../15-functions.html#length%28%29">LENGTH()</a></li>
-<li><a href="../15-functions.html#ln%28%29">LN()</a></li>
-<li><a href="../15-functions.html#log10%28%29">LOG10()</a></li>
-<li><a href="../15-functions.html#log2%28%29">LOG2()</a></li>
-<li><a href="../15-functions.html#max%28%29">MAX()</a></li>
-<li><a href="../15-functions.html#min%28%29">MIN()</a></li>
-<li><a href="../15-functions.html#minute%28%29">MINUTE()</a></li>
-<li><a href="../15-functions.html#min_top_sortval%28%29">MIN_TOP_SORTVAL()</a></li>
-<li><a href="../15-functions.html#min_top_weight%28%29">MIN_TOP_WEIGHT()</a></li>
-<li><a href="../15-functions.html#month%28%29">MONTH()</a></li>
-<li><a href="../15-functions.html#now%28%29">NOW()</a></li>
-<li><a href="../15-functions.html#packedfactors%28%29">PACKEDFACTORS()</a></li>
-<li><a href="../15-functions.html#poly2d%28%29">POLY2D()</a></li>
-<li><a href="../15-functions.html#pow%28%29">POW()</a></li>
-<li><a href="../15-functions.html#rand%28%29">RAND()</a></li>
-<li><a href="../15-functions.html#range%28%29">RANGE()</a></li>
-<li><a href="../15-functions.html#regex%28%29">REGEX()</a></li>
-<li><a href="../15-functions.html#remap%28%29">REMAP()</a></li>
-<li><a href="../15-functions.html#second%28%29">SECOND()</a></li>
-<li><a href="../15-functions.html#sin%28%29">SIN()</a></li>
-<li><a href="../15-functions.html#sint%28%29">SINT()</a></li>
-<li><a href="../15-functions.html#sqrt%28%29">SQRT()</a></li>
-<li><a href="../15-functions.html#substring_index%28%29">SUBSTRING_INDEX()</a></li>
-<li><a href="../15-functions.html#to_string%28%29">TO_STRING()</a></li>
-<li><a href="../15-functions.html#uint%28%29">UINT()</a></li>
-<li><a href="../15-functions.html#year%28%29">YEAR()</a></li>
-<li><a href="../15-functions.html#yearmonth%28%29">YEARMONTH()</a></li>
-<li><a href="../15-functions.html#yearmonthday%28%29">YEARMONTHDAY()</a></li>
-<li><a href="../15-functions.html#weight%28%29">WEIGHT()</a></li>
+<li><a href="../15-functions.html#abs">ABS()</a></li>
+<li><a href="../15-functions.html#all">ALL()</a></li>
+<li><a href="../15-functions.html#any">ANY()</a></li>
+<li><a href="../15-functions.html#atan2">ATAN2()</a></li>
+<li><a href="../15-functions.html#bigint">BIGINT()</a></li>
+<li><a href="../15-functions.html#bitdot">BITDOT()</a></li>
+<li><a href="../15-functions.html#bm25f">BM25F()</a></li>
+<li><a href="../15-functions.html#ceil">CEIL()</a></li>
+<li><a href="../15-functions.html#concat">CONCAT()</a></li>
+<li><a href="../15-functions.html#contains">CONTAINS()</a></li>
+<li><a href="../15-functions.html#cos">COS()</a></li>
+<li><a href="../15-functions.html#crc32">CRC32()</a></li>
+<li><a href="../15-functions.html#date_histogram">DATE_HISTOGRAM()</a></li>
+<li><a href="../15-functions.html#date_range">DATE_RANGE()</a></li>
+<li><a href="../15-functions.html#day">DAY()</a></li>
+<li><a href="../15-functions.html#double">DOUBLE()</a></li>
+<li><a href="../15-functions.html#exp">EXP()</a></li>
+<li><a href="../15-functions.html#fibonacci">FIBONACCI()</a></li>
+<li><a href="../15-functions.html#floor">FLOOR()</a></li>
+<li><a href="../15-functions.html#geodist">GEODIST()</a></li>
+<li><a href="../15-functions.html#geopoly2d">GEOPOLY2D()</a></li>
+<li><a href="../15-functions.html#greatest">GREATEST()</a></li>
+<li><a href="../15-functions.html#hour">HOUR()</a></li>
+<li><a href="../15-functions.html#histogram">HISTOGRAM()</a></li>
+<li><a href="../15-functions.html#idiv">IDIV()</a></li>
+<li><a href="../15-functions.html#if">IF()</a></li>
+<li><a href="../15-functions.html#in">IN()</a></li>
+<li><a href="../15-functions.html#indexof">INDEXOF()</a></li>
+<li><a href="../15-functions.html#integer">INTEGER()</a></li>
+<li><a href="../15-functions.html#interval">INTERVAL()</a></li>
+<li><a href="../15-functions.html#last_insert_id">LAST_INSERT_ID()</a></li>
+<li><a href="../15-functions.html#least">LEAST()</a></li>
+<li><a href="../15-functions.html#length">LENGTH()</a></li>
+<li><a href="../15-functions.html#ln">LN()</a></li>
+<li><a href="../15-functions.html#log10">LOG10()</a></li>
+<li><a href="../15-functions.html#log2">LOG2()</a></li>
+<li><a href="../15-functions.html#max">MAX()</a></li>
+<li><a href="../15-functions.html#min">MIN()</a></li>
+<li><a href="../15-functions.html#minute">MINUTE()</a></li>
+<li><a href="../15-functions.html#min_top_sortval">MIN_TOP_SORTVAL()</a></li>
+<li><a href="../15-functions.html#min_top_weight">MIN_TOP_WEIGHT()</a></li>
+<li><a href="../15-functions.html#month">MONTH()</a></li>
+<li><a href="../15-functions.html#now">NOW()</a></li>
+<li><a href="../15-functions.html#packedfactors">PACKEDFACTORS()</a></li>
+<li><a href="../15-functions.html#poly2d">POLY2D()</a></li>
+<li><a href="../15-functions.html#pow">POW()</a></li>
+<li><a href="../15-functions.html#rand">RAND()</a></li>
+<li><a href="../15-functions.html#range">RANGE()</a></li>
+<li><a href="../15-functions.html#regex">REGEX()</a></li>
+<li><a href="../15-functions.html#remap">REMAP()</a></li>
+<li><a href="../15-functions.html#second">SECOND()</a></li>
+<li><a href="../15-functions.html#sin">SIN()</a></li>
+<li><a href="../15-functions.html#sint">SINT()</a></li>
+<li><a href="../15-functions.html#sqrt">SQRT()</a></li>
+<li><a href="../15-functions.html#substring_index">SUBSTRING_INDEX()</a></li>
+<li><a href="../15-functions.html#to_string">TO_STRING()</a></li>
+<li><a href="../15-functions.html#uint">UINT()</a></li>
+<li><a href="../15-functions.html#year">YEAR()</a></li>
+<li><a href="../15-functions.html#yearmonth">YEARMONTH()</a></li>
+<li><a href="../15-functions.html#yearmonthday">YEARMONTHDAY()</a></li>
+<li><a href="../15-functions.html#weight">WEIGHT()</a></li>
 </ul>
 <h2 id="expressions-in-http-json">Expressions in HTTP JSON</h2>
 <p>In the HTTP JSON interface, expressions are supported via <code>script_fields</code> and <code>expressions</code>.</p>
@@ -12460,7 +12460,7 @@ The key function is:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">key_of_the_bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">floor</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="p">)</span>
 </code></pre></div>
 
-<p>The histogram parameter <code>calendar_interval</code> understands months to have different amounts of days. The accepted intervals are described in the <a href="../15-functions.html#date_histogram%28%29">date_histogram</a> expression. By default, the buckets are returned as an array. The histogram argument <code>keyed</code> makes the response a dictionary with the bucket keys.</p>
+<p>The histogram parameter <code>calendar_interval</code> understands months to have different amounts of days. The accepted intervals are described in the <a href="../15-functions.html#date_histogram">date_histogram</a> expression. By default, the buckets are returned as an array. The histogram argument <code>keyed</code> makes the response a dictionary with the bucket keys.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="n">DATE_HISTOGRAM</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">calendar_interval</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">months</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">idx_dates</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">months</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">months</span><span class="w"> </span><span class="k">ASC</span>
@@ -13586,7 +13586,7 @@ SQL
 
 <p>The coordinates can be stored as degrees or radians.</p>
 <h2 id="performing-distance-alculation">Performing distance сalculation</h2>
-<p>To find out the distance between two points, the <a href="../15-functions.html#geodist%28%29">GEODIST()</a> function can be used. <code>GEODIST</code> requires two pairs of coordinates as its first four parameters.</p>
+<p>To find out the distance between two points, the <a href="../15-functions.html#geodist">GEODIST()</a> function can be used. <code>GEODIST</code> requires two pairs of coordinates as its first four parameters.</p>
 <p>The 5th parameter in a simplified JSON format can configure certain aspects of the function. By default, <code>GEODIST</code> expects coordinates to be in radians, but <code>in=degrees</code> can be added to allow using degrees as input. The coordinates for which we perform the geo distance must have the same type (degrees or radians) as the ones stored in the table; otherwise, results will be misleading.</p>
 <p>The calculated distance is by default in meters, but with the <code>out</code> option, it can be transformed to kilometers, feet, or miles. Lastly, by default, a calculation method called <code>adaptive</code> is used. An alternative method based on the <code>haversine</code> algorithm is available; however, this one is slower and less precise.</p>
 <p>The result of the function - the distance - can be used in the<code>ORDER BY</code> clause to sort the results:</p>
@@ -13601,11 +13601,11 @@ SQL
 <p>Another geo search feature is the ability to determine if a location is within a specified area. A special function constructs a polygon object, which is then used by another function to test whether a set of coordinates is contained within that polygon or not.</p>
 <p>There are two functions available for creating the polygon:</p>
 <ul>
-<li><a href="../15-functions.html#geopoly2d%28%29">GEOPOLY2D()</a> - creates a polygon that takes into account the Earth's curvature</li>
-<li><a href="../15-functions.html#poly2d%28%29">POLY2D()</a> - creates a simple polygon in flat space</li>
+<li><a href="../15-functions.html#geopoly2d">GEOPOLY2D()</a> - creates a polygon that takes into account the Earth's curvature</li>
+<li><a href="../15-functions.html#poly2d">POLY2D()</a> - creates a simple polygon in flat space</li>
 </ul>
 <p><code>POLY2D</code> is suitable for geo searches when the area has sides shorter than 500km (for polygons with 3-4 sides; for polygons with more sides, lower values should be considered). For areas with longer sides, using <code>GEOPOLY2D</code> is required to maintain accurate results. <code>GEOPOLY2D</code> expects coordinates as latitude/longitude pairs in degrees; using radians will yield results in flat space (similar to <code>POLY2D</code>).</p>
-<p><a href="../15-functions.html#contains%28%29">CONTAINS()</a> takes a polygon and a set of coordinates as input and outputs <code>1</code> if the point is inside the polygon or <code>0</code> otherwise.</p>
+<p><a href="../15-functions.html#contains">CONTAINS()</a> takes a polygon and a set of coordinates as input and outputs <code>1</code> if the point is inside the polygon or <code>0</code> otherwise.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="k">CONTAINS</span><span class="p">(</span><span class="n">GEOPOLY2D</span><span class="p">(</span><span class="mi">40</span><span class="p">.</span><span class="mi">76439</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">73</span><span class="p">.</span><span class="mi">9997</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">.</span><span class="mi">21211</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">73</span><span class="p">.</span><span class="mi">999</span><span class="p">,</span><span class="w">  </span><span class="mi">42</span><span class="p">.</span><span class="mi">21211</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">76</span><span class="p">.</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">.</span><span class="mi">76439</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">76</span><span class="p">.</span><span class="mi">123</span><span class="p">),</span><span class="w"> </span><span class="mi">41</span><span class="p">.</span><span class="mi">5445</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">74</span><span class="p">.</span><span class="mi">973</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">inside</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">myindex</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">inside</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
 
@@ -17977,7 +17977,7 @@ JSON
 <li><code>query_vector</code>: This is the search vector.</li>
 <li><code>ef</code>: optional size of the dynamic list used during the search. A higher <code>ef</code> leads to more accurate but slower search.</li>
 </ul>
-<p>Documents are always sorted by their distance to the search vector. Any additional sorting criteria you specify will be applied after this primary sort condition. For retrieving the distance, there is a built-in function called <a href="../15-functions.html#knn_dist%28%29">knn_dist()</a>.</p>
+<p>Documents are always sorted by their distance to the search vector. Any additional sorting criteria you specify will be applied after this primary sort condition. For retrieving the distance, there is a built-in function called <a href="../15-functions.html#knn_dist">knn_dist()</a>.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>

@@ -479,7 +479,7 @@ C
 <p>Below is the list of data types supported by Manticore Search:</p>
 <h2 id="document-id">Document ID</h2>
 <!-- example id -->
-<p>The document identifier is a mandatory attribute, and document IDs must be <strong>unique 64-bit unsigned integers</strong>. Document IDs can be explicitly specified, but if not, they are still enabled. Document IDs cannot be updated. Note that when retrieving document IDs, they are treated as signed 64-bit integers, which means they may be negative. Use the <a href="15-functions.html#uint64%28%29">UINT64()</a> function to cast them to unsigned 64-bit integers if necessary.</p>
+<p>The document identifier is a mandatory attribute, and document IDs must be <strong>unique 64-bit unsigned integers</strong>. Document IDs can be explicitly specified, but if not, they are still enabled. Document IDs cannot be updated. Note that when retrieving document IDs, they are treated as signed 64-bit integers, which means they may be negative. Use the <a href="15-functions.html#uint64">UINT64()</a> function to cast them to unsigned 64-bit integers if necessary.</p>
 <!-- request Explicit ID -->
 
 <p>When you create a table, you can specify ID explicitly, but no matter what data type you use, it will be always as said previously - a signed 64-bit integer.</p>
@@ -2782,7 +2782,7 @@ config
 
 <!-- example for INDEXOF() json -->
 
-<p>JSON properties can be used in most operations. There are also special functions such as <a href="../15-functions.html#all%28%29">ALL()</a>, <a href="../15-functions.html#any%28%29">ANY()</a>, <a href="../15-functions.html#greatest%28%29">GREATEST()</a>, <a href="../15-functions.html#least%28%29">LEAST()</a> and <a href="../15-functions.html#indexof%28%29">INDEXOF()</a> that allow traversal of property arrays.</p>
+<p>JSON properties can be used in most operations. There are also special functions such as <a href="../15-functions.html#all">ALL()</a>, <a href="../15-functions.html#any">ANY()</a>, <a href="../15-functions.html#greatest">GREATEST()</a>, <a href="../15-functions.html#least">LEAST()</a> and <a href="../15-functions.html#indexof">INDEXOF()</a> that allow traversal of property arrays.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -2932,7 +2932,7 @@ C
 
 <!-- example for REGEX() json -->
 
-<p>Text properties are treated the same as strings, so it's not possible to use them in full-text match expressions. However, string functions such as <a href="../15-functions.html#regex%28%29">REGEX()</a> can be used.</p>
+<p>Text properties are treated the same as strings, so it's not possible to use them in full-text match expressions. However, string functions such as <a href="../15-functions.html#regex">REGEX()</a> can be used.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -3093,7 +3093,7 @@ C
 
 <!-- example for DOUBLE() -->
 
-<p>In the case of JSON properties, enforcing data type may be required for proper functionality in certain situations. For example, when working with float values, <a href="../15-functions.html#double%28%29">DOUBLE()</a> must be used for proper sorting.</p>
+<p>In the case of JSON properties, enforcing data type may be required for proper functionality in certain situations. For example, when working with float values, <a href="../15-functions.html#double">DOUBLE()</a> must be used for proper sorting.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -3572,7 +3572,7 @@ config
 </div>
 
 <!-- example for any/all MVA -->
-<p>It supports filtering and aggregation, but not sorting. Filtering can be done using a condition that requires at least one element to pass (using <a href="../15-functions.html#any%28%29">ANY()</a>) or all elements (<a href="../15-functions.html#all%28%29">ALL()</a>) to pass.</p>
+<p>It supports filtering and aggregation, but not sorting. Filtering can be done using a condition that requires at least one element to pass (using <a href="../15-functions.html#any">ANY()</a>) or all elements (<a href="../15-functions.html#all">ALL()</a>) to pass.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -3720,7 +3720,7 @@ C
 
 <!-- example for least/greatest MVA -->
 
-<p>Information like <a href="../15-functions.html#least%28%29">least</a> or <a href="../15-functions.html#greatest%28%29">greatest</a> element and length of the list can be extracted. An example shows ordering by the least element of a multi-value attribute.</p>
+<p>Information like <a href="../15-functions.html#least">least</a> or <a href="../15-functions.html#greatest">greatest</a> element and length of the list can be extracted. An example shows ordering by the least element of a multi-value attribute.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -4913,7 +4913,7 @@ C
 <p>Below is the list of data types supported by Manticore Search:</p>
 <h2 id="document-id">Document ID</h2>
 <!-- example id -->
-<p>The document identifier is a mandatory attribute, and document IDs must be <strong>unique 64-bit unsigned integers</strong>. Document IDs can be explicitly specified, but if not, they are still enabled. Document IDs cannot be updated. Note that when retrieving document IDs, they are treated as signed 64-bit integers, which means they may be negative. Use the <a href="15-functions.html#uint64%28%29">UINT64()</a> function to cast them to unsigned 64-bit integers if necessary.</p>
+<p>The document identifier is a mandatory attribute, and document IDs must be <strong>unique 64-bit unsigned integers</strong>. Document IDs can be explicitly specified, but if not, they are still enabled. Document IDs cannot be updated. Note that when retrieving document IDs, they are treated as signed 64-bit integers, which means they may be negative. Use the <a href="15-functions.html#uint64">UINT64()</a> function to cast them to unsigned 64-bit integers if necessary.</p>
 <!-- request Explicit ID -->
 
 <p>When you create a table, you can specify ID explicitly, but no matter what data type you use, it will be always as said previously - a signed 64-bit integer.</p>
@@ -7216,7 +7216,7 @@ config
 
 <!-- example for INDEXOF() json -->
 
-<p>JSON properties can be used in most operations. There are also special functions such as <a href="../15-functions.html#all%28%29">ALL()</a>, <a href="../15-functions.html#any%28%29">ANY()</a>, <a href="../15-functions.html#greatest%28%29">GREATEST()</a>, <a href="../15-functions.html#least%28%29">LEAST()</a> and <a href="../15-functions.html#indexof%28%29">INDEXOF()</a> that allow traversal of property arrays.</p>
+<p>JSON properties can be used in most operations. There are also special functions such as <a href="../15-functions.html#all">ALL()</a>, <a href="../15-functions.html#any">ANY()</a>, <a href="../15-functions.html#greatest">GREATEST()</a>, <a href="../15-functions.html#least">LEAST()</a> and <a href="../15-functions.html#indexof">INDEXOF()</a> that allow traversal of property arrays.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -7366,7 +7366,7 @@ C
 
 <!-- example for REGEX() json -->
 
-<p>Text properties are treated the same as strings, so it's not possible to use them in full-text match expressions. However, string functions such as <a href="../15-functions.html#regex%28%29">REGEX()</a> can be used.</p>
+<p>Text properties are treated the same as strings, so it's not possible to use them in full-text match expressions. However, string functions such as <a href="../15-functions.html#regex">REGEX()</a> can be used.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -7527,7 +7527,7 @@ C
 
 <!-- example for DOUBLE() -->
 
-<p>In the case of JSON properties, enforcing data type may be required for proper functionality in certain situations. For example, when working with float values, <a href="../15-functions.html#double%28%29">DOUBLE()</a> must be used for proper sorting.</p>
+<p>In the case of JSON properties, enforcing data type may be required for proper functionality in certain situations. For example, when working with float values, <a href="../15-functions.html#double">DOUBLE()</a> must be used for proper sorting.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -8006,7 +8006,7 @@ config
 </div>
 
 <!-- example for any/all MVA -->
-<p>It supports filtering and aggregation, but not sorting. Filtering can be done using a condition that requires at least one element to pass (using <a href="../15-functions.html#any%28%29">ANY()</a>) or all elements (<a href="../15-functions.html#all%28%29">ALL()</a>) to pass.</p>
+<p>It supports filtering and aggregation, but not sorting. Filtering can be done using a condition that requires at least one element to pass (using <a href="../15-functions.html#any">ANY()</a>) or all elements (<a href="../15-functions.html#all">ALL()</a>) to pass.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -8154,7 +8154,7 @@ C
 
 <!-- example for least/greatest MVA -->
 
-<p>Information like <a href="../15-functions.html#least%28%29">least</a> or <a href="../15-functions.html#greatest%28%29">greatest</a> element and length of the list can be extracted. An example shows ordering by the least element of a multi-value attribute.</p>
+<p>Information like <a href="../15-functions.html#least">least</a> or <a href="../15-functions.html#greatest">greatest</a> element and length of the list can be extracted. An example shows ordering by the least element of a multi-value attribute.</p>
 <!-- intro -->
 
 <div class='xcodeblock'>
@@ -13776,7 +13776,7 @@ C
 <li>compute a field length (counted in keywords) for every document and store in to a respective attribute</li>
 <li>compute the per-index averages. The lengths attributes will have a special TOKENCOUNT type, but their values are in fact regular 32-bit integers, and their values are generally accessible.</li>
 </ul>
-<p><a href="15-functions.html#bm25a%28%29">BM25A()</a> and <a href="15-functions.html#bm25f%28%29">BM25F()</a> functions in the expression ranker are based on these lengths and require <code>index_field_lengths</code> to be enabled. Historically, Manticore used a simplified, stripped-down variant of BM25 that, unlike the complete function, did <strong>not</strong> account for document length. There's also support for both a complete variant of BM25, and its extension towards multiple fields, called BM25F. They require per-document length and per-field lengths, respectively. Hence the additional directive.</p>
+<p><a href="15-functions.html#bm25a">BM25A()</a> and <a href="15-functions.html#bm25f">BM25F()</a> functions in the expression ranker are based on these lengths and require <code>index_field_lengths</code> to be enabled. Historically, Manticore used a simplified, stripped-down variant of BM25 that, unlike the complete function, did <strong>not</strong> account for document length. There's also support for both a complete variant of BM25, and its extension towards multiple fields, called BM25F. They require per-document length and per-field lengths, respectively. Hence the additional directive.</p>
 <!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="nb">float</span><span class="p">)</span><span class="w"> </span><span class="n">index_field_lengths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1&#39;</span>

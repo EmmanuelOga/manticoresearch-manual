@@ -40,16 +40,16 @@
 <li><a href="https://github.com/manticoresoftware/manticoresearch/issues/1541">Issue #1541</a> Added a <a href="13-searching.html#regex-operator">REGEX</a> full-text operator.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/issues/1569">Issue #1569</a> Binary log is now written with transaction granularity.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/commit/514d35b497f4bdb20b6473ff963752a978a4bb8d">Commit 514d</a> Revamp of time operations for better performance and new date/time functions:</li>
-<li><a href="15-functions.html#curdate%28%29">CURDATE()</a> - Returns current date in local timezone</li>
-<li><a href="15-functions.html#quarter%28%29">QUARTER()</a> - Returns the integer quarter of the year from a timestamp argument</li>
-<li><a href="15-functions.html#dayname%28%29">DAYNAME()</a> - Returns the weekday name for a given timestamp argument</li>
-<li><a href="15-functions.html#monthname%28%29">MONTHNAME()</a> - Returns the name of the month for a given timestamp argument</li>
-<li><a href="15-functions.html#dayofweek%28%29">DAYOFWEEK()</a> - Returns the integer weekday index for a given timestamp argument</li>
-<li><a href="15-functions.html#dayofyear%28%29">DAYOFYEAR()</a> - Returns the integer day of the year for a given timestamp argument</li>
-<li><a href="15-functions.html#yearweek%28%29">YEARWEEK()</a> - Returns the integer year and the day code of the first day of current week for a given timestamp argument</li>
-<li><a href="15-functions.html#datediff%28%29">DATEDIFF()</a> - Returns the number of days between two given timestamps</li>
-<li><a href="15-functions.html#date%28%29">DATE()</a> - Formats the date part from a timestamp argument</li>
-<li><a href="15-functions.html#time%28%29">TIME()</a> - Formats the time part from a timestamp argument</li>
+<li><a href="15-functions.html#curdate">CURDATE()</a> - Returns current date in local timezone</li>
+<li><a href="15-functions.html#quarter">QUARTER()</a> - Returns the integer quarter of the year from a timestamp argument</li>
+<li><a href="15-functions.html#dayname">DAYNAME()</a> - Returns the weekday name for a given timestamp argument</li>
+<li><a href="15-functions.html#monthname">MONTHNAME()</a> - Returns the name of the month for a given timestamp argument</li>
+<li><a href="15-functions.html#dayofweek">DAYOFWEEK()</a> - Returns the integer weekday index for a given timestamp argument</li>
+<li><a href="15-functions.html#dayofyear">DAYOFYEAR()</a> - Returns the integer day of the year for a given timestamp argument</li>
+<li><a href="15-functions.html#yearweek">YEARWEEK()</a> - Returns the integer year and the day code of the first day of current week for a given timestamp argument</li>
+<li><a href="15-functions.html#datediff">DATEDIFF()</a> - Returns the number of days between two given timestamps</li>
+<li><a href="15-functions.html#date">DATE()</a> - Formats the date part from a timestamp argument</li>
+<li><a href="15-functions.html#time">TIME()</a> - Formats the time part from a timestamp argument</li>
 <li>
 <p><a href="20-server_settings.html#timezone">timezone</a> - Timezone used by date/time-related functions</p>
 </li>
@@ -352,7 +352,7 @@ Various improvements: improved versions check and streaming ZSTD decompression; 
 <li><a href="../06-creating_a_table.html#morphology">Language packs</a> for English, German and Russian can now be effortlessly installed on Linux by executing the command <code>apt/yum install manticore-language-packs</code>. On macOS, use the command <code>brew install manticoresoftware/tap/manticore-language-packs</code>.</li>
 <li>Field and attribute order is now consistent between <code>SHOW CREATE TABLE</code> and <code>DESC</code> operations.</li>
 <li>If disk space is insufficient when executing <code>INSERT</code> queries, new <code>INSERT</code> queries will fail until enough disk space becomes available.</li>
-<li>The <a href="../15-functions.html#uint64%28%29">UINT64()</a> type conversion function has been added.</li>
+<li>The <a href="../15-functions.html#uint64">UINT64()</a> type conversion function has been added.</li>
 <li>The <code>/bulk</code> endpoint now processes empty lines as a <a href="../12-data_creation_and_modification.html#begin,-commit,-and-rollback">commit</a> command. More info <a href="../12-data_creation_and_modification.html#bulk-adding-documents">here</a>.</li>
 <li>Warnings have been implemented for <a href="../13-searching.html#query-optimizer-hints">invalid index hints</a>, providing more transparency and allowing for error mitigation.</li>
 <li>When <code>count(*)</code> is used with a single filter, queries now leverage precalculated data from secondary indexes when available, substantially speeding up query times.</li>
@@ -390,7 +390,7 @@ Various improvements: improved versions check and streaming ZSTD decompression; 
 <li><a href="https://github.com/manticoresoftware/manticoresearch/commit/d205508e">Commit d205</a> The set of values returned by the <code>show index status</code> command has been modified and now varies depending on the type of index in use.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/commit/e9bc2f9">Commit e9bc</a> Fixed an HTTP error when processing bulk requests and an issue where the error wasn't being returned to the client from the net loop.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/commit/f77ce0e6">Commit f77c</a> use of an extended stack for PQ.</li>
-<li><a href="https://github.com/manticoresoftware/manticoresearch/commit/fac2d9687a20582765aaa89be9597804c4f845af">Commit fac2</a> Updated the export ranker output to align with <a href="../15-functions.html#packedfactors%28%29">packedfactors()</a>.</li>
+<li><a href="https://github.com/manticoresoftware/manticoresearch/commit/fac2d9687a20582765aaa89be9597804c4f845af">Commit fac2</a> Updated the export ranker output to align with <a href="../15-functions.html#packedfactors">packedfactors()</a>.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/commit/ff87cc4">Commit ff87</a>: Fixed an issue with the string list in the filter of the SphinxQL query log.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/issues/589">Issue #589</a> "The charset definition seems to depend on the ordering of codes": Fixed incorrect charset mapping for duplicates.</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/issues/811">Issue #811</a> "Mapping multiple words in word forms interferes phrase search with CJK punctuations between keywords": Fixed ngram token position within phrase query with wordforms.</li>
@@ -815,7 +815,7 @@ Various improvements: improved versions check and streaming ZSTD decompression; 
 </ul>
 <h3 id="other-minor-breaking-changes">⚠️ Other minor breaking changes</h3>
 <ul>
-<li>⚠️ BM25F formula has been slightly updated to improve search relevance. This only affects search results in case you use function <a href="../15-functions.html#bm25f%28%29">BM25F()</a>, it doesn't change behaviour of the default ranking formula.</li>
+<li>⚠️ BM25F formula has been slightly updated to improve search relevance. This only affects search results in case you use function <a href="../15-functions.html#bm25f">BM25F()</a>, it doesn't change behaviour of the default ranking formula.</li>
 <li>⚠️ Changed behaviour of REST <a href="../11-connecting_to_the_server.html#/sql?mode=raw">/sql</a> endpoint: <code>/sql?mode=raw</code> now requires escaping and returns an array.</li>
 <li>⚠️ Format change of the response of <code>/bulk</code> INSERT/REPLACE/DELETE requests:</li>
 <li>previously each sub-query constituted a separate transaction and resulted in a separate response</li>
@@ -1113,7 +1113,7 @@ sys     0m0.001s
 </div>
 <ul>
 <li><a href="05-starting_the_server.html#custom-startup-flags-using-systemd">custom startup flags for systemd</a>. Now you don't need to start searchd manually in case you need to run Manticore with some specific startup flag</li>
-<li>new function <a href="15-functions.html#levenshtein%28%29">LEVENSHTEIN()</a> which calculates Levenshtein distance</li>
+<li>new function <a href="15-functions.html#levenshtein">LEVENSHTEIN()</a> which calculates Levenshtein distance</li>
 <li>added new <a href="05-starting_the_server.html#searchd-command-line-options">searchd startup flags</a> <code>--replay-flags=ignore-trx-errors</code> and <code>--replay-flags=ignore-all-errors</code> so one can still start searchd if the binlog is corrupted</li>
 <li><a href="https://github.com/manticoresoftware/manticoresearch/issues/621">Issue #621</a> - expose errors from RE2</li>
 <li>more accurate <a href="13-searching.html#count%28distinct-field%29">COUNT(DISTINCT)</a> for distributed indexes consisting of local plain indexes</li>

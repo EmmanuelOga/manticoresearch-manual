@@ -257,7 +257,7 @@
 <h3 id="zonespanlist">ZONESPANLIST()</h3>
 <p>The <code>ZONESPANLIST()</code> function returns pairs of matched zone spans. Each pair contains the matched zone span identifier, a colon, and the order number of the matched zone span. For example, if a document reads <code>&lt;emphasis role="bold"&gt;&lt;i&gt;text&lt;/i&gt; the &lt;i&gt;text&lt;/i&gt;&lt;/emphasis&gt;</code>, and you query for <code>'ZONESPAN:(i,b) text'</code>, then <code>ZONESPANLIST()</code> will return the string <code>"1:1 1:2 2:1"</code>, meaning that the first zone span matched "text" in spans 1 and 2, and the second zone span in span 1 only.</p>
 <h3 id="query">QUERY()</h3>
-<p><code>QUERY()</code> returns the current search query. <code>QUERY()</code> is a postlimit expression and is intended to be used with <a href="../15-functions.html#snippet%28%29">SNIPPET()</a>.</p>
+<p><code>QUERY()</code> returns the current search query. <code>QUERY()</code> is a postlimit expression and is intended to be used with <a href="../15-functions.html#snippet">SNIPPET()</a>.</p>
 <p>Table functions are a mechanism for post-query result set processing. Table functions take an arbitrary result set as input and return a new, processed set as output. The first argument should be the input result set, but a table function can optionally take and handle more arguments. Table functions can completely change the result set, including the schema. Currently, only built-in table functions are supported. Table functions work for both outer <code>SELECT</code> and <a href="../13-searching.html#toc-13.12-sub-selects">nested SELECT</a>.</p>
 <!-- proofread -->
         
@@ -611,7 +611,7 @@
 </div>
 </div>
 <h3 id="contains">CONTAINS()</h3>
-<p><code>CONTAINS(polygon, x, y)</code> checks whether the (x,y) point is within the given polygon, and returns 1 if true, or 0 if false. The polygon has to be specified using either the  <a href="../15-functions.html#poly2d%28%29">POLY2D()</a> function. The former function is intended for "small" polygons, meaning less than 500 km (300 miles) a side, and it doesn't take into account the Earth's curvature for speed. For larger distances, you should use <code>GEOPOLY2D</code>, which tessellates the given polygon in smaller parts, accounting for the Earth's curvature.</p>
+<p><code>CONTAINS(polygon, x, y)</code> checks whether the (x,y) point is within the given polygon, and returns 1 if true, or 0 if false. The polygon has to be specified using either the  <a href="../15-functions.html#poly2d">POLY2D()</a> function. The former function is intended for "small" polygons, meaning less than 500 km (300 miles) a side, and it doesn't take into account the Earth's curvature for speed. For larger distances, you should use <code>GEOPOLY2D</code>, which tessellates the given polygon in smaller parts, accounting for the Earth's curvature.</p>
 <h3 id="if">IF()</h3>
 <!-- example if -->
 <p>The behavior of <code>IF()</code> is slightly different from its MySQL counterpart. It takes 3 arguments, checks whether the 1st argument is equal to 0.0, returns the 2nd argument if it is not zero, or the 3rd one when it is. Note that unlike comparison operators, <code>IF()</code> does <strong>not</strong> use a threshold! Therefore, it's safe to use comparison results as its 1st argument, but arithmetic operators might produce unexpected results. For instance, the following two calls will produce <em>different</em> results even though they are logically equivalent:</p>
@@ -663,7 +663,7 @@ Example:
 <p><code>INTERVAL(expr,point1,point2,point3,...)</code> takes 2 or more arguments and returns the index of the argument that is less than the first argument: it returns 0 if <code>expr&lt;point1</code>, 1 if <code>point1&lt;=expr&lt;point2</code>, and so on. It is required that <code>point1&lt;point2&lt;...&lt;pointN</code> for this function to work correctly.</p>
 <h3 id="length">LENGTH()</h3>
 <p><code>LENGTH(attr_mva)</code> function returns the number of elements in an MVA set. It works with both 32-bit and 64-bit MVA attributes. <code>LENGTH(attr_json)</code> returns the length of a field in JSON. The return value depends on the type of field. For example, <code>LENGTH(json_attr.some_int)</code> always returns 1, and <code>LENGTH(json_attr.some_array)</code> returns the number of elements in the array. <code>LENGTH(string_expr)</code> function returns the length of the string resulting from an expression.<br />
-<a href="../15-functions.html#to_string%28%29">TO_STRING()</a> must enclose the expression, regardless of whether the expression returns a non-string or it's simply a string attribute.</p>
+<a href="../15-functions.html#to_string">TO_STRING()</a> must enclose the expression, regardless of whether the expression returns a non-string or it's simply a string attribute.</p>
 <h3 id="range">RANGE()</h3>
 <!-- example range -->
 <p><code>RANGE(expr, {range_from=value,range_to=value})</code> takes a set of ranges and returns the bucket number for the value.<br />
@@ -1282,7 +1282,7 @@ Note that the week starts on Sunday.</p>
 <!-- example DATE_RANGE -->
 <p><code>DATE_RANGE(expr, {range_from='date_math', range_to='date_math'})</code> takes a set of ranges and returns the bucket number for the value.<br />
 The expression includes the <code>range_from</code> value and excludes the <code>range_to</code> value for each range. The range can be open - having only the <code>range_from</code> or only the <code>range_to</code> value.<br />
-The difference between this and the <a href="../15-functions.html#range%28%29">RANGE()</a> function is that the <code>range_from</code> and <code>range_to</code> values can be expressed in <a href="../15-functions.html#date-math">Date math</a> expressions.</p>
+The difference between this and the <a href="../15-functions.html#range">RANGE()</a> function is that the <code>range_from</code> and <code>range_to</code> values can be expressed in <a href="../15-functions.html#date-math">Date math</a> expressions.</p>
 <p>Used in aggregation, <code>FACET</code>, and grouping.</p>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
@@ -1348,9 +1348,9 @@ Date math
 </ul>
 <p>The default method is "adaptive". It is a well-optimized implementation that is both more precise <em>and</em> much faster at all times than "haversine".</p>
 <h3 id="geopoly2d">GEOPOLY2D()</h3>
-<p><code>GEOPOLY2D(lat1,lon1,lat2,lon2,lat3,lon3...)</code> creates a polygon to be used with the <a href="../15-functions.html#contains%28%29">CONTAINS()</a> function. This function takes into account the Earth's curvature by tessellating the polygon into smaller ones, and should be used for larger areas. For small areas, the <a href="../15-functions.html#poly2d%28%29">POLY2D()</a> function can be used instead. The function expects coordinates to be pairs of latitude/longitude coordinates in degrees; if radians are used, it will give the same result as <code>POLY2D()</code>.</p>
+<p><code>GEOPOLY2D(lat1,lon1,lat2,lon2,lat3,lon3...)</code> creates a polygon to be used with the <a href="../15-functions.html#contains">CONTAINS()</a> function. This function takes into account the Earth's curvature by tessellating the polygon into smaller ones, and should be used for larger areas. For small areas, the <a href="../15-functions.html#poly2d">POLY2D()</a> function can be used instead. The function expects coordinates to be pairs of latitude/longitude coordinates in degrees; if radians are used, it will give the same result as <code>POLY2D()</code>.</p>
 <h3 id="poly2d">POLY2D()</h3>
-<p><code>POLY2D(x1,y1,x2,y2,x3,y3...)</code> creates a polygon to be used with the <a href="../15-functions.html#contains%28%29">CONTAINS()</a> function. This polygon assumes a flat Earth, so it should not be too large; for large areas, the <a href="../15-functions.html#geopoly2d%28%29">GEOPOLY2D()</a> function, which takes Earth's curvature into consideration, should be used.</p>
+<p><code>POLY2D(x1,y1,x2,y2,x3,y3...)</code> creates a polygon to be used with the <a href="../15-functions.html#contains">CONTAINS()</a> function. This polygon assumes a flat Earth, so it should not be too large; for large areas, the <a href="../15-functions.html#geopoly2d">GEOPOLY2D()</a> function, which takes Earth's curvature into consideration, should be used.</p>
 <!-- proofread -->
         
     </section>
@@ -1374,7 +1374,7 @@ Date math
 <h3 id="levenshtein">LEVENSHTEIN()</h3>
 <p><code>LEVENSHTEIN ( pattern, source, {normalize=0, length_delta=0})</code> returns number (Levenshtein distance) of single-character edits (insertions, deletions or substitutions) between <code>pattern</code> and <code>source</code> strings required to make in <code>pattern</code> to make it <code>source</code>.</p>
 <ul>
-<li><code>pattern</code>, <code>source</code> - constant string, string field name, JSON field name, or any expression that produces a string (like e.g., <a href="../15-functions.html#substring_index%28%29">SUBSTRING_INDEX()</a>)</li>
+<li><code>pattern</code>, <code>source</code> - constant string, string field name, JSON field name, or any expression that produces a string (like e.g., <a href="../15-functions.html#substring_index">SUBSTRING_INDEX()</a>)</li>
 <li><code>normalize</code> - option to return the distance as a float number in the range <code>[0.0 - 1.0]</code>, where 0.0 is an exact match, and 1.0 is the maximum difference. The default value is 0, meaning not to normalize and provide the result as an integer.</li>
 <li><code>length_delta</code> - skips Levenshtein distance calculation and returns <code>max(strlen(pattern), strlen(source))</code> if the option is set and the lengths of the strings differ by more than the <code>length_delta</code> value. The default value is 0, meaning to calculate Levenshtein distance for any input strings. This option can be useful when checking mostly similar strings.</li>
 </ul>

@@ -119,6 +119,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
             for source_path, dest_path in DESTINATION_FOR_PATH.items():
                 source = source.replace(source_path, dest_path)
 
+            # PyMarkdown removes the () from the links, so we need to fix them too.
+            source = source.replace("%28%29", "")
+
             last_line = ""
 
             in_code_block = False

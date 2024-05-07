@@ -588,7 +588,7 @@ To disable it, use <code>-DFOO=0</code>. If not explicitly noted, enabling a fea
 <ul>
 <li><strong>USE_SYSLOG</strong> - allows the use of<code>syslog</code> in <a href="18-logging.html#toc-18.01-query_logging">query logging</a>.</li>
 <li><strong>WITH_GALERA</strong> -Enables support for replication on the search daemon. Support will be configured for the build, and the sources for the Galera library will be downloaded, built, and included in the distribution/installation. Usually, it is safe to build with Galera, but not distribute the library itself (so no Galera module, no replication). However, sometimes you may need to explicitly disable it, such as if you want to build a static binary that by design cannot load any libraries, so that even the presence of a call to the 'dlopen' function inside the daemon will cause a link error.</li>
-<li><strong>WITH_RE2</strong> - Builds with the use of the RE2 regular expression library. This is necessary for functions like <a href="../15-functions.html#regex%28%29">REGEX()</a>, and the <a href="../06-creating_a_table.html#regexp_filter">regexp_filter</a><br />
+<li><strong>WITH_RE2</strong> - Builds with the use of the RE2 regular expression library. This is necessary for functions like <a href="../15-functions.html#regex">REGEX()</a>, and the <a href="../06-creating_a_table.html#regexp_filter">regexp_filter</a><br />
   feature.</li>
 <li><strong>WITH_RE2_FORCE_STATIC</strong> - Downloads the sources of RE2, compiles them, and links them statically, so that the final binaries will not depend on the presence of a shared  <code>RE2</code> library in your system.</li>
 <li><strong>WITH_STEMMER</strong> - Builds with the use of the Snowball stemming library.</li>

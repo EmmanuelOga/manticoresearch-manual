@@ -129,7 +129,7 @@ class Entry(msgspec.Struct, omit_defaults=True):
                 md_match = re.match(MD_BULET, line)
                 if md_match:
                     # PyMarkdown doesn't like nested items that are not nested in multiples of 4.
-                    spaces = ' ' * 4 * (max(len(md_match[1]) - 2, 0) // 2)
+                    spaces = " " * 4 * (max(len(md_match[1]) - 2, 0) // 2)
                     line = f"{spaces}{line.lstrip()}"
 
                     if not re.match(MD_BULET, last_line):
@@ -284,6 +284,7 @@ def write_output(root: Entry):
     DST_ROOT.mkdir(parents=True, exist_ok=True)
 
     # Copy assets.
+    copy(ASSETS_ROOT / "common.css", DST_ROOT)
     copy(ASSETS_ROOT / "toc.css", DST_ROOT)
     copy(ASSETS_ROOT / "chapter.css", DST_ROOT)
     copy(ASSETS_ROOT / "pygments.css", DST_ROOT)

@@ -1,0 +1,38 @@
+:root {
+    --main-fg-color: #106b4d;
+    --hilight-color: #4fcaa1;
+}
+
+a,
+a:visited {
+    color: var(--main-fg-color);
+}
+
+a:hover {
+    color: var(--hilight-color);
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+
+    scrollbar-color: var(--main-fg-color) white;
+
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+h1 {
+    margin: 0;
+}

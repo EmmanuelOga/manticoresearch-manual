@@ -1,26 +1,4 @@
-:root {
-    --main-fg-color: #78C0A8;
-}
-
-*,
-*:before,
-*:after {
-    box-sizing: border-box;
-}
-
-html,
 body {
-    margin: 0;
-    padding: 0;
-
-    scrollbar-color: var(--main-fg-color) white;
-}
-
-body {
-    font-family: "PT Sans", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-
     padding-right: 1rem;
 }
 

@@ -37,6 +37,7 @@ code {
     }
 
     .item-select {
+        cursor: pointer;
         opacity: 0.5;
     }
 

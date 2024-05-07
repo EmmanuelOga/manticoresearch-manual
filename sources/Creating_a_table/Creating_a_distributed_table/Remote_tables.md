@@ -111,7 +111,7 @@ Using persistent master-agent connections reduces TCP port pressure and saves ti
 
 ```ini
 agent_blackhole = testbox:9312:testindex1,testindex2
-````
+```
 
 The `agent_blackhole` directive allows you to forward queries to remote agents without waiting for or processing their responses. This is useful for debugging or testing production clusters, as you can set up a separate debugging/testing instance and forward requests to it from the production master (aggregator) instance, without interfering with production work. The master searchd will attempt to connect to the blackhole agent and send queries as normal, but will not wait for or process any responses, and all network errors on the blackhole agents will be ignored. The format of the value is identical to that of the regular `agent` directive.
 
@@ -119,7 +119,7 @@ The `agent_blackhole` directive allows you to forward queries to remote agents w
 
 ```ini
 agent_connect_timeout = 300
-````
+```
 
 The `agent_connect_timeout` directive defines the timeout for connecting to remote agents. By default, the value is assumed to be in milliseconds, but can have [another suffix](../../Server_settings/Special_suffixes.md)). The default value is 1000 (1 second).
 

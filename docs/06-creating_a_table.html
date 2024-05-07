@@ -17842,24 +17842,17 @@ Even though a purely remote distributed table doesn't serve local tables itself,
 <p>Using persistent master-agent connections reduces TCP port pressure and saves time on connection handshakes, making it more efficient.</p>
 <h2 id="agent_blackhole">agent_blackhole</h2>
 <div class="codehilite"><pre><span></span><code><span class="na">agent_blackhole</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">testbox:9312:testindex1,testindex2</span>
-<span class="na">````</span>
+</code></pre></div>
 
-<span class="na">The `agent_blackhole` directive allows you to forward queries to remote agents without waiting for or processing their responses. This is useful for debugging or testing production clusters, as you can set up a separate debugging/testing instance and forward requests to it from the production master (aggregator) instance, without interfering with production work. The master searchd will attempt to connect to the blackhole agent and send queries as normal, but will not wait for or process any responses, and all network errors on the blackhole agents will be ignored. The format of the value is identical to that of the regular `agent` directive.</span>
+<p>The <code>agent_blackhole</code> directive allows you to forward queries to remote agents without waiting for or processing their responses. This is useful for debugging or testing production clusters, as you can set up a separate debugging/testing instance and forward requests to it from the production master (aggregator) instance, without interfering with production work. The master searchd will attempt to connect to the blackhole agent and send queries as normal, but will not wait for or process any responses, and all network errors on the blackhole agents will be ignored. The format of the value is identical to that of the regular <code>agent</code> directive.</p>
+<h2 id="agent_connect_timeout">agent_connect_timeout</h2>
+<div class="codehilite"><pre><span></span><code><span class="na">agent_connect_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">300</span>
+</code></pre></div>
 
-<span class="c1">## agent_connect_timeout</span>
-
-<span class="na">```ini</span>
-<span class="na">agent_connect_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">300</span>
-<span class="na">````</span>
-
-<span class="na">The `agent_connect_timeout` directive defines the timeout for connecting to remote agents. By default, the value is assumed to be in milliseconds, but can have [another suffix](20-server_settings.html#toc-20.03-special_suffixes)). The default value is 1000 (1 second).</span>
-
-<span class="na">When connecting to remote agents, `searchd` will wait for this amount of time at most to complete the connection successfully. If the timeout is reached but the connection has not been established, and `retries` are enabled, a retry will be initiated.</span>
-
-<span class="c1">## agent_query_timeout</span>
-
-<span class="na">```ini</span>
-<span class="na">agent_query_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span><span class="w"> </span><span class="c1"># our query can be long, allow up to 10 sec</span>
+<p>The <code>agent_connect_timeout</code> directive defines the timeout for connecting to remote agents. By default, the value is assumed to be in milliseconds, but can have <a href="20-server_settings.html#toc-20.03-special_suffixes">another suffix</a>). The default value is 1000 (1 second).</p>
+<p>When connecting to remote agents, <code>searchd</code> will wait for this amount of time at most to complete the connection successfully. If the timeout is reached but the connection has not been established, and <code>retries</code> are enabled, a retry will be initiated.</p>
+<h2 id="agent_query_timeout">agent_query_timeout</h2>
+<div class="codehilite"><pre><span></span><code><span class="na">agent_query_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span><span class="w"> </span><span class="c1"># our query can be long, allow up to 10 sec</span>
 </code></pre></div>
 
 <p>The <code>agent_query_timeout</code> sets the amount of time that searchd will wait for a remote agent to complete a query. The default value is 3000 milliseconds (3 seconds), but can be <code>suffixed</code> to indicate a different unit of time.</p>

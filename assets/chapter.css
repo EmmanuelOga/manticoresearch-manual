@@ -46,7 +46,7 @@ code {
     }
 
     .item-select.selected {
-        background-color: var(--main-fg-color);
+        background-color: var(--hilight-color);
     }
 
     .codes {

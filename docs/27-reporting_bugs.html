@@ -48,7 +48,7 @@ To fix a bug, either it needs to be reproduced and fixed or its cause needs to b
 <div class="codehilite"><pre><span></span><code>gdb /usr/bin/searchd &lt;/path/to/coredump&gt;
 </code></pre></div>
 
-<ol start="2">
+<ol>
 <li>Find the crashed thread ID in the coredump file name (make sure you have <code>%p</code> in /proc/sys/kernel/core_pattern), e.g. <code>core.work_6.29050.server_name.1637586599</code> means thread_id=29050</li>
 <li>In gdb run:</li>
 </ol>
@@ -62,7 +62,7 @@ To fix a bug, either it needs to be reproduced and fixed or its cause needs to b
 <span class="err">quit</span>
 </code></pre></div>
 
-<ol start="4">
+<ol>
 <li>Provide the outputs</li>
 </ol>
 <h3 id="what-do-i-do-when-manticore-search-hangs">What do I do when Manticore Search hangs?</h3>
@@ -74,14 +74,14 @@ To fix a bug, either it needs to be reproduced and fixed or its cause needs to b
 <div class="codehilite"><pre><span></span><code><span class="n">lsof</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="err">`</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">searchd</span><span class="o">.</span><span class="n">pid</span><span class="err">`</span>
 </code></pre></div>
 
-<ol start="3">
+<ol>
 <li>Dump the core:</li>
 </ol>
 <div class="codehilite"><pre><span></span><code><span class="n">gcore</span><span class="w"> </span><span class="err">`</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">searchd</span><span class="o">.</span><span class="n">pid</span><span class="err">`</span>
 </code></pre></div>
 
 <p>(It will save the dump to the current directory.)</p>
-<ol start="4">
+<ol>
 <li>Install and run gdb:</li>
 </ol>
 <div class="codehilite"><pre><span></span><code><span class="n">gdb</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">searchd</span><span class="w"> </span><span class="err">`</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">manticore</span><span class="o">/</span><span class="n">searchd</span><span class="o">.</span><span class="n">pid</span><span class="err">`</span>
@@ -95,7 +95,7 @@ thread apply all bt
 quit
 </code></pre></div>
 
-<ol start="6">
+<ol>
 <li>Collect all the outputs and files and provide them in a bug report.</li>
 </ol>
 <p>For experts: the macros added in <a href="https://github.com/manticoresoftware/manticoresearch/commit/e317f7aa30aad51cb19d34595458bb7c8811be21">this commit</a> can be helpful in debugging.</p>
@@ -144,7 +144,7 @@ quit
 </code></pre></div>
 
 <p>In this case, the build ID is 2c582e9f564ea1fbeb0c68406c271ba27034a6d3.</p>
-<ol start="2">
+<ol>
 <li>Find symbols in <code>/usr/lib/debug/.build-id</code> like this:</li>
 </ol>
 <div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">root@srv ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="o">-</span><span class="n">la</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="p">.</span><span class="n">build</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="mi">2</span><span class="n">c</span><span class="o">/</span><span class="mf">582e9</span><span class="n">f564ea1fbeb0c68406c271ba27034a6d3</span><span class="o">*</span>
@@ -164,7 +164,7 @@ For example on 64-bit Linux:</p>
 <span class="k">export</span><span class="w"> </span><span class="n">PATH</span><span class="o">=$</span><span class="n">PATH</span><span class="p">:</span><span class="o">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">minio</span><span class="o">-</span><span class="n">binaries</span><span class="o">/</span>
 </code></pre></div>
 
-<ol start="2">
+<ol>
 <li>Add our s3 host (use full path to executable or change into its directory): <code>cd $HOME/minio-binaries</code> and then <code>./mc config host add manticore http://s3.manticoresearch.com:9000 manticore manticore</code></li>
 <li>Copy your files (use full path to executable or change into its directory): <code>cd $HOME/minio-binaries</code> and then <code>./mc cp -r issue-1234/ manticore/write-only/issue-1234</code> . Make sure the folder name is unique and best if it corresponds to the issue on GitHub where you described the bug.</li>
 </ol>

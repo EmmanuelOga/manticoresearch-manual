@@ -26,7 +26,7 @@ LINE_PATTERN = r"^(\s*)\* \[(.+)\](.+)?$"
 # Double anchor pattern
 DOUBLE_ANCHOR_PATTERN = r"\([^\)#]+#([^\)#]+)#([^\)#]+)\)"
 
-MD_BULET = r"^\s*\*"
+MD_BULET = r"^(\s*)\*"
 
 # Store destination paths for each source path, used to fix links.
 DESTINATION_FOR_PATH: dict[str, str] = {}
@@ -126,12 +126,14 @@ class Entry(msgspec.Struct, omit_defaults=True):
 
             for line in source.splitlines(keepends=True):
                 # PyMarkdown doesn't like lists that are not separated by empty lines.
-                if (
-                    last_line.strip()
-                    and re.match(MD_BULET, line)
-                    and not re.match(MD_BULET, last_line)
-                ):
-                    buffer.append("\n")
+                md_match = re.match(MD_BULET, line)
+                if md_match:
+                    # PyMarkdown doesn't like nested items that are not nested in multiples of 4.
+                    spaces = ' ' * 4 * (max(len(md_match[1]) - 2, 0) // 2)
+                    line = f"{spaces}{line.lstrip()}"
+
+                    if not re.match(MD_BULET, last_line):
+                        buffer.append("\n")
 
                 # Previously when we replaced links we may have produced double anchors, so fix them.
                 matches = re.findall(DOUBLE_ANCHOR_PATTERN, line, re.UNICODE)
@@ -171,6 +173,10 @@ class Entry(msgspec.Struct, omit_defaults=True):
                         close_div("xcodeblock")
                     in_code_block = False
 
+        # if self.path:
+        #     with open(f"fix-{self.path.replace('/', '_')}", "w") as f:
+        #         f.write("".join(buffer))
+
         return markdown.markdown(
             "".join(buffer),
             extensions=[
@@ -179,7 +185,6 @@ class Entry(msgspec.Struct, omit_defaults=True):
                 "fenced_code",
                 "codehilite",
                 "tables",
-                "sane_lists",
                 "nl2br",
             ],
         )

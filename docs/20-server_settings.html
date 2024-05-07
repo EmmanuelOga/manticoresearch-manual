@@ -2308,12 +2308,13 @@ Example
 
     `threads_ex` is a template for basic tasks and for pseudo-sharding, separated by `+`, like:
 
-    * `30+3` - a trivial base of 30 threads + trivial pseudo-sharding of 3 threads
-    * `+/2` - a trivial base + round-robin pseudo-sharding with default threads and batch=2
-    * `10` - a trivial base of 10 threads + default trivial pseudo-sharding
-    * `/1+10` - a round-robin base with default threads and batch=1 + trivial pseudo-sharding with 10 threads
-    * `4/2+2/1` - a round-robin base with 4 threads and batch=2 + round-robin pseudo-sharding with 2 threads and batch=1
-    * `1+1` - the most deterministic case. Exactly 1 thread + 1 pseudo-shard, i.e., no parallelization at all. With this setting, you can reproducibly repeat the same problematic query and investigate behavior details. Furthermore, if you set `throttling_period=0`, your query will 'stick' to the current thread and never be rescheduled during execution, creating an ideal environment for troubleshooting.
+
+* `30+3` - a trivial base of 30 threads + trivial pseudo-sharding of 3 threads
+* `+/2` - a trivial base + round-robin pseudo-sharding with default threads and batch=2
+* `10` - a trivial base of 10 threads + default trivial pseudo-sharding
+* `/1+10` - a round-robin base with default threads and batch=1 + trivial pseudo-sharding with 10 threads
+* `4/2+2/1` - a round-robin base with 4 threads and batch=2 + round-robin pseudo-sharding with 2 threads and batch=1
+* `1+1` - the most deterministic case. Exactly 1 thread + 1 pseudo-shard, i.e., no parallelization at all. With this setting, you can reproducibly repeat the same problematic query and investigate behavior details. Furthermore, if you set `throttling_period=0`, your query will 'stick' to the current thread and never be rescheduled during execution, creating an ideal environment for troubleshooting.
 
     The option can be set globally from outside as an environment variable `MANTICORE_THREADS_EX`, like:
 

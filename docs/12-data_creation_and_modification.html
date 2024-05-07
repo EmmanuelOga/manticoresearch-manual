@@ -1553,6 +1553,7 @@ There are two ways you can add a percolate query into a percolate table:
 
 
 
+
 * Query in SQL format, described at [search query syntax](13-searching.html#queries-in-sql-format)
 
 <div class="codehilite"><pre><span></span><code><span class="err">PUT</span><span class="w"> </span><span class="err">/pq/pq_</span><span class="kc">ta</span><span class="err">ble/doc/</span><span class="mi">2</span>
@@ -2291,20 +2292,20 @@ When there is a problem indexing a file referenced by a file field (<a href="12-
 </code></pre></div>
 
 <p>More on the <code>OnCalendar</code> syntax and examples can be found <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html#Calendar%20Events">here</a>.</p>
-<ol start="2">
+<ol>
 <li>Edit the timer unit for your specific needs.</li>
 <li>Enable the timer:</li>
 </ol>
 <div class="codehilite"><pre><span></span><code>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>manticore-indexer@idx1.timer
 </code></pre></div>
 
-<ol start="4">
+<ol>
 <li>Start the timer:</li>
 </ol>
 <div class="codehilite"><pre><span></span><code>systemctl<span class="w"> </span>start<span class="w"> </span>manticore-indexer@idx1.timer
 </code></pre></div>
 
-<ol start="5">
+<ol>
 <li>Repeat steps 2-4 for any additional timers.</li>
 </ol>
         
@@ -6884,6 +6885,7 @@ SQL
 
 
 
+
 * `query` for JSON contains a clause for a full-text search; it has the same syntax as in the [JSON/update](../12-data_creation_and_modification.html#updates-via-http-json).
 
 <!-- response JSON -->
@@ -7136,6 +7138,7 @@ SQL
 <span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="w">    </span><span class="p">}</span><span class="err">&#39;</span>
 </code></pre></div>
+
 
 
 

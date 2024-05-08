@@ -4,8 +4,10 @@ body {
 
 /* Code */
 
-code {
-    background-color: rgb(240, 243, 243);
+code,
+.codehilite,
+.codehilite code {
+    background-color: var(--code-bg);
 }
 
 .codehilite {
@@ -13,7 +15,7 @@ code {
     width: 90%;
     padding: 0 .5rem;
     margin: 1rem 0;
-    box-shadow: 2px 2px 2px #65a28d;
+    box-shadow: 2px 2px 2px #b0d7c9;
 }
 
 .xcodeblock {

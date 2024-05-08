@@ -34,18 +34,43 @@
 
 <!-- request RHEL, Centos, Alma, Amazon, Oracle -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+RHEL, Centos, Alma, Amazon, Oracle
+</div>
+
+
 <div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.rpm
 sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra
 </code></pre></div>
 
-<p>If you are upgrading from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:</p>
+
+
+If you are upgrading from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:
+
 <div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>--setopt<span class="o">=</span><span class="nv">tsflags</span><span class="o">=</span>noscripts<span class="w"> </span>remove<span class="w"> </span>manticore*
 </code></pre></div>
 
-<p>It won't remove your data. If you made changes to the configuration file, it will be saved to <code>/etc/manticoresearch/manticore.conf.rpmsave</code>.</p>
-<p>If you are looking for separate packages, please find them <a href="https://manticoresearch.com/install/#separate-packages">here</a>.</p>
-<p>For more details on the installation, see <a href="../03-installation.html#toc-03.02-redhat_and_centos">below</a>.</p>
+
+It won't remove your data. If you made changes to the configuration file, it will be saved to `/etc/manticoresearch/manticore.conf.rpmsave`.
+
+If you are looking for separate packages, please find them [here](https://manticoresearch.com/install/#separate-packages).
+
+For more details on the installation, see [below](../03-installation.html#toc-03.02-redhat_and_centos).
+
 <!-- request Debian, Ubuntu, Mint -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Debian, Ubuntu, Mint
+</div>
+
 
 <div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>https://repo.manticoresearch.com/manticore-repo.noarch.deb
 sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>manticore-repo.noarch.deb
@@ -53,45 +78,91 @@ sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>manticore<span class="w"> </span>manticore-extra
 </code></pre></div>
 
-<p>If you are upgrading to Manticore 6 from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:</p>
+
+
+If you are upgrading to Manticore 6 from an older version, it is recommended to remove your old packages first to avoid conflicts caused by the updated package structure:
+
 <div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>manticore*
 </code></pre></div>
 
-<p>It won't remove your data or configuration file.</p>
-<p>If you are looking for separate packages, please find them <a href="https://manticoresearch.com/install/#separate-packages">here</a>.</p>
-<p>For more details on the installation, see <a href="../03-installation.html#toc-03.03-debian_and_ubuntu">below</a>.</p>
+
+It won't remove your data or configuration file.
+
+If you are looking for separate packages, please find them [here](https://manticoresearch.com/install/#separate-packages).
+
+For more details on the installation, see [below](../03-installation.html#toc-03.03-debian_and_ubuntu).
+
 <!-- request MacOS -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+MacOS
+</div>
+
 
 <div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>manticoresoftware/tap/manticoresearch<span class="w"> </span>manticoresoftware/tap/manticore-extra
 </code></pre></div>
 
-<p>Please find more details on the installation <a href="../03-installation.html#toc-03.04-macos">below</a>.</p>
+
+
+Please find more details on the installation [below](../03-installation.html#toc-03.04-macos).
+
 <!-- request Windows -->
 
-<ol>
-<li>Download the <a href="https://repo.manticoresearch.com/repository/manticoresearch_windows/release/x64/manticore-6.0.4-230314-1a3a4ea82-x64.exe">Manticore Search Installer</a> and run it. Follow the installation instructions.</li>
-<li>Choose the directory to install to.</li>
-<li>Select the components you want to install. We recommend installing all of them.</li>
-<li>Manticore comes with a preconfigured <code>manticore.conf</code> file in <a href="https://manual.manticoresearch.com/02-read_this_first.html#real-time-mode-vs-plain-mode">RT mode</a>. No additional configuration is required.</li>
-</ol>
-<p>For more details on the installation, see <a href="../03-installation.html#installing-manticore-in-windows">below</a>.</p>
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Windows
+</div>
+
+1. Download the [Manticore Search Installer](https://repo.manticoresearch.com/repository/manticoresearch_windows/release/x64/manticore-6.0.4-230314-1a3a4ea82-x64.exe) and run it. Follow the installation instructions.
+2. Choose the directory to install to.
+3. Select the components you want to install. We recommend installing all of them.
+4. Manticore comes with a preconfigured `manticore.conf` file in [RT mode](https://manual.manticoresearch.com/02-read_this_first.html#real-time-mode-vs-plain-mode). No additional configuration is required.
+
+For more details on the installation, see [below](../03-installation.html#installing-manticore-in-windows).
+
 <!-- request Docker -->
 
-<p>One-liner for a sandbox (not recommended for production use):</p>
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Docker
+</div>
+
+One-liner for a sandbox (not recommended for production use):
+
 <div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>--rm<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Waiting for Manticore docker to start. Consider mapping the data_dir to make it start faster next time&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">until</span><span class="w"> </span>docker<span class="w"> </span>logs<span class="w"> </span>manticore<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;accepting connections&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>.<span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>manticore<span class="w"> </span>mysql<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>stop<span class="w"> </span>manticore
 </code></pre></div>
 
-<p>This runs Manticore container and waits for it to boot up. After starting, it launches a MySQL client session. When you exit the MySQL client, the Manticore container ceases operation and gets deleted, leaving no stored data behind. For details on how to utilize Manticore in a live production setting, refer to the following section.</p>
-<p>For production use:</p>
+
+
+This runs Manticore container and waits for it to boot up. After starting, it launches a MySQL client session. When you exit the MySQL client, the Manticore container ceases operation and gets deleted, leaving no stored data behind. For details on how to utilize Manticore in a live production setting, refer to the following section.
+
+For production use:
+
 <div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data:/var/lib/manticore<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9306:9306<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:9308:9308<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore
 </code></pre></div>
 
-<p>This setup will enable the Manticore Columnar Library and Manticore Buddy, and run Manticore on ports 9306 for MySQL connections and 9308 for all other connections, using <code>./data/</code> as the designated data directory.</p>
-<p>Read more about production use <a href="https://github.com/manticoresoftware/docker#production-use">in the documentation</a>.</p>
+
+
+This setup will enable the Manticore Columnar Library and Manticore Buddy, and run Manticore on ports 9306 for MySQL connections and 9308 for all other connections, using `./data/` as the designated data directory.
+
+Read more about production use [in the documentation](https://github.com/manticoresoftware/docker#production-use).
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- proofread -->
         
     </section>

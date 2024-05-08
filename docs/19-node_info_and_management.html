@@ -59,10 +59,28 @@
 </ul>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">status</span>
 </code></pre></div>
 
+
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="c1">--------------</span>
 <span class="n">mysql</span><span class="w">  </span><span class="n">Ver</span><span class="w"> </span><span class="mi">14</span><span class="p">.</span><span class="mi">14</span><span class="w"> </span><span class="n">Distrib</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">7</span><span class="p">.</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Linux</span><span class="w"> </span><span class="p">(</span><span class="n">x86_64</span><span class="p">)</span><span class="w"> </span><span class="k">using</span><span class="w">  </span><span class="n">EditLine</span><span class="w"> </span><span class="n">wrapper</span>
@@ -89,10 +107,15 @@
 <span class="c1">--------------</span>
 </code></pre></div>
 
+
+
+
 <!-- end-->
 
 </div>
+
 </div>
+
 <h2 id="show-status">SHOW STATUS</h2>
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="p">]</span>
 </code></pre></div>
@@ -101,6 +124,7 @@
 
 <p><code>SHOW STATUS</code> is an SQL statement that presents various helpful performance counters. IO and CPU counters will only be available if <code>searchd</code> was started with the <code>--iostats</code> and <code>--cpustats</code> switches, respectively (or if they were enabled via <code>SET GLOBAL iostats/cpustats=1</code>).</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -109,7 +133,6 @@
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
@@ -118,6 +141,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------------+---------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Counter</span><span class="w">               </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                     </span><span class="o">|</span>
@@ -189,6 +220,7 @@ SQL
 
 <p>An optional <code>LIKE</code> clause is supported, allowing you to select only the variables that match a specific pattern. The pattern syntax follows standard SQL wildcards, where <code>%</code> represents any number of any characters, and <code>_</code> represents a single character.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -197,7 +229,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;qcache%&#39;</span><span class="p">;</span>
@@ -206,6 +237,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------------+-------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Counter</span><span class="w">               </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span>
@@ -236,6 +275,7 @@ SQL
 - <code>configuration_file</code> - The path to the configuration file<br />
 - <code>worker_pid</code> - The process ID of the running <code>searchd</code> instance</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -244,7 +284,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">SETTINGS</span><span class="p">;</span>
@@ -253,6 +292,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------------------+-------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Setting_name</span><span class="w">             </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                               </span><span class="o">|</span>
@@ -290,6 +337,7 @@ SQL
 
 <p><code>SHOW AGENT STATUS</code> displays the statistics of <a href="../06-creating_a_table.html#agent">remote agents</a> or a distributed table. It includes values such as the age of the last request, last answer, the number of various types of errors and successes, and so on. Statistics are displayed for every agent for the last 1, 5, and 15 intervals, each consisting of <a href="../20-server_settings.html#ha_period_karma">ha_period_karma</a> seconds.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -298,7 +346,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">AGENT</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
@@ -307,6 +354,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------------------------+----------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">                      </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                      </span><span class="o">|</span>
@@ -371,6 +426,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -379,8 +436,6 @@ SQL
 PHP
 </div>
 
-<!-- request PHP -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;agentstatus();</span>
 </code></pre></div>
@@ -388,6 +443,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
@@ -447,6 +510,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -455,14 +520,20 @@ PHP
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW AGENT STATUS&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- response Python -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
@@ -525,15 +596,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT STATUS&quot;</span><span class="p">);</span>
@@ -541,6 +612,14 @@ Javascript
 
 
 <!-- response javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
@@ -604,15 +683,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW AGENT STATUS&quot;</span><span class="p">);</span>
@@ -620,6 +699,14 @@ java
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="w"> </span><span class="p">}},</span>
@@ -683,15 +770,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;SHOW AGENT STATUS&quot;</span><span class="ss">)</span><span class="c1">;</span>
@@ -699,6 +786,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nx">columns</span><span class="p">=[{</span><span class="w"> </span><span class="nx">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="w"> </span><span class="p">}},</span>
@@ -762,6 +857,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -770,14 +867,20 @@ C
 TypeScript
 </div>
 
-<!-- request TypeScript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT STATUS&quot;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -856,6 +959,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -864,14 +969,20 @@ TypeScript
 Go
 </div>
 
-<!-- request Go -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;SHOW AGENT STATUS&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
 </code></pre></div>
 
 
 <!-- response Go -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Go
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -958,6 +1069,7 @@ Go
 
 <p>An optional <code>LIKE</code> clause is supported, with the syntax being the same as in <code>SHOW STATUS</code>.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -966,7 +1078,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">AGENT</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%5period%msec%&#39;</span><span class="p">;</span>
@@ -975,6 +1086,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------------------+--------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">Key</span><span class="w">                         </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">  </span><span class="o">|</span>
@@ -990,6 +1109,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -997,8 +1118,6 @@ SQL
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;agentstatus(</span>
@@ -1012,6 +1131,14 @@ PHP
 
 <!-- response PHP -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
 <span class="x">    [ag_0_5periods_msecsperquery] =&gt; 234.72</span>
@@ -1023,6 +1150,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1031,14 +1160,20 @@ PHP
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW AGENT STATUS LIKE </span><span class="se">\&#39;</span><span class="s1">%5period%msec%</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- response Python -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
@@ -1055,15 +1190,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT STATUS LIKE \&quot;%5period%msec%\&quot;&quot;</span><span class="p">);</span>
@@ -1071,6 +1206,14 @@ Javascript
 
 
 <!-- response javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
@@ -1089,15 +1232,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW AGENT STATUS LIKE \&quot;%5period%msec%\&quot;&quot;</span><span class="p">);</span>
@@ -1105,6 +1248,14 @@ java
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">{</span><span class="n">Key</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}},</span>
@@ -1122,15 +1273,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;SHOW AGENT STATUS LIKE \&quot;</span><span class="o">%</span><span class="mi">5</span><span class="nv">period</span><span class="o">%</span><span class="nv">msec</span><span class="o">%</span>\<span class="s2">&quot;&quot;</span><span class="ss">)</span><span class="c1">;</span>
@@ -1138,6 +1289,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nx">columns</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nx">Key</span><span class="p">={</span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="p">}},</span>
@@ -1155,6 +1314,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1163,14 +1324,20 @@ C
 TypeScript
 </div>
 
-<!-- request TypeScript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT STATUS LIKE \&quot;%5period%msec%\&quot;&quot;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response TypeScript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: TypeScript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1197,6 +1364,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1205,14 +1374,20 @@ TypeScript
 Go
 </div>
 
-<!-- request Go -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;SHOW AGENT STATUS LIKE \&quot;%5period%msec%\&quot;&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
 </code></pre></div>
 
 
 <!-- response Go -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Go
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1247,6 +1422,7 @@ Go
 
 <p>You can specify a particular agent by its address. In this case, only that agent's data will be displayed. Additionally, the <code>agent_</code> prefix will be used instead of <code>ag_N_</code>:</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -1255,7 +1431,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">AGENT</span><span class="w"> </span><span class="s1">&#39;192.168.0.202:6714&#39;</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%15periods%&#39;</span><span class="p">;</span>
@@ -1264,6 +1439,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------------------------------+--------+</span>
@@ -1286,6 +1469,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1293,8 +1478,6 @@ SQL
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;agentstatus(</span>
@@ -1308,6 +1491,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
@@ -1328,6 +1519,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1336,14 +1529,20 @@ PHP
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW AGENT </span><span class="se">\&#39;</span><span class="s1">192.168.0.202:6714</span><span class="se">\&#39;</span><span class="s1"> STATUS LIKE </span><span class="se">\&#39;</span><span class="s1">%15periods%</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- response Python -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
@@ -1368,15 +1567,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">);</span>
@@ -1384,6 +1583,14 @@ Javascript
 
 
 <!-- response javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
@@ -1409,15 +1616,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">);</span>
@@ -1425,6 +1632,14 @@ java
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="n">Key</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}},</span>
@@ -1450,15 +1665,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="o">);</span>
@@ -1466,6 +1681,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nx">columns</span><span class="p">=[{</span><span class="nx">Key</span><span class="p">={</span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="p">}},</span>
@@ -1491,6 +1714,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1499,14 +1724,20 @@ C
 TypeScript
 </div>
 
-<!-- request TypeScript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response TypeScript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: TypeScript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1539,6 +1770,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1547,14 +1780,20 @@ TypeScript
 Go
 </div>
 
-<!-- request Go -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="err">&quot;</span><span class="nx">SHOW</span><span class="w"> </span><span class="nx">AGENT</span><span class="w"> </span><span class="err">\&quot;</span><span class="mf">192.168.0.202</span><span class="p">:</span><span class="mi">6714</span><span class="err">\&quot;</span><span class="w"> </span><span class="nx">STATUS</span><span class="w"> </span><span class="nx">LIKE</span><span class="w"> </span><span class="err">\&quot;</span><span class="o">%</span><span class="mi">15</span><span class="nx">periods</span><span class="o">%</span><span class="err">\&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
 </code></pre></div>
 
 
 <!-- response Go -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Go
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1594,6 +1833,7 @@ Go
 
 <p>Finally, you can check the status of the agents in a specific distributed table using the <code>SHOW AGENT index_name STATUS</code> statement. This statement displays the table's HA status (i.e., whether or not it uses agent mirrors at all) and provides information on the mirrors, including: address, blackhole and persistent flags, and the mirror selection probability used when one of the <a href="../10-creating_a_cluster.html#toc-10.02.02-load_balancing">weighted probability strategies</a> is in effect.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -1602,7 +1842,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">AGENT</span><span class="w"> </span><span class="n">dist_index</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
@@ -1611,6 +1850,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------------------------------+--------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">                        </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                          </span><span class="o">|</span>
@@ -1636,6 +1883,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1643,8 +1892,6 @@ SQL
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;agentstatus(</span>
@@ -1657,6 +1904,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
@@ -1679,6 +1934,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1687,14 +1944,20 @@ PHP
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW AGENT </span><span class="se">\&#39;</span><span class="s1">192.168.0.202:6714</span><span class="se">\&#39;</span><span class="s1"> STATUS LIKE </span><span class="se">\&#39;</span><span class="s1">%15periods%</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- response Python -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
@@ -1722,15 +1985,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">);</span>
@@ -1738,6 +2001,14 @@ Javascript
 
 
 <!-- response javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
@@ -1766,15 +2037,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">);</span>
@@ -1782,6 +2053,14 @@ java
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="n">Key</span><span class="o">=</span><span class="p">{</span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="p">}},</span>
@@ -1810,15 +2089,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="o">);</span>
@@ -1826,6 +2105,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nx">columns</span><span class="p">=[{</span><span class="nx">Key</span><span class="p">={</span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="p">}},</span>
@@ -1854,6 +2141,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1862,14 +2151,20 @@ C
 TypeScript
 </div>
 
-<!-- request TypeScript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s2">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response TypeScript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: TypeScript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1904,6 +2199,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1912,14 +2209,20 @@ TypeScript
 Go
 </div>
 
-<!-- request Go -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;SHOW AGENT \&quot;192.168.0.202:6714\&quot; STATUS LIKE \&quot;%15periods%\&quot;&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
 </code></pre></div>
 
 
 <!-- response Go -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Go
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1990,6 +2293,7 @@ Go
 <li><code>index</code>: Information about the utilized index (e.g., secondary index).</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -1998,7 +2302,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">story_author</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">hn_small</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;one|two|three&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">comment_ranking</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
@@ -2008,6 +2311,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------+--------------+</span>
@@ -2053,6 +2364,7 @@ SQL
 <!-- example show meta iostats cpustats -->
 <p><code>SHOW META</code> can display I/O and CPU counters, but they will only be available if searchd was started with the <code>--iostats</code> and <code>--cpustats</code> switches, respectively.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2061,7 +2373,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="n">channel_id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">records</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;one|two|three&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
@@ -2072,6 +2383,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------+--------------+</span>
@@ -2130,6 +2449,7 @@ SQL
 <!-- example show meta predicted_time -->
 <p>Additional values, such as <code>predicted_time</code>, <code>dist_predicted_time</code>, <code>local_fetched_docs</code>, <code>local_fetched_hits</code>, <code>local_fetched_skips</code>, and their respective <code>dist_fetched_*</code> counterparts, will only be available if <code>searchd</code> was configured with <a href="../20-server_settings.html#predicted_time_costs">predicted time costs</a> and the query included <code>predicted_time</code> in the <code>OPTION</code> clause.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2138,7 +2458,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="n">story_author</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">hn_small</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;one|two|three&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">option</span><span class="w"> </span><span class="n">max_predicted_time</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
@@ -2149,6 +2468,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------+--------------+</span>
@@ -2199,6 +2526,7 @@ SQL
 
 <p><code>SHOW META</code> must be executed immediately after the query in the <strong>same</strong> session. Since some MySQL connectors/libraries use connection pools, running <code>SHOW META</code> in a separate statement can lead to unexpected results, such as retrieving metadata from another query. In these cases (and generally recommended), run a multiple statement containing both the query and <code>SHOW META</code>. Some connectors/libraries support multi-queries within the same method for a single statement, while others may require the use of a dedicated method for multi-queries or setting specific options during connection setup.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2207,7 +2535,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="n">story_author</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">hn_small</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;one|two|three&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">META</span><span class="p">;</span>
@@ -2216,6 +2543,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------+--------------+</span>
@@ -2261,6 +2596,7 @@ SQL
 
 <p>You can also use the optional LIKE clause, which allows you to select only the variables that match a specific pattern. The pattern syntax follows standard SQL wildcards, where <code>%</code> represents any number of any characters, and <code>_</code> represents a single character.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2269,7 +2605,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">META</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;total%&#39;</span><span class="p">;</span>
@@ -2278,6 +2613,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------+--------+</span>
@@ -2303,6 +2646,7 @@ SQL
 
 <p>When utilizing <a href="../13-searching.html#toc-13.14-faceted_search">faceted search</a>, you can examine the <code>multiplier</code> field in the <code>SHOW META</code> output to determine how many queries were executed in an optimized group.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2311,7 +2655,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">facetdemo</span><span class="w"> </span><span class="n">FACET</span><span class="w"> </span><span class="n">brand_id</span><span class="w"> </span><span class="n">FACET</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="n">FACET</span><span class="w"> </span><span class="n">categories</span><span class="p">;</span>
@@ -2321,6 +2664,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+-------+----------+---------------------+-------------+-------------+---------------------------------------+------------+</span>
@@ -2369,6 +2720,7 @@ SQL
 <p>When the <a href="../13-searching.html#toc-13.21-cost-based_optimizer">cost-based query optimizer</a> chooses to use <code>DocidIndex</code>, <code>ColumnarScan</code>, or <code>SecondaryIndex</code> instead of a plain filter, this is reflected in the <code>SHOW META</code> command.</p>
 <p>The <code>index</code> variable displays the names and types of secondary indexes used during query execution. The percentage indicates how many disk chunks (in the case of an RT table) or pseudo shards (in the case of a plain table) utilized the secondary index.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2377,7 +2729,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">taxi1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">tip_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
@@ -2387,6 +2738,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------+----------------------------------+</span>
@@ -2422,6 +2781,7 @@ SQL
 <li><code>Term only queries</code> - Number of queries in the table that have terms; the remaining queries use extended query syntax.</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2430,7 +2790,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pq&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;{&quot;title&quot;:&quot;angry&quot;, &quot;gid&quot;:3 }&#39;</span><span class="p">));</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">META</span><span class="p">;</span>
@@ -2439,6 +2798,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+</span>
@@ -2482,6 +2849,7 @@ SQL
 <li><code>Time of matched queries</code> - Total time spent on queries that matched any documents</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2490,7 +2858,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pq&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;{&quot;title&quot;:&quot;angry&quot;, &quot;gid&quot;:3 }&#39;</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">verbose</span><span class="p">);</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">META</span><span class="p">;</span>
@@ -2499,6 +2866,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+</span>
@@ -2567,6 +2942,7 @@ SQL
 <li><code>Info</code>: Information about the query, which may include multiple queries if the query targets a distributed table or a real-time table</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -2575,7 +2951,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">THREADS</span><span class="p">;</span>
@@ -2584,6 +2959,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
@@ -2616,6 +2999,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -2624,8 +3009,6 @@ SQL
 JSON
 </div>
 
-<!-- request JSON -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST /cli -d &quot;SHOW THREADS&quot;</span>
 </code></pre></div>
@@ -2633,6 +3016,14 @@ JSON
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="nb">+--------+---------+-------+-------+-----------------+--------+-----------------------+-----------+---------------+--------------+</span>
 <span class="c">| TID    | Name    | Proto | State | Connection from | ConnID | This/prev job time</span><span class="nt">,</span><span class="c"> s | Jobs done | Thread status | Info         |</span>
@@ -2645,6 +3036,8 @@ JSON
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -2652,8 +3045,6 @@ JSON
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">require_once __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
@@ -2665,6 +3056,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array</span>
 <span class="x">(</span>
@@ -2689,6 +3088,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -2696,8 +3097,6 @@ PHP
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">manticoresearch</span>
@@ -2712,6 +3111,14 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="p">[{</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;TID&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;long&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;Proto&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;State&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;Connection from&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;ConnID&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;long long&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;This/prev job time, s&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;CPU activity&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;Jobs done&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;long&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;Thread status&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;Info&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}}],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;TID&#39;</span><span class="p">:</span> <span class="mi">506958</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="s1">&#39;work_6&#39;</span><span class="p">,</span> <span class="s1">&#39;Proto&#39;</span><span class="p">:</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">:</span> <span class="s1">&#39;query&#39;</span><span class="p">,</span> <span class="s1">&#39;Connection from&#39;</span><span class="p">:</span> <span class="s1">&#39;127.0.0.1:38600&#39;</span><span class="p">,</span> <span class="s1">&#39;ConnID&#39;</span><span class="p">:</span> <span class="mi">834</span><span class="p">,</span> <span class="s1">&#39;This/prev job time, s&#39;</span><span class="p">:</span> <span class="s1">&#39;206us&#39;</span><span class="p">,</span> <span class="s1">&#39;CPU activity&#39;</span><span class="p">:</span> <span class="s1">&#39;91.85%&#39;</span><span class="p">,</span> <span class="s1">&#39;Jobs done&#39;</span><span class="p">:</span> <span class="mi">943</span><span class="p">,</span> <span class="s1">&#39;Thread status&#39;</span><span class="p">:</span> <span class="s1">&#39;working&#39;</span><span class="p">,</span> <span class="s1">&#39;Info&#39;</span><span class="p">:</span> <span class="s1">&#39;show_threads&#39;</span><span class="p">}],</span> <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}]</span>
 </code></pre></div>
@@ -2719,15 +3126,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;manticoresearch&#39;</span><span class="p">);</span>
@@ -2744,6 +3151,14 @@ Javascript
 
 
 <!-- response javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
@@ -2831,15 +3246,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW THREADS&quot;</span><span class="p">);</span>
@@ -2847,6 +3262,14 @@ java
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -2932,15 +3355,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">Sql</span><span class="p">(</span><span class="s">&quot;SHOW THREADS&quot;</span><span class="p">);</span>
@@ -2948,6 +3371,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -3027,6 +3458,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3035,8 +3468,6 @@ C
 TypeScript
 </div>
 
-<!-- request TypeScript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW THREADS&#39;</span><span class="p">);</span>
 </code></pre></div>
@@ -3044,6 +3475,14 @@ TypeScript
 
 
 <!-- response TypeScript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: TypeScript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
@@ -3131,6 +3570,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3139,8 +3580,6 @@ TypeScript
 Go
 </div>
 
-<!-- request Go -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;SHOW THREADS&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
 </code></pre></div>
@@ -3148,6 +3587,14 @@ Go
 
 
 <!-- response Go -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Go
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
@@ -3251,6 +3698,7 @@ Go
 <p>By default, queries are displayed in their original format. However, when the <code>format=sphinxql</code> option is used, queries will be shown in SQL format, regardless of the protocol used for execution.</p>
 <p>Using <code>format=all</code> will show all threads, while idling and system threads are hidden without this option (e.g., those busy with <a href="../16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE</a>).</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -3259,7 +3707,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">THREADS</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">columns</span><span class="o">=</span><span class="mi">30</span><span class="err">\</span><span class="k">G</span>
@@ -3269,6 +3716,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3276,8 +3725,6 @@ SQL
 <div class='item-select'>
 JSON
 </div>
-
-<!-- request JSON -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;SHOW THREADS OPTION columns=30&quot;</span>
@@ -3287,6 +3734,8 @@ JSON
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3294,8 +3743,6 @@ JSON
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$client-&gt;nodes()-&gt;threads([&#39;body&#39;=&gt;[&#39;columns&#39;=&gt;30]]);</span>
@@ -3305,6 +3752,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3312,8 +3761,6 @@ PHP
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW THREADS OPTION columns=30&#39;</span><span class="p">)</span>
@@ -3323,15 +3770,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW THREADS OPTION columns=30&#39;</span><span class="p">);</span>
@@ -3341,15 +3788,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW THREADS OPTION columns=30&quot;</span><span class="p">);</span>
@@ -3359,15 +3806,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;SHOW THREADS OPTION columns=30&quot;</span><span class="ss">)</span><span class="c1">;</span>
@@ -3377,6 +3824,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3384,8 +3833,6 @@ C
 <div class='item-select'>
 TypeScript
 </div>
-
-<!-- request TypeScript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW THREADS OPTION columns=30&#39;</span><span class="p">);</span>
@@ -3395,6 +3842,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3402,8 +3851,6 @@ TypeScript
 <div class='item-select'>
 Go
 </div>
-
-<!-- request Go -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;SHOW THREADS OPTION columns=30&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
@@ -3446,10 +3893,28 @@ Go
 </ul>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">QUERIES</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="nb">+------+--------------+---------+----------+-----------------+</span>
 <span class="c">| id   | query        | time    | protocol | host            |</span>
@@ -3460,10 +3925,14 @@ Go
 <span class="c">2 rows in set (0</span><span class="nt">.</span><span class="c">61 sec)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>Refer to <a href="../19-node_info_and_management.html#toc-19.03-show_threads">SHOW THREADS</a> if you'd like to gain insight from the perspective of the threads themselves.</p>
 <!-- proofread -->
         
@@ -3491,10 +3960,28 @@ Go
 - <code>Version</code>: This column displays the version information for the respective component.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="k">VERSION</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="nb">+-----------+--------------------------------+</span>
 <span class="c">| Component | Version                        |</span>
@@ -3507,10 +3994,14 @@ Go
 <span class="nb">+-----------+--------------------------------+</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- proofread -->
         
     </section>
@@ -3534,13 +4025,24 @@ Go
 <p><code>KILL</code> terminates the execution of a query by its ID, which you can find in <a href="../19-node_info_and_management.html#show-queries">SHOW QUERIES</a>.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">KILL</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 <span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
 <!-- proofread -->
         
@@ -3702,6 +4204,7 @@ Go
 <li><code>net_write</code>: writing the result set to the network.</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -3710,7 +4213,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="n">profiling</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
@@ -3723,6 +4225,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
@@ -3766,6 +4276,14 @@ SQL
 
 <!-- request JSON -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
 <span class="p">{</span>
@@ -3781,6 +4299,14 @@ SQL
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -3904,6 +4430,7 @@ SQL
 <li>3 - Displays a JSON object with a textual description of every node. Note that the description for child nodes is also present and repeats part of the parent's description, which makes the whole representation quite large.</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -3912,7 +4439,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="n">profiling</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
@@ -3925,6 +4451,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
@@ -3943,6 +4477,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -3950,8 +4486,6 @@ SQL
 <div class='item-select'>
 JSON
 </div>
-
-<!-- request JSON -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
@@ -3967,6 +4501,14 @@ JSON
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
@@ -4021,6 +4563,7 @@ JSON
 
 <p>In some cases, the evaluated query tree can be quite different from the original one due to expansions and other transformations.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -4029,7 +4572,6 @@ JSON
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="n">profiling</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
@@ -4042,6 +4584,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
@@ -4074,15 +4624,15 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-JSON full format
+JSON
 </div>
-
-<!-- request JSON -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
@@ -4098,6 +4648,14 @@ JSON full format
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="mi">33</span><span class="p">,</span>
@@ -4242,16 +4800,16 @@ JSON full format
 
 <!-- intro -->
 
+
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
-
 <div class='item-select'>
-JSON object format
+JSON
 </div>
-
-<!-- request JSON -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
@@ -4267,6 +4825,14 @@ JSON object format
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -4400,16 +4966,16 @@ JSON object format
 
 <!-- intro -->
 
+
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
-
 <div class='item-select'>
-JSON short format
+JSON
 </div>
-
-<!-- request JSON -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span>
@@ -4425,6 +4991,14 @@ JSON short format
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -4574,6 +5148,7 @@ JSON short format
 <li><code>found_rows_*</code>: statistics of rows found by queries; provided for the last 1 minute, 5 minutes, 15 minutes, and total since server start; data is encapsulated as a JSON object, including the number of queries and min, max, avg, 95, and 99 percentile values.</li>
 </ul>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -4582,7 +5157,6 @@ JSON short format
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">statistic</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
@@ -4591,6 +5165,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------------------+--------------------------------------------------------------------------+</span>
@@ -4633,6 +5215,7 @@ SQL
 
 
 <!-- intro -->
+<!-- request PHP -->
 
 </div>
 
@@ -4641,7 +5224,6 @@ SQL
 <div class='item-select'>
 PHP
 </div>
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index-&gt;status();</span>
@@ -4650,6 +5232,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
@@ -4679,6 +5269,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -4687,14 +5279,20 @@ PHP
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLE statistic STATUS&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- response Python -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
@@ -4727,6 +5325,8 @@ Python
 
 <!-- intro -->
 
+<!-- request Javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -4735,14 +5335,20 @@ Python
 Javascript
 </div>
 
-<!-- request Javascript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLE statistic STATUS&#39;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response Javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
@@ -4775,6 +5381,8 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -4783,14 +5391,20 @@ Javascript
 Java
 </div>
 
-<!-- request Java -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW TABLE statistic STATUS&quot;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="w"> </span><span class="p">}},</span>
 <span class="w">              </span><span class="p">{</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="w"> </span><span class="p">}}</span><span class="o">]</span><span class="p">,</span>
@@ -4823,15 +5437,15 @@ Java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;SHOW TABLE statistic STATUS&quot;</span><span class="ss">)</span><span class="c1">;</span>
@@ -4839,6 +5453,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nx">columns</span><span class="p">=[{</span><span class="w"> </span><span class="nx">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="w"> </span><span class="p">}},</span>
 <span class="w">              </span><span class="p">{</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">type</span><span class="p">=</span><span class="kt">string</span><span class="w"> </span><span class="p">}}],</span>
@@ -4871,6 +5493,8 @@ C
 
 <!-- intro -->
 
+<!-- request TypeScript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -4879,14 +5503,20 @@ C
 TypeScript
 </div>
 
-<!-- request TypeScript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW TABLE statistic STATUS&#39;</span><span class="p">);</span>
 </code></pre></div>
 
 
 <!-- response TypeScript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: TypeScript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -4929,6 +5559,8 @@ TypeScript
 
 <!-- intro -->
 
+<!-- request Go -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -4937,14 +5569,20 @@ TypeScript
 Go
 </div>
 
-<!-- request Go -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">apiClient</span><span class="p">.</span><span class="nx">UtilsAPI</span><span class="p">.</span><span class="nx">Sql</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Background</span><span class="p">()).</span><span class="nx">Body</span><span class="p">(</span><span class="s">&quot;SHOW TABLE statistic STATUS&quot;</span><span class="p">).</span><span class="nx">Execute</span><span class="p">()</span>
 </code></pre></div>
 
 
 <!-- response Go -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Go
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -5014,6 +5652,7 @@ Go
 
 <p>The output resembles the <a href="23-miscellaneous_tools.html#indextool">--dumpconfig</a> option of the <a href="23-miscellaneous_tools.html#indextool">indextool</a> utility. The report provides a breakdown of all table settings, including tokenizer and dictionary options.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -5022,7 +5661,6 @@ Go
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">forum</span><span class="w"> </span><span class="n">SETTINGS</span><span class="p">;</span>
@@ -5031,6 +5669,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------+-----------------------------------------------------------------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                                                                                                     </span><span class="o">|</span>
@@ -5053,6 +5699,7 @@ SQL
 
 <p>You can also specify a particular chunk number to view the settings of a specific chunk in an RT table. The numbering is 0-based.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -5061,7 +5708,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">forum</span><span class="w"> </span><span class="n">CHUNK</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">SETTINGS</span><span class="p">;</span>
@@ -5070,6 +5716,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------+-----------------------------------------------------------------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                                                                                                     </span><span class="o">|</span>

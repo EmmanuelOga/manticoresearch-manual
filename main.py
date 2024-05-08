@@ -2,16 +2,16 @@
 Scans Manticore Search manual files and compile into a single big file.
 """
 
-from functools import cache
 import re
 from collections.abc import Iterator
+from functools import cache
 from pathlib import Path
 from shutil import copy, rmtree
-from rich import print
 
 import markdown
 import msgspec
 from jinja2 import Template
+from rich import print
 
 MANTICORE_VERSION = "6.2.12 (Aug 23, 2023)"
 
@@ -31,7 +31,6 @@ MD_BULET = r"^(\s*)\*"
 # Store destination paths for each source path, used to fix links.
 DESTINATION_FOR_PATH: dict[str, str] = {}
 
-WARNINGS : list[str] = []
 
 class Entry(msgspec.Struct, omit_defaults=True):
     title: str
@@ -125,9 +124,6 @@ class Entry(msgspec.Struct, omit_defaults=True):
 
             last_line = ""
 
-            num_intros = 0
-            num_requests = 0
-            example_name = ""
             in_code_block = False
             insert_code_block = False
 
@@ -150,11 +146,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
                             f"#{match[0]}#{match[1]}", f"#{match[1].lower()}"
                         )
 
-                if in_code_block and line.find("#####") >= 0:
-                    open_div("item-select")
-                    buffer.append(f"{line.replace('#', '').replace(':', '').strip()}")
-                    close_div("item-select")
-                else:
+                if not in_code_block:
+                    buffer.append(line)
+                elif not line.startswith("#####"):
                     buffer.append(line)
 
                 last_line = line
@@ -163,13 +157,9 @@ class Entry(msgspec.Struct, omit_defaults=True):
                 if line.startswith("<!-- example"):
                     in_code_block = True
                     insert_code_block = True
-                    num_intros = 0
-                    num_requests = 0
-                    example_name = line.strip()
-                elif line.startswith("<!-- request"):
-                    num_requests += 1
-                elif line.startswith("<!-- intro"):
-                    num_intros += 1
+                elif line.startswith("<!-- request") or line.startswith(
+                    "<!-- response"
+                ):
                     if in_code_block:
                         if insert_code_block:
                             open_div("xcodeblock")
@@ -178,9 +168,24 @@ class Entry(msgspec.Struct, omit_defaults=True):
                         else:
                             close_div("xcodeblock-item")
                             open_div("xcodeblock-item")
+
+                        open_div("item-select")
+
+                        match = re.findall(r"<!-- (request|response)(.+)-->", line)[0]
+                        code_type = match[0]
+                        code_id = match[1].strip()
+
+                        if code_type == "request":
+                            buffer.append(code_id if code_id else "Req")
+                        else:
+                            buffer.append(f"Resp: {code_id}" if code_id else "Resp")
+
+                        close_div("item-select")
+
+                elif line.startswith("<!-- intro"):
+                    pass
+
                 elif line.startswith("<!-- end"):
-                    if num_intros != num_requests:
-                        WARNINGS.append(f"{self.path}: {example_name} has {num_intros} intros and {num_requests} requests")
                     if in_code_block:
                         close_div("xcodeblock-item")
                         close_div("xcodeblock")
@@ -359,8 +364,3 @@ sanity_checks(root)
 write_output(root)
 
 print("\nDone!\n")
-
-if WARNINGS:
-    for warning in WARNINGS:
-        print(warning)
-    print(f"{len(WARNINGS)} warnings.")

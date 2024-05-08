@@ -115,10 +115,29 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <p>To verify that SphinxSE has been successfully compiled into MySQL, start the newly built server, run the MySQL client, and issue the <code>SHOW ENGINES</code> query. You should see a list of all available engines. Manticore should be present, and the "Support" column should display "YES":</p>
 <!-- request -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Req
+</div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">engines</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+----------+-------------------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Engine</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">Support</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="k">Comment</span><span class="w">                                                     </span><span class="o">|</span>
@@ -131,10 +150,14 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="mi">13</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="using-sphinxse">Using SphinxSE</h2>
 <p>To search using SphinxSE, you'll need to create a special ENGINE=SPHINX "search table" and then use a <code>SELECT</code> statement with the full-text query placed in the <code>WHERE</code> clause for the query column.</p>
 <p>Here's an example create statement and search query:</p>
@@ -293,13 +316,33 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <!-- example SQL Example_2 -->
 <!-- request -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Req
+</div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHT</span><span class="p">(),</span><span class="w"> </span><span class="n">RANKFACTORS</span><span class="p">()</span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">myindex</span>
 <span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;dog&#39;</span><span class="p">)</span>
 <span class="w">    </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;100*bm25&#39;</span><span class="p">);</span>
 </code></pre></div>
 
+
+
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="err">\</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
 <span class="w">           </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">555617</span>
@@ -331,10 +374,14 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="n">idf</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">259532</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <ul>
 <li>geoanchor - geodistance anchor. Learn more about Geo-search <a href="../13-searching.html#toc-13.15-geo_search">in this section</a>. Takes 4 parameters, which are the latitude and longitude attribute names, and anchor point coordinates, respectively:</li>
 </ul>
@@ -347,10 +394,30 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <p>You can obtain additional information related to the query results using the <code>SHOW ENGINE SPHINX STATUS</code> statement:</p>
 <!-- request -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Req
+</div>
+
+
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">ENGINE</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------+-------+-------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Status</span><span class="w">                                          </span><span class="o">|</span>
@@ -361,19 +428,42 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example Example_4 -->
 
 <p>You can also access this information through status variables. Keep in mind that using this method does not require super-user privileges.</p>
 <!-- request -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Req
+</div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;sphinx_%&#39;</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------------+----------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                            </span><span class="o">|</span>
@@ -387,14 +477,27 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL Example_5 -->
 
 <p>SphinxSE search tables can be joined with tables using other engines. Here's an example using the "documents" table from example.sql:</p>
 <!-- request -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Req
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="n">date_added</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">.</span><span class="n">documents</span><span class="w"> </span><span class="n">docs</span>
 <span class="o">-&gt;</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">docs</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
@@ -403,7 +506,18 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">ENGINE</span><span class="w"> </span><span class="n">SPHINX</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------------------------------+---------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">content</span><span class="w">                             </span><span class="o">|</span><span class="w"> </span><span class="n">docdate</span><span class="w">             </span><span class="o">|</span>
@@ -422,10 +536,14 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="building-snippets-via-mysql">Building snippets via MySQL</h2>
 <p>SphinxSE also features a UDF function that allows you to create snippets using MySQL. This functionality is similar to <a href="13-searching.html#highlighting">HIGHLIGHT()</a>, but can be accessed through MySQL+SphinxSE.</p>
 <p>The binary providing the UDF is called <code>sphinx.so</code> and should be automatically built and installed in the appropriate location along with SphinxSE. If it doesn't install automatically for some reason, locate <code>sphinx.so</code> in the build directory and copy it to your MySQL instance's plugins directory. Once done, register the UDF with the following statement:</p>
@@ -469,6 +587,8 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <p>Creating a FEDERATED-compatible MySQL table:</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -476,8 +596,6 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t1</span>
@@ -495,6 +613,14 @@ SQL
 
 <!-- response SQL-->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -510,6 +636,8 @@ SQL
 <p>Query FEDERATED compatible table:</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -518,8 +646,6 @@ SQL
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;SELECT * FROM movies WHERE MATCH (\&#39;</span><span class="n">pie</span><span class="err">\</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
 </code></pre></div>
@@ -527,6 +653,14 @@ SQL
 
 
 <!-- response SQL-->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----+------+--------+------------------------------------------+</span>
@@ -559,18 +693,14 @@ SQL
 <p>JOINs can be performed between a FEDERATED table and other MySQL tables. This can be used to retrieve information that is not stored in a Manticore table.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
 SQL
-</div>
-
-<!-- request SQL -->
-
-<div class='item-select'>
-Query to JOIN MySQL based table with FEDERATED table served by Manticore
 </div>
 
 
@@ -580,6 +710,14 @@ Query to JOIN MySQL based table with FEDERATED table served by Manticore
 
 
 <!-- response SQL-->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----+------+--------------+</span>
@@ -697,6 +835,8 @@ Query to JOIN MySQL based table with FEDERATED table served by Manticore
 <p>Displays all the loaded plugins (except for Buddy plugins, see below) and UDFs. The "Type" column should be one of the <code>udf</code>, <code>ranker</code>, <code>index_token_filter</code>, or <code>query_token_filter</code>. The "Users" column is the number of thread that are currently using that plugin in a query. The "Extra" column is intended for various additional plugin-type specific information; currently, it shows the return type for the UDFs and is empty for all the other plugin types.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -705,8 +845,6 @@ Query to JOIN MySQL based table with FEDERATED table served by Manticore
 Example
 </div>
 
-<!-- request Example -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">PLUGINS</span><span class="p">;</span>
 </code></pre></div>
@@ -714,6 +852,14 @@ Example
 
 
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+----------+----------------+-------+-------+</span>
@@ -742,10 +888,30 @@ Example
 To remove a plugin, make sure to use the name listed in the Package column.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGINS</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="o">+------------------------------------------------+-----------------+---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="nx">Package</span><span class="w">                                        </span><span class="o">|</span><span class="w"> </span><span class="nx">Plugin</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="nx">Version</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Info</span><span class="w">                                                                                                                                                     </span><span class="o">|</span>
@@ -767,9 +933,12 @@ To remove a plugin, make sure to use the name listed in the Package column.</p>
 <span class="o">+------------------------------------------------+-----------------+---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------+-----+</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
 <!-- proofread -->
         
@@ -986,13 +1155,16 @@ This argument serves one more purpose. Since a single query can be executed on m
 
 <p>This command will install the <code>show-hostname</code> plugin to the <a href="20-server_settings.html#plugin_dir">plugin_dir</a> and enable it without the need to restart the server.</p>
 <!-- intro -->
+<h3 id="examples">Examples</h3>
+<!-- request Example -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-### Examples
 
-<!-- request Example -->
+<div class='item-select'>
+Example
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="n">hostname</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="s1">&#39;buddy&#39;</span><span class="w"> </span><span class="k">VERSION</span><span class="w"> </span><span class="s1">&#39;dev-main&#39;</span><span class="p">;</span>
@@ -1038,13 +1210,16 @@ This argument serves one more purpose. Since a single query can be executed on m
 
 <p>This action instantly and permanently removes the installed plugin from the <a href="20-server_settings.html#plugin_dir">plugin_dir</a>. Once removed, the plugin's features will no longer be available.</p>
 <!-- intro -->
+<h3 id="example">Example</h3>
+<!-- request Example -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-### Example
 
-<!-- request Example -->
+<div class='item-select'>
+Example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="n">hostname</span>
 </code></pre></div>
@@ -1080,13 +1255,16 @@ This argument serves one more purpose. Since a single query can be executed on m
 
 <p>This command reactivates a previously disabled Buddy plugin, allowing it to process your requests again.</p>
 <!-- intro -->
+<h3 id="example">Example</h3>
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-### Example
 
-<!-- request SQL -->
+<div class='item-select'>
+SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">ENABLE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span>
 </code></pre></div>
@@ -1105,13 +1283,16 @@ This argument serves one more purpose. Since a single query can be executed on m
 
 <p>This command deactivates an active Buddy plugin, preventing it from processing any further requests.</p>
 <!-- intro -->
+<h3 id="example_1">Example</h3>
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-### Example
 
-<!-- request SQL -->
+<div class='item-select'>
+SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">DISABLE</span><span class="w"> </span><span class="n">BUDDY</span><span class="w"> </span><span class="n">PLUGIN</span><span class="w"> </span><span class="n">manticoresoftware</span><span class="o">/</span><span class="n">buddy</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="k">show</span>
 </code></pre></div>

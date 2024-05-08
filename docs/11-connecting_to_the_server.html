@@ -39,15 +39,15 @@
 </ul>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Connect via MySQL
+SQL
 </div>
-
-<!-- request SQL -->
 
 <div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-h0<span class="w"> </span>-P9306
 </code></pre></div>
@@ -56,15 +56,15 @@ Connect via MySQL
 
 <!-- intro -->
 
+<!-- request HTTP -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Connect via JSON over HTTP
+HTTP
 </div>
-
-<!-- request HTTP -->
 HTTP is a stateless protocol, so it doesn't require any special connection phase:
 
 
@@ -75,15 +75,15 @@ HTTP is a stateless protocol, so it doesn't require any special connection phase
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Connect via [PHP client](https//github.com/manticoresoftware/manticoresearch-php)
+PHP
 </div>
-
-<!-- request PHP -->
 
 <div class="codehilite"><pre><span></span><code><span class="x">require_once __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
 <span class="x">$config = [&#39;host&#39;=&gt;&#39;127.0.0.1&#39;,&#39;port&#39;=&gt;9308];</span>
@@ -92,6 +92,7 @@ Connect via [PHP client](https//github.com/manticoresoftware/manticoresearch-php
 
 
 <!-- intro -->
+<!-- request Python -->
 
 </div>
 
@@ -100,7 +101,6 @@ Connect via [PHP client](https//github.com/manticoresoftware/manticoresearch-php
 <div class='item-select'>
 Python
 </div>
-<!-- request Python -->
 
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">manticoresearch</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">manticoresearch</span><span class="o">.</span><span class="n">Configuration</span><span class="p">(</span>
@@ -114,6 +114,7 @@ Python
 
 
 <!-- intro -->
+<!-- request Javascript -->
 
 </div>
 
@@ -122,7 +123,6 @@ Python
 <div class='item-select'>
 Javascript
 </div>
-<!-- request Javascript -->
 
 <div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;manticoresearch&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">client</span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Manticoresearch</span><span class="p">.</span><span class="nx">ApiClient</span><span class="p">()</span>
@@ -135,6 +135,7 @@ Javascript
 
 
 <!-- intro -->
+<!-- request Java -->
 
 </div>
 
@@ -143,7 +144,6 @@ Javascript
 <div class='item-select'>
 Java
 </div>
-<!-- request Java -->
 
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.ApiClient</span><span class="p">;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">com.manticoresearch.client.ApiException</span><span class="p">;</span>
@@ -164,15 +164,15 @@ Java
 
 
 <!-- intro -->
+<!-- request C# -->
 
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-<!-- request C# -->
 
 <div class="codehilite"><pre><span></span><code><span class="nt">using</span><span class="w"> </span><span class="nt">ManticoreSearch</span><span class="p">.</span><span class="nc">Client</span><span class="o">;</span>
 <span class="nt">using</span><span class="w"> </span><span class="nt">ManticoreSearch</span><span class="p">.</span><span class="nc">Api</span><span class="o">;</span>
@@ -187,16 +187,16 @@ C
 
 
 <!-- intro -->
+If you are familiar with Docker, you can use Manticore's [official Docker image](https://github.com/manticoresoftware/docker) to run Manticore. Here is how you can connect to Manticore's docker via MySQL:
+<!-- request docker -->
 
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Connect via Docker
+docker
 </div>
-If you are familiar with Docker, you can use Manticore's [official Docker image](https://github.com/manticoresoftware/docker) to run Manticore. Here is how you can connect to Manticore's docker via MySQL:
-<!-- request docker -->
 Run Manticore container and use built-in MySQL client to connect to the node.
 
 <div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">EXTRA</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>--name<span class="w"> </span>manticore<span class="w"> </span>-d<span class="w"> </span>manticoresearch/manticore<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>manticore<span class="w"> </span>mysql
@@ -310,6 +310,14 @@ Run Manticore container and use built-in MySQL client to connect to the node.
 <p>Both lines are valid and have the same meaning (except for the port number). They both define listeners that will serve all API/HTTP/HTTPS protocols. There are no special requirements, and any HTTP client can be used to connect to Manticore.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
 <span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
@@ -318,16 +326,27 @@ Run Manticore container and use built-in MySQL client to connect to the node.
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>All HTTP endpoints return <code>application/json</code> content type. For the most part, endpoints use JSON payloads for requests. However, there are some exceptions that use NDJSON or simple URL-encoded payloads.</p>
 <p>Currently, there is no user authentication. Therefore, make sure that the HTTP interface is not accessible to anyone outside your network. As Manticore functions like any other web server, you can use a reverse proxy, such as Nginx, to implement HTTP authentication or caching.</p>
 <!-- example HTTPS -->
 <p>The HTTP protocol also supports <a href="../17-security.html#toc-17.01-ssl">SSL encryption</a>:<br />
 If you specify <code>:https</code> instead of <code>:http</code> <strong>only</strong> secured connections will be accepted. Otherwise in case of no valid key/certificate provided, but the client trying to connect via https - the connection will be dropped. If you make not HTTPS, but an HTTP request to 9443 it will respond with HTTP code 400.</p>
 <!-- request HTTPS -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTPS
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
@@ -337,15 +356,26 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="vip-connection">VIP Connection</h3>
 <!-- example VIP -->
 <p>Separate HTTP interface can be used for 'VIP' connections. In this case, the connection bypasses a thread pool and always creates a new dedicated thread. This is useful for managing Manticore Search during periods of severe overload when the server might stall or not allow regular port connections.</p>
 <p>For more information on the <code>listen</code> directive, see <a href="../20-server_settings.html#listen">this section</a>.</p>
 <!-- request VIP -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+VIP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
@@ -355,10 +385,13 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="sql-over-http">SQL over HTTP</h2>
 <p>Endpoints <code>/sql</code> and <code>/cli</code> allow running SQL queries via HTTP.</p>
 <ul>
@@ -374,10 +407,28 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <p>It returns a JSON response which contains hits information and execution time. The response has the same format as <a href="../13-searching.html#http-json">json/search</a> endpoint. Note, that <code>/sql</code> endpoint supports only single search requests. If you are looking for processing a multi-query see below.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=select%20id%2Csubject%2Cauthor_id%20%20from%20forum%20where%20match%28%27%40subject%20php%20manticore%27%29%20group%20by%20author_id%20order%20by%20id%20desc%20limit%200%2C5&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
@@ -407,19 +458,41 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="p">}</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL_over_HTTP_2 -->
 <h3 id="sqlmoderaw">/sql?mode=raw</h3>
 <p><code>/sql</code> endpoint also has a special mode <strong>"raw"</strong>, which allows to send <strong>any valid sphinxql queries including multi-queries</strong>. The returned value is a json array of one or more result sets.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql?mode<span class="o">=</span>raw<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=desc%20test&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
@@ -479,19 +552,42 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="p">]</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL_over_HTTP_4 -->
 <h3 id="cli">/cli</h3>
 <p>While the <code>/sql</code> endpoint is useful to control Manticore programmatically from your application, there's also endpoint <code>/cli</code> which makes it easier to maintain a Manticore instance via curl or your browser manually. It accepts POST and GET HTTP methods. Everything after <code>/cli?</code> is taken by Manticore as is, even if you don't escape it manually via curl or let the browser encode it automatically. The <code>+</code> sign is not decoded to a space as well, eliminating the necessity of encoding it. The response format is tabular, similar to the one returned by  MySQL console.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code>+-------+--------+----------------+
 <span class="p">|</span><span class="w"> </span>Field<span class="w"> </span><span class="p">|</span><span class="w"> </span>Type<span class="w">   </span><span class="p">|</span><span class="w"> </span>Properties<span class="w">     </span><span class="p">|</span>
@@ -503,23 +599,57 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="m">3</span><span class="w"> </span>rows<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>.001<span class="w"> </span>sec<span class="o">)</span>
 </code></pre></div>
 
+
+
+
 <!-- request Browser -->
 
-<p><img alt="using /cli in browser" src="cli_browser.png" /></p>
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Browser
+</div>
+
+![using /cli in browser](cli_browser.png)
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL_over_HTTP_cli_json -->
 
 <h3 id="cli_json">/cli_json</h3>
 <p>The <code>/cli_json</code> endpoint provides the same functionality as <code>/cli</code> , but returns the response in JSON format.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli_json<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="p">[{</span>
 <span class="nt">&quot;columns&quot;</span><span class="p">:[{</span><span class="nt">&quot;Field&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Type&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Properties&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span>
@@ -534,10 +664,14 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="p">}]</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="keep-alive">Keep-alive</h3>
 <p>HTTP keep-alive is also supported, which makes working via the HTTP JSON interface stateful as long as the client supports keep-alive too. For example, using the new <a href="../11-connecting_to_the_server.html#/cli">/cli</a> endpoint you can call <code>SHOW META</code> after <code>SELECT</code> and it will work the same way it works via mysql.</p>
 <!-- proofread -->
@@ -563,6 +697,14 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <p>Both lines are valid and have the same meaning (except for the port number). They both define listeners that will serve all API/HTTP/HTTPS protocols. There are no special requirements, and any HTTP client can be used to connect to Manticore.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
 <span class="w">   </span><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1:9308</span>
@@ -571,16 +713,27 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>All HTTP endpoints return <code>application/json</code> content type. For the most part, endpoints use JSON payloads for requests. However, there are some exceptions that use NDJSON or simple URL-encoded payloads.</p>
 <p>Currently, there is no user authentication. Therefore, make sure that the HTTP interface is not accessible to anyone outside your network. As Manticore functions like any other web server, you can use a reverse proxy, such as Nginx, to implement HTTP authentication or caching.</p>
 <!-- example HTTPS -->
 <p>The HTTP protocol also supports <a href="../17-security.html#toc-17.01-ssl">SSL encryption</a>:<br />
 If you specify <code>:https</code> instead of <code>:http</code> <strong>only</strong> secured connections will be accepted. Otherwise in case of no valid key/certificate provided, but the client trying to connect via https - the connection will be dropped. If you make not HTTPS, but an HTTP request to 9443 it will respond with HTTP code 400.</p>
 <!-- request HTTPS -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTPS
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
@@ -590,15 +743,26 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="vip-connection">VIP Connection</h3>
 <!-- example VIP -->
 <p>Separate HTTP interface can be used for 'VIP' connections. In this case, the connection bypasses a thread pool and always creates a new dedicated thread. This is useful for managing Manticore Search during periods of severe overload when the server might stall or not allow regular port connections.</p>
 <p>For more information on the <code>listen</code> directive, see <a href="../20-server_settings.html#listen">this section</a>.</p>
 <!-- request VIP -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+VIP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
@@ -608,10 +772,13 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="na">}</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="sql-over-http">SQL over HTTP</h2>
 <p>Endpoints <code>/sql</code> and <code>/cli</code> allow running SQL queries via HTTP.</p>
 <ul>
@@ -627,10 +794,28 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <p>It returns a JSON response which contains hits information and execution time. The response has the same format as <a href="../13-searching.html#http-json">json/search</a> endpoint. Note, that <code>/sql</code> endpoint supports only single search requests. If you are looking for processing a multi-query see below.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=select%20id%2Csubject%2Cauthor_id%20%20from%20forum%20where%20match%28%27%40subject%20php%20manticore%27%29%20group%20by%20author_id%20order%20by%20id%20desc%20limit%200%2C5&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
@@ -660,19 +845,41 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="p">}</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL_over_HTTP_2 -->
 <h3 id="sqlmoderaw">/sql?mode=raw</h3>
 <p><code>/sql</code> endpoint also has a special mode <strong>"raw"</strong>, which allows to send <strong>any valid sphinxql queries including multi-queries</strong>. The returned value is a json array of one or more result sets.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/sql?mode<span class="o">=</span>raw<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;query=desc%20test&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
@@ -732,19 +939,42 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="p">]</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL_over_HTTP_4 -->
 <h3 id="cli">/cli</h3>
 <p>While the <code>/sql</code> endpoint is useful to control Manticore programmatically from your application, there's also endpoint <code>/cli</code> which makes it easier to maintain a Manticore instance via curl or your browser manually. It accepts POST and GET HTTP methods. Everything after <code>/cli?</code> is taken by Manticore as is, even if you don't escape it manually via curl or let the browser encode it automatically. The <code>+</code> sign is not decoded to a space as well, eliminating the necessity of encoding it. The response format is tabular, similar to the one returned by  MySQL console.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code>+-------+--------+----------------+
 <span class="p">|</span><span class="w"> </span>Field<span class="w"> </span><span class="p">|</span><span class="w"> </span>Type<span class="w">   </span><span class="p">|</span><span class="w"> </span>Properties<span class="w">     </span><span class="p">|</span>
@@ -756,23 +986,57 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="m">3</span><span class="w"> </span>rows<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>.001<span class="w"> </span>sec<span class="o">)</span>
 </code></pre></div>
 
+
+
+
 <!-- request Browser -->
 
-<p><img alt="using /cli in browser" src="cli_browser.png" /></p>
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Browser
+</div>
+
+![using /cli in browser](cli_browser.png)
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example SQL_over_HTTP_cli_json -->
 
 <h3 id="cli_json">/cli_json</h3>
 <p>The <code>/cli_json</code> endpoint provides the same functionality as <code>/cli</code> , but returns the response in JSON format.</p>
 <!-- request HTTP -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+HTTP
+</div>
+
+
 <div class="codehilite"><pre><span></span><code>POST<span class="w"> </span>/cli_json<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;desc test&quot;</span>
 </code></pre></div>
 
+
+
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="p">[{</span>
 <span class="nt">&quot;columns&quot;</span><span class="p">:[{</span><span class="nt">&quot;Field&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Type&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},{</span><span class="nt">&quot;Properties&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">}}],</span>
@@ -787,10 +1051,14 @@ If you specify <code>:https</code> instead of <code>:http</code> <strong>only</s
 <span class="p">}]</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="keep-alive">Keep-alive</h3>
 <p>HTTP keep-alive is also supported, which makes working via the HTTP JSON interface stateful as long as the client supports keep-alive too. For example, using the new <a href="../11-connecting_to_the_server.html#/cli">/cli</a> endpoint you can call <code>SHOW META</code> after <code>SELECT</code> and it will work the same way it works via mysql.</p>
 <!-- proofread -->

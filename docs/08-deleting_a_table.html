@@ -37,6 +37,7 @@
 2. All table files are removed from the table folder. All the external table files that were used by the table (such as wordforms, extensions or stopwords) are also deleted. Note that these external files are copied to the table folder when <code>CREATE TABLE</code> is used, so the original files specified in <code>CREATE TABLE</code> will not be deleted.</p>
 <p>Deleting a table is possible only when the server is running in the RT mode. It is possible to delete RT tables, PQ tables and distributed tables.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -45,7 +46,6 @@
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">;</span>
@@ -53,6 +53,14 @@ SQL
 
 
 <!-- response -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
@@ -62,6 +70,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -70,8 +80,6 @@ SQL
 JSON
 </div>
 
-<!-- request JSON -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;DROP TABLE products&quot;</span>
 </code></pre></div>
@@ -79,6 +87,14 @@ JSON
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
@@ -91,6 +107,8 @@ JSON
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -98,8 +116,6 @@ JSON
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [ &#39;index&#39; =&gt; &#39;products&#39; ];</span>
@@ -110,6 +126,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array</span>
 <span class="x">(</span>
@@ -122,6 +146,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -129,8 +155,6 @@ PHP
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;DROP TABLE products&#39;</span><span class="p">)</span>
@@ -140,21 +164,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;DROP TABLE products&#39;</span><span class="p">);</span>
@@ -164,21 +196,29 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;DROP TABLE products&quot;</span><span class="p">);</span>
@@ -188,6 +228,14 @@ java
 
 <!-- response Java -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
 </code></pre></div>
 
@@ -195,15 +243,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>sqlresult = utilsApi.Sql(&quot;DROP TABLE products&quot;);
@@ -212,6 +260,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 <div class="codehilite"><pre><span></span><code>{total=0, error=&quot;&quot;, warning=&quot;&quot;}
 </code></pre></div>
@@ -233,6 +289,7 @@ C
 <p>When deleting a table via SQL, adding <code>IF EXISTS</code> can be used to delete the table only if it exists. If you try to delete a non-existing table with the <code>IF EXISTS</code> option, nothing happens.</p>
 <p>When deleting a table via PHP, you can add an optional <code>silent</code> parameter which works the same as <code>IF EXISTS</code>.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -241,7 +298,6 @@ C
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">products</span><span class="p">;</span>
@@ -251,6 +307,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -258,8 +316,6 @@ SQL
 <div class='item-select'>
 JSON
 </div>
-
-<!-- request JSON -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST /cli -d &quot;DROP TABLE IF EXISTS products&quot;</span>
@@ -269,6 +325,8 @@ JSON
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -276,8 +334,6 @@ JSON
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params =</span>
@@ -292,6 +348,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -299,8 +357,6 @@ PHP
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;DROP TABLE IF EXISTS products&#39;</span><span class="p">)</span>
@@ -310,21 +366,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;DROP TABLE IF EXISTS products&#39;</span><span class="p">);</span>
@@ -334,21 +398,29 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;DROP TABLE IF EXISTS products&quot;</span><span class="p">);</span>
@@ -358,6 +430,14 @@ java
 
 <!-- response Java -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
 </code></pre></div>
 
@@ -365,15 +445,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nv">sqlresult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">utilsApi</span>.<span class="nv">Sql</span><span class="ss">(</span><span class="s2">&quot;DROP TABLE IF EXISTS products&quot;</span><span class="ss">)</span><span class="c1">;</span>
@@ -382,6 +462,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 <div class="codehilite"><pre><span></span><code>{total=0, error=&quot;&quot;, warning=&quot;&quot;}
 </code></pre></div>

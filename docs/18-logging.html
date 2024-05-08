@@ -46,12 +46,16 @@
 <p>Query logging can be enabled by setting the <a href="../20-server_settings.html#query_log">query_log</a> directive in the searchd section of the configuration file.</p>
 <p>Queries can also be sent to syslog by setting <code>syslog</code> instead of a file path. In this case, all search queries will be sent to the syslog daemon with <code>LOG_INFO</code> priority, prefixed with <code>[query]</code> instead of a timestamp. Only the <code>plain</code> log format is supported for syslog.</p>
 <!-- intro -->
+<p><code>query_log</code> example:</p>
+<!-- request Config -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-`query_log` example:
-<!-- request Config -->
+
+<div class='item-select'>
+Config
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
@@ -79,12 +83,16 @@
 <!-- example sphixql_log -->
 <p>The SQL log format is the default setting. In this mode, Manticore logs all successful and unsuccessful select queries. Requests sent as SQL or via the binary API are logged in the SQL format, but JSON queries are logged as is. This type of logging only works with plain log files and does not support the 'syslog' service for logging.</p>
 <!-- intro -->
+<p><code>query_log_format</code> example:</p>
+<!-- request Config -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-`query_log_format` example:
-<!-- request Config -->
+
+<div class='item-select'>
+Config
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinxql</span><span class="w"> </span><span class="c1"># default</span>
 </code></pre></div>
@@ -108,12 +116,16 @@
 <li>JSON requests and additional messages, counters, etc., are logged as comments.</li>
 </ul>
 <!-- intro -->
+<p><code>sphinxql</code> log entries example:</p>
+<!-- request Example -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-`sphinxql` log entries example:
-<!-- request Example -->
+
+<div class='item-select'>
+Example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="cm">/* Sun Apr 28 12:38:02.808 2024 conn 2 (127.0.0.1:53228) real 0.000 wall 0.000 found 0 */</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">proximity</span><span class="p">;</span>
 <span class="cm">/* Sun Apr 28 12:38:05.585 2024 conn 2 (127.0.0.1:53228) real 0.001 wall 0.001 found 0 */</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">channel_id</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">ranker</span><span class="o">=</span><span class="n">proximity</span><span class="p">;</span>
@@ -142,12 +154,16 @@
 <!-- example plain_log -->
 <p>With the <code>plain</code> log format, Manticore logs all successfully executed search queries in a simple text format. Non-full-text parts of queries are not logged. JSON queries are logged as flattened to a single line.</p>
 <!-- intro -->
+<p><code>query_log_format</code> example:</p>
+<!-- request Config -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-`query_log_format` example:
-<!-- request Config -->
+
+<div class='item-select'>
+Config
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">plain</span>
 </code></pre></div>
@@ -198,12 +214,16 @@
 </ul>
 <p>Note: the <code>SPH*</code> modes are specific to the <code>sphinx</code> legacy interface. SQL and JSON interfaces will log, in most cases, <code>ext2</code> as <code>match-mode</code> and <code>ext</code> and <code>rel</code> as <code>sort-mode</code>.</p>
 <!-- intro -->
+<p>Query log example:</p>
+<!-- request Example -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-Query log example:
-<!-- request Example -->
+
+<div class='item-select'>
+Example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">[Fri Jun 29 21</span><span class="o">:</span><span class="s">17:58 2021] 0.004 sec [all/0/rel 35254 (0,20)] [lj] [ios=6 kb=111.1 ms=0.5] test</span>
 <span class="na">[Fri Jun 29 21</span><span class="o">:</span><span class="s">17:58 2021] 0.004 sec [all/0/rel 35254 (0,20)] [lj] [ios=6 kb=111.1 ms=0.5 cpums=0.3] test</span>
@@ -225,12 +245,16 @@ Query log example:
 <p>By default, all queries are logged. If you want to log only queries with execution times exceeding a specified limit, the <code>query_log_min_msec</code> directive can be used.</p>
 <p>The expected unit of measurement is milliseconds, but time suffix expressions can also be used.</p>
 <!-- intro -->
+<p><code>query_log_min_msec</code> example:</p>
+<!-- request Config -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-`query_log_min_msec` example:
-<!-- request Config -->
+
+<div class='item-select'>
+Config
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>
@@ -253,12 +277,16 @@ Query log example:
 <!-- example query_log_mode -->
 <p>By default, the searchd and query log files are created with permission <code>600</code>, so only the user under which Manticore is running and <code>root</code> can read the log files. The <code>query_log_mode</code> option allows setting a different permission. This can be helpful for allowing other users to read the log files (for example, monitoring solutions running on non-root users).</p>
 <!-- intro -->
+<p><code>query_log_mode</code> example:</p>
+<!-- request Config -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-`query_log_mode` example:
-<!-- request Config -->
+
+<div class='item-select'>
+Config
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="na">...</span>

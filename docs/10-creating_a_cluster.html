@@ -74,6 +74,8 @@
 <p>Here is an example of how to split data over 4 servers, each serving one of the shards:</p>
 <!-- intro -->
 
+<!-- request ini -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -81,8 +83,6 @@
 <div class='item-select'>
 ini
 </div>
-
-<!-- request ini -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">table mydist {</span>
 <span class="w">          </span><span class="na">type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">distributed</span>
@@ -106,6 +106,8 @@ ini
 <p>More advanced strategies based on latency-weighted probabilities include <code>noerrors</code> and <code>nodeads</code>. These not only take out mirrors with issues but also monitor response times and do balancing. If a mirror responds slower (for example, due to some operations running on it), it will receive fewer requests. When the mirror recovers and provides better times, it will receive more requests.</p>
 <!-- intro -->
 
+<!-- request ini -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -113,8 +115,6 @@ ini
 <div class='item-select'>
 ini
 </div>
-
-<!-- request ini -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">table mydist {</span>
 <span class="w">          </span><span class="na">type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">distributed</span>
@@ -201,6 +201,8 @@ ini
 <p>The default balancing mode is simple linear random distribution among the mirrors. This means that equal selection probabilities are assigned to each mirror. This is similar to round-robin (RR), but does not impose a strict selection order.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -208,8 +210,6 @@ ini
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">random</span>
 </code></pre></div>
@@ -244,6 +244,8 @@ Example
 <p>Latency-weighted probabilities, but dead mirrors are excluded from the selection. A "dead" mirror is defined as a mirror that has resulted in multiple hard errors (e.g. network failure, or no answer, etc) in a row.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -251,8 +253,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">nodeads</span>
 </code></pre></div>
@@ -269,6 +269,8 @@ Example
 <p>Latency-weighted probabilities, but mirrors with a worse error/success ratio are excluded from selection.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -276,8 +278,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">noerrors</span>
@@ -295,6 +295,8 @@ Example
 <p>Simple round-robin selection, that is, selecting the first mirror in the list, then the second one, then the third one, etc, and then repeating the process once the last mirror in the list is reached. Unlike with the randomized strategies, RR imposes a strict querying order (1, 2, 3, ..., N-1, N, 1, 2, 3, ..., and so on) and <em>guarantees</em> that no two consecutive queries will be sent to the same mirror.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -302,8 +304,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">ha_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">roundrobin</span>
 </code></pre></div>
@@ -386,6 +386,8 @@ Example
 <p>The <a href="12-data_creation_and_modification.html#auto-id">Auto ID</a> for a table in a cluster should be valid as long as the <a href="20-server_settings.html#server_id">server_id</a> is correctly configured.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -393,8 +395,6 @@ Example
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">posts</span><span class="p">:</span><span class="n">weekly_index</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;iphone case&#39;</span><span class="w"> </span><span class="p">)</span>
@@ -406,6 +406,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
@@ -430,6 +438,14 @@ SQL
 
 <!-- request PHP -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index-&gt;addDocuments([</span>
 <span class="x">        1, [&#39;title&#39; =&gt; &#39;iphone case&#39;, &#39;price&#39; =&gt; 19.85]</span>
@@ -441,6 +457,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -448,8 +466,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="s2">&quot;doc&quot;</span><span class="p">:{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;iphone case&quot;</span><span class="p">,</span><span class="s2">&quot;price&quot;</span><span class="p">:</span><span class="mf">19.85</span><span class="p">}})</span>
@@ -459,6 +475,8 @@ Python
 
 <!-- intro -->
 
+<!-- request Javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -466,8 +484,6 @@ Python
 <div class='item-select'>
 Javascript
 </div>
-
-<!-- request Javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="o">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="o">:</span><span class="s2">&quot;weekly_index&quot;</span><span class="p">,</span><span class="s2">&quot;doc&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;iphone case&quot;</span><span class="p">,</span><span class="s2">&quot;price&quot;</span><span class="o">:</span><span class="mf">19.85</span><span class="p">}});</span>
@@ -478,15 +494,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
@@ -506,15 +522,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="p">();</span>
@@ -540,6 +556,8 @@ C
 <p>When using the HTTP endpoint <code>json/search</code>, the <code>cluster</code> property can be specified if desired, but it can also be omitted.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -547,8 +565,6 @@ C
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">weekly_index</span>
@@ -558,6 +574,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/search</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
@@ -587,6 +611,8 @@ SQL
 <p>A list of available options can be found in the <a href="https://galeracluster.com/library/documentation/galera-parameters.html">Galera Documentation Parameters</a> .</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -595,14 +621,20 @@ SQL
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 </code></pre></div>
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -624,6 +656,8 @@ SQL
 <p>The other nodes will then reconnect to the primary component and resynchronize their data based on this node.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -632,14 +666,20 @@ SQL
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 </code></pre></div>
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -659,6 +699,8 @@ SQL
 <p>To use replication, you need to define one <a href="20-server_settings.html#listen">listen</a> port for SphinxAPI protocol and one  <a href="20-server_settings.html#listen">listen</a> for replication address and port range in the configuration file. Also, specify the  <a href="20-server_settings.html#data_dir">data_dir</a> folder to receive incoming tables.</p>
 <!-- intro -->
 
+<!-- request ini -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -666,8 +708,6 @@ SQL
 <div class='item-select'>
 ini
 </div>
-
-<!-- request ini -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">searchd {</span>
 <span class="w">  </span><span class="na">listen</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">9312</span>
@@ -688,6 +728,8 @@ ini
 <p>To replicate tables, you must create a cluster on the server that has the local tables to be replicated.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -696,8 +738,6 @@ ini
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span>
 </code></pre></div>
@@ -705,6 +745,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -715,6 +763,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -727,6 +783,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -735,14 +793,14 @@ SQL
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- intro -->
+
+<!-- request Javascript -->
 
 </div>
 
@@ -752,8 +810,6 @@ Python
 Javascript
 </div>
 
-<!-- request Javascript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">);</span>
 </code></pre></div>
@@ -761,6 +817,8 @@ Javascript
 
 
 <!-- intro -->
+
+<!-- request Java -->
 
 </div>
 
@@ -770,8 +828,6 @@ Javascript
 Java
 </div>
 
-<!-- request Java -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;CREATE CLUSTER posts&quot;</span><span class="p">);</span>
 </code></pre></div>
@@ -780,15 +836,15 @@ Java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;CREATE CLUSTER posts&quot;);
@@ -805,6 +861,8 @@ C
 <p>Add these local tables to the cluster</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -812,8 +870,6 @@ C
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">pq_title</span>
@@ -823,6 +879,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -836,6 +900,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -861,6 +933,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -868,8 +942,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts ADD pq_title&#39;</span><span class="p">)</span>
@@ -879,6 +951,8 @@ Python
 
 <!-- intro -->
 
+<!-- request Javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -886,8 +960,6 @@ Python
 <div class='item-select'>
 Javascript
 </div>
-
-<!-- request Javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts ADD pq_title&#39;</span><span class="p">);</span>
@@ -898,6 +970,8 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -905,8 +979,6 @@ Javascript
 <div class='item-select'>
 Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts ADD pq_title&quot;</span><span class="p">);</span>
@@ -917,15 +989,15 @@ Java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER posts ADD pq_title&quot;);
@@ -944,6 +1016,8 @@ utilsApi.Sql(&quot;ALTER CLUSTER posts ADD pq_clicks&quot;);
 <p>All other nodes that wish to receive a replica of the cluster's tables should join the cluster as follows:</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -952,8 +1026,6 @@ utilsApi.Sql(&quot;ALTER CLUSTER posts ADD pq_clicks&quot;);
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">AT</span><span class="w"> </span><span class="s1">&#39;192.168.1.101:9312&#39;</span>
 </code></pre></div>
@@ -961,6 +1033,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -971,6 +1051,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -985,6 +1073,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -993,14 +1083,14 @@ SQL
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT </span><span class="se">\&#39;</span><span class="s1">192.168.1.101:9312</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- intro -->
+
+<!-- request Javascript -->
 
 </div>
 
@@ -1010,8 +1100,6 @@ Python
 Javascript
 </div>
 
-<!-- request Javascript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT \&#39;192.168.1.101:9312\&#39;&#39;</span><span class="p">);</span>
 </code></pre></div>
@@ -1019,6 +1107,8 @@ Javascript
 
 
 <!-- intro -->
+
+<!-- request Java -->
 
 </div>
 
@@ -1028,8 +1118,6 @@ Javascript
 Java
 </div>
 
-<!-- request Java -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;JOIN CLUSTER posts AT &#39;192.168.1.101:9312&#39;&quot;</span><span class="p">);</span>
 </code></pre></div>
@@ -1038,15 +1126,15 @@ Java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;JOIN CLUSTER posts AT &#39;192.168.1.101:9312&#39;&quot;</span><span class="o">);</span>
@@ -1063,6 +1151,8 @@ C
 <p>When running queries, prepend the table name with the cluster name <code>posts</code>: or use the <code>cluster</code> property for HTTP request object.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1071,8 +1161,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">posts</span><span class="p">:</span><span class="n">pq_title</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;test me&#39;</span><span class="w"> </span><span class="p">)</span>
 </code></pre></div>
@@ -1080,6 +1168,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/i</span><span class="kc">nsert</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="err">&#39;</span>
@@ -1098,6 +1194,14 @@ SQL
 
 <!-- request PHP -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$index-&gt;addDocuments([</span>
 <span class="x">        3, [&#39;title&#39; =&gt; &#39;test me&#39;]</span>
@@ -1107,6 +1211,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1115,14 +1221,14 @@ SQL
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">indexApi</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="p">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;pq_title&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">3</span><span class="s2">&quot;doc&quot;</span><span class="p">:{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;test me&quot;</span><span class="p">}})</span>
 </code></pre></div>
 
 
 <!-- intro -->
+
+<!-- request Javascript -->
 
 </div>
 
@@ -1132,8 +1238,6 @@ Python
 Javascript
 </div>
 
-<!-- request Javascript -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">indexApi</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="s2">&quot;cluster&quot;</span><span class="o">:</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="o">:</span><span class="s2">&quot;pq_title&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="mf">3</span><span class="s2">&quot;doc&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;test me&quot;</span><span class="p">}});</span>
 </code></pre></div>
@@ -1142,15 +1246,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">InsertDocumentRequest</span><span class="w"> </span><span class="n">newdoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InsertDocumentRequest</span><span class="p">();</span>
@@ -1165,15 +1269,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="nb nb-Type">Dictionary</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">Object</span><span class="o">&gt;</span><span class="p">();</span>
@@ -1210,6 +1314,8 @@ C
 <p>If you are creating a single cluster or the first cluster, you may omit the <a href="10-creating_a_cluster.html#path">path</a> option. In this case, the <a href="20-server_settings.html#data_dir">data_dir</a> option will be used as the cluster path. However, for all subsequent clusters, you must specify the <a href="10-creating_a_cluster.html#path">path</a> and the path must be available. The <a href="10-creating_a_cluster.html#nodes">nodes</a> option may also be set to list all nodes in the cluster.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1217,8 +1323,6 @@ C
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span>
@@ -1229,6 +1333,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -1245,6 +1357,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -1274,6 +1394,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1281,8 +1403,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">)</span>
@@ -1294,15 +1414,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;CREATE CLUSTER posts&#39;</span><span class="p">);</span>
@@ -1314,15 +1434,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;CREATE CLUSTER posts&quot;</span><span class="p">);</span>
@@ -1334,15 +1454,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">Sql</span><span class="p">(</span><span class="s2">&quot;CREATE CLUSTER posts&quot;</span><span class="p">);</span>
@@ -1381,6 +1501,8 @@ C
 </ul>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1389,8 +1511,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">AT</span><span class="w"> </span><span class="s1">&#39;10.12.1.35:9312&#39;</span>
 </code></pre></div>
@@ -1398,6 +1518,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -1408,6 +1536,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -1422,6 +1558,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1429,8 +1567,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT </span><span class="se">\&#39;</span><span class="s1">10.12.1.35:9312</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1440,21 +1576,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER posts AT \&#39;10.12.1.35:9312\&#39;&#39;</span><span class="p">);</span>
@@ -1464,6 +1608,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -1471,15 +1623,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;JOIN CLUSTER posts AT &#39;10.12.1.35:9312&#39;&quot;</span><span class="p">);</span>
@@ -1489,15 +1641,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;JOIN CLUSTER posts AT &#39;10.12.1.35:9312&#39;&quot;</span><span class="o">);</span>
@@ -1515,13 +1667,24 @@ C
 <p>In most cases, the above is sufficient when there is a single replication cluster. However, if you are creating multiple replication clusters, you must also set the <a href="10-creating_a_cluster.html#replication-cluster">path</a> and ensure that the directory is available.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="s1">&#39;127.0.0.1:10201&#39;</span><span class="w"> </span><span class="s1">&#39;c2&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">path</span>
 </code></pre></div>
+
 
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>A node joins a cluster by obtaining data from a specified node and, if successful, updates the node lists across all other cluster nodes in the same way as if it was done manually through <a href="10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER ... UPDATE nodes</a>. This list is used to re-join nodes to the cluster upon restart.</p>
 <p>There are two lists of nodes:<br />
 1.<code>cluster_&lt;name&gt;_nodes_set</code>: used to re-join nodes to the cluster upon restart. It is updated across all nodes in the same way as <a href="10-creating_a_cluster.html#toc-10.03.05-managing_replication_nodes">ALTER CLUSTER ... UPDATE nodes</a> does. <code>JOIN CLUSTER</code> command performs this update automatically. The <a href="10-creating_a_cluster.html#toc-10.03.06-replication_cluster_status">Cluster status</a> displays this list as <code>cluster_&lt;name&gt;_nodes_set</code>.<br />
@@ -1533,6 +1696,8 @@ C
 </blockquote>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1541,8 +1706,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">JOIN</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="s1">&#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nodes</span>
 </code></pre></div>
@@ -1550,6 +1713,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -1560,6 +1731,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -1574,6 +1753,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1581,8 +1762,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER click_query </span><span class="se">\&#39;</span><span class="s1">clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312</span><span class="se">\&#39;</span><span class="s1"> as nodes&#39;</span><span class="p">)</span>
@@ -1592,21 +1771,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;JOIN CLUSTER click_query \&#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312\&#39; as nodes&#39;</span><span class="p">);</span>
@@ -1616,6 +1803,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -1623,15 +1818,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;JOIN CLUSTER click_query &#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39; as nodes&quot;</span><span class="p">);</span>
@@ -1641,15 +1836,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nt">utilsApi</span><span class="p">.</span><span class="nc">Sql</span><span class="o">(</span><span class="s2">&quot;JOIN CLUSTER click_query &#39;clicks_mirror1:9312;clicks_mirror2:9312;clicks_mirror3:9312&#39; as nodes&quot;</span><span class="o">);</span>
@@ -1682,6 +1877,8 @@ C
 <p>The <code>DELETE CLUSTER</code> statement removes the specified cluster with its  <a href="10-creating_a_cluster.html#name">name</a>. Once the cluster is deleted, it is removed from all nodes, but its tables remain intact and become active local non-replicated tables.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1689,8 +1886,6 @@ C
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span>
@@ -1700,6 +1895,14 @@ SQL
 
 <!-- request JSON -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;DELETE CLUSTER click_query&quot;</span>
 </code></pre></div>
@@ -1707,6 +1910,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -1719,6 +1930,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1726,8 +1939,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;DELETE CLUSTER click_query&#39;</span><span class="p">)</span>
@@ -1737,21 +1948,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;DELETE CLUSTER click_query&#39;</span><span class="p">);</span>
@@ -1761,6 +1980,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -1768,15 +1995,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;DELETE CLUSTER click_query&quot;</span><span class="p">);</span>
@@ -1786,15 +2013,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;DELETE CLUSTER click_query&quot;);
@@ -1826,6 +2053,8 @@ C
 <p>Once the table is replicated, write statements can be performed on any node, but the table name must be prefixed with the cluster name, like <code>INSERT INTO &lt;clusterName&gt;:&lt;table_name&gt;</code>.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1834,8 +2063,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">click_query</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">clicks_daily_index</span>
 </code></pre></div>
@@ -1843,6 +2070,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -1853,6 +2088,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -1871,6 +2114,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -1878,8 +2123,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER click_query ADD clicks_daily_index&#39;</span><span class="p">)</span>
@@ -1889,21 +2132,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER click_query ADD clicks_daily_index&#39;</span><span class="p">);</span>
@@ -1913,6 +2164,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -1920,15 +2179,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER click_query ADD clicks_daily_index&quot;</span><span class="p">);</span>
@@ -1938,15 +2197,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER click_query ADD clicks_daily_index&quot;);
@@ -1965,6 +2224,8 @@ C
 <p>Once a table is removed from a cluster, it becomes a <code>local</code> table, and write statements must use just the table name, like  <code>INSERT INTO &lt;table_name&gt;</code>, without the cluster prefix.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1973,8 +2234,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="n">weekly_index</span>
 </code></pre></div>
@@ -1982,6 +2241,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -1992,6 +2259,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -2008,6 +2283,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -2015,8 +2292,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts DROP weekly_index&#39;</span><span class="p">)</span>
@@ -2026,21 +2301,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts DROP weekly_index&#39;</span><span class="p">);</span>
@@ -2050,6 +2333,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -2057,15 +2348,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts DROP weekly_index&quot;</span><span class="p">);</span>
@@ -2075,15 +2366,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER posts DROP weekly_index&quot;);
@@ -2115,6 +2406,8 @@ C
 <p>The <code>ALTER CLUSTER &lt;cluster_name&gt; UPDATE nodes</code>  statement updates the node lists on each node within the specified cluster to include all active nodes in the cluster. For more information on node lists, see <a href="10-creating_a_cluster.html#toc-10.03.02-joining_a_replication_cluster">Joining a cluster</a>.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -2123,8 +2416,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">nodes</span>
 </code></pre></div>
@@ -2132,6 +2423,14 @@ SQL
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -2142,6 +2441,14 @@ SQL
 
 
 <!-- request PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
@@ -2157,6 +2464,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -2164,8 +2473,6 @@ SQL
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts UPDATE nodes&#39;</span><span class="p">)</span>
@@ -2175,21 +2482,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;ALTER CLUSTER posts UPDATE nodes&#39;</span><span class="p">);</span>
@@ -2199,6 +2514,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -2206,15 +2529,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;ALTER CLUSTER posts UPDATE nodes&quot;</span><span class="p">);</span>
@@ -2224,15 +2547,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;ALTER CLUSTER posts UPDATE nodes&quot;);
@@ -2283,6 +2606,8 @@ C
 </ul>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -2291,8 +2616,6 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span>
 </code></pre></div>
@@ -2300,6 +2623,14 @@ SQL
 
 
 <!-- response SQL-->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------------------+-------------------------------------------------------------------------------------+</span>
@@ -2322,6 +2653,14 @@ SQL
 
 <!-- request JSON -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">SHOW STATUS</span>
@@ -2331,6 +2670,14 @@ SQL
 
 
 <!-- response JSON-->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="s2">&quot;</span>
@@ -2358,6 +2705,14 @@ SQL
 
 <!-- request PHP -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+PHP
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [</span>
 <span class="x">    &#39;body&#39; =&gt; []</span>
@@ -2368,6 +2723,14 @@ SQL
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">(</span>
@@ -2388,6 +2751,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -2396,14 +2761,20 @@ SQL
 Python
 </div>
 
-<!-- request Python -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;SHOW STATUS&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 
 <!-- response Python -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="sa">u</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;string&#39;</span><span class="p">}},</span>
@@ -2428,15 +2799,15 @@ Python
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;SHOW STATUS&#39;</span><span class="p">);</span>
@@ -2445,6 +2816,14 @@ Javascript
 
 
 <!-- response Javascript -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Javascript
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;columns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}},</span>
@@ -2470,15 +2849,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;SHOW STATUS&quot;</span><span class="p">);</span>
@@ -2486,6 +2865,14 @@ java
 
 
 <!-- response Java -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=[</span><span class="p">{</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">string</span><span class="w"> </span><span class="p">}},</span>
@@ -2511,15 +2898,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nv">utilsApi</span>.<span class="nv">sql</span><span class="ss">(</span><span class="s2">&quot;SHOW STATUS&quot;</span><span class="ss">)</span><span class="c1">;</span>
@@ -2527,6 +2914,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">columns</span><span class="o">=</span><span class="p">[{</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="n">String</span><span class="w"> </span><span class="p">}},</span>
@@ -2610,6 +3005,8 @@ C
 <p>However, if both nodes A and B have crashed or restarted due to a power failure, someone must activate the primary component on node C using the following command:</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -2618,14 +3015,20 @@ C
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 </code></pre></div>
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>
@@ -2652,6 +3055,8 @@ On Linux, you can also use the <code>manticore_new_cluster --force</code>, comma
 <p>After the statement is executed, the group with the node that it was run on will be able to handle write transactions once again.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -2660,14 +3065,20 @@ On Linux, you can also use the <code>manticore_new_cluster --force</code>, comma
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="s1">&#39;pc.bootstrap&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 </code></pre></div>
 
 
 <!-- request JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+JSON
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/cli</span><span class="w"> </span><span class="mi">-</span><span class="err">d</span><span class="w"> </span><span class="s2">&quot;</span>

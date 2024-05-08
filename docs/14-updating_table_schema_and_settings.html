@@ -69,6 +69,14 @@
 </ul>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">desc</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------------+-----------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">      </span><span class="o">|</span>
@@ -156,10 +164,14 @@
 <span class="o">+</span><span class="c1">------------+-----------+------------+</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="updating-table-ft-settings-in-rt-mode">Updating table FT settings in RT mode</h2>
 <!-- example ALTER FT -->
 
@@ -177,6 +189,14 @@ Example:</p>
 <li>now it finds the both documents and <code>show meta</code> says it used two keywords: <code>abc</code> (to find the old document) and <code>abcd</code> (for the new one).</li>
 </ul>
 <!-- request Example -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="nb">text</span><span class="p">)</span><span class="w"> </span><span class="n">charset_table</span><span class="o">=</span><span class="s1">&#39;a,b,c&#39;</span><span class="p">;</span>
 
@@ -246,10 +266,14 @@ Example:</p>
 <span class="o">+</span><span class="c1">---------------+-------+</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="updating-table-ft-settings-in-plain-mode">Updating table FT settings in plain mode</h2>
 <!-- example ALTER RECONFIGURE -->
 
@@ -258,6 +282,14 @@ Example:</p>
 
 <p><code>ALTER</code> can also reconfigure an RT table in the <a href="06-creating_a_table.html#defining-table-schema-in-config-%28plain-mode%29">plain mode</a>, so that new tokenization, morphology and other text processing settings from the configuration file take effect for new documents. Note, that the existing document will be left intact. Internally, it forcibly saves the current RAM chunk as a new disk chunk and adjusts the table header, so that new documents are tokenized using the updated full-text settings.</p>
 <!-- request Example -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">settings</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">---------------+-------+</span>
@@ -279,10 +311,13 @@ Example:</p>
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="rebuild-secondary-index">Rebuild secondary index</h2>
 <!-- example ALTER REBUILD SECONDARY -->
 
@@ -298,17 +333,39 @@ Example:</p>
 <p>Additionally, an old version of secondary indexes may be supported but will lack certain features. <code>REBUILD SECONDARY</code> can be used to update secondary indexes.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="n">REBUILD</span><span class="w"> </span><span class="n">SECONDARY</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response Example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Example
+</div>
+
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
 <!-- proofread -->
         

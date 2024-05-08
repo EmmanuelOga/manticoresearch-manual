@@ -80,10 +80,28 @@
 - backup all tables found in the instance</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--config<span class="o">=</span>path/to/manticore.conf<span class="w"> </span>--backup-dir<span class="o">=</span>backupdir
 </code></pre></div>
 
+
+
 <!-- response Example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Example
+</div>
 
 <div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
 
@@ -113,18 +131,39 @@ Manticore<span class="w"> </span>versions:
 <span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:18:42<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Done
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example backup2 -->
 <p>To back up specific tables only, use the <code>--tables</code> flag followed by a comma-separated list of tables, for example <code>--tables=tbl1,tbl2</code>. This will only backup the specified tables and ignore the rest.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--backup-dir<span class="o">=</span>/mnt/backup/<span class="w"> </span>--tables<span class="o">=</span>products
 </code></pre></div>
 
+
+
 <!-- response Example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Example
+</div>
 
 <div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
 
@@ -152,10 +191,13 @@ Manticore<span class="w"> </span>versions:
 <span class="m">2022</span>-10-04<span class="w"> </span><span class="m">17</span>:25:06<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Done
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="arguments">Arguments</h3>
 <table>
 <thead>
@@ -248,10 +290,29 @@ For example, to run a backup of all tables in async mode with compression enable
 <p>To restore a Manticore instance from a backup, use the <code>manticore-backup</code> command with the <code>--backup-dir</code> and <code>--restore</code> arguments. For example: <code>manticore-backup --backup-dir=/path/to/backups --restore</code>. If you don't provide any argument for <code>--restore</code>, it will simply list all the backups in the <code>--backup-dir</code>.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--backup-dir<span class="o">=</span>/mnt/backup/<span class="w"> </span>--restore
 </code></pre></div>
 
+
+
 <!-- response Example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Example
+</div>
+
 
 <div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
 
@@ -264,10 +325,14 @@ Available<span class="w"> </span>backups:<span class="w"> </span><span class="m"
 <span class="w">  </span>backup-20221007104044<span class="w"> </span><span class="o">(</span>Oct<span class="w"> </span><span class="m">07</span><span class="w"> </span><span class="m">2022</span><span class="w"> </span><span class="m">10</span>:40:44<span class="o">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example restore -->
 
 <p>To start a restore job, run <code>manticore-backup</code> with the flag <code>--restore=backup name</code>, where <code>backup name</code> is the name of the backup directory within the <code>--backup-dir</code>. Note that:<br />
@@ -278,10 +343,29 @@ Available<span class="w"> </span>backups:<span class="w"> </span><span class="m"
 <p>If all conditions are met, the restore will proceed. The tool will provide hints, so you don't have to memorize them. It's crucial to avoid overwriting existing files, so make sure to remove them prior to the restore if they still exist. Hence all the conditions.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code>manticore-backup<span class="w"> </span>--backup-dir<span class="o">=</span>/mnt/backup/<span class="w"> </span>--restore<span class="o">=</span>backup-20221007104044
 </code></pre></div>
 
+
+
 <!-- response Example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Example
+</div>
+
 
 <div class="codehilite"><pre><span></span><code>Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">2023</span>-2024,<span class="w"> </span>Manticore<span class="w"> </span>Software<span class="w"> </span>LTD<span class="w"> </span><span class="o">(</span>https://manticoresearch.com<span class="o">)</span>
 
@@ -302,25 +386,42 @@ Manticore<span class="w"> </span>config
 <span class="m">2022</span>-10-07<span class="w"> </span><span class="m">11</span>:17:25<span class="w"> </span><span class="o">[</span>Info<span class="o">]</span><span class="w"> </span>Done
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h2 id="backup-and-restore-with-mysqldump">Backup and restore with mysqldump</h2>
 <!-- example mysqldump_backup -->
 <p>To create a backup of your Manticore Search database, you can use the <code>mysqldump</code> command. We will use the default port and host in the examples.</p>
 <p>Note, <code>mysqldump</code> is supported only for real-time tables.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code>mysqldump<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>manticore<span class="w"> </span>&gt;<span class="w"> </span>manticore_backup.sql
 mariadb-dump<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>manticore<span class="w"> </span>&gt;<span class="w"> </span>manticore_backup.sql
 </code></pre></div>
 
-<p>Executing this command will produce a backup file named <code>manticore_backup.sql</code>. This file will hold all data and table schemas.</p>
+
+
+Executing this command will produce a backup file named `manticore_backup.sql`. This file will hold all data and table schemas.
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example mysqldump_restore -->
 <h3 id="restore">Restore</h3>
 <p>If you're looking to restore a Manticore Search database from a backup file, the mysql client is your tool of choice.</p>
@@ -329,15 +430,27 @@ mariadb-dump<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class
 - Manually <a href="../09-emptying_a_table.html#toc-09-emptying_a_table">TRUNCATE</a> the tables before proceeding with the restoration.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code>mysql<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>&lt;<span class="w"> </span>manticore_backup.sql
 mariadb<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w"> </span>&lt;<span class="w"> </span>manticore_backup.sql
 </code></pre></div>
 
-<p>This command enables you to restore everything from the <code>manticore_backup.sql</code> file.</p>
+
+
+This command enables you to restore everything from the `manticore_backup.sql` file.
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="additional-options">Additional options</h3>
 <p>Here are some more settings that can be used with mysqldump to tailor your backup:</p>
 <ul>
@@ -417,6 +530,8 @@ mariadb<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w">
 <p>Normally, an RT table would automatically flush and convert the contents of the RAM chunk into a new disk chunk once the RAM chunk reaches the maximum allowed <a href="../06-creating_a_table.html#rt_mem_limit">rt_mem_limit</a> size. However, for debugging and testing purposes, it might be useful to forcibly create a new disk chunk, and the <code>FLUSH RAMCHUNK</code> statement does exactly that.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -425,14 +540,20 @@ mariadb<span class="w"> </span>-h0<span class="w"> </span>-P9306<span class="w">
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="n">RAMCHUNK</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
 </code></pre></div>
 
 
 <!-- response mysql -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: mysql
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -469,6 +590,8 @@ SQL
 <p>Issuing a <code>FLUSH TABLE</code> command not only forces the RAM chunk contents to be written to disk but also triggers the cleanup of binary log files.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -477,14 +600,20 @@ SQL
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">FLUSH</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
 </code></pre></div>
 
 
 <!-- response mysql -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: mysql
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -522,6 +651,8 @@ SQL
 <p><code>OPTIMIZE</code> statement adds an RT table to the optimization queue, which will be processed in a background thread.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -529,8 +660,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="p">;</span>
@@ -554,6 +683,8 @@ SQL
 </ul>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -561,8 +692,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">cutoff</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
@@ -581,6 +710,8 @@ SQL
 <p>When using <code>OPTION sync=1</code> (0 by default), the command will wait for the optimization process to complete before returning. If the connection is interrupted, the optimization will continue running on the server.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -588,8 +719,6 @@ SQL
 <div class='item-select'>
 SQL
 </div>
-
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">rt</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">sync</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
@@ -614,36 +743,66 @@ SQL
 <p>On one of the nodes, drop the table from the cluster:</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">mycluster</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="n">myindex</span><span class="p">;</span>
 </code></pre></div>
+
 
 <!-- end -->
 
 </div>
+
 </div>
 <!-- example cluster_manual_optimize -->
 <p>Optimize the table:</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">OPTIMIZE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">myindex</span><span class="p">;</span>
 </code></pre></div>
+
 
 <!-- end -->
 
 </div>
+
 </div>
 <!-- example cluster_manual_add -->
 <p>Add back the table to the cluster:</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">CLUSTER</span><span class="w"> </span><span class="n">mycluster</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">myindex</span><span class="p">;</span>
 </code></pre></div>
+
 
 <!-- end -->
 
 </div>
-<p></div><br />
-When the table is added back, the new files created by the optimization process will be replicated to the other nodes in the cluster.<br />
+
+</div>
+<p>When the table is added back, the new files created by the optimization process will be replicated to the other nodes in the cluster.<br />
 Any local changes made to the table on other nodes will be lost.</p>
 <p>Table data modifications (inserts, replaces, deletes, updates) should either:</p>
 <ol>
@@ -704,10 +863,28 @@ Once the table is added back to the cluster, you must resume write operations on
 3. <code>UNFREEZE</code> the table(s) once finished.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">FREEZE</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
 </code></pre></div>
 
+
+
 <!-- response Example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------------+---------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">file</span><span class="w">              </span><span class="o">|</span><span class="w"> </span><span class="n">normalized</span><span class="w">                      </span><span class="o">|</span>
@@ -729,10 +906,14 @@ Once the table is added back to the cluster, you must resume write operations on
 <span class="mi">13</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>The <code>file</code> column indicates the table's file paths within the <a href="../20-server_settings.html#data_dir">data_dir</a> of the running instance. The <code>normalized</code> column displays the absolute paths for the same files. To back up a table, simply copy the provided files without additional preparation.</p>
 <p>When a table is frozen, you cannot execute <code>UPDATE</code> queries; they will fail with the error message "index is locked now, try again later."</p>
 <p>Also, <code>DELETE</code> and <code>REPLACE</code> queries have some restrictions while the table is frozen:</p>
@@ -754,13 +935,25 @@ Once the table is added back to the cluster, you must resume write operations on
 <p><code>UNFREEZE</code> reactivates previously blocked operations and resumes the internal compaction service. All operations waiting for a table to unfreeze will also be unfrozen and complete normally.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">UNFREEZE</span><span class="w"> </span><span class="n">tbl</span><span class="p">;</span>
 </code></pre></div>
+
+
 
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- proofread -->
         
     </section>

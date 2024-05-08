@@ -315,10 +315,28 @@
 <p><code>ALL(cond FOR var IN json.array)</code> applies to JSON arrays and returns 1 if the condition is true for all elements in the array and 0 otherwise. <code>cond</code> is a general expression that can also use <code>var</code> as the current value of an array element within itself.</p>
 <!-- request ALL() with json -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with json
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ALL</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">4</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
 </code></pre></div>
 
+
+
 <!-- response ALL() with json -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ALL() with json
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+--------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">4</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
@@ -329,12 +347,32 @@
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- request ALL() with json ex. 2 -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with json ex. 2
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ALL</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">4</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cond</span><span class="o">=</span><span class="mi">1</span>
 </code></pre></div>
 
+
+
 <!-- response ALL() with json ex. 2 -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ALL() with json ex. 2
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">|</span>
@@ -344,18 +382,40 @@
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example all_mva -->
 <p><code>ALL(mva)</code> is a special constructor for multi-value attributes. When used with comparison operators (including comparison with <code>IN()</code>), it returns 1 if all values from the MVA attribute are found among the compared values.</p>
 <!-- request ALL() with MVA -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with MVA
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span>
 </code></pre></div>
 
+
+
 <!-- response ALL() with MVA -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ALL() with MVA
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
@@ -366,12 +426,31 @@
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
 <!-- request ALL() with MVA and IN() -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with MVA and IN()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- response ALL() with MVA and IN() -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ALL() with MVA and IN()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
@@ -382,18 +461,40 @@
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example all_not_in -->
 <p>To compare an MVA attribute with an array, avoid using <code>&lt;mva&gt; NOT ALL()</code>; use <code>ALL(&lt;mva&gt;) NOT IN()</code> instead.</p>
 <!-- request ALL() with MVA and NOT IN() -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with MVA and NOT IN()
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- response ALL() with MVA and NOT IN() -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ALL() with MVA and NOT IN()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
@@ -404,10 +505,14 @@
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example all_string -->
 
 <p><code>ALL(string list)</code> is a special operation for filtering string tags.</p>
@@ -415,10 +520,28 @@
 <p>This filter internally uses doc-by-doc matching, so in the case of a full scan query, it might be slower than expected. It is intended for attributes that are not indexed, like calculated expressions or tags in PQ tables. If you need such filtering, consider the solution of putting the string attribute as a full-text field, and then use the full-text operator <code>match()</code>, which will invoke a full-text search.</p>
 <!-- request ALL() with strings -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with strings
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="s1">&#39;bug&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;release&#39;</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- response ALL() with strings -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ALL() with strings
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="nb">+------+---------------------------+</span>
 <span class="c">| id   | tags                      |</span>
@@ -429,7 +552,17 @@
 <span class="c">2 rows in set (0</span><span class="nt">.</span><span class="c">00 sec)</span>
 </code></pre></div>
 
+
+
 <!-- request ALL() with strings and NOT -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ALL() with strings and NOT
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
 
@@ -446,19 +579,40 @@
 <span class="n">Empty</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="any">ANY()</h3>
 <!-- example any_json -->
 <p><code>ANY(cond FOR var IN json.array)</code> applies to JSON arrays and returns 1 if the condition is true for any element in the array and 0 otherwise. <code>cond</code> is a general expression that can also use <code>var</code> as the current value of an array element within itself.</p>
 <!-- request ANY() with json -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with json
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ANY</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
 </code></pre></div>
 
+
+
 <!-- response ANY() with json -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ANY() with json
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+---------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">5</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
@@ -469,12 +623,32 @@
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- request ANY() with json ex. 2 -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with json ex. 2
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">ANY</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">j</span><span class="p">.</span><span class="n">ar</span><span class="p">)</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cond</span><span class="o">=</span><span class="mi">1</span>
 </code></pre></div>
 
+
+
 <!-- response ANY() with json ex. 2 -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ANY() with json ex. 2
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+--------------+------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">j</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">|</span>
@@ -484,14 +658,26 @@
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example any_mva -->
 <p><code>ANY(mva)</code> is a special constructor for multi-value attributes. When used with comparison operators (including comparison with <code>IN()</code>), it returns 1 if any of the MVA values is found among the compared values.</p>
 <p>When comparing an array using <code>IN()</code>, <code>ANY()</code> is assumed by default if not otherwise specified, but a warning will be issued regarding the missing constructor.</p>
 <!-- request ANY() with MVA -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with MVA
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
 
@@ -513,12 +699,31 @@
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
 <!-- request ANY() with MVA and IN() -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with MVA and IN()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- response ANY() with MVA and IN() -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ANY() with MVA and IN()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">|</span>
@@ -529,13 +734,25 @@
 <span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example any_not_in -->
 <p>To compare an MVA attribute with an array, avoid using <code>&lt;mva&gt; NOT ANY()</code>; use <code>&lt;mva&gt; NOT IN()</code> instead or <code>ANY(&lt;mva&gt;) NOT IN()</code>.</p>
 <!-- request ANY() with MVA and NOT IN() -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with MVA and NOT IN()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
 
@@ -557,10 +774,14 @@
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <!-- example any_string -->
 
 <p><code>ANY(string list)</code> is a special operation for filtering string tags.</p>
@@ -568,10 +789,28 @@
 <p>This filter internally uses doc-by-doc matching, so in the case of a full scan query, it might be slower than expected. It is intended for attributes that are not indexed, like calculated expressions or tags in PQ tables. If you need such filtering, consider the solution of putting the string attribute as a full-text field, and then use the full-text operator <code>match()</code>, which will invoke a full-text search.</p>
 <!-- request ANY() with strings -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with strings
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="s1">&#39;bug&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;feature&#39;</span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- response ANY() with strings -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: ANY() with strings
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="nb">+------+---------------------------+</span>
 <span class="c">| id   | tags                      |</span>
@@ -582,7 +821,17 @@
 <span class="c">2 rows in set (0</span><span class="nt">.</span><span class="c">00 sec)</span>
 </code></pre></div>
 
+
+
 <!-- request ANY() with strings and NOT -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+ANY() with strings and NOT
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tbl</span>
 <span class="c1">--------------</span>
@@ -607,10 +856,15 @@
 <span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
 
+
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="contains">CONTAINS()</h3>
 <p><code>CONTAINS(polygon, x, y)</code> checks whether the (x,y) point is within the given polygon, and returns 1 if true, or 0 if false. The polygon has to be specified using either the  <a href="../15-functions.html#poly2d">POLY2D()</a> function. The former function is intended for "small" polygons, meaning less than 500 km (300 miles) a side, and it doesn't take into account the Earth's curvature for speed. For larger distances, you should use <code>GEOPOLY2D</code>, which tessellates the given polygon in smaller parts, accounting for the Earth's curvature.</p>
 <h3 id="if">IF()</h3>
@@ -618,14 +872,26 @@
 <p>The behavior of <code>IF()</code> is slightly different from its MySQL counterpart. It takes 3 arguments, checks whether the 1st argument is equal to 0.0, returns the 2nd argument if it is not zero, or the 3rd one when it is. Note that unlike comparison operators, <code>IF()</code> does <strong>not</strong> use a threshold! Therefore, it's safe to use comparison results as its 1st argument, but arithmetic operators might produce unexpected results. For instance, the following two calls will produce <em>different</em> results even though they are logically equivalent:</p>
 <!-- request IF() -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+IF()
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">IF</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="o">&lt;&gt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">)</span>
 <span class="k">IF</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">)</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>In the first case, the comparison operator &lt;&gt; will return 0.0 (false) due to a threshold, and <code>IF()</code> will always return <code>**</code> as a result. In the second case, the same <code>sqrt(3)*sqrt(3)-3</code> expression will be compared with zero <em>without</em> a threshold by the <code>IF()</code> function itself. However, its value will be slightly different from zero due to limited floating-point calculation precision. Because of this, the comparison with 0.0 done by <code>IF()</code> will not pass, and the second variant will return 'a' as a result.</p>
 <h3 id="histogram">HISTOGRAM()</h3>
 <!-- example histogram -->
@@ -635,13 +901,16 @@
 
 <p>The histogram argument <code>interval</code> must be positive. The histogram argument <code>offset</code> must be positive and less than <code>interval</code>. It is used in aggregation, <code>FACET</code>, and grouping.</p>
 <!-- intro -->
+<p>Example:</p>
+<!-- request HISTOGRAM() -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-Example:
 
-<!-- request HISTOGRAM() -->
+<div class='item-select'>
+HISTOGRAM()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
 <span class="n">HISTOGRAM</span><span class="p">(</span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">hist_interval</span><span class="o">=</span><span class="mi">100</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">price_range</span>
@@ -670,13 +939,16 @@ Example:
 <p><code>RANGE(expr, {range_from=value,range_to=value})</code> takes a set of ranges and returns the bucket number for the value.<br />
 This expression includes the <code>range_from</code> value and excludes the <code>range_to</code> value for each range. A range can be open - having only the <code>range_from</code> or only the <code>range_to</code> value. It is used in aggregation, <code>FACET</code>, and grouping.</p>
 <!-- intro -->
+<p>Example:</p>
+<!-- request RANGE() -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-Example:
 
-<!-- request RANGE() -->
+<div class='item-select'>
+RANGE()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
 <span class="n">RANGE</span><span class="p">(</span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="err">{</span><span class="n">range_to</span><span class="o">=</span><span class="mi">150</span><span class="err">}</span><span class="p">,</span><span class="err">{</span><span class="n">range_from</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span><span class="n">range_to</span><span class="o">=</span><span class="mi">300</span><span class="err">}</span><span class="p">,</span><span class="err">{</span><span class="n">range_from</span><span class="o">=</span><span class="mi">300</span><span class="err">}</span><span class="p">)</span><span class="w"> </span><span class="n">price_range</span>
@@ -695,13 +967,16 @@ Example:
 <!-- example remap -->
 <p><code>REMAP(condition, expression, (cond1, cond2, ...), (expr1, expr2, ...))</code> function allows you to make some exceptions to expression values depending on condition values. The condition expression should always result in an integer, while the expression can result in an integer or float.</p>
 <!-- intro -->
+<p>Example:</p>
+<!-- request REMAP() -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-Example:
 
-<!-- request REMAP() -->
+<div class='item-select'>
+REMAP()
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">size</span><span class="p">,</span><span class="w"> </span><span class="n">REMAP</span><span class="p">(</span><span class="k">size</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="n">s</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">products</span>
@@ -710,6 +985,14 @@ Example:
 
 
 <!-- request Another example -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Another example
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">REMAP</span><span class="p">(</span><span class="n">userid</span><span class="p">,</span><span class="w"> </span><span class="n">karmapoints</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">67</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">999</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">REMAP</span><span class="p">(</span><span class="n">id</span><span class="o">%</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">employes</span><span class="p">;</span>
@@ -744,10 +1027,27 @@ Example:
 <p>Returns the current timestamp as an INTEGER.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">NOW</span><span class="p">();</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w">      </span><span class="o">|</span>
@@ -756,19 +1056,39 @@ Example:
 <span class="o">+</span><span class="c1">------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="curtime">CURTIME()</h3>
 <!-- example CURTIME -->
 <p>Returns the current time in the local timezone in <code>hh:ii:ss</code> format.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">CURTIME</span><span class="p">();</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">CURTIME</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
@@ -777,19 +1097,39 @@ Example:
 <span class="o">+</span><span class="c1">-----------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="curdate">CURDATE()</h3>
 <!-- example CURDATE -->
 <p>Returns the current date in the local timezone in <code>YYYY-MM-DD</code> format.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">curdate</span><span class="p">();</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">curdate</span><span class="p">()</span><span class="w">  </span><span class="o">|</span>
@@ -798,19 +1138,39 @@ Example:
 <span class="o">+</span><span class="c1">------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="utc_time">UTC_TIME()</h3>
 <!-- example UTC_TIME -->
 <p>Returns the current time in UTC timezone in <code>hh:ii:ss</code> format.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">UTC_TIME</span><span class="p">();</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">UTC_TIME</span><span class="p">()</span><span class="w"> </span><span class="o">|</span>
@@ -819,19 +1179,39 @@ Example:
 <span class="o">+</span><span class="c1">------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="utc_timestamp">UTC_TIMESTAMP()</h3>
 <!-- example UTC_TIMESTAMP -->
 <p>Returns the current time in UTC timezone in <code>YYYY-MM-DD hh:ii:ss</code> format.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">UTC_TIMESTAMP</span><span class="p">();</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">UTC_TIMESTAMP</span><span class="p">()</span><span class="w">     </span><span class="o">|</span>
@@ -840,19 +1220,39 @@ Example:
 <span class="o">+</span><span class="c1">---------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="second">SECOND()</h3>
 <!-- example SECOND -->
 <p>Returns the integer second (in 0..59 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">second</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">second</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -861,19 +1261,39 @@ Example:
 <span class="o">+</span><span class="c1">---------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="minute">MINUTE()</h3>
 <!-- example MINUTE -->
 <p>Returns the integer minute (in 0..59 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">minute</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">minute</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -882,19 +1302,39 @@ Example:
 <span class="o">+</span><span class="c1">---------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="hour">HOUR()</h3>
 <!-- example HOUR -->
 <p>Returns the integer hour (in 0..23 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">hour</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">hour</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -903,19 +1343,39 @@ Example:
 <span class="o">+</span><span class="c1">-------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="day">DAY()</h3>
 <!-- example DAY -->
 <p>Returns the integer day of the month (in 1..31 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">day</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">day</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -924,19 +1384,39 @@ Example:
 <span class="o">+</span><span class="c1">------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="month">MONTH()</h3>
 <!-- example MONTH -->
 <p>Returns the integer month (in 1..12 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">month</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">month</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -945,19 +1425,39 @@ Example:
 <span class="o">+</span><span class="c1">--------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="quarter">QUARTER()</h3>
 <!-- example QUARTER -->
 <p>Returns the integer quarter of the year (in 1..4 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">quarter</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">quarter</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -966,19 +1466,39 @@ Example:
 <span class="o">+</span><span class="c1">----------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="year">YEAR()</h3>
 <!-- example YEAR -->
 <p>Returns the integer year (in 1969..2038 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">year</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">year</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -987,19 +1507,39 @@ Example:
 <span class="o">+</span><span class="c1">-------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="dayname">DAYNAME()</h3>
 <!-- example DAYNAME -->
 <p>Returns the weekday name for a given timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">dayname</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">dayname</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1008,19 +1548,39 @@ Example:
 <span class="o">+</span><span class="c1">----------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="monthname">MONTHNAME()</h3>
 <!-- example MONTHNAME -->
 <p>Returns the name of the month for a given timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">monthname</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">monthname</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1029,20 +1589,40 @@ Example:
 <span class="o">+</span><span class="c1">------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="dayofweek">DAYOFWEEK()</h3>
 <!-- example DAYOFWEEK -->
 <p>Returns the integer weekday index (in 1..7 range) for a given timestamp argument, according to the current timezone.<br />
 Note that the week starts on Sunday.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">dayofweek</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">dayofweek</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1051,19 +1631,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="dayofyear">DAYOFYEAR()</h3>
 <!-- example DAYOFYEAR -->
 <p>Returns the integer day of the year (in 1..366 range) for a given timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">dayofyear</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">dayofyear</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1072,19 +1672,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="yearweek">YEARWEEK()</h3>
 <!-- example YEARWEEK -->
 <p>Returns the integer year and the day code of the first day of current week (in 1969001..2038366 range) for a given timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">yearweek</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">yearweek</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1093,19 +1713,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">-----------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="yearmonth">YEARMONTH()</h3>
 <!-- example YEARMONTH -->
 <p>Returns the integer year and month code (in 196912..203801 range) from a timestamp argument, according to the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">yearmonth</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">yearmonth</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1114,19 +1754,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="yearmonthday">YEARMONTHDAY()</h3>
 <!-- example YEARMONTHDAY -->
 <p>Returns the integer year, month, and date code (ranging from 19691231 to 20380119) based on the current timezone.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">yearmonthday</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">---------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">yearmonthday</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1135,19 +1795,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">---------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="timediff">TIMEDIFF()</h3>
 <!-- example TIMEDIFF -->
 <p>Calculates the difference between two timestamps in the format <code>hh:ii:ss</code>.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">timediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">);</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">timediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
@@ -1156,19 +1836,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">----------------------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="datediff">DATEDIFF()</h3>
 <!-- example DATEDIFF -->
 <p>Calculates the number of days between two given timestamps.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">datediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">);</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">datediff</span><span class="p">(</span><span class="mi">1615787586</span><span class="p">,</span><span class="w"> </span><span class="mi">1613787583</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
@@ -1177,19 +1877,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">----------------------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="date">DATE()</h3>
 <!-- example DATE -->
 <p>Formats the date part from a timestamp argument as a string in <code>YYYY-MM-DD</code> format.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="nb">date</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="nb">date</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1198,19 +1918,39 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">-------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="time">TIME()</h3>
 <!-- example TIME -->
 <p>Formats the time part from a timestamp argument as a string in <code>HH:MM:SS</code> format.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">time</span><span class="p">(</span><span class="n">now</span><span class="p">());</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">time</span><span class="p">(</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">|</span>
@@ -1219,10 +1959,13 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">-------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="date_format">DATE_FORMAT()</h3>
 <!-- example DATE_FORMAT -->
 <p>Returns a formatted string based on the provided date and format arguments. The format argument uses the same specifiers as the <a href="https://man7.org/linux/man-pages/man3/strftime.3.html">strftime</a> function. For convenience, here are some common format specifiers:</p>
@@ -1238,10 +1981,27 @@ Note that the week starts on Sunday.</p>
 <p>Note that this is not a complete list of the specifiers. Please consult the documentation for <code>strftime()</code> for your operating system to get the full list.</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;year %Y and time %T&#39;</span><span class="p">);</span>
 </code></pre></div>
 
+
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;year %Y and time %T&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
@@ -1250,10 +2010,13 @@ Note that the week starts on Sunday.</p>
 <span class="o">+</span><span class="c1">------------------------------------------+</span>
 </code></pre></div>
 
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <p>This example formats the current date and time, displaying the four-digit year and the time in 24-hour format.</p>
 <h3 id="date_histogram">DATE_HISTOGRAM()</h3>
 <!-- example DATE_HISTOGRAM -->
@@ -1291,10 +2054,6 @@ The difference between this and the <a href="../15-functions.html#range">RANGE()
 <span class="k">FROM</span><span class="w"> </span><span class="n">idx_dates</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </code></pre></div>
-
-<div class='item-select'>
-Date math
-</div>
 
 <p>Date math lets you work with dates and times directly in your searches. It's especially useful for handling data that changes over time. With date math, you can easily do things like find entries from a certain period, analyze data trends, or manage when information should be removed. It simplifies working with dates by letting you add or subtract time from a given date, round dates to the nearest time unit, and more, all within your search queries.</p>
 <p>To use date math, you start with a base date, which can be:<br />
@@ -1420,6 +2179,14 @@ Date math
 <p><code>SUBSTRING_INDEX()</code> by default returns a string, but it can also be coerced into other types (such as integer or float) if necessary. Numeric values can be converted using specific functions (such as <code>BIGINT()</code>, <code>DOUBLE()</code>, etc.).</p>
 <!-- request SQL -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+SQL
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;www.w3schools.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="n">j</span><span class="p">.</span><span class="n">coord</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
 <span class="k">SELECT</span><span class="w">          </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="cm">/* &#39;1.2&#39; */</span>
@@ -1430,10 +2197,14 @@ Date math
 <span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SUBSTRING_INDEX</span><span class="p">(</span><span class="s1">&#39;1.2 3.4&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="cm">/* 3.400000 */</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="upper-and-lower">UPPER() and LOWER()</h3>
 <p><code>UPPER(string)</code> convert argument to upper case, <code>LOWER(string)</code> convert argument to lower case.</p>
 <p>Result also can be promoted to numeric, but only if string argument is convertible to a number. Numeric values could be promoted with arbitrary functions (<code>BITINT</code>, <code>DOUBLE</code>, etc.).</p>

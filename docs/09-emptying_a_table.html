@@ -40,6 +40,7 @@
 <p>When this statement is executed, it clears the RT table completely. It disposes the in-memory data, unlinks all the table data files, and releases the associated binary logs.</p>
 <p>A table can also be emptied with <code>DELETE FROM index WHERE id&gt;0</code>, but it's not recommended as it's slower than <code>TRUNCATE</code>.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -48,7 +49,6 @@
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="p">;</span>
@@ -56,6 +56,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
@@ -65,6 +73,8 @@ SQL
 
 <!-- intro -->
 
+<!-- request JSON -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -73,8 +83,6 @@ SQL
 JSON
 </div>
 
-<!-- request JSON -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST /cli -d &quot;TRUNCATE TABLE products&quot;</span>
 </code></pre></div>
@@ -82,6 +90,14 @@ JSON
 
 
 <!-- response JSON -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: JSON
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="err">{</span>
 <span class="err">&quot;total&quot;:0,</span>
@@ -94,6 +110,8 @@ JSON
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -101,8 +119,6 @@ JSON
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [ &#39;index&#39; =&gt; &#39;products&#39; ];</span>
@@ -112,6 +128,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
 <span class="x">    [total] =&gt; 0</span>
@@ -123,6 +147,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -130,8 +156,6 @@ PHP
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products&#39;</span><span class="p">)</span>
@@ -141,21 +165,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products&#39;</span><span class="p">);</span>
@@ -165,6 +197,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -172,15 +212,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;TRUNCATE TABLE products&quot;</span><span class="p">);</span>
@@ -190,6 +230,14 @@ java
 
 <!-- response Java -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
 </code></pre></div>
 
@@ -197,15 +245,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;TRUNCATE TABLE products&quot;);
@@ -214,6 +262,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 <div class="codehilite"><pre><span></span><code>{total=0, error=&quot;&quot;, warning=&quot;&quot;}
 </code></pre></div>
@@ -232,6 +288,7 @@ C
 <p>When <code>RECONFIGURE</code> option is used new tokenization, morphology, and other text processing settings specified in the config take effect after the table gets cleared. In case the <a href="06-creating_a_table.html#toc-06.01.01-row-wise_and_columnar_attribute_storages">schema declaration</a> in config is different from the table schema the new schema from config got applied after table get cleared.</p>
 <p>With this option clearing and reconfiguring a table becomes one atomic operation.</p>
 <!-- intro -->
+<!-- request SQL -->
 
 <div class='xcodeblock'>
 
@@ -240,7 +297,6 @@ C
 <div class='item-select'>
 SQL
 </div>
-<!-- request SQL -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">reconfigure</span><span class="p">;</span>
@@ -248,6 +304,14 @@ SQL
 
 
 <!-- response SQL -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: SQL
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
@@ -257,15 +321,15 @@ SQL
 
 <!-- intro -->
 
+<!-- request HTTP -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-JSON
+HTTP
 </div>
-
-<!-- request HTTP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="err">POST /cli -d &quot;TRUNCATE TABLE products with reconfigure&quot;</span>
@@ -274,6 +338,14 @@ JSON
 
 
 <!-- response HTTP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: HTTP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="err">{</span>
 <span class="err">&quot;total&quot;:0,</span>
@@ -286,6 +358,8 @@ JSON
 
 <!-- intro -->
 
+<!-- request PHP -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -293,8 +367,6 @@ JSON
 <div class='item-select'>
 PHP
 </div>
-
-<!-- request PHP -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="x">$params = [ &#39;index&#39; =&gt; &#39;products&#39;, &#39;with&#39; =&gt; &#39;reconfigure&#39; ];</span>
@@ -304,6 +376,14 @@ PHP
 
 
 <!-- response PHP -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: PHP
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="x">Array(</span>
 <span class="x">    [total] =&gt; 0</span>
@@ -315,6 +395,8 @@ PHP
 
 <!-- intro -->
 
+<!-- request Python -->
+
 </div>
 
 <div class='xcodeblock-item'>
@@ -322,8 +404,6 @@ PHP
 <div class='item-select'>
 Python
 </div>
-
-<!-- request Python -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products WITH RECONFIGURE&#39;</span><span class="p">)</span>
@@ -333,21 +413,29 @@ Python
 
 <!-- response Python -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Python
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="sa">u</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
 </code></pre></div>
 
 
 <!-- intro -->
 
+<!-- request javascript -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Javascript
+javascript
 </div>
-
-<!-- request javascript -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">utilsApi</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="s1">&#39;TRUNCATE TABLE products WITH RECONFIGURE&#39;</span><span class="p">);</span>
@@ -357,6 +445,14 @@ Javascript
 
 <!-- response javascript -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: javascript
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">&quot;total&quot;</span><span class="o">:</span><span class="mf">0</span><span class="p">,</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;warning&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -364,15 +460,15 @@ Javascript
 
 <!-- intro -->
 
+<!-- request Java -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-java
+Java
 </div>
-
-<!-- request Java -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="n">utilsApi</span><span class="p">.</span><span class="na">sql</span><span class="p">(</span><span class="s">&quot;TRUNCATE TABLE products WITH RECONFIGURE&quot;</span><span class="p">);</span>
@@ -382,6 +478,14 @@ java
 
 <!-- response Java -->
 
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: Java
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">=</span><span class="p">,</span><span class="w"> </span><span class="n">warning</span><span class="o">=</span><span class="p">}</span>
 </code></pre></div>
 
@@ -389,15 +493,15 @@ java
 
 <!-- intro -->
 
+<!-- request C# -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-C
+C#
 </div>
-
-<!-- request C# -->
 
 
 <div class="codehilite"><pre><span></span><code>utilsApi.Sql(&quot;TRUNCATE TABLE products WITH RECONFIGURE&quot;);
@@ -406,6 +510,14 @@ C
 
 
 <!-- response C# -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Resp: C#
+</div>
 
 <div class="codehilite"><pre><span></span><code>{total=0, error=&quot;&quot;, warning=&quot;&quot;}
 </code></pre></div>

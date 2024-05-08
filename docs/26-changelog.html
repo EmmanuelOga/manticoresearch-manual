@@ -920,13 +920,16 @@ Various improvements: improved versions check and streaming ZSTD decompression; 
 <li>PQ transactions are now atomic and isolated. Previously PQ transactions support was limited. It enables much <strong>faster REPLACE into PQ</strong>, especially when you need to replace a lot of rules at once. Performance details:</li>
 </ul>
 <!-- intro -->
+<h4 id="402">4.0.2</h4>
+<!-- request 4.0.2 -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-#### 4.0.2
 
-<!-- request 4.0.2 -->
+<div class='item-select'>
+4.0.2
+</div>
 
 It takes **48 seconds to insert 1M PQ rules** and **406 seconds to REPLACE just 40K** in 10K batches.
 
@@ -955,13 +958,17 @@ It takes **48 seconds to insert 1M PQ rules** and **406 seconds to REPLACE just 
 
 <!-- intro -->
 
+#### 4.2.0
+
+<!-- request 4.2.0 -->
+
 </div>
 
 <div class='xcodeblock-item'>
 
-#### 4.2.0
-
-<!-- request 4.2.0 -->
+<div class='item-select'>
+4.2.0
+</div>
 
 It takes **34 seconds to insert 1M PQ rules** and **23 seconds to REPLACE them** in 10K batches.
 
@@ -1073,13 +1080,16 @@ It takes **34 seconds to insert 1M PQ rules** and **23 seconds to REPLACE them**
 <li><a href="https://github.com/manticoresoftware/lemmatizer-uk/commit/671e65a296800537123a3f8b324eeaa3f58b9632">671e65a2</a> - added caching to lemmatizer-uk</li>
 </ul>
 <!-- intro -->
+<h4 id="360">3.6.0</h4>
+<!-- request 3.6.0 -->
 
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
-#### 3.6.0
 
-<!-- request 3.6.0 -->
+<div class='item-select'>
+3.6.0
+</div>
 
 <div class="codehilite"><pre><span></span><code>time curl -X POST -d &#39;{&quot;update&quot;:{&quot;index&quot;:&quot;idx&quot;,&quot;id&quot;:4611686018427387905,&quot;doc&quot;:{&quot;mode&quot;:0}}}&#39; -H &quot;Content-Type: application/x-ndjson&quot; http://127.0.0.1:6358/json/bulk
 
@@ -1091,13 +1101,17 @@ sys     0m0.007s
 
 
 <!-- intro -->
+#### 4.0.2
+
+<!-- request 4.0.2 -->
 
 </div>
 
 <div class='xcodeblock-item'>
-#### 4.0.2
 
-<!-- request 4.0.2 -->
+<div class='item-select'>
+4.0.2
+</div>
 
 <div class="codehilite"><pre><span></span><code>time curl -X POST -d &#39;{&quot;update&quot;:{&quot;index&quot;:&quot;idx&quot;,&quot;id&quot;:4611686018427387905,&quot;doc&quot;:{&quot;mode&quot;:0}}}&#39; -H &quot;Content-Type: application/x-ndjson&quot; http://127.0.0.1:6358/json/bulk
 

@@ -76,6 +76,8 @@
 <p>By default, the value is 0, which disables periodic flushing. However, flushing will still occur during a normal shutdown.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -83,8 +85,6 @@
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">attr_flush_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">900</span><span class="w"> </span><span class="c1"># persist updates to disk every 15 minutes</span>
@@ -109,15 +109,15 @@ Example
 <p>Note that toggling <code>auto_optimize</code> on or off doesn't prevent you from running <a href="../16-securing_and_compacting_a_table.html#optimize-table">OPTIMIZE TABLE</a> manually.</p>
 <!-- intro -->
 
+<!-- request Disable -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
 
 <div class='item-select'>
-Example
+Disable
 </div>
-
-<!-- request Disable -->
 
 <div class="codehilite"><pre><span></span><code><span class="na">auto_optimize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"> </span><span class="c1"># disable automatic OPTIMIZE</span>
 </code></pre></div>
@@ -125,6 +125,14 @@ Example
 
 
 <!-- request Throttle -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Throttle
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">auto_optimize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span><span class="w"> </span><span class="c1"># OPTIMIZE starts at 16 chunks (on 4 cpu cores server)</span>
 </code></pre></div>
@@ -143,18 +151,40 @@ Example
 <p>Keep in mind that the <code>/bulk</code> HTTP endpoint does not support automatic table creation.</p>
 <!-- request Disable -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Disable
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="na">auto_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"> </span><span class="c1"># disable automatic table creation</span>
 </code></pre></div>
 
+
+
 <!-- request Enable -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Enable
+</div>
 
 <div class="codehilite"><pre><span></span><code><span class="na">auto_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="c1"># enable automatic table creation</span>
 </code></pre></div>
 
+
+
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="binlog_flush">binlog_flush</h3>
 <!-- example conf binlog_flush -->
 <p>This setting controls the binary log transaction flush/sync mode. It is optional, with a default value of 2 (flush every transaction, sync every second).</p>
@@ -167,6 +197,8 @@ Example
 <p>For those familiar with MySQL and InnoDB, this directive is similar to <code>innodb_flush_log_at_trx_commit</code>. In most cases, the default hybrid mode 2 provides a nice balance of speed and safety, with full RT table data protection against server crashes and some protection against hardware ones.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -174,8 +206,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">binlog_flush</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="c1"># ultimate safety, low speed</span>
@@ -194,6 +224,8 @@ Example
 <p>A new binlog file will be forcibly opened once the current binlog file reaches this size limit. This results in a finer granularity of logs and can lead to more efficient binlog disk usage under certain borderline workloads. A value of 0 indicates that the binlog file should not be reopened based on size.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -201,8 +233,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">binlog_max_log_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16M</span>
@@ -223,6 +253,8 @@ Example
 <p>An empty value disables binary logging, which improves performance but puts the RT table data at risk.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -230,8 +262,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">binlog_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="c1"># disable logging</span>
@@ -268,6 +298,8 @@ Example
 <p>If you go this route, remember to link the dev version of the manticore executor to <code>/usr/bin/php</code>.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -275,8 +307,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">buddy_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">manticore-executor -n /usr/share/manticore/modules/manticore-buddy/src/main.php --debug</span><span class="w"> </span><span class="c1"># use the default Manticore Buddy in Linux, but run it in debug mode</span>
@@ -296,6 +326,8 @@ Example
 <p>This setting determines the maximum time to wait between requests (in seconds or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>) when using persistent connections. It is optional, with a default value of five minutes.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -303,8 +335,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">client_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1h</span>
@@ -323,6 +353,8 @@ Example
 <p>Specifies the libc locale, affecting the libc-based collations. Refer to <a href="../13-searching.html#toc-13.20-collations">collations</a> section for the details.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -330,8 +362,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">collation_libc_locale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr_FR</span>
@@ -350,6 +380,8 @@ Example
 <p>Specifies the default collation used for incoming requests. The collation can be overridden on a per-query basis. Refer to <a href="../13-searching.html#toc-13.20-collations">collations</a> section for the list of available collations and other details.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -357,8 +389,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">collation_server</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">utf8_ci</span>
@@ -377,6 +407,8 @@ Example
 Indexing of <a href="../06-creating_a_table.html#toc-06.02.02-plain_table">plain tables</a> is not allowed when the <code>data_dir</code> is specified. Read more about the difference between the RT mode and the plain mode in <a href="../02-read_this_first.html#real-time-table-vs-plain-table">this section</a>.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -384,8 +416,6 @@ Indexing of <a href="../06-creating_a_table.html#toc-06.02.02-plain_table">plain
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">data_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/lib/manticore</span>
@@ -404,6 +434,8 @@ Example
 <p>When <code>stored_fields</code> is used, document blocks are read from disk and uncompressed. Since every block typically holds several documents, it may be reused when processing the next document. For this purpose, the block is held in a server-wide cache. The cache holds uncompressed blocks.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -411,8 +443,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">docstore_cache_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8m</span>
@@ -430,6 +460,8 @@ Example
 <p>Default attribute storage engine used when creating tables in RT mode. Can be <code>rowwise</code> (default) or <code>columnar</code>.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -437,8 +469,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">columnar</span>
@@ -457,6 +487,8 @@ Example
 <p>When performing substring searches against tables built with <code>dict = keywords</code> enabled, a single wildcard may potentially result in thousands or even millions of matched keywords (think of matching <code>a*</code> against the entire Oxford dictionary). This directive allows you to limit the impact of such expansions. Setting <code>expansion_limit = N</code> restricts expansions to no more than N of the most frequent matching keywords (per each wildcard in the query).</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -464,8 +496,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">expansion_limit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16</span>
@@ -484,6 +514,8 @@ Example
 <p>When performing substring searches against tables built with <code>dict = keywords</code> enabled, a single wildcard may potentially result in thousands or even millions of matched keywords. This directive allows you to increase the limit of how many keywords will merge together to speed up matching but uses more memory in the search.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -491,8 +523,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">expansion_merge_threshold_docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1024</span>
@@ -511,6 +541,8 @@ Example
 <p>When performing substring searches against tables built with <code>dict = keywords</code> enabled, a single wildcard may potentially result in thousands or even millions of matched keywords. This directive allows you to increase the limit of how many keywords will merge together to speed up matching but uses more memory in the search.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -518,8 +550,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">expansion_merge_threshold_hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">512</span>
@@ -548,6 +578,8 @@ Example
 <p>Even though at most two blocks are used for mirror selection, up to 15 last blocks are stored for instrumentation purposes. These blocks can be inspected using the <a href="../19-node_info_and_management.html#show-agent-status">SHOW AGENT STATUS</a> statement.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -555,8 +587,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">ha_period_karma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2m</span>
@@ -575,6 +605,8 @@ Example
 <p>For a distributed table with agent mirrors in it (see more in <a href="../06-creating_a_table.html#toc-06.04.01-creating_a_local_distributed_table">agent</a>),  the master sends all mirrors a ping command during idle periods. This is to track the current agent status (alive or dead, network roundtrip, etc). The interval between such pings is defined by this directive. To disable pings, set ha_ping_interval to 0.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -582,8 +614,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">ha_ping_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3s</span>
@@ -607,6 +637,8 @@ Example
 For non-Windows builds, the default value should work fine, and there is usually no need to adjust this setting.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -614,8 +646,6 @@ For non-Windows builds, the default value should work fine, and there is usually
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">listen_backlog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">20</span>
@@ -669,6 +699,8 @@ Example
 <p>Suffix <code>_readonly</code> sets <a href="../17-security.html#toc-17.02-read-only">read-only mode</a> for the listener and limits it to accept only read queries.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -676,8 +708,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">listen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
@@ -745,6 +775,8 @@ So, all our improvements are stated around an initially undefined statement: 'wh
 <p>Alternatively, you can use the 'syslog' as the file name. In this case, the events will be sent to the syslog daemon. To use the syslog option, you need to configure Manticore with the <code>-–with-syslog</code> option during building.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -752,8 +784,6 @@ So, all our improvements are stated around an initially undefined statement: 'wh
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/searchd.log</span>
@@ -772,6 +802,8 @@ Example
 <p>Makes searchd perform a sanity check of the amount of queries submitted in a single batch when using <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a>. Set it to 0 to skip the check.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -779,8 +811,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_batch_queries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">256</span>
@@ -798,19 +828,32 @@ Example
 <p>Maximum number of simultaneous client connections. Unlimited by default. That is usually noticeable only when using any kind of persistent connections, like cli mysql sessions or persistent remote connections from remote distributed tables. When the limit is exceeded you can still connect to the server using the <a href="../11-connecting_to_the_server.html#vip-connection">VIP connection</a>. VIP connections are not counted towards the limit.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
 <div class="codehilite"><pre><span></span><code><span class="na">max_connections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10</span>
 </code></pre></div>
+
+
 
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="max_threads_per_query">max_threads_per_query</h3>
 <!-- example max_threads_per_query -->
 <p>Instance-wide limit of threads one operation can use. By default, appropriate operations can occupy all CPU cores, leaving no room for other operations. For example, <code>call pq</code> against a considerably large percolate table can utilize all threads for tens of seconds. Setting <code>max_threads_per_query</code> to, say, half of <a href="../20-server_settings.html#threads">threads</a> will ensure that you can run a couple of such <code>call pq</code> operations in parallel.</p>
 <p>You can also set this setting as a session or a global variable during runtime.</p>
 <p>Additionally, you can control the behavior on a per-query basis with the help of the <a href="../13-searching.html#threads">threads OPTION</a>.</p>
 <!-- intro -->
+<!-- request Example -->
 
 <div class='xcodeblock'>
 
@@ -819,7 +862,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_threads_per_query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
@@ -838,6 +880,8 @@ Example
 <p>Maximum allowed per-query filter count. This setting is only used for internal sanity checks and does not directly affect RAM usage or performance. Optional, the default is 256.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -845,8 +889,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_filters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1024</span>
@@ -864,6 +906,8 @@ Example
 <p>Maximum allowed per-filter values count. This setting is only used for internal sanity checks and does not directly affect RAM usage or performance. Optional, the default is 4096.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -871,8 +915,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_filter_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16384</span>
@@ -891,6 +933,8 @@ Example
 <p>There is also a "hard limit" that cannot be exceeded by the option. This limit is defined by the system and can be changed in the file <code>/etc/security/limits.conf</code> on Linux. Other operating systems may have different approaches, so consult your manuals for more information.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -898,8 +942,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_open_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span>
@@ -916,6 +958,8 @@ Example
 <p>Apart from direct numeric values, you can use the magic word 'max' to set the limit equal to the available current hard limit.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -923,8 +967,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_open_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">max</span>
@@ -942,6 +984,8 @@ Example
 <p>Maximum allowed network packet size. This setting limits both query packets from clients and response packets from remote agents in a distributed environment. Only used for internal sanity checks, it does not directly affect RAM usage or performance. Optional, the default is 8M.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -949,8 +993,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">max_packet_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">32M</span>
@@ -969,6 +1011,8 @@ Example
 <p>Several picky MySQL client libraries depend on a particular version number format used by MySQL, and moreover, sometimes choose a different execution path based on the reported version number (rather than the indicated capabilities flags). For instance, Python MySQLdb 1.2.2 throws an exception when the version number is not in X.Y.ZZ format; MySQL .NET connector 6.3.x fails internally on version numbers 1.x along with a certain combination of flags, etc. To work around that, you can use the <code>mysql_version_string</code> directive and have <code>searchd</code> report a different version to clients connecting over the MySQL protocol. (By default, it reports its own version.)</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -976,8 +1020,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">mysql_version_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5.0.37</span>
@@ -1009,13 +1051,25 @@ Example
 <p>Note also the <a href="../20-server_settings.html#reset_network_timeout_on_packet">reset_network_timeout_on_packet</a> parameter. This parameter alters the behavior of <code>network_timeout</code> from applying to the entire <code>query</code> or <code>result</code> to individual packets instead. Typically, a query/result fits within one or two packets. However, in cases where a large amount of data is required, this parameter can be invaluable in maintaining active operations.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="na">network_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10s</span>
 </code></pre></div>
+
 
 <!-- end -->
 
 </div>
+
 </div>
+
 <h3 id="node_address">node_address</h3>
 <!-- example conf node_address -->
 <p>This setting allows you to specify the network address of the node. By default, it is set to the replication <a href="../20-server_settings.html#listen">listen</a> ddress. This is correct in most cases; however, there are situations where you have to specify it manually:</p>
@@ -1027,6 +1081,8 @@ Example
 </ul>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1034,8 +1090,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">node_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10.101.0.10</span>
@@ -1053,6 +1107,8 @@ Example
 <p>This setting determines whether to allow queries with only the <a href="../13-searching.html#negation-operator">negation</a> full-text operator. Optional, the default is 0 (fail queries with only the NOT operator).</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1060,8 +1116,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">not_terms_only_allowed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
@@ -1079,6 +1133,8 @@ Example
 <p>Sets the default table compaction threshold. Read more here - <a href="../16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">Number of optimized disk chunks</a>. This setting can be overridden with the per-query option <a href="../16-securing_and_compacting_a_table.html#number-of-optimized-disk-chunks">cutoff</a>. It can also be changed dynamically via <a href="../20-server_settings.html#set">SET GLOBAL</a>.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1086,8 +1142,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">optimize_cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
@@ -1106,6 +1160,8 @@ Example
 <p>It is reasonable to set the value equal to or less than the <a href="../20-server_settings.html#max_connections">max_connections</a> option in the agent's config.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1113,8 +1169,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">persistent_connections_limit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">29</span><span class="w"> </span><span class="c1"># assume that each host of agents has max_connections = 30 (or 29).</span>
@@ -1134,6 +1188,8 @@ Example
 The purpose of this file is to enable Manticore to perform various internal tasks, such as checking whether there is already a running instance of <code>searchd</code>, stopping <code>searchd</code>, and notifying it that it should rotate the tables. The file can also be used for external automation scripts.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1141,8 +1197,6 @@ The purpose of this file is to enable Manticore to perform various internal task
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">pid_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/run/manticore/searchd.pid</span>
@@ -1160,6 +1214,8 @@ Example
 <p>Costs for the query time prediction model, in nanoseconds. Optional, the default is <code>doc=64, hit=48, skip=2048, match=64</code>.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1167,8 +1223,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">predicted_time_costs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">doc=128, hit=96, skip=4096, match=128</span>
@@ -1185,6 +1239,8 @@ Example
 <p>Terminating queries before completion based on their execution time (with the max query time setting) is a nice safety net, but it comes with an inherent drawback: indeterministic (unstable) results. That is, if you repeat the very same (complex) search query with a time limit several times, the time limit will be hit at different stages, and you will get <em>different</em> result sets.</p>
 <!-- intro -->
 
+<!-- request SQL -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1193,14 +1249,20 @@ Example
 SQL
 </div>
 
-<!-- request SQL -->
-
 
 <div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="err">…</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="n">max_query_time</span>
 </code></pre></div>
 
 
 <!-- request API -->
+
+</div>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+API
+</div>
 
 
 <div class="codehilite"><pre><span></span><code>SetMaxQueryTime()
@@ -1231,6 +1293,8 @@ SQL
 <p>Here's an example configuration:</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1238,8 +1302,6 @@ SQL
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">preopen_tables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
@@ -1266,6 +1328,8 @@ Example
 <p>Enabled by default.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1273,8 +1337,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">pseudo_sharding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
@@ -1302,6 +1364,8 @@ Example
 <p>This configuration sets the maximum amount of RAM allocated for cached result sets in bytes. The default value is 16777216, which is equivalent to 16 megabytes. If the value is set to 0, the query cache is disabled. For more information about the query cache, please refer to the <a href="../13-searching.html#toc-13.19-query_cache">query cache</a> for details.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1309,8 +1373,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">qcache_max_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16777216</span>
@@ -1333,6 +1395,8 @@ Example
 <p>The <code>sphinxql</code> mode logs valid SQL statements. The <code>plain</code> mode logs queries in a plain text format (mostly suitable for purely full-text use cases). This directive allows you to switch between the two formats on search server startup. The log format can also be altered on the fly, using <code>SET GLOBAL query_log_format=sphinxql</code> syntax. Refer to <a href="../18-logging.html#toc-18.01-query_logging">Query logging</a> for more details.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1340,8 +1404,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">query_log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinxql</span>
@@ -1361,6 +1423,8 @@ Example
 <p>Query log file name. Optional, default is empty (do not log queries). All search queries (such as SELECT ... but not INSERT/REPLACE/UPDATE queries) will be logged in this file. The format is described in <a href="../18-logging.html#toc-18.01-query_logging">Query logging</a>. In case of 'plain' format, you can use 'syslog' as the path to the log file. In this case, all search queries will be sent to the syslog daemon with <code>LOG_INFO</code> priority, prefixed with '[query]' instead of timestamp. To use the syslog option, Manticore must be configured with  <code>-–with-syslog</code> on building.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1368,8 +1432,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/var/log/query.log</span>
@@ -1388,6 +1450,8 @@ Example
 This directive can be handy if you want to allow other users to read the log files, for example, monitoring solutions running on non-root users.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1395,8 +1459,6 @@ This directive can be handy if you want to allow other users to read the log fil
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">query_log_mode</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s">666</span>
@@ -1416,6 +1478,8 @@ Example
 <p>The default value is 256K, and the minimal value is 8K. You may also set <a href="../06-creating_a_table.html#read_buffer_docs">read_buffer_docs</a> on a per-table basis, which will override anything set on the server's config level.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1423,8 +1487,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">read_buffer_docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">128K</span>
@@ -1443,6 +1505,8 @@ Example
 <p>This setting can also be specified on a per-table basis using the read_buffer_hits option in <a href="../06-creating_a_table.html#read_buffer_hits">read_buffer_hits</a> which will override the server-level setting.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1450,8 +1514,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">read_buffer_hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">128K</span>
@@ -1470,6 +1532,8 @@ Example
 <p>When querying, some reads know in advance exactly how much data is there to be read, but some currently do not. Most prominently, hit list size is not currently known in advance. This setting lets you control how much data to read in such cases. It impacts hit list I/O time, reducing it for lists larger than unhinted read size, but raising it for smaller lists. It does <strong>not</strong> affect RAM usage because the read buffer will already be allocated. So it should not be greater than read_buffer.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1477,8 +1541,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">read_unhinted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">32K</span>
@@ -1500,16 +1562,15 @@ When set to 1 (default), timeouts limit the maximum time between network activit
 <p>Note that if you set up a distributed table, each node — both master and agents — should be tuned. On the master side, <code>agent_query_timeout</code> is affected; on agents, <code>network_timeout</code> is relevant.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
 
-
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">reset_network_timeout_on_packet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
@@ -1529,6 +1590,8 @@ Example
 <p>Actively updated RT tables that fully fit in RAM chunks can still result in ever-growing binlogs, impacting disk use and crash recovery time. With this directive, the search server performs periodic flush checks, and eligible RAM chunks can be saved, enabling consequential binlog cleanup. See <a href="../18-logging.html#toc-18.03-binary_logging">Binary logging</a> for more details.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1536,8 +1599,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">rt_flush_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3600</span><span class="w"> </span><span class="c1"># 1 hour</span>
@@ -1556,6 +1617,8 @@ Example
 <p>This directive lets you throttle down the I/O impact arising from the <code>OPTIMIZE</code> statements. It is guaranteed that all RT optimization activities will not generate more disk IOPS (I/Os per second) than the configured limit. Limiting rt_merge_iops can reduce search performance degradation caused by merging.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1563,8 +1626,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">rt_merge_iops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">40</span>
@@ -1583,6 +1644,8 @@ Example
 <p>This directive lets you throttle down the I/O impact arising from the <code>OPTIMIZE</code> statements. I/Os larger than this limit will be broken down into two or more I/Os, which will then be accounted for as separate I/Os with regards to the <a href="../20-server_settings.html#rt_merge_iops">rt_merge_iops</a> limit. Thus, it is guaranteed that all optimization activities will not generate more than (rt_merge_iops * rt_merge_maxiosize) bytes of disk I/O per second.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1590,8 +1653,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">rt_merge_maxiosize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1M</span>
@@ -1628,6 +1689,8 @@ Example
 <p>Seamless rotate comes at the cost of higher peak memory usage during the rotation (because both old and new copies of <code>.spa/.spb/.spi/.spm</code> data need to be in RAM while preloading the new copy). Average usage remains the same.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1635,8 +1698,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">seamless_rotate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
@@ -1661,6 +1722,8 @@ Example
 <p>Note that secondary indexes are not effective for full-text queries.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1668,8 +1731,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">secondary_indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
@@ -1688,6 +1749,8 @@ Example
 <p>Integer number that serves as a server identifier used as a seed to generate a unique short UUID for nodes that are part of a replication cluster. The server_id must be unique across the nodes of a cluster and in the range from 0 to 127. If server_id is not set, the MAC address or a random number will be used as a seed for the short UUID.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1695,8 +1758,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">server_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
@@ -1715,6 +1776,8 @@ Example
 <p>When you run <code>searchd --stopwait</code> your server needs to perform some activities before stopping, such as finishing queries, flushing RT RAM chunks, flushing attributes, and updating the binlog. These tasks require some time. <code>searchd --stopwait</code> will wait up to <code>shutdown_time</code> seconds for the server to finish its jobs. The suitable time depends on your table size and load.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1722,8 +1785,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">shutdown_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3m</span><span class="w"> </span><span class="c1"># wait for up to 3 minutes</span>
@@ -1752,6 +1813,8 @@ Example
 <p>This might be useful, for instance, when the document storage locations (whether local storage or NAS mountpoints) are inconsistent across the servers.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1759,8 +1822,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">snippets_file_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/mnt/common/server1/</span>
@@ -1783,6 +1844,8 @@ Example
 <p><code>sphinxql_state</code> cannot be used to execute arbitrary commands, such as <code>CREATE TABLE</code>.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1790,8 +1853,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">sphinxql_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">uservars.sql</span>
@@ -1809,6 +1870,8 @@ Example
 <p>Maximum time to wait between requests (in seconds, or <a href="../20-server_settings.html#toc-20.03-special_suffixes">special_suffixes</a>) when using the SQL interface. Optional, default is 15 minutes.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1816,8 +1879,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">sphinxql_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">15m</span>
@@ -1836,6 +1897,8 @@ Example
 <p>The server uses the CA file to verify the signature on the certificate. The file must be in PEM format.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1843,8 +1906,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">ssl_ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">keys/ca-cert.pem</span>
@@ -1863,6 +1924,8 @@ Example
 <p>The server uses this certificate as a self-signed public key to encrypt HTTP traffic over SSL. The file must be in PEM format.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1870,8 +1933,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">ssl_cert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">keys/server-cert.pem</span>
@@ -1890,6 +1951,8 @@ Example
 <p>The server uses this private key to encrypt HTTP traffic over SSL. The file must be in PEM format.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1897,8 +1960,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">ssl_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">keys/server-key.pem</span>
@@ -1917,6 +1978,8 @@ Example
 <p>This setting limits the RAM usage of a common subtree optimizer (see  <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a>). At most, this much RAM will be spent to cache document entries for each query. Setting the limit to 0 disables the optimizer.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1924,8 +1987,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">subtree_docs_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8M</span>
@@ -1944,6 +2005,8 @@ Example
 <p>This setting limits the RAM usage of a common subtree optimizer (see <a href="../13-searching.html#toc-13.11-multi-queries">multi-queries</a>). At most, this much RAM will be spent to cache keyword occurrences (hits) for each query. Setting the limit to 0 disables the optimizer.</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -1951,8 +2014,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">subtree_hits_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">16M</span>
@@ -1978,21 +2039,6 @@ Example
 <p>In the case of intensive I/O type of load, it might make sense to set the value higher than the number of CPU cores.</p>
 <!-- request Example -->
 
-<div class="codehilite"><pre><span></span><code><span class="na">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10</span>
-</code></pre></div>
-
-<!-- end -->
-
-</div>
-</div>
-<h3 id="thread_stack">thread_stack</h3>
-<!-- example conf thread_stack -->
-<p>Maximum stack size for a job (coroutine, one search query may cause multiple jobs/coroutines). Optional, default is 128K.</p>
-<p>Each job has its own stack of 128K. When you run a query, it's checked for how much stack it requires. If the default 128K is enough, it's just processed. If it needs more, another job with an increased stack is scheduled, which continues processing. The maximum size of such an advanced stack is limited by this setting.</p>
-<p>Setting the value to a reasonably high rate will help with processing very deep queries without implying that overall RAM consumption will grow too high. For example, setting it to 1G does not imply that every new job will take 1G of RAM, but if we see that it requires, let's say, 100M stack, we just allocate 100M for the job. Other jobs at the same time will be running with their default 128K stack. The same way, we can run even more complex queries that need 500M. And only if we <strong>see</strong> internally that the job requires more than 1G of stack, we will fail and report about too low thread_stack.</p>
-<p>However, in practice, even a query which needs 16M of stack is often too complex for parsing and consumes too much time and resources to be processed. So, the daemon will process it, but limiting such queries by the <code>thread_stack</code> setting looks quite reasonable.</p>
-<!-- intro -->
-
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -2001,7 +2047,34 @@ Example
 Example
 </div>
 
+<div class="codehilite"><pre><span></span><code><span class="na">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10</span>
+</code></pre></div>
+
+
+
+<!-- end -->
+
+</div>
+
+</div>
+
+<h3 id="thread_stack">thread_stack</h3>
+<!-- example conf thread_stack -->
+<p>Maximum stack size for a job (coroutine, one search query may cause multiple jobs/coroutines). Optional, default is 128K.</p>
+<p>Each job has its own stack of 128K. When you run a query, it's checked for how much stack it requires. If the default 128K is enough, it's just processed. If it needs more, another job with an increased stack is scheduled, which continues processing. The maximum size of such an advanced stack is limited by this setting.</p>
+<p>Setting the value to a reasonably high rate will help with processing very deep queries without implying that overall RAM consumption will grow too high. For example, setting it to 1G does not imply that every new job will take 1G of RAM, but if we see that it requires, let's say, 100M stack, we just allocate 100M for the job. Other jobs at the same time will be running with their default 128K stack. The same way, we can run even more complex queries that need 500M. And only if we <strong>see</strong> internally that the job requires more than 1G of stack, we will fail and report about too low thread_stack.</p>
+<p>However, in practice, even a query which needs 16M of stack is often too complex for parsing and consumes too much time and resources to be processed. So, the daemon will process it, but limiting such queries by the <code>thread_stack</code> setting looks quite reasonable.</p>
+<!-- intro -->
+
 <!-- request Example -->
+
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">thread_stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8M</span>
@@ -2019,6 +2092,8 @@ Example
 <p>Determines whether to unlink <code>.old</code> table copies on successful rotation. Optional, default is 1 (do unlink).</p>
 <!-- intro -->
 
+<!-- request Example -->
+
 <div class='xcodeblock'>
 
 <div class='xcodeblock-item'>
@@ -2026,8 +2101,6 @@ Example
 <div class='item-select'>
 Example
 </div>
-
-<!-- request Example -->
 
 
 <div class="codehilite"><pre><span></span><code><span class="na">unlink_old</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
@@ -2046,12 +2119,23 @@ Example
 <p>When a Manticore query crashes, it can take down the entire server. With the watchdog feature enabled, <code>searchd</code> also maintains a separate lightweight process that monitors the main server process and automatically restarts it in case of abnormal termination. The watchdog is enabled by default.</p>
 <!-- request Example -->
 
+<div class='xcodeblock'>
+
+<div class='xcodeblock-item'>
+
+<div class='item-select'>
+Example
+</div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="na">watchdog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"> </span><span class="c1"># disable watchdog</span>
 </code></pre></div>
+
 
 <!-- end -->
 
 </div>
+
 </div>
 <!-- proofread -->
         

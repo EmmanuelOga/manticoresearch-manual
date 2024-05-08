@@ -82,12 +82,6 @@ iframe {
     margin: 0;
 }
 
-li:has(a:focus),
-li:has(a:focus) a {
-    color: white;
-    background: var(--main-fg-color);
-}
-
 /* Table of contents with leading dots. https://stackoverflow.com/a/28097029/855105 */
 
 .manual-toc {
@@ -133,4 +127,10 @@ li:has(a:focus) a {
 
 .manual-toc li.toc-indent-4 {
     padding-left: 6em;
+}
+
+.manual-toc li.active,
+.manual-toc li.active a {
+    color: white;
+    background: var(--main-fg-color);
 }

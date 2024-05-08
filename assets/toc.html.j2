@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,5 +46,27 @@
             <a href="https://github.com/emmanueloga/manticoresearch-manual">Doc Sources</a>
         </footer>
     </div>
+
+    <script>
+        let listItems = [...document.querySelectorAll('.manual-toc li')];
+        window.addEventListener('message', (ev) => {
+            let header = ev.data['header-changed']
+            if (header) {
+                console.log('header', header);
+                for (let item of listItems) {
+                    item.classList.remove('active');
+                }
+                for (let item of listItems) {
+                    let a = item.querySelector('a');
+                    if (a.hash === header) {
+                        item.classList.add('active');
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center'});
+                        return;
+                    }
+                }
+            }
+        }, false);
+    </script>
 </body>
+
 </html>

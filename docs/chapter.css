@@ -123,8 +123,19 @@ blockquote span {
 
     &:target header h1,
     &:target header a.chapter-link {
+        animation: highlight .5s ease;
+    }
+}
+
+@keyframes highlight {
+    0% {
         color: white;
         background: var(--main-fg-color);
+    }
+
+    100% {
+        color: black;
+        background: rgba(255, 255, 255, 0.9);
     }
 }
 

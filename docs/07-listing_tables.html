@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -573,6 +574,26 @@ SQL
         for (let i = 0; i < codeBlocks.length; i++) {
             processCodeBlock(codeBlocks[i]);
         }
+
+        // Notify parent window when the header changes.
+        // IntersectionObserver kind of work but it's not perfect,
+        // hence the timeout, querying of all links, etc.
+        const allLinks = [...document.querySelectorAll('.chapter-link')];
+        let obs = new IntersectionObserver(() => {
+            setTimeout(() => {
+                let top;
+                for (el of allLinks) {
+                    if (el.getBoundingClientRect().y == 0) {
+                        top = el;
+                    }
+                }
+                if (top) window.parent.postMessage({ "header-changed": top.hash });
+            }, 100);
+        });
+        document.querySelectorAll('.chapter-link').forEach((el) => {
+            obs.observe(el);
+        });
     </script>
 </body>
+
 </html>

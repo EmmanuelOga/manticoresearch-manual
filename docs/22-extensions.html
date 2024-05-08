@@ -131,14 +131,6 @@ Req
 
 <!-- response -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
-
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------------+----------+-------------------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Engine</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">Support</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="k">Comment</span><span class="w">                                                     </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">------------+----------+-------------------------------------------------------------+</span>
@@ -335,14 +327,6 @@ Req
 
 <!-- response -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
-
 
 <div class="codehilite"><pre><span></span><code><span class="o">***************************</span><span class="w"> </span><span class="mi">1</span><span class="err">\</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
 <span class="w">           </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="mi">555617</span>
@@ -411,14 +395,6 @@ Req
 
 <!-- response -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
-
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------+-------+-------------------------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Status</span><span class="w">                                          </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">--------+-------+-------------------------------------------------+</span>
@@ -456,14 +432,6 @@ Req
 
 
 <!-- response -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">--------------------+----------------------------------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                            </span><span class="o">|</span>
@@ -509,14 +477,6 @@ Req
 
 
 <!-- response -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">-------------------------------------+---------------------+</span>
@@ -613,14 +573,6 @@ SQL
 
 <!-- response SQL-->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: SQL
-</div>
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
 </code></pre></div>
@@ -653,14 +605,6 @@ SQL
 
 
 <!-- response SQL-->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: SQL
-</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----+------+--------+------------------------------------------+</span>
@@ -710,14 +654,6 @@ SQL
 
 
 <!-- response SQL-->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: SQL
-</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">----+------+--------------+</span>
@@ -853,14 +789,6 @@ Example
 
 <!-- response -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
-
 
 <div class="codehilite"><pre><span></span><code><span class="o">+</span><span class="c1">------+----------+----------------+-------+-------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Name</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">Library</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="n">Users</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Extra</span><span class="w"> </span><span class="o">|</span>
@@ -903,14 +831,6 @@ Example
 
 
 <!-- response -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp
-</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="o">+------------------------------------------------+-----------------+---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
@@ -1454,28 +1374,30 @@ After disabling, if you try the `SHOW QUERIES` command, you'll encounter an erro
                 lang.remove();
 
                 let sel = lang.querySelector('.item-select');
-                let code = lang.querySelector('.codehilite');
+                let codeBlocks = lang.querySelectorAll('.codehilite');
 
-                if (!sel || !code) {
+                if (!sel || codeBlocks.length == 0) {
                     continue
                 }
 
                 sel.remove();
-                code.remove();
-
                 selectors.append(sel);
-                codes.append(code);
+
+                codeBlocks.forEach((cb) => {
+                    cb.remove();
+                    codes.append(cb);
+                });
 
                 if (i == 0) {
                     sel.classList.add('selected');
                 } else {
-                    hide(code);
+                    codeBlocks.forEach((cb) => { hide(cb); });
                 }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();
                     clearSelection();
-                    show(code);
+                    codeBlocks.forEach((cb) => { show(cb); });
                     sel.classList.add('selected');
                 });
             }

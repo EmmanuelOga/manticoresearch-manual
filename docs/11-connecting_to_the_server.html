@@ -422,14 +422,6 @@ HTTP
 
 <!-- response HTTP -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
-
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
@@ -485,14 +477,6 @@ HTTP
 
 
 <!-- response HTTP -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
@@ -580,14 +564,6 @@ HTTP
 
 <!-- response HTTP -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
-
 
 <div class="codehilite"><pre><span></span><code>+-------+--------+----------------+
 <span class="p">|</span><span class="w"> </span>Field<span class="w"> </span><span class="p">|</span><span class="w"> </span>Type<span class="w">   </span><span class="p">|</span><span class="w"> </span>Properties<span class="w">     </span><span class="p">|</span>
@@ -641,14 +617,6 @@ HTTP
 
 
 <!-- response HTTP -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">[{</span>
@@ -809,14 +777,6 @@ HTTP
 
 <!-- response HTTP -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
-
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
@@ -872,14 +832,6 @@ HTTP
 
 
 <!-- response HTTP -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
 
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
@@ -967,14 +919,6 @@ HTTP
 
 <!-- response HTTP -->
 
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
-
 
 <div class="codehilite"><pre><span></span><code>+-------+--------+----------------+
 <span class="p">|</span><span class="w"> </span>Field<span class="w"> </span><span class="p">|</span><span class="w"> </span>Type<span class="w">   </span><span class="p">|</span><span class="w"> </span>Properties<span class="w">     </span><span class="p">|</span>
@@ -1028,14 +972,6 @@ HTTP
 
 
 <!-- response HTTP -->
-
-</div>
-
-<div class='xcodeblock-item'>
-
-<div class='item-select'>
-Resp: HTTP
-</div>
 
 
 <div class="codehilite"><pre><span></span><code><span class="p">[{</span>
@@ -1101,28 +1037,30 @@ Resp: HTTP
                 lang.remove();
 
                 let sel = lang.querySelector('.item-select');
-                let code = lang.querySelector('.codehilite');
+                let codeBlocks = lang.querySelectorAll('.codehilite');
 
-                if (!sel || !code) {
+                if (!sel || codeBlocks.length == 0) {
                     continue
                 }
 
                 sel.remove();
-                code.remove();
-
                 selectors.append(sel);
-                codes.append(code);
+
+                codeBlocks.forEach((cb) => {
+                    cb.remove();
+                    codes.append(cb);
+                });
 
                 if (i == 0) {
                     sel.classList.add('selected');
                 } else {
-                    hide(code);
+                    codeBlocks.forEach((cb) => { hide(cb); });
                 }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();
                     clearSelection();
-                    show(code);
+                    codeBlocks.forEach((cb) => { show(cb); });
                     sel.classList.add('selected');
                 });
             }

@@ -2519,28 +2519,30 @@ Example
                 lang.remove();
 
                 let sel = lang.querySelector('.item-select');
-                let code = lang.querySelector('.codehilite');
+                let codeBlocks = lang.querySelectorAll('.codehilite');
 
-                if (!sel || !code) {
+                if (!sel || codeBlocks.length == 0) {
                     continue
                 }
 
                 sel.remove();
-                code.remove();
-
                 selectors.append(sel);
-                codes.append(code);
+
+                codeBlocks.forEach((cb) => {
+                    cb.remove();
+                    codes.append(cb);
+                });
 
                 if (i == 0) {
                     sel.classList.add('selected');
                 } else {
-                    hide(code);
+                    codeBlocks.forEach((cb) => { hide(cb); });
                 }
 
                 sel.addEventListener('click', () => {
                     hideAllCodes();
                     clearSelection();
-                    show(code);
+                    codeBlocks.forEach((cb) => { show(cb); });
                     sel.classList.add('selected');
                 });
             }

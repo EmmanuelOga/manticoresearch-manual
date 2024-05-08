@@ -161,26 +161,27 @@ class Entry(msgspec.Struct, omit_defaults=True):
                     "<!-- response"
                 ):
                     if in_code_block:
-                        if insert_code_block:
-                            open_div("xcodeblock")
-                            open_div("xcodeblock-item")
-                            insert_code_block = False
-                        else:
-                            close_div("xcodeblock-item")
-                            open_div("xcodeblock-item")
-
-                        open_div("item-select")
-
                         match = re.findall(r"<!-- (request|response)(.+)-->", line)[0]
                         code_type = match[0]
                         code_id = match[1].strip()
 
-                        if code_type == "request":
-                            buffer.append(code_id if code_id else "Req")
-                        else:
-                            buffer.append(f"Resp: {code_id}" if code_id else "Resp")
+                        if insert_code_block:
+                            open_div("xcodeblock")
+                            open_div("xcodeblock-item")
+                            insert_code_block = False
+                        elif code_type == "request":
+                            close_div("xcodeblock-item")
+                            open_div("xcodeblock-item")
 
-                        close_div("item-select")
+                        if code_type == "request":
+                            open_div("item-select")
+
+                            if code_type == "request":
+                                buffer.append(code_id if code_id else "Req")
+                            else:
+                                buffer.append(f"Resp: {code_id}" if code_id else "Resp")
+
+                            close_div("item-select")
 
                 elif line.startswith("<!-- intro"):
                     pass

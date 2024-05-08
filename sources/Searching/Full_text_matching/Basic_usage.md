@@ -144,9 +144,8 @@ Examples:
 <!-- request match -->
 
 ```json
-POST /search
--d
-'{
+// POST /search -d
+{
     "index" : "hn_small",
     "query":
     {
@@ -157,7 +156,7 @@ POST /search
     },
     "_source": ["story_author","comment_author"],
     "limit": 1
-}'
+}
 ```
 
 <!-- response match -->
@@ -313,17 +312,19 @@ res = await searchApi.search({"index":"hn_small","query":{"query_string":"@comme
 {
   took: 1,
   timed_out: false,
-  hits:
-   exports {
-     total: 1864,
-     total_relation: 'eq',
-     hits:
-      [ { _id: '807160',
+  hits: {
+    exports: {
+      total: 1864,
+      total_relation: 'eq',
+      hits: [
+        {
+          _id: '807160',
           _score: 2566,
           _source: { story_author: 'rbanffy', comment_author: 'runjake' }
         }
       ]
-   }
+    }
+  }
 }
 ```
 
@@ -401,7 +402,7 @@ res = await searchApi.search({
 });
 ```
 <!-- response TypeScript -->
-```json
+```typescript
 {
   took: 1,
   timed_out: false,
